@@ -40,9 +40,6 @@ export function JukeboxPlaylistDisplay({
   return (
     <div className={styles.displayOverlay} style={style}>
       <h2 className={styles.displayTitle}>{title}</h2>
-      {vibeDescription && (
-        <p className={styles.vibeDescription}>{vibeDescription}</p>
-      )}
 
       {isMock && tracks.length > 0 && (
         <div className={styles.playerNotice}>

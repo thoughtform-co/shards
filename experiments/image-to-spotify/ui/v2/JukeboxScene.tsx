@@ -277,22 +277,10 @@ export function JukeboxScene({
     uploadGlow.position.set(0, -0.62, 0.289);
     scene.add(uploadGlow);
 
-    // ── Speaker grille ──
-    const speakerGeo = new THREE.PlaneGeometry(1.0, 0.22);
-    const speakerMat = new THREE.MeshStandardMaterial({
-      color: 0x120d20,
-      roughness: 0.72,
-      metalness: 0.05,
-    });
-    const speaker = new THREE.Mesh(speakerGeo, speakerMat);
-    speaker.position.set(0, -0.15, 0.27);
-    scene.add(speaker);
-
     // ── Chrome trims ──
     const trims: THREE.Mesh[] = [];
     const trimPositions: [number, number, number, number, number][] = [
       [1.4, 0.03, 0.04, 0, 0.92],
-      [1.4, 0.03, 0.04, 0, -0.27],
       [1.4, 0.03, 0.04, 0, -0.97],
       [0.03, 2.15, 0.04, -0.72, -0.1],
       [0.03, 2.15, 0.04, 0.72, -0.1],
@@ -393,9 +381,35 @@ export function JukeboxScene({
         depthWrite: false,
       });
       const logoMesh = new THREE.Mesh(logoGeo, logoMat);
-      logoMesh.position.set(0, 1.32, 0.29);
+      logoMesh.position.set(0, 1.34, 0.29);
       scene.add(logoMesh);
     });
+
+    // ── ZOOBOX title beneath logo ──
+    const labelCanvas = document.createElement("canvas");
+    labelCanvas.width = 512;
+    labelCanvas.height = 128;
+    const ctx = labelCanvas.getContext("2d")!;
+    ctx.clearRect(0, 0, 512, 128);
+    ctx.font = "bold 72px Fredoka, sans-serif";
+    ctx.fillStyle = "#ffffff";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.letterSpacing = "8px";
+    ctx.fillText("ZOOBOX", 256, 64);
+    const labelTex = new THREE.CanvasTexture(labelCanvas);
+    labelTex.colorSpace = THREE.SRGBColorSpace;
+    const labelW = 0.52;
+    const labelH = labelW * (128 / 512);
+    const labelGeo = new THREE.PlaneGeometry(labelW, labelH);
+    const labelMat = new THREE.MeshBasicMaterial({
+      map: labelTex,
+      transparent: true,
+      depthWrite: false,
+    });
+    const labelMesh = new THREE.Mesh(labelGeo, labelMat);
+    labelMesh.position.set(0, 1.2, 0.29);
+    scene.add(labelMesh);
 
     // ── Halo rings (playback visualizer) ──
     const haloGeo = new THREE.RingGeometry(0.62, 0.66, 48);
@@ -700,8 +714,6 @@ export function JukeboxScene({
       uploadGlowGeo.dispose();
       uploadGlowMat.dispose();
       recessMat.dispose();
-      speakerGeo.dispose();
-      speakerMat.dispose();
       bulbGeo.dispose();
       haloGeo.dispose();
       haloMat.dispose();
