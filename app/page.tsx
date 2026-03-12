@@ -94,32 +94,40 @@ export default function HomePage() {
                 <div className="hud-divider" />
                 <div className="space-y-4">
                   <p className="text-sm leading-6 text-[var(--text)]">
-                    The first shard is an internal route for a retro jukebox
-                    experiment: upload a photo, let Claude improvise on the
-                    visual vibe, then turn that reading into a Spotify playlist
-                    preview.
+                    Two jukebox surfaces: V1 is the flat two-panel layout;
+                    V2 is the full Three.js 3D cabinet with particle effects,
+                    Claude-powered vibe analysis, and Spotify preview playback.
                   </p>
                   <div className="grid gap-3 text-sm text-[var(--text)]">
                     <div className="flex items-center justify-between border border-[var(--border)] px-3 py-3">
-                      <span className="hud-readout">route</span>
+                      <span className="hud-readout">V1 route</span>
                       <span>/experiments/image-to-spotify</span>
                     </div>
                     <div className="flex items-center justify-between border border-[var(--border)] px-3 py-3">
-                      <span className="hud-readout">mode</span>
-                      <span>preview-only</span>
+                      <span className="hud-readout">V2 route</span>
+                      <span>/experiments/image-to-spotify-v2</span>
                     </div>
                     <div className="flex items-center justify-between border border-[var(--border)] px-3 py-3">
                       <span className="hud-readout">brand split</span>
                       <span>hub / local override</span>
                     </div>
                   </div>
-                  <Link
-                    href="/experiments/image-to-spotify"
-                    className="gold-link inline-flex items-center gap-2 text-sm uppercase tracking-[0.14em]"
-                  >
-                    Enter jukebox route
-                    <ArrowRight className="h-4 w-4" />
-                  </Link>
+                  <div className="flex flex-col gap-3">
+                    <Link
+                      href="/experiments/image-to-spotify"
+                      className="gold-link inline-flex items-center gap-2 text-sm uppercase tracking-[0.14em]"
+                    >
+                      V1 flat jukebox
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                    <Link
+                      href="/experiments/image-to-spotify-v2"
+                      className="gold-link inline-flex items-center gap-2 text-sm uppercase tracking-[0.14em]"
+                    >
+                      V2 3D jukebox
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </div>
                 </div>
               </div>
             </aside>

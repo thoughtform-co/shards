@@ -1,0 +1,370 @@
+/* ── Page shell ── */
+
+.page {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(60, 60, 255, 0.08), transparent 55%),
+    radial-gradient(ellipse at 70% 60%, rgba(255, 121, 181, 0.06), transparent 55%),
+    #020206;
+  font-family: var(--campus-font-body), "DM Sans", sans-serif;
+  color: #fff;
+}
+
+/* ── Stage (scene + overlays) ── */
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.sceneLayer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.sceneLayer canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* ── Display overlay (top screen) ── */
+
+.displayOverlay {
+  z-index: 2;
+  padding: 8px 10px 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border-radius: 4px;
+  pointer-events: auto;
+  border: 1px solid rgba(255, 121, 181, 0.2);
+  background:
+    linear-gradient(180deg, rgba(22, 16, 40, 0.84), rgba(8, 6, 16, 0.72)),
+    radial-gradient(circle at 50% 12%, rgba(111, 88, 199, 0.18), transparent 38%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -18px 28px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(255, 121, 181, 0.04);
+}
+
+.displayTitle {
+  margin: 0;
+  font-family: var(--campus-font-display), "Fredoka", sans-serif;
+  font-size: clamp(13px, 1.8vh, 18px);
+  font-weight: 700;
+  color: #ff79b5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.displayIdle {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 8px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.58);
+  padding: 8px;
+}
+
+.displayIdleLabel {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 121, 181, 0.72);
+}
+
+.displayIdle p {
+  margin: 0;
+  max-width: 20ch;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.vibeDescription {
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.55);
+  font-style: italic;
+  max-height: 2.9em;
+  overflow: hidden;
+}
+
+.spotifyEmbed {
+  border: none;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.playerNotice {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid rgba(255, 121, 181, 0.22);
+  border-radius: 6px;
+  background: rgba(255, 121, 181, 0.08);
+  color: rgba(255, 255, 255, 0.72);
+  flex-shrink: 0;
+}
+
+.playerNotice p {
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.playerNoticeLink {
+  color: #ff79b5;
+  font-size: 10px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.playerNoticeLink:hover {
+  text-decoration: underline;
+}
+
+.trackList {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 121, 181, 0.3) transparent;
+}
+
+.trackActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.track {
+  display: grid;
+  grid-template-columns: 28px 1fr 24px;
+  gap: 6px;
+  align-items: center;
+  padding: 4px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 100ms;
+}
+
+.track:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.trackActive {
+  background: rgba(255, 121, 181, 0.12);
+}
+
+.trackArt,
+.trackArtFallback {
+  width: 28px;
+  height: 28px;
+  border-radius: 3px;
+}
+
+.trackArt {
+  object-fit: cover;
+}
+
+.trackArtFallback {
+  display: grid;
+  place-items: center;
+  background: rgba(60, 60, 255, 0.15);
+  color: #fff;
+}
+
+.trackMeta {
+  min-width: 0;
+}
+
+.trackMeta strong,
+.trackMeta span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trackMeta strong {
+  font-size: 11px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.trackMeta span {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 1px;
+}
+
+.trackPlayBtn {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: #ff79b5;
+  color: #000;
+  cursor: pointer;
+  transition: transform 100ms;
+  flex-shrink: 0;
+}
+
+.trackPlayBtn:hover {
+  transform: scale(1.12);
+}
+
+.trackLink {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* ── Upload overlay (bottom bay) ── */
+
+.uploadOverlay {
+  z-index: 2;
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  border-radius: 4px;
+  overflow: hidden;
+  pointer-events: auto;
+  background: rgba(3, 4, 12, 0.72);
+}
+
+.uploadPreview {
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.uploadImg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.uploadPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 11px;
+}
+
+.uploadPlaceholderIcon {
+  width: 20px;
+  height: 20px;
+  color: rgba(60, 60, 255, 0.6);
+}
+
+.uploadActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  padding: 6px 8px;
+  background: rgba(3, 4, 12, 0.82);
+}
+
+.uploadBtn,
+.spinBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 30px;
+  padding: 4px 10px;
+  border: none;
+  border-radius: 50rem;
+  cursor: pointer;
+  font-family: var(--campus-font-display), "Fredoka", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: transform 100ms, filter 100ms;
+}
+
+.uploadBtn {
+  background: transparent;
+  border: 1.5px solid rgba(60, 60, 255, 0.5);
+  color: #fff;
+}
+
+.spinBtn {
+  background: #3c3cff;
+  color: #fff;
+}
+
+.uploadBtn:hover,
+.spinBtn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+.spinBtn:disabled {
+  opacity: 0.5;
+  cursor: progress;
+}
+
+.uploadError {
+  margin: 0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(220, 53, 69, 0.12);
+  color: #fcc;
+  font-size: 10px;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 700px) {
+  .page {
+    max-height: none;
+    overflow: auto;
+  }
+
+  .stage {
+    height: 100svh;
+  }
+
+  .displayOverlay {
+    width: min(44vh, 90vw);
+  }
+
+  .uploadOverlay {
+    width: min(44vh, 90vw);
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

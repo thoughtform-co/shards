@@ -13,7 +13,7 @@ const allowedMimeTypes = new Set([
   "image/gif",
 ]);
 
-const maxUploadSizeBytes = 4 * 1024 * 1024;
+const maxUploadSizeBytes = 20 * 1024 * 1024;
 
 export const runtime = "nodejs";
 
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
     if (image.size > maxUploadSizeBytes) {
       return NextResponse.json(
         {
-          error: "Image too large. Keep uploads under 4 MB for this prototype.",
+          error: "Image too large. Keep uploads under 20 MB.",
         },
         { status: 400 },
       );
@@ -86,6 +86,9 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       mode,
+      analysisSource: analysis.source,
+      playlistSource: playlist.source,
+      playableCount: playlist.playableCount,
       playlistTitle: analysis.playlistTitle,
       objectiveDescription: analysis.objectiveDescription,
       vibeDescription: analysis.vibeDescription,

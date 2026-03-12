@@ -64,7 +64,7 @@ export async function analyzeImageToPlaylistSeeds({
   try {
     const anthropic = new Anthropic({ apiKey });
     const message = await anthropic.messages.create({
-      model: "claude-3-7-sonnet-20250219",
+      model: "claude-sonnet-4-20250514",
       max_tokens: 700,
       temperature: 0.8,
       system: [

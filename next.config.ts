@@ -10,6 +10,7 @@ const contentSecurityPolicy = [
   "font-src 'self' data:",
   "connect-src 'self' https://api.anthropic.com https://accounts.spotify.com https://api.spotify.com",
   "media-src 'self' blob: https:",
+  "frame-src 'self' https://open.spotify.com",
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
