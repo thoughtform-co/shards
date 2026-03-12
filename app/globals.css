@@ -1,0 +1,317 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+
+  /* ── Spacing: numeric scale (4px quantum, Figma-aligned) ── */
+  --space-0: 0px;
+  --space-1: 2px;
+  --space-2: 4px;
+  --space-3: 8px;
+  --space-4: 12px;
+  --space-5: 16px;
+  --space-6: 24px;
+  --space-7: 32px;
+  --space-8: 40px;
+  --space-9: 48px;
+  --space-10: 64px;
+  --space-11: 80px;
+  --space-12: 96px;
+  --space-13: 160px;
+
+  /* ── Spacing: semantic aliases ── */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-4xl: 96px;
+
+  /* ── Backgrounds (Void) ── */
+  --void: #050403;
+  --surface-0: #0a0908;
+  --surface-1: #0f0e0c;
+  --surface-2: #141311;
+
+  /* ── Text (Dawn) ── */
+  --dawn: #ece3d6;
+  --dawn-80: rgba(236, 227, 214, 0.8);
+  --dawn-70: rgba(236, 227, 214, 0.7);
+  --dawn-50: rgba(236, 227, 214, 0.5);
+  --dawn-30: rgba(236, 227, 214, 0.3);
+  --dawn-15: rgba(236, 227, 214, 0.15);
+  --dawn-08: rgba(236, 227, 214, 0.08);
+
+  /* ── Accent (Gold) ── */
+  --gold: #caa554;
+  --gold-hover: #e0bc6a;
+  --gold-40: rgba(202, 165, 84, 0.4);
+  --gold-30: rgba(202, 165, 84, 0.3);
+  --gold-15: rgba(202, 165, 84, 0.15);
+  --gold-10: rgba(202, 165, 84, 0.1);
+  --gold-05: rgba(202, 165, 84, 0.05);
+
+  /* ── Accent (Atreides) ── */
+  --atreides-mid: #3d4b33;
+  --atreides-light: #5b7a4e;
+  --atreides-30: rgba(61, 75, 51, 0.3);
+
+  /* ── Status ── */
+  --alert: #ff6b35;
+
+  /* ── Semantic ── */
+  --bg: var(--void);
+  --text: var(--dawn-70);
+  --text-strong: var(--dawn-80);
+  --text-muted: var(--dawn-30);
+  --border: var(--dawn-08);
+  --border-hover: var(--dawn-15);
+
+  /* ── Layout ── */
+  --layout-content-sm: 960px;
+  --layout-content-md: 1200px;
+  --layout-content-lg: 1400px;
+  --layout-card-min: 200px;
+  --rail-width: 48px;
+  --hud-padding: clamp(24px, 4vw, 56px);
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--text-strong);
+  --color-card: var(--surface-0);
+  --color-card-foreground: var(--text-strong);
+  --color-muted: var(--text-muted);
+  --color-muted-foreground: var(--text-muted);
+  --color-border: var(--border);
+  --color-accent: var(--gold);
+  --color-accent-foreground: var(--dawn);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  min-height: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(202, 165, 84, 0.08), transparent 34%),
+    linear-gradient(180deg, rgba(15, 14, 12, 0.95), rgba(5, 4, 3, 1) 48%);
+  color: var(--text);
+  font-family: var(--font-body), sans-serif;
+  letter-spacing: 0.02em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+::selection {
+  background: var(--gold-15);
+  color: var(--dawn);
+}
+
+/* ── Typography ── */
+
+.sigil-section-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.hud-readout {
+  font-family: var(--font-mono), monospace;
+  font-size: clamp(10px, 0.6rem + 0.15vw, 12px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hud-divider {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--gold-15), transparent 70%);
+}
+
+/* ── Shell & Grid ── */
+
+.shards-shell {
+  position: relative;
+  margin: 0 auto;
+  width: min(calc(100% - 32px), var(--layout-content-lg));
+  padding-block: clamp(24px, 5vw, 48px);
+}
+
+.shards-shell--railed {
+  width: min(
+    calc(100% - var(--hud-padding) * 2 - var(--rail-width) * 2 - 32px),
+    var(--layout-content-lg)
+  );
+}
+
+.shards-grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.shards-grid--hub {
+  grid-template-columns: 1fr 320px;
+  gap: var(--space-xl);
+}
+
+.shards-grid--detail {
+  grid-template-columns: 1fr minmax(320px, 0.9fr);
+}
+
+/* ── Panels ── */
+
+.surface-panel {
+  border: 1px solid var(--dawn-08);
+  background: var(--surface-0);
+}
+
+.surface-panel--elevated {
+  background: var(--surface-1);
+}
+
+/* ── Links ── */
+
+.gold-link {
+  color: var(--gold);
+  transition: color 120ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gold-link:hover {
+  color: var(--gold-hover);
+}
+
+/* ── HUD Corners (viewport-level only) ── */
+
+.hud-corner {
+  position: fixed;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.hud-corner::before,
+.hud-corner::after {
+  content: "";
+  position: absolute;
+  background: var(--gold);
+}
+
+.hud-corner--tl {
+  top: var(--hud-padding);
+  left: var(--hud-padding);
+}
+.hud-corner--tl::before { top: 0; left: 0; width: 24px; height: 1px; }
+.hud-corner--tl::after  { top: 0; left: 0; width: 1px; height: 24px; }
+
+.hud-corner--tr {
+  top: var(--hud-padding);
+  right: var(--hud-padding);
+}
+.hud-corner--tr::before { top: 0; right: 0; width: 24px; height: 1px; }
+.hud-corner--tr::after  { top: 0; right: 0; width: 1px; height: 24px; }
+
+.hud-corner--bl {
+  bottom: var(--hud-padding);
+  left: var(--hud-padding);
+}
+.hud-corner--bl::before { bottom: 0; left: 0; width: 24px; height: 1px; }
+.hud-corner--bl::after  { bottom: 0; left: 0; width: 1px; height: 24px; }
+
+.hud-corner--br {
+  bottom: var(--hud-padding);
+  right: var(--hud-padding);
+}
+.hud-corner--br::before { bottom: 0; right: 0; width: 24px; height: 1px; }
+.hud-corner--br::after  { bottom: 0; right: 0; width: 1px; height: 24px; }
+
+/* ── HUD Rails ── */
+
+.hud-rail-tick {
+  position: fixed;
+  z-index: 30;
+  pointer-events: none;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 1100px) {
+  .hud-rail-tick {
+    display: none;
+  }
+
+  .shards-shell--railed {
+    width: min(calc(100% - 32px), var(--layout-content-lg));
+  }
+}
+
+@media (max-width: 920px) {
+  .shards-grid--hub,
+  .shards-grid--detail {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .shards-shell,
+  .shards-shell--railed {
+    width: min(calc(100% - 20px), var(--layout-content-lg));
+    padding-block: 14px 24px;
+  }
+}
+
+/* ── Widescreen Scaling ── */
+
+@media (min-width: 1536px) {
+  :root {
+    --layout-content-sm: 1100px;
+    --layout-content-md: 1400px;
+    --layout-content-lg: 1600px;
+  }
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --layout-content-sm: 1280px;
+    --layout-content-md: 1600px;
+    --layout-content-lg: 1800px;
+  }
+}
+
+@media (min-width: 2560px) {
+  :root {
+    --layout-content-sm: 1600px;
+    --layout-content-md: 1920px;
+    --layout-content-lg: 2200px;
+  }
+}
