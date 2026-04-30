@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Link / Collect - Invoice collection for Link</title>
-  <meta name="description" content="Collect, organize, and export supplier invoices for every purchase made through Link." />
+  <title>Link / Collect - Invoice collection for Link payments</title>
+  <meta name="description" content="Collect, request, and export supplier invoices for eligible purchases made through Link." />
   <style>
     :root {
       --ink: #0a2540;
@@ -279,6 +279,7 @@
     .finance-meta small { display: block; color: var(--ink-40); text-transform: uppercase; letter-spacing: .08em; font-weight: 900; }
     .finance-body { max-width: 780px; color: var(--ink-80); font-size: 17px; line-height: 1.65; }
     .finance-body p { margin: 0 0 16px; }
+
     footer { padding: 64px clamp(20px, 5vw, 56px) 56px; background: white; border-top: 1px solid var(--line); }
     .footer-inner { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; color: var(--ink-60); font-size: 14px; line-height: 1.55; }
 
@@ -315,10 +316,10 @@
       <div class="hero-inner">
         <div>
           <div class="eyebrow"><span class="pulse"></span>New for Link business payments</div>
-          <h1>Collect every <em>invoice</em> paid through Link.</h1>
-          <p class="sub">Link Collect matches supplier invoices to wallet activity, then sends quarterly bundles to accounting.</p>
+          <h1>Collect invoices for <em>eligible</em> Link payments.</h1>
+          <p class="sub">Link Collect attaches supplier invoices to payment records, requests missing documents from merchants, and sends quarterly bundles to accounting.</p>
           <div class="actions"><a class="btn primary" href="#product">Explore the product -&gt;</a><a class="btn secondary" href="#how">See how it works -&gt;</a></div>
-          <div class="meta"><span><strong>47</strong> vendor portals avoided</span><span><strong>1</strong> click to your accountant</span><span><strong>0</strong> invoices manually downloaded</span></div>
+          <div class="meta"><span><strong>47</strong> payments tracked</span><span><strong>1</strong> quarterly export</span><span><strong>0</strong> invoices manually chased</span></div>
         </div>
 
         <div class="mock-wrap">
@@ -331,7 +332,7 @@
             </aside>
             <div class="mock-main">
               <div class="mock-head"><div><div class="mock-title">Invoices</div><small class="muted">Collected from your Link transactions</small></div><span class="quarter">Q2 · 2026</span></div>
-              <div class="stats"><div class="stat"><div class="stat-label">Collected</div><div class="stat-value">42<small>/47</small></div></div><div class="stat"><div class="stat-label">Total</div><div class="stat-value">€4,872</div></div><div class="stat"><div class="stat-label">VAT</div><div class="stat-value" style="color:var(--green-dim)">€847</div></div></div>
+              <div class="stats"><div class="stat"><div class="stat-label">Collected</div><div class="stat-value">42<small>/47</small></div></div><div class="stat"><div class="stat-label">Spend</div><div class="stat-value">€4,872</div></div><div class="stat"><div class="stat-label">VAT data</div><div class="stat-value" style="color:var(--green-dim)">Ready</div></div></div>
               <div class="rows">
                 <div class="row"><span class="logo cursor">C</span><strong>Cursor</strong><span class="muted truncate">Apr 28 · Visa 2534</span><span class="amount">€101.58</span><span class="pill ok">PDF in</span></div>
                 <div class="row"><span class="logo anth">A</span><strong>Anthropic</strong><span class="muted truncate">Apr 21 · KBC 2184</span><span class="amount">€480.00</span><span class="pill ok">PDF in</span></div>
@@ -342,7 +343,7 @@
               <div class="foot"><small class="muted">5 of 47 in this quarter</small><span class="send">Send Q2 to accountant</span></div>
             </div>
           </div>
-          <div class="toast"><span class="toast-icon">✓</span><div><strong>Q1 bundle delivered</strong><br><small class="muted">42 PDFs · 9 vendors · €847 VAT reclaimable</small></div></div>
+          <div class="toast"><span class="toast-icon">✓</span><div><strong>Q1 bundle delivered</strong><br><small class="muted">42 PDFs · 9 vendors · VAT-ready CSV</small></div></div>
         </div>
       </div>
     </section>
@@ -352,11 +353,11 @@
         <div>
           <span class="label">Today</span>
           <h2>Payments are in Link. Invoices are everywhere else.</h2>
-          <p class="section-sub">Businesses can see the charge, but the PDF often lives behind a vendor portal. Link Collect closes that gap.</p>
+          <p class="section-sub">Link centralizes the charge. The merchant still issues the invoice. Link Collect brings the document back to the payment record.</p>
           <ul class="pain">
-            <li><span class="x">×</span><span>One card can produce dozens of separate billing dashboards.</span></li>
+            <li><span class="x">×</span><span>One wallet can still lead to dozens of vendor portals.</span></li>
             <li><span class="x">×</span><span>Missing PDFs, VAT details, and billing roles slow down close.</span></li>
-            <li><span class="x">×</span><span>Accountants need source documents, not just transaction rows.</span></li>
+            <li><span class="x">×</span><span>Finance teams need source documents, not just payment receipts.</span></li>
           </ul>
         </div>
         <div>
@@ -372,11 +373,11 @@
     <section>
       <div class="inner">
         <span class="label">Collection layer</span>
-        <h2>Attach documents to the payment record.</h2>
-        <p class="section-sub">Every eligible Link transaction is tracked until its invoice is received, requested, or marked missing.</p>
+        <h2>Collect the invoice. Don’t recreate it.</h2>
+        <p class="section-sub">Merchants remain the invoice issuer. Link becomes the routing layer that retrieves, requests, and organizes the document.</p>
         <article class="availability">
           <div><div class="caps">Link Collect</div><p class="muted">Invoice collection for Link wallets.</p><span class="stamp">Business preview</span></div>
-          <div><div class="caps">Link · Bookkeeping</div><h3>Invoice collection for every Link transaction.</h3><p class="section-sub" style="margin-top:0">PDFs are retrieved from Stripe-hosted records when available. If not, Link requests the invoice from the merchant and stores it beside the original payment.</p></div>
+          <div><div class="caps">Link · Bookkeeping</div><h3>Invoice collection for eligible Link transactions.</h3><p class="section-sub" style="margin-top:0">Stripe-hosted invoices can attach automatically. External invoices can be requested from merchants and stored beside the original payment.</p></div>
           <div class="rail"><div><small>Availability</small>Public preview</div><div><small>Region</small>Global</div><div><small>Surface</small>Link app + email</div></div>
         </article>
       </div>
@@ -386,19 +387,19 @@
       <div class="inner">
         <span class="label">Product</span>
         <h2>A new Invoices tab in Link.</h2>
-        <p class="section-sub">Filter by quarter, review missing PDFs, and export everything as a PDF + CSV bundle.</p>
+        <p class="section-sub">Filter eligible payments by quarter, review missing documents, and export a PDF + CSV bundle.</p>
         <div class="product-card">
           <aside class="side">
             <div class="side-brand"><span class="side-dot"></span>link</div><div class="profile"><div class="avatar">V</div><strong>Vincent B.</strong><br><small>vinc@...com</small></div>
             <div class="navitem">Home</div><div class="navitem">Activity</div><div class="navitem">Recurring</div><div class="navitem">Wallet</div><div class="navitem active">Invoices <span class="tag">New</span></div><div class="navitem">Settings</div>
           </aside>
           <div class="product-main">
-            <div class="product-head"><div class="product-title">Invoices<br><small class="muted">Collected from your Link transactions</small></div><div class="controls"><span class="control">All vendors</span><span class="control active">Q2 · 2026</span><span class="control">2025</span><span class="control">Export</span></div></div>
+            <div class="product-head"><div class="product-title">Invoices<br><small class="muted">Collected for eligible Link payments</small></div><div class="controls"><span class="control">All vendors</span><span class="control active">Q2 · 2026</span><span class="control">2025</span><span class="control">Export</span></div></div>
             <div class="product-stats">
               <div class="product-stat"><span class="stat-label">Invoices collected</span><strong>42 / 47</strong><small class="muted">89% match rate</small></div>
               <div class="product-stat"><span class="stat-label">Pending</span><strong>5</strong><small class="muted">Awaiting vendor reply</small></div>
               <div class="product-stat"><span class="stat-label">Total spend</span><strong>€4,872.41</strong><small class="muted">9 vendors</small></div>
-              <div class="product-stat"><span class="stat-label">Reclaimable VAT</span><strong style="color:var(--green-dim)">€847.18</strong><small class="muted">Belgian VAT</small></div>
+              <div class="product-stat"><span class="stat-label">VAT-ready amount</span><strong style="color:var(--green-dim)">€847.18</strong><small class="muted">From supplied invoices</small></div>
             </div>
             <div class="table">
               <div class="thead"><span></span><span>Vendor</span><span>Reference</span><span class="amount">Amount</span><span class="amount">VAT</span><span class="amount">Invoice</span></div>
@@ -413,7 +414,7 @@
           <aside class="product-rail">
             <div class="caps">This quarter</div>
             <div class="rail-card"><div class="rail-row"><span class="muted">Period</span><strong>Apr - Jun 2026</strong></div><div class="rail-row"><span class="muted">Vendors</span><strong>9</strong></div><div class="rail-row"><span class="muted">Subscriptions</span><strong>31</strong></div></div>
-            <div><div class="caps">Reclaimable VAT</div><div class="big">€847.18</div><small class="muted">Belgian VAT, EU reverse-charge applied</small></div>
+            <div><div class="caps">VAT-ready amount</div><div class="big">€847.18</div><small class="muted">Calculated from supplied invoice data</small></div>
             <div class="rail-card"><div class="caps" style="margin-bottom:10px">Forward to</div><strong>Accountant</strong><br><small class="muted">boeker@...be · auto-send each quarter</small></div>
           </aside>
         </div>
@@ -423,11 +424,11 @@
     <section id="how">
       <div class="inner">
         <span class="label">How it works</span>
-        <h2>Collect, verify, export.</h2>
-        <p class="section-sub">A simple loop for every Link payment.</p>
+        <h2>Track, request, export.</h2>
+        <p class="section-sub">A simple loop for eligible Link payments.</p>
         <div class="how-grid">
-          <div class="how"><div class="num">01 Detect</div><h3>Create the record.</h3><p class="muted">When the charge posts, Link stores the vendor, card, amount, currency, and tax region.</p><div class="code"><div><span>vendor</span><span>cursor.com</span></div><div><span>amount</span><span>€101.58</span></div><div><span>card</span><span>Visa ··· 2534</span></div></div></div>
-          <div class="how"><div class="num">02 Collect</div><h3>Attach the invoice.</h3><p class="muted">Link retrieves Stripe-hosted PDFs or requests the invoice from the merchant.</p><div class="code"><div><span>match</span><span>stripe_invoice</span></div><div><span>fallback</span><span>email · portal</span></div><div><span>retry</span><span>weekly</span></div></div></div>
+          <div class="how"><div class="num">01 Track</div><h3>Create the record.</h3><p class="muted">When the charge posts, Link stores the vendor, card, amount, currency, and tax region.</p><div class="code"><div><span>vendor</span><span>cursor.com</span></div><div><span>amount</span><span>€101.58</span></div><div><span>card</span><span>Visa ··· 2534</span></div></div></div>
+          <div class="how"><div class="num">02 Request</div><h3>Attach the invoice.</h3><p class="muted">Link retrieves Stripe-hosted invoices or asks the merchant for the source document.</p><div class="code"><div><span>source</span><span>merchant invoice</span></div><div><span>fallback</span><span>signed request</span></div><div><span>retry</span><span>weekly</span></div></div></div>
           <div class="how"><div class="num">03 Forward</div><h3>Send the bundle.</h3><p class="muted">At quarter close, Link sends PDFs plus a CSV summary to accounting.</p><div class="code"><div><span>recipient</span><span>boeker@...be</span></div><div><span>format</span><span>PDF bundle + CSV</span></div><div><span>cadence</span><span>quarterly</span></div></div></div>
         </div>
       </div>
@@ -438,16 +439,17 @@
         <span class="label">For finance</span>
         <h2>Quarterly close, built into the wallet.</h2>
         <article class="finance-card">
-          <div class="finance-meta"><div><small>User</small>Solo founders and small teams</div><div><small>Workflow</small>Invoice collection and export</div><div><small>Output</small>PDF bundle, CSV summary, accountant delivery</div></div>
+          <div class="finance-meta"><div><small>User</small>Solo founders and small teams</div><div><small>Workflow</small>Collection and routing</div><div><small>Output</small>PDF bundle, CSV summary, accountant delivery</div></div>
           <div class="finance-body">
-            <p>Link Collect creates an invoice archive from Link activity. Each payment keeps the merchant, card, amount, tax treatment, and PDF in one place.</p>
-            <p>It works across recurring subscriptions, usage-based tools, seats, credits, and one-off purchases. The invoice request stays tied to the payment that created it.</p>
-            <p>Customers get a searchable archive. Merchants get fewer invoice support requests. Accountants get original PDFs and a clean CSV.</p>
-            <p><strong>The wallet organizes how people pay.</strong> Link Collect organizes what finance needs next.</p>
+            <p>Link Collect creates an invoice archive from Link activity without changing who issues the invoice. Each payment keeps the merchant, card, amount, tax treatment, and source document in one place.</p>
+            <p>It works across recurring subscriptions, usage-based tools, seats, credits, and one-off purchases. When Stripe already hosts the invoice, Link can attach it; when it doesn’t, Link can request it from the merchant.</p>
+            <p>Customers get a searchable archive. Merchants get fewer invoice support requests. Accountants get original documents and a clean CSV.</p>
+            <p><strong>The wallet organizes how people pay.</strong> Link Collect organizes what finance needs after payment.</p>
           </div>
         </article>
       </div>
     </section>
+
   </main>
 
   <footer>
