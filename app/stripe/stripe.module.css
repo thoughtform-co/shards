@@ -1,0 +1,582 @@
+/* ————————————————————————————————————————————————
+   Stripe collection · access gate + landing
+   Light, precise, quiet. Full-bleed key visual,
+   compact card pinned bottom-left.
+   ———————————————————————————————————————————————— */
+
+.scene {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: #f6f9fc;
+  color: #0a2540;
+  isolation: isolate;
+  font-family: var(--font-stripe), Inter, "Helvetica Neue", Arial, system-ui, sans-serif;
+  font-feature-settings: "ss01", "cv11", "kern";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  animation: drift 26s ease-in-out infinite alternate;
+}
+
+.backdropImage {
+  object-fit: cover;
+  object-position: center;
+}
+
+@keyframes drift {
+  from { transform: scale(1.02) translate3d(0, 0, 0); }
+  to   { transform: scale(1.06) translate3d(-1.4%, -0.5%, 0); }
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10, 37, 64, 0.16) 0%,
+      rgba(10, 37, 64, 0.00) 30%,
+      rgba(10, 37, 64, 0.00) 55%,
+      rgba(10, 37, 64, 0.42) 100%
+    ),
+    radial-gradient(
+      120% 80% at 16% 92%,
+      rgba(10, 37, 64, 0.42) 0%,
+      transparent 58%
+    );
+}
+
+.markerTop {
+  position: absolute;
+  top: clamp(20px, 3vh, 32px);
+  left: clamp(20px, 4vw, 40px);
+  right: clamp(20px, 4vw, 40px);
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.markerLeft {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.markerDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #635bff;
+  box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.22);
+}
+
+.markerRight {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.markerSep {
+  color: rgba(255, 255, 255, 0.36);
+}
+
+.cardWrap {
+  position: absolute;
+  inset: auto auto clamp(28px, 5vh, 56px) clamp(28px, 5vw, 56px);
+  z-index: 2;
+  width: min(420px, calc(100% - clamp(40px, 8vw, 80px)));
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border: 1px solid rgba(10, 37, 64, 0.08);
+  border-radius: 16px;
+  padding: clamp(26px, 3vw, 32px);
+  box-shadow:
+    0 1px 2px rgba(10, 37, 64, 0.06),
+    0 12px 32px rgba(10, 37, 64, 0.14),
+    0 32px 80px rgba(10, 37, 64, 0.22);
+  animation: cardIn 480ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.shake {
+  animation: shake 220ms cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-5px); }
+  40%, 60% { transform: translateX(5px); }
+}
+
+.eyebrow {
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(10, 37, 64, 0.45);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 14px;
+}
+
+.eyebrowBar {
+  width: 18px;
+  height: 1.5px;
+  background: #635bff;
+  display: inline-block;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  font-weight: 650;
+  margin-bottom: clamp(18px, 3vh, 26px);
+  color: #0a2540;
+}
+
+.brandMark {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #00d66f;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.brandMark::after {
+  content: "";
+  width: 10px;
+  height: 4px;
+  border-radius: 2px;
+  background: #ffffff;
+  transform: rotate(-30deg);
+}
+
+.brandSlash {
+  color: rgba(10, 37, 64, 0.32);
+  font-weight: 400;
+}
+
+.brandAccent {
+  background: linear-gradient(135deg, #635bff, #00d66f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.headline {
+  font-weight: 600;
+  font-size: clamp(22px, 2.2vw, 26px);
+  line-height: 1.14;
+  letter-spacing: -0.022em;
+  color: #0a2540;
+  text-wrap: balance;
+}
+
+.support {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(10, 37, 64, 0.62);
+  max-width: 38ch;
+}
+
+.form {
+  margin-top: clamp(22px, 3vh, 28px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  height: 50px;
+  border: 1px solid rgba(10, 37, 64, 0.12);
+  border-radius: 12px;
+  background: #fbfcfe;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+  overflow: hidden;
+}
+
+.field:focus-within {
+  border-color: rgba(99, 91, 255, 0.55);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.18);
+}
+
+.fieldError {
+  border-color: rgba(226, 98, 98, 0.65);
+  background: #fff7f7;
+}
+
+.input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0 16px;
+  font: inherit;
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  color: #0a2540;
+}
+
+.input::placeholder {
+  color: rgba(10, 37, 64, 0.4);
+  letter-spacing: 0.01em;
+}
+
+.submit {
+  width: 100%;
+  height: 54px;
+  padding: 0 18px;
+  background: #0a2540;
+  color: #ffffff;
+  border: 1px solid #0a2540;
+  border-radius: 12px;
+  font-size: 12.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(10, 37, 64, 0.18);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    gap 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.1s ease;
+}
+
+.submit:hover:not(:disabled),
+.submit:focus-visible:not(:disabled) {
+  background: #1b3a5e;
+  border-color: #1b3a5e;
+  gap: 16px;
+  outline: none;
+  box-shadow: 0 12px 28px rgba(10, 37, 64, 0.28);
+}
+
+.submit:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 4px 12px rgba(10, 37, 64, 0.22);
+}
+
+.submit:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.submitArrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.submit:hover:not(:disabled) .submitArrow,
+.submit:focus-visible:not(:disabled) .submitArrow {
+  transform: translateX(3px);
+}
+
+.errorMsg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: #b8302d;
+  letter-spacing: 0.04em;
+  min-height: 16px;
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.errorMsg[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.errorDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e26262;
+}
+
+.foot {
+  margin-top: clamp(22px, 3vh, 28px);
+  padding-top: 16px;
+  border-top: 1px dashed rgba(10, 37, 64, 0.14);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(10, 37, 64, 0.42);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+}
+
+.footMark {
+  color: rgba(10, 37, 64, 0.62);
+}
+
+/* ── Unlocked landing ── */
+
+.landing {
+  position: absolute;
+  inset: auto auto clamp(28px, 5vh, 56px) clamp(28px, 5vw, 56px);
+  z-index: 2;
+  width: min(560px, calc(100% - clamp(40px, 8vw, 80px)));
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.landingHead {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: saturate(140%) blur(8px);
+  -webkit-backdrop-filter: saturate(140%) blur(8px);
+  border: 1px solid rgba(10, 37, 64, 0.08);
+  border-radius: 16px;
+  padding: clamp(22px, 2.5vw, 28px);
+  box-shadow:
+    0 1px 2px rgba(10, 37, 64, 0.06),
+    0 12px 32px rgba(10, 37, 64, 0.14);
+  animation: cardIn 460ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+.landingHeadline {
+  font-weight: 600;
+  font-size: clamp(22px, 2.2vw, 28px);
+  line-height: 1.12;
+  letter-spacing: -0.022em;
+  color: #0a2540;
+  margin-top: 12px;
+  text-wrap: balance;
+}
+
+.landingSub {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(10, 37, 64, 0.62);
+  max-width: 48ch;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  animation: cardIn 540ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  animation-delay: 80ms;
+}
+
+.cardLink {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: saturate(140%) blur(8px);
+  -webkit-backdrop-filter: saturate(140%) blur(8px);
+  border: 1px solid rgba(10, 37, 64, 0.08);
+  border-radius: 14px;
+  padding: 18px;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+  box-shadow:
+    0 1px 2px rgba(10, 37, 64, 0.04),
+    0 8px 20px rgba(10, 37, 64, 0.08);
+}
+
+.cardLink:hover,
+.cardLink:focus-visible {
+  outline: none;
+  transform: translateY(-2px);
+  border-color: rgba(99, 91, 255, 0.4);
+  box-shadow:
+    0 1px 2px rgba(10, 37, 64, 0.06),
+    0 14px 30px rgba(10, 37, 64, 0.16);
+}
+
+.cardLabel {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(10, 37, 64, 0.45);
+  font-weight: 700;
+}
+
+.cardTitle {
+  font-size: 17px;
+  font-weight: 650;
+  letter-spacing: -0.018em;
+  color: #0a2540;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cardCopy {
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(10, 37, 64, 0.62);
+}
+
+.cardArrow {
+  align-self: flex-end;
+  font-size: 18px;
+  color: #635bff;
+  margin-top: 4px;
+  transition: transform 0.18s ease;
+}
+
+.cardLink:hover .cardArrow,
+.cardLink:focus-visible .cardArrow {
+  transform: translateX(3px);
+}
+
+.lockButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  padding: 9px 14px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(10, 37, 64, 0.12);
+  border-radius: 999px;
+  color: rgba(10, 37, 64, 0.78);
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.lockButton:hover:not(:disabled),
+.lockButton:focus-visible:not(:disabled) {
+  background: #ffffff;
+  color: #0a2540;
+  border-color: rgba(10, 37, 64, 0.32);
+  outline: none;
+}
+
+.lockButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.lockDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #00d66f;
+  box-shadow: 0 0 0 3px rgba(0, 214, 111, 0.22);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop { animation: none; }
+  .card,
+  .landingHead,
+  .cards { animation: none; }
+  .shake { animation: none; outline: 1px solid #e26262; }
+  .submit,
+  .submitArrow,
+  .field,
+  .cardLink,
+  .cardArrow { transition: none; }
+}
+
+@media (max-width: 720px) {
+  .markerTop {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+  }
+
+  .markerRight {
+    display: none;
+  }
+
+  .cardWrap,
+  .landing {
+    inset: auto clamp(16px, 4vw, 24px) clamp(20px, 4vh, 32px) clamp(16px, 4vw, 24px);
+    width: auto;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .markerTop {
+    top: 16px;
+    left: 16px;
+    right: 16px;
+  }
+
+  .headline,
+  .landingHeadline {
+    font-size: 21px;
+  }
+
+  .support,
+  .landingSub {
+    font-size: 13.5px;
+  }
+}
