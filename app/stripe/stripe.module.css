@@ -374,61 +374,29 @@
   position: absolute;
   inset: auto auto clamp(28px, 5vh, 56px) clamp(28px, 5vw, 56px);
   z-index: 2;
-  width: min(560px, calc(100% - clamp(40px, 8vw, 80px)));
+  width: min(760px, calc(100% - clamp(40px, 8vw, 80px)));
   display: flex;
   flex-direction: column;
-  gap: 18px;
-}
-
-.landingHead {
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: saturate(140%) blur(8px);
-  -webkit-backdrop-filter: saturate(140%) blur(8px);
-  border: 1px solid rgba(10, 37, 64, 0.08);
-  border-radius: 16px;
-  padding: clamp(22px, 2.5vw, 28px);
-  box-shadow:
-    0 1px 2px rgba(10, 37, 64, 0.06),
-    0 12px 32px rgba(10, 37, 64, 0.14);
-  animation: cardIn 460ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
-}
-
-.landingHeadline {
-  font-weight: 600;
-  font-size: clamp(22px, 2.2vw, 28px);
-  line-height: 1.12;
-  letter-spacing: -0.022em;
-  color: #0a2540;
-  margin-top: 12px;
-  text-wrap: balance;
-}
-
-.landingSub {
-  margin-top: 10px;
-  font-size: 14px;
-  line-height: 1.55;
-  color: rgba(10, 37, 64, 0.62);
-  max-width: 48ch;
+  gap: 16px;
 }
 
 .cards {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  animation: cardIn 540ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
-  animation-delay: 80ms;
+  gap: 14px;
+  animation: cardIn 480ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
 .cardLink {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: saturate(140%) blur(8px);
-  -webkit-backdrop-filter: saturate(140%) blur(8px);
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: saturate(140%) blur(10px);
+  -webkit-backdrop-filter: saturate(140%) blur(10px);
   border: 1px solid rgba(10, 37, 64, 0.08);
-  border-radius: 14px;
-  padding: 18px;
+  border-radius: 16px;
+  padding: clamp(20px, 2.4vw, 28px);
   text-decoration: none;
   color: inherit;
   transition:
@@ -436,8 +404,9 @@
     border-color 0.18s ease,
     box-shadow 0.18s ease;
   box-shadow:
-    0 1px 2px rgba(10, 37, 64, 0.04),
-    0 8px 20px rgba(10, 37, 64, 0.08);
+    0 1px 2px rgba(10, 37, 64, 0.06),
+    0 12px 32px rgba(10, 37, 64, 0.16),
+    0 32px 80px rgba(10, 37, 64, 0.22);
 }
 
 .cardLink:hover,
@@ -446,39 +415,50 @@
   transform: translateY(-2px);
   border-color: rgba(99, 91, 255, 0.4);
   box-shadow:
-    0 1px 2px rgba(10, 37, 64, 0.06),
-    0 14px 30px rgba(10, 37, 64, 0.16);
+    0 1px 2px rgba(10, 37, 64, 0.08),
+    0 16px 38px rgba(10, 37, 64, 0.2),
+    0 36px 90px rgba(10, 37, 64, 0.26);
 }
 
 .cardLabel {
-  font-size: 10px;
-  letter-spacing: 0.14em;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: rgba(10, 37, 64, 0.45);
   font-weight: 700;
 }
 
-.cardTitle {
-  font-size: 17px;
+.cardHeadline {
+  font-size: clamp(22px, 2.2vw, 28px);
   font-weight: 650;
-  letter-spacing: -0.018em;
+  line-height: 1.08;
+  letter-spacing: -0.028em;
+  background: linear-gradient(120deg, #635bff, #00d66f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-top: 4px;
+}
+
+.cardTitle {
+  font-size: 14px;
+  font-weight: 650;
+  letter-spacing: -0.012em;
   color: #0a2540;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .cardCopy {
-  font-size: 13px;
+  font-size: 13.5px;
   line-height: 1.5;
   color: rgba(10, 37, 64, 0.62);
+  max-width: 30ch;
 }
 
 .cardArrow {
   align-self: flex-end;
   font-size: 18px;
   color: #635bff;
-  margin-top: 4px;
+  margin-top: 6px;
   transition: transform 0.18s ease;
 }
 
@@ -532,7 +512,6 @@
 @media (prefers-reduced-motion: reduce) {
   .backdrop { animation: none; }
   .card,
-  .landingHead,
   .cards { animation: none; }
   .shake { animation: none; outline: 1px solid #e26262; }
   .submit,
@@ -570,13 +549,15 @@
     right: 16px;
   }
 
-  .headline,
-  .landingHeadline {
+  .headline {
     font-size: 21px;
   }
 
-  .support,
-  .landingSub {
+  .support {
     font-size: 13.5px;
+  }
+
+  .cardHeadline {
+    font-size: 22px;
   }
 }

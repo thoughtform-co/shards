@@ -9,15 +9,17 @@ import styles from "./stripe.module.css";
 const surfaces = [
   {
     href: "/link-to-collect",
-    label: "01 · Surface",
+    label: "01 · Wallet",
     title: "Link / Collect",
-    copy: "Invoice collection for eligible Link payments — collect, request, and export to accounting.",
+    headline: "How you pay.",
+    copy: "Link sees the payments. Link Collect organises the invoices.",
   },
   {
     href: "/link-to-collect/substrate",
-    label: "02 · Substrate",
+    label: "02 · Agent",
     title: "Link / Skills",
-    copy: "Encode the routines behind your wallet activity into portable, callable skills.",
+    headline: "How you work.",
+    copy: "An AI agent picks up the judgment behind the routines.",
   },
 ] as const;
 
@@ -40,29 +42,6 @@ export function StripeLanding() {
 
   return (
     <div className={styles.landing}>
-      <div className={styles.landingHead}>
-        <div className={styles.eyebrow}>
-          <span className={styles.eyebrowBar} aria-hidden="true" />
-          access granted · stripe collection
-        </div>
-
-        <div className={styles.brand}>
-          <span className={styles.brandMark} aria-hidden="true" />
-          <span>Link</span>
-          <span className={styles.brandSlash}>/</span>
-          <span className={styles.brandAccent}>Stripe</span>
-        </div>
-
-        <h1 className={styles.landingHeadline}>
-          The Stripe collection.
-        </h1>
-
-        <p className={styles.landingSub}>
-          Two product surfaces encoding how Stripe handles invoice collection
-          and the expertise behind it. Pick a surface to dive in.
-        </p>
-      </div>
-
       <div className={styles.cards}>
         {surfaces.map((surface) => (
           <Link
@@ -72,6 +51,7 @@ export function StripeLanding() {
             prefetch={false}
           >
             <span className={styles.cardLabel}>{surface.label}</span>
+            <span className={styles.cardHeadline}>{surface.headline}</span>
             <span className={styles.cardTitle}>{surface.title}</span>
             <span className={styles.cardCopy}>{surface.copy}</span>
             <span className={styles.cardArrow} aria-hidden="true">
