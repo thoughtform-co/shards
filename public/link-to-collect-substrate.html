@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Link / Skills - Encode how your business works</title>
+  <meta name="description" content="Turn the routines behind your wallet activity into callable skills. Link Skills helps founders encode the judgment that runs their business." />
+  <style>
+    :root {
+      --ink: #0a2540;
+      --ink-80: rgba(10, 37, 64, .82);
+      --ink-60: rgba(10, 37, 64, .62);
+      --ink-40: rgba(10, 37, 64, .42);
+      --ink-20: rgba(10, 37, 64, .22);
+      --ink-12: rgba(10, 37, 64, .12);
+      --ink-08: rgba(10, 37, 64, .08);
+      --ink-05: rgba(10, 37, 64, .05);
+      --paper: #f6f9fc;
+      --line: rgba(10, 37, 64, .10);
+      --purple: #635bff;
+      --purple-700: #4f47e6;
+      --purple-bg: #f4f2ff;
+      --green: #00d66f;
+      --green-soft: #ddfbec;
+      --green-dim: #008f4a;
+      --amber-soft: #ffefd3;
+      --coral: #e26262;
+      --coral-soft: #fce4e4;
+      color-scheme: light;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Inter, "Helvetica Neue", Arial, system-ui, sans-serif;
+      font-feature-settings: "ss01", "cv11", "kern";
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.01em;
+    }
+    a { color: inherit; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 18px clamp(20px, 5vw, 56px);
+      background: rgba(246, 249, 252, .78);
+      backdrop-filter: saturate(150%) blur(18px);
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 650; }
+    .mark { width: 22px; height: 22px; border-radius: 50%; background: var(--green); display: grid; place-items: center; }
+    .mark:after { content: ""; width: 10px; height: 4px; border-radius: 2px; background: white; transform: rotate(-30deg); }
+    .slash { color: var(--ink-40); font-weight: 400; }
+    .skills-mark { background: linear-gradient(135deg, var(--purple), var(--green)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .badge { padding: 3px 8px; border: 1px solid var(--ink-12); border-radius: 999px; background: white; color: var(--ink-60); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+    .links { display: flex; align-items: center; gap: 8px; }
+    .links a { text-decoration: none; font-size: 14px; font-weight: 600; color: var(--ink-60); padding: 8px 14px; border-radius: 999px; }
+    .links a:hover { color: var(--ink); background: var(--ink-05); }
+    .links .cta { background: var(--ink); color: white; }
+    .links .cta:hover { background: #1b3a5e; color: white; }
+    .links .back { color: var(--purple); }
+    .links .back:hover { background: var(--purple-bg); color: var(--purple); }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(56px, 10vh, 110px) clamp(20px, 5vw, 56px) clamp(56px, 8vh, 96px);
+    }
+    .mesh {
+      position: absolute;
+      inset: -10% -10% -25%;
+      background:
+        radial-gradient(ellipse 60% 45% at 8% 18%, rgba(124, 116, 255, .55), transparent 60%),
+        radial-gradient(ellipse 55% 45% at 92% 6%, rgba(0, 214, 111, .35), transparent 55%),
+        radial-gradient(ellipse 70% 50% at 60% 110%, rgba(99, 91, 255, .28), transparent 65%),
+        radial-gradient(ellipse 45% 35% at 25% 95%, rgba(255, 168, 196, .32), transparent 60%),
+        radial-gradient(ellipse 35% 30% at 100% 70%, rgba(242, 169, 59, .22), transparent 60%),
+        var(--paper);
+      pointer-events: none;
+    }
+    .grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(10,37,64,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(10,37,64,.04) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 30%, black 30%, transparent 80%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative;
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+      gap: clamp(36px, 6vw, 88px);
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 14px 7px 12px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--ink-80);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--purple); box-shadow: 0 0 0 4px rgba(99,91,255,.12); }
+    h1 {
+      margin: 22px 0 0;
+      max-width: 14ch;
+      font-size: clamp(42px, 6.4vw, 76px);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+      font-weight: 650;
+    }
+    h1 em { font-style: normal; background: linear-gradient(120deg, var(--purple), var(--green-dim)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .sub {
+      margin: 22px 0 0;
+      max-width: 50ch;
+      color: var(--ink-60);
+      font-size: clamp(16px, 1.5vw, 19px);
+      line-height: 1.55;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+    .primary { background: var(--ink); color: white; box-shadow: 0 8px 22px rgba(10,37,64,.18); }
+    .primary.purple { background: var(--purple); box-shadow: 0 14px 32px rgba(99,91,255,.32); }
+    .primary.purple:hover { background: var(--purple-700); }
+    .secondary { background: rgba(255,255,255,.62); border-color: var(--ink-12); color: var(--ink); backdrop-filter: blur(8px); }
+    .meta { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 28px; color: var(--ink-40); font-size: 13px; }
+    .meta strong { color: var(--ink-80); }
+
+    /* Skill editor mock */
+    .editor-wrap { position: relative; }
+    .editor-shadow { position: absolute; inset: 6% 4% -8%; background: radial-gradient(ellipse 70% 50% at 50% 90%, rgba(99,91,255,.22), transparent 70%); filter: blur(40px); }
+    .editor {
+      position: relative;
+      background: white;
+      border: 1px solid var(--ink-08);
+      border-radius: 22px;
+      box-shadow: 0 30px 60px -20px rgba(10,37,64,.18), 0 12px 28px -10px rgba(10,37,64,.12);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 168px 1fr;
+    }
+    .ed-side { background: #fafbfd; border-right: 1px solid var(--ink-05); padding: 22px 14px 16px; font-size: 13px; }
+    .ed-side-brand { display: flex; align-items: center; gap: 8px; padding: 0 8px 14px; color: var(--purple); font-weight: 700; }
+    .ed-side-dot { width: 14px; height: 14px; border-radius: 4px; background: linear-gradient(135deg, var(--purple), var(--green)); }
+    .ed-section-label { padding: 14px 8px 6px; color: var(--ink-40); text-transform: uppercase; letter-spacing: .08em; font-size: 9px; font-weight: 900; }
+    .ed-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 8px; color: var(--ink-60); font-weight: 600; font-size: 12.5px; }
+    .ed-item.active { background: var(--purple-bg); color: var(--purple); }
+    .ed-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); flex: 0 0 6px; }
+    .ed-dot.draft { background: var(--ink-20); }
+    .ed-dot.review { background: #f2a93b; }
+
+    .ed-main { min-height: 460px; padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 16px; }
+    .ed-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--ink-05); }
+    .ed-title { font-size: 16px; font-weight: 750; letter-spacing: -0.01em; }
+    .ed-title small { display: block; margin-top: 4px; color: var(--ink-40); font-size: 11.5px; font-weight: 500; letter-spacing: 0; }
+    .ed-status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--green-soft); color: var(--green-dim); font-size: 11px; font-weight: 800; }
+    .ed-status:before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--green-dim); }
+
+    .ed-block { padding: 12px; border: 1px solid var(--ink-05); border-radius: 12px; background: var(--paper); }
+    .ed-block-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .ed-block-label { color: var(--ink-40); text-transform: uppercase; letter-spacing: .08em; font-size: 10px; font-weight: 900; }
+    .ed-rule { display: grid; grid-template-columns: 18px 1fr; gap: 8px; align-items: flex-start; padding: 7px 0; font-size: 12px; color: var(--ink-80); line-height: 1.45; border-top: 1px solid var(--ink-05); }
+    .ed-rule:first-of-type { border-top: 0; padding-top: 0; }
+    .ed-rule code { font: 11px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace; background: white; padding: 1px 5px; border-radius: 4px; border: 1px solid var(--ink-05); color: var(--ink); }
+    .ed-rule .num-pill { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 5px; background: var(--purple); color: white; font-size: 9px; font-weight: 900; }
+
+    .ed-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .ed-stat { background: var(--paper); border: 1px solid var(--ink-05); border-radius: 10px; padding: 10px 12px; }
+    .ed-stat-label { color: var(--ink-40); text-transform: uppercase; letter-spacing: .06em; font-size: 9.5px; font-weight: 800; }
+    .ed-stat-value { margin-top: 4px; font-size: 18px; font-weight: 750; }
+    .ed-stat .ok { color: var(--green-dim); }
+
+    .ed-foot { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--ink-05); display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 12px; }
+    .ed-run { display: inline-flex; align-items: center; gap: 6px; background: var(--purple); color: white; border-radius: 999px; padding: 7px 12px; font-size: 12px; font-weight: 800; }
+
+    /* Sections */
+    section { padding: clamp(64px, 10vh, 120px) clamp(20px, 5vw, 56px); }
+    .inner { max-width: 1180px; margin: 0 auto; }
+    .label { display: inline-block; margin-bottom: 18px; color: var(--purple); text-transform: uppercase; letter-spacing: .1em; font-size: 12px; font-weight: 800; }
+    h2 { max-width: 22ch; margin: 0; font-size: clamp(30px, 4vw, 48px); line-height: 1.05; letter-spacing: -0.035em; }
+    h2 em { font-style: normal; background: linear-gradient(120deg, var(--purple), var(--green-dim)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .section-sub { max-width: 60ch; margin: 18px 0 0; color: var(--ink-60); font-size: clamp(15px, 1.4vw, 18px); line-height: 1.55; }
+
+    .soft { background: linear-gradient(180deg, transparent, var(--paper) 30%, var(--paper) 70%, transparent); }
+    .white { background: white; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .ink { background: var(--ink); color: white; }
+    .ink .label { color: rgba(255,255,255,.7); }
+    .ink h2 { color: white; }
+    .ink h2 em { background: linear-gradient(120deg, #b8ffe3, #c4bfff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .ink .section-sub { color: rgba(255,255,255,.7); }
+
+    /* Problem section */
+    .problem-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(36px, 6vw, 80px); align-items: center; }
+    .pain { list-style: none; margin: 24px 0 0; padding: 0; display: grid; gap: 14px; }
+    .pain li { display: flex; gap: 14px; align-items: flex-start; color: var(--ink-80); line-height: 1.5; }
+    .x { flex: 0 0 22px; width: 22px; height: 22px; border-radius: 50%; background: var(--coral-soft); color: var(--coral); display: grid; place-items: center; font-weight: 900; }
+
+    .heads {
+      padding: 22px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 12px 36px -16px rgba(10,37,64,.14);
+      display: grid;
+      gap: 14px;
+    }
+    .head-row { display: grid; grid-template-columns: 32px 1fr auto; gap: 12px; align-items: center; padding: 10px 12px; border-radius: 10px; background: var(--paper); font-size: 13px; color: var(--ink-80); }
+    .head-row strong { display: block; color: var(--ink); font-weight: 700; }
+    .head-row small { color: var(--ink-40); font-size: 11px; }
+    .head-icon { width: 32px; height: 32px; border-radius: 8px; background: linear-gradient(135deg, var(--ink), #1b3a5e); color: white; display: grid; place-items: center; font-weight: 900; font-size: 13px; }
+    .head-icon.purple { background: linear-gradient(135deg, var(--purple), #847cff); }
+    .head-icon.green { background: linear-gradient(135deg, var(--green-dim), var(--green)); }
+    .head-tag { padding: 3px 8px; border-radius: 999px; background: var(--ink-08); color: var(--ink-80); font-size: 10px; font-weight: 800; letter-spacing: .04em; }
+    .head-tag.warn { background: var(--amber-soft); color: #8e5a0e; }
+
+    /* Concept section */
+    .anatomy { margin-top: 56px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; border: 1px solid var(--ink-05); border-radius: 22px; overflow: hidden; background: var(--ink-05); }
+    .ana { background: white; padding: 28px 24px 32px; display: flex; flex-direction: column; gap: 12px; }
+    .ana-num { color: var(--purple); text-transform: uppercase; letter-spacing: .1em; font-size: 11px; font-weight: 900; }
+    .ana h3 { margin: 0; font-size: 19px; line-height: 1.2; letter-spacing: -0.015em; }
+    .ana p { margin: 0; color: var(--ink-60); font-size: 13.5px; line-height: 1.55; }
+    .ana-snippet { margin-top: auto; padding: 12px; border: 1px solid var(--ink-05); border-radius: 10px; background: var(--paper); font: 11px/1.55 ui-monospace, SFMono-Regular, Consolas, monospace; color: var(--ink-80); display: grid; gap: 4px; }
+    .ana-snippet .row { display: flex; justify-content: space-between; gap: 12px; }
+    .ana-snippet .key { color: var(--ink-40); }
+
+    .open-note {
+      margin-top: 24px;
+      padding: 18px 22px;
+      background: var(--purple-bg);
+      border: 1px solid rgba(99,91,255,.18);
+      border-radius: 16px;
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 16px;
+      align-items: center;
+    }
+    .open-note-mark { width: 36px; height: 36px; border-radius: 10px; background: white; display: grid; place-items: center; color: var(--purple); font-size: 18px; font-weight: 800; }
+    .open-note strong { display: block; color: var(--ink); font-weight: 700; font-size: 14.5px; }
+    .open-note span { display: block; margin-top: 4px; color: var(--ink-60); font-size: 13px; line-height: 1.5; }
+
+    /* Pattern intelligence / Vantage section */
+    .vantage-card {
+      margin-top: 48px;
+      background: white;
+      border: 1px solid var(--ink-08);
+      border-radius: 22px;
+      box-shadow: 0 30px 60px -28px rgba(10,37,64,.16);
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      overflow: hidden;
+    }
+    .vantage-side {
+      padding: clamp(28px, 4vw, 44px);
+      background: linear-gradient(180deg, var(--purple-bg), white);
+      border-right: 1px solid var(--ink-05);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .vantage-tag { align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: white; border: 1px solid rgba(99,91,255,.2); color: var(--purple); font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .vantage-side h3 { margin: 0; font-size: 20px; line-height: 1.2; letter-spacing: -0.015em; color: var(--ink); }
+    .vantage-side h3 span { display: block; margin-top: 6px; font-size: 13px; font-weight: 600; color: var(--ink-60); letter-spacing: 0; }
+    .vantage-side p { margin: 0; color: var(--ink-60); font-size: 14px; line-height: 1.55; }
+
+    .vantage-charts { padding: clamp(28px, 4vw, 40px); display: grid; gap: 16px; align-content: start; }
+    .vant-row { display: grid; grid-template-columns: 140px minmax(0, 1fr) 130px; gap: 16px; align-items: center; }
+    .vant-label { color: var(--ink-60); font-size: 12.5px; font-weight: 600; }
+    .vant-bar { position: relative; height: 8px; background: var(--paper); border-radius: 999px; overflow: visible; }
+    .vant-fill { position: absolute; left: 0; top: 0; height: 100%; background: var(--purple); border-radius: 999px; }
+    .vant-fill.ok { background: var(--green-dim); }
+    .vant-fill.warn { background: #f2a93b; }
+    .vant-mark { position: absolute; top: -4px; width: 2px; height: 16px; background: var(--ink); border-radius: 1px; transform: translateX(-1px); }
+    .vant-meta { font-size: 12.5px; text-align: right; }
+    .vant-meta strong { display: block; color: var(--ink); font-weight: 750; font-variant-numeric: tabular-nums; font-size: 14px; }
+    .vant-meta small { display: block; color: var(--ink-40); font-size: 11px; font-weight: 500; }
+
+    .vant-suggest {
+      margin-top: 8px;
+      padding: 14px 16px;
+      background: var(--paper);
+      border: 1px solid var(--ink-05);
+      border-radius: 12px;
+      display: grid;
+      gap: 6px;
+    }
+    .vant-suggest-label { color: var(--purple); text-transform: uppercase; letter-spacing: .08em; font-size: 10px; font-weight: 900; }
+    .vant-suggest-body { color: var(--ink-80); font-size: 13.5px; line-height: 1.55; }
+    .vant-suggest-body strong { color: var(--ink); font-weight: 700; }
+
+    /* Loop section */
+    .loop {
+      margin-top: 56px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      position: relative;
+    }
+    .loop-card {
+      position: relative;
+      padding: 28px 24px 28px;
+      background: white;
+      border: 1px solid var(--ink-08);
+      border-radius: 18px;
+      box-shadow: 0 18px 48px -24px rgba(10,37,64,.18);
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .loop-card .num-chip { display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px 4px 4px; background: var(--purple-bg); color: var(--purple); border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; align-self: flex-start; }
+    .loop-card .num-chip span { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; background: var(--purple); color: white; font-size: 10px; font-weight: 900; }
+    .loop-card h3 { margin: 0; font-size: 18px; line-height: 1.2; letter-spacing: -0.015em; }
+    .loop-card p { margin: 0; color: var(--ink-60); font-size: 13.5px; line-height: 1.55; }
+    .loop-card .micro { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--ink-05); display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--ink-40); text-transform: uppercase; letter-spacing: .08em; font-weight: 800; }
+    .loop-card .micro strong { color: var(--ink-80); }
+
+    /* Use cases / Skills grid */
+    .skills-grid {
+      margin-top: 56px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .skill-card {
+      padding: 24px;
+      background: white;
+      border: 1px solid var(--ink-08);
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .skill-card:hover { transform: translateY(-3px); box-shadow: 0 24px 56px -28px rgba(10,37,64,.22); border-color: var(--ink-12); }
+    .skill-card-head { display: flex; align-items: center; gap: 12px; }
+    .skill-icon { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; color: white; font-weight: 900; font-size: 14px; flex: 0 0 36px; }
+    .si-1 { background: linear-gradient(135deg, var(--purple), #847cff); }
+    .si-2 { background: linear-gradient(135deg, var(--green-dim), var(--green)); }
+    .si-3 { background: linear-gradient(135deg, #ff8a4c, #e26262); }
+    .si-4 { background: linear-gradient(135deg, #1b3a5e, var(--ink)); }
+    .si-5 { background: linear-gradient(135deg, #2dbcb4, #00d6c1); }
+    .si-6 { background: linear-gradient(135deg, #f2a93b, #e26262); }
+    .skill-card h3 { margin: 0; font-size: 17px; line-height: 1.2; letter-spacing: -0.01em; }
+    .skill-card .skill-status { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+    .ss-live { background: var(--green-soft); color: var(--green-dim); }
+    .ss-soon { background: var(--purple-bg); color: var(--purple); }
+    .ss-ready { background: var(--amber-soft); color: #8e5a0e; }
+    .skill-card p { margin: 0; color: var(--ink-60); font-size: 13.5px; line-height: 1.55; }
+    .skill-meta { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--ink-05); display: flex; flex-wrap: wrap; gap: 6px; }
+    .skill-tag { padding: 3px 8px; background: var(--paper); border: 1px solid var(--ink-05); border-radius: 6px; font-size: 11px; color: var(--ink-60); font-weight: 600; }
+
+    /* Program section */
+    .program-card {
+      margin-top: 48px;
+      background: var(--ink);
+      color: white;
+      border-radius: 28px;
+      padding: clamp(36px, 5vw, 56px);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+      gap: clamp(36px, 5vw, 64px);
+      align-items: center;
+      box-shadow: 0 40px 80px -28px rgba(10,37,64,.4);
+      position: relative;
+      overflow: hidden;
+    }
+    .program-card:before {
+      content: "";
+      position: absolute;
+      inset: -40% -10% auto auto;
+      width: 60%;
+      height: 100%;
+      background: radial-gradient(ellipse 60% 60% at 80% 30%, rgba(99,91,255,.45), transparent 65%);
+      pointer-events: none;
+    }
+    .program-card .label { color: rgba(255,255,255,.7); }
+    .program-card h2 { color: white; max-width: 18ch; }
+    .program-card h2 em { background: linear-gradient(120deg, #b8ffe3, #c4bfff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .program-card p { color: rgba(255,255,255,.78); font-size: 16px; line-height: 1.6; margin: 18px 0 0; max-width: 44ch; }
+    .program-card .actions { margin-top: 28px; }
+    .program-perks { margin-top: 22px; display: grid; gap: 10px; position: relative; }
+    .perk { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: flex-start; color: rgba(255,255,255,.78); font-size: 13.5px; line-height: 1.55; }
+    .perk strong { color: white; font-weight: 700; }
+    .perk-mark { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 6px; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.16); color: var(--green); font-size: 12px; font-weight: 800; }
+    .program-card .secondary { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.18); color: white; }
+    .program-card .secondary:hover { background: rgba(255,255,255,.16); }
+    .program-card .primary { background: white; color: var(--ink); box-shadow: none; }
+    .program-card .primary:hover { background: rgba(255,255,255,.92); }
+
+    .program-weeks { position: relative; display: grid; gap: 12px; }
+    .week {
+      padding: 18px 20px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      display: grid;
+      grid-template-columns: 78px 1fr;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .week-num { font: 11px/1 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .12em; color: rgba(255,255,255,.6); text-transform: uppercase; padding-top: 4px; }
+    .week strong { display: block; color: white; font-size: 15px; font-weight: 700; letter-spacing: -0.005em; }
+    .week ul { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 4px; color: rgba(255,255,255,.7); font-size: 13px; line-height: 1.55; }
+    .week li:before { content: "→ "; color: var(--green); font-weight: 800; }
+
+    /* Trust block */
+    .trust { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(36px, 6vw, 80px); align-items: center; margin-top: 48px; }
+    .checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+    .checks li { display: grid; grid-template-columns: 22px 1fr; gap: 14px; align-items: flex-start; color: var(--ink-80); line-height: 1.55; font-size: 15px; }
+    .checks .ok-dot { width: 22px; height: 22px; border-radius: 50%; background: var(--green-soft); color: var(--green-dim); display: grid; place-items: center; font-weight: 900; font-size: 11px; }
+    .checks strong { display: block; color: var(--ink); font-weight: 700; margin-bottom: 2px; }
+
+    .review-card {
+      padding: 24px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 24px 56px -24px rgba(10,37,64,.16);
+      display: grid;
+      gap: 12px;
+    }
+    .review-head { display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--ink-05); }
+    .review-title { font-size: 14px; font-weight: 750; }
+    .review-title small { display: block; margin-top: 2px; color: var(--ink-40); font-weight: 500; font-size: 11px; }
+    .review-row { display: grid; grid-template-columns: 28px 1fr auto auto; gap: 10px; align-items: center; padding: 8px 4px; font-size: 13px; }
+    .review-row + .review-row { border-top: 1px solid var(--ink-05); }
+    .review-row .check { width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid var(--ink-20); }
+    .review-row .check.on { background: var(--green-dim); border-color: var(--green-dim); position: relative; }
+    .review-row .check.on:after { content: ""; position: absolute; left: 4px; top: 1px; width: 5px; height: 9px; border: solid white; border-width: 0 1.6px 1.6px 0; transform: rotate(45deg); }
+    .review-row .by { color: var(--ink-40); font-size: 11px; }
+    .review-row .amount { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 12.5px; }
+    .review-action { padding: 4px 10px; border-radius: 999px; background: var(--purple-bg); color: var(--purple); font-size: 11px; font-weight: 800; }
+
+    /* Closing CTA */
+    .close-card {
+      margin-top: 48px;
+      padding: clamp(36px, 5vw, 64px);
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: 0 30px 60px -24px rgba(10,37,64,.18);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: clamp(28px, 5vw, 56px);
+      align-items: center;
+    }
+    .close-card h2 { margin: 0; max-width: 22ch; }
+    .close-card .actions { margin-top: 0; }
+
+    /* Footer */
+    footer { padding: 64px clamp(20px, 5vw, 56px) 56px; background: white; border-top: 1px solid var(--line); }
+    .footer-inner { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: 1.4fr 1fr; gap: 32px; color: var(--ink-60); font-size: 14px; line-height: 1.55; }
+
+    @media (max-width: 1080px) {
+      .hero-inner, .problem-row, .program-card, .close-card, .trust { grid-template-columns: 1fr; }
+      .anatomy, .skills-grid, .loop { grid-template-columns: repeat(2, 1fr); }
+      .vantage-card { grid-template-columns: 1fr; }
+      .vantage-side { border-right: 0; border-bottom: 1px solid var(--ink-05); }
+    }
+    @media (max-width: 820px) {
+      .links a:not(.cta) { display: none; }
+      .editor { grid-template-columns: 1fr; }
+      .ed-side { display: none; }
+      .anatomy, .skills-grid, .loop, .footer-inner { grid-template-columns: 1fr; }
+      .ed-stats { grid-template-columns: 1fr 1fr; }
+      .vant-row { grid-template-columns: 1fr; gap: 6px; }
+      .vant-meta { text-align: left; }
+      .open-note { grid-template-columns: 1fr; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="brand"><span class="mark"></span><span>Link</span><span class="slash">/</span><span class="skills-mark">Skills</span><span class="badge">Agent</span></div>
+    <nav class="links" aria-label="Primary">
+      <a href="#problem">Why now</a>
+      <a href="#concept">What's a skill</a>
+      <a href="#vantage">Pattern intelligence</a>
+      <a href="#catalog">Skills catalog</a>
+      <a href="#program">Program</a>
+      <a class="back" href="/link-to-collect">← Link / Collect</a>
+      <a class="cta" href="#program">Apply now</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="mesh"></div><div class="grid-bg"></div>
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow"><span class="pulse"></span>An AI agent for the company of one</div>
+          <h1>The advisor every founder used to need <em>a team for.</em></h1>
+          <p class="sub">Link Skills is an AI agent for solo founders and small teams. It learns from how millions of businesses run on Stripe, studies the patterns in yours, and turns the work that lives in your head into a portable agent that runs beside you. Your data. Your control. No lock-in.</p>
+          <div class="actions">
+            <a class="btn primary purple" href="#program">Apply for the program &rarr;</a>
+            <a class="btn secondary" href="#concept">See how a skill works &rarr;</a>
+          </div>
+          <div class="meta">
+            <span><strong>1</strong> workflow encoded</span>
+            <span><strong>2 weeks</strong> to your first skill</span>
+            <span><strong>Portable</strong>, no lock-in</span>
+          </div>
+        </div>
+
+        <div class="editor-wrap">
+          <div class="editor-shadow"></div>
+          <div class="editor">
+            <aside class="ed-side">
+              <div class="ed-side-brand"><span class="ed-side-dot"></span>Skills</div>
+              <div class="ed-section-label">Live</div>
+              <div class="ed-item"><span>Invoice collection</span><span class="ed-dot"></span></div>
+              <div class="ed-item active"><span>Vendor follow-up</span><span class="ed-dot"></span></div>
+              <div class="ed-section-label">Drafting</div>
+              <div class="ed-item"><span>Subscription review</span><span class="ed-dot draft"></span></div>
+              <div class="ed-item"><span>Quarterly bundle</span><span class="ed-dot review"></span></div>
+              <div class="ed-section-label">Suggested</div>
+              <div class="ed-item"><span>VAT classification</span><span class="ed-dot draft"></span></div>
+              <div class="ed-item"><span>Customer billing</span><span class="ed-dot draft"></span></div>
+            </aside>
+            <div class="ed-main">
+              <div class="ed-head">
+                <div class="ed-title">Vendor follow-up<small>Built from 47 wallet transactions across 9 vendors</small></div>
+                <span class="ed-status">Live</span>
+              </div>
+
+              <div class="ed-block">
+                <div class="ed-block-head"><span class="ed-block-label">Rules</span><span class="ed-block-label" style="color:var(--purple)">3 active</span></div>
+                <div class="ed-rule"><span class="num-pill">1</span><span>If invoice missing <code>14 days</code> after charge &rarr; send vendor reminder.</span></div>
+                <div class="ed-rule"><span class="num-pill">2</span><span>If amount <code>&gt; €500</code> from new vendor &rarr; flag for review.</span></div>
+                <div class="ed-rule"><span class="num-pill">3</span><span>Bundle and send to <code>boeker@...be</code> on day 5 of every quarter.</span></div>
+              </div>
+
+              <div class="ed-stats">
+                <div class="ed-stat"><div class="ed-stat-label">Examples</div><div class="ed-stat-value">12</div></div>
+                <div class="ed-stat"><div class="ed-stat-label">Approvals</div><div class="ed-stat-value ok">96%</div></div>
+                <div class="ed-stat"><div class="ed-stat-label">Saved / wk</div><div class="ed-stat-value">3.4 h</div></div>
+              </div>
+
+              <div class="ed-foot">
+                <small style="color:var(--ink-40)">Last run 2 hours ago · 5 actions queued for review</small>
+                <span class="ed-run">Run skill &rarr;</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="problem" class="soft">
+      <div class="inner problem-row">
+        <div>
+          <span class="label">Why now</span>
+          <h2>AI changed who can start a company. <em>The operating layer hasn't caught up.</em></h2>
+          <p class="section-sub">The next billion-dollar company won't need a hundred employees. AI builds the team. But the operating layer &mdash; the rules and routines that turn transactions into a business &mdash; still lives in one founder's head.</p>
+          <ul class="pain">
+            <li><span class="x">×</span><span><strong>The judgment is invisible.</strong> Your tools store the data. The decisions you apply to it stay in your head.</span></li>
+            <li><span class="x">×</span><span><strong>AI tools don't coordinate.</strong> A copilot here, an automation there. Every routine relearns from zero.</span></li>
+            <li><span class="x">×</span><span><strong>Growth still means more attention.</strong> More transactions, more vendors, more customers &mdash; same single inbox.</span></li>
+          </ul>
+        </div>
+        <div>
+          <div class="heads">
+            <div class="head-row"><div class="head-icon">F</div><div><strong>Founder</strong><small>holds the rules in their head</small></div><span class="head-tag warn">Bottleneck</span></div>
+            <div class="head-row"><div class="head-icon purple">AI</div><div><strong>Copilot tools</strong><small>each one a separate context</small></div><span class="head-tag">Fragmented</span></div>
+            <div class="head-row"><div class="head-icon green">A</div><div><strong>Accountant</strong><small>asks the same questions every close</small></div><span class="head-tag">Recurring</span></div>
+            <div class="head-row"><div class="head-icon purple">N</div><div><strong>Next hire / VA</strong><small>inherits a Notion doc and a hope</small></div><span class="head-tag warn">Friction</span></div>
+          </div>
+          <p style="margin-top:14px;text-align:center;font-size:12px;color:var(--ink-40)">Same question, four different answers, every time the team grows or the stack shifts.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="concept" class="white">
+      <div class="inner">
+        <span class="label">What's a skill</span>
+        <h2>An operating manual the agent can call. <em>Portable, by design.</em></h2>
+        <p class="section-sub">Skills are headless. They run on your data wherever it lives &mdash; Link, Stripe, accounting, customer tools &mdash; and travel with you when you grow past us. Four pieces, no black box, no platform lock-in.</p>
+        <div class="anatomy">
+          <div class="ana">
+            <span class="ana-num">01 Rules</span>
+            <h3>How you decide.</h3>
+            <p>Plain conditions that fire on activity. No code. The agent executes them the way you would.</p>
+            <div class="ana-snippet">
+              <div class="row"><span class="key">when</span><span>vendor.invoice_missing &gt; 14d</span></div>
+              <div class="row"><span class="key">then</span><span>send_reminder(vendor)</span></div>
+            </div>
+          </div>
+          <div class="ana">
+            <span class="ana-num">02 Examples</span>
+            <h3>What good looks like.</h3>
+            <p>Saved past actions the agent should imitate. The more examples, the sharper the judgment.</p>
+            <div class="ana-snippet">
+              <div class="row"><span class="key">examples</span><span>12 saved</span></div>
+              <div class="row"><span class="key">latest</span><span>Cursor · Apr 28</span></div>
+            </div>
+          </div>
+          <div class="ana">
+            <span class="ana-num">03 Sources</span>
+            <h3>What it can read.</h3>
+            <p>Charges, invoices, contracts, emails, tools. Linked safely &mdash; never absorbed into a closed system.</p>
+            <div class="ana-snippet">
+              <div class="row"><span class="key">wallet</span><span>txns · vendors</span></div>
+              <div class="row"><span class="key">docs</span><span>PDFs · CSV · email</span></div>
+            </div>
+          </div>
+          <div class="ana">
+            <span class="ana-num">04 Review</span>
+            <h3>Who confirms it.</h3>
+            <p>The agent prepares; you approve before it ships. Every approval becomes a new example.</p>
+            <div class="ana-snippet">
+              <div class="row"><span class="key">approver</span><span>founder</span></div>
+              <div class="row"><span class="key">approval rate</span><span>96%</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="open-note">
+          <span class="open-note-mark">↗</span>
+          <div>
+            <strong>An open standard, not a Stripe surface.</strong>
+            <span>Skills are aligned with the agent skill specs the industry is converging on &mdash; Anthropic, OpenAI, and the open agentskills.io community. Build it once. Run it anywhere your data lives.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="vantage">
+      <div class="inner">
+        <span class="label">Pattern intelligence</span>
+        <h2>An advisor that's seen <em>how millions of businesses run.</em></h2>
+        <p class="section-sub">Stripe processes payments for millions of companies. Link Skills brings that vantage point to your wallet &mdash; what works, what breaks, what scales. Your patterns, in the context of every other founder building the same thing.</p>
+        <div class="vantage-card">
+          <div class="vantage-side">
+            <div class="vantage-tag">Advisor brief</div>
+            <h3>Vendor follow-up<br><span>against 1,247 similar wallets</span></h3>
+            <p>The agent reads how peers handle the same routine, then proposes the move that fits yours.</p>
+          </div>
+          <div class="vantage-charts">
+            <div class="vant-row">
+              <div class="vant-label">Median chase window</div>
+              <div class="vant-bar"><span class="vant-fill" style="width:74%"></span><span class="vant-mark" style="left:74%"></span></div>
+              <div class="vant-meta"><strong>14 days</strong><small>peer median: 13 days</small></div>
+            </div>
+            <div class="vant-row">
+              <div class="vant-label">Approval rate</div>
+              <div class="vant-bar"><span class="vant-fill ok" style="width:96%"></span><span class="vant-mark" style="left:88%"></span></div>
+              <div class="vant-meta"><strong>96%</strong><small>peer median: 88%</small></div>
+            </div>
+            <div class="vant-row">
+              <div class="vant-label">Escalation rate</div>
+              <div class="vant-bar"><span class="vant-fill warn" style="width:18%"></span><span class="vant-mark" style="left:24%"></span></div>
+              <div class="vant-meta"><strong>18%</strong><small>peer median: 24%</small></div>
+            </div>
+            <div class="vant-suggest">
+              <span class="vant-suggest-label">Agent suggests</span>
+              <span class="vant-suggest-body">Try widening to <strong>21 days</strong> for vendors above &euro;1,000 &mdash; peers see <strong>+6%</strong> approval at the same chase rate.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="loop" class="soft">
+      <div class="inner">
+        <span class="label">How it works</span>
+        <h2>Observe. Encode. Review. <em>Grow.</em></h2>
+        <p class="section-sub">One short loop turns a routine into something the agent can run beside you. The motion is the same for every skill &mdash; from invoice collection to customer check-ins to the financial advice a CFO would give.</p>
+        <div class="loop">
+          <div class="loop-card">
+            <span class="num-chip"><span>1</span>Observe</span>
+            <h3>Watch the work.</h3>
+            <p>Pick one routine you do every week or quarter. Link plays back the wallet activity around it &mdash; vendors, amounts, follow-ups, exceptions.</p>
+            <div class="micro"><span>Input</span><strong>Wallet activity</strong></div>
+          </div>
+          <div class="loop-card">
+            <span class="num-chip"><span>2</span>Encode</span>
+            <h3>Capture the rules.</h3>
+            <p>Write down what you actually do, in plain conditions and examples. The skill becomes a small, readable manual &mdash; not a black box.</p>
+            <div class="micro"><span>Output</span><strong>Callable skill</strong></div>
+          </div>
+          <div class="loop-card">
+            <span class="num-chip"><span>3</span>Review</span>
+            <h3>Check the output.</h3>
+            <p>The skill prepares each action and queues it for your approval. You confirm, edit, or reject. Every call sharpens the next one.</p>
+            <div class="micro"><span>Cadence</span><strong>Daily / weekly</strong></div>
+          </div>
+          <div class="loop-card">
+            <span class="num-chip"><span>4</span>Grow</span>
+            <h3>Reuse the skill.</h3>
+            <p>Once it runs reliably, hand it to a teammate, a virtual assistant, or another product surface. The same routine, encoded once.</p>
+            <div class="micro"><span>Reach</span><strong>1 → many</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="catalog">
+      <div class="inner">
+        <span class="label">Skills catalog</span>
+        <h2>Six routines you can encode this quarter.</h2>
+        <p class="section-sub">Each skill starts with one founder, one workflow, and the data your business already produces. Some are financial. Some are operational. All of them run beside you, and travel with you.</p>
+        <div class="skills-grid">
+          <article class="skill-card">
+            <div class="skill-card-head"><div class="skill-icon si-1">IC</div><span class="skill-status ss-live">Live</span></div>
+            <h3>Invoice collection.</h3>
+            <p>The first skill, already shipping inside Link Collect. Match supplier invoices to wallet activity, chase what's missing, send a clean quarterly bundle.</p>
+            <div class="skill-meta"><span class="skill-tag">PDFs</span><span class="skill-tag">Vendors</span><span class="skill-tag">Quarterly</span></div>
+          </article>
+          <article class="skill-card">
+            <div class="skill-card-head"><div class="skill-icon si-2">VF</div><span class="skill-status ss-ready">Ready to encode</span></div>
+            <h3>Vendor follow-up.</h3>
+            <p>Detect missing PDFs, slow merchants, and invoices stuck in portals. Send the reminder you'd send. Escalate the ones you'd escalate.</p>
+            <div class="skill-meta"><span class="skill-tag">Email</span><span class="skill-tag">Reminders</span><span class="skill-tag">Escalation</span></div>
+          </article>
+          <article class="skill-card">
+            <div class="skill-card-head"><div class="skill-icon si-3">SR</div><span class="skill-status ss-ready">Ready to encode</span></div>
+            <h3>Subscription review.</h3>
+            <p>Surface every recurring charge against usage and seats. Flag the ones to cancel, downgrade, or renegotiate before they renew.</p>
+            <div class="skill-meta"><span class="skill-tag">Recurring</span><span class="skill-tag">Usage</span><span class="skill-tag">Renewals</span></div>
+          </article>
+          <article class="skill-card">
+            <div class="skill-card-head"><div class="skill-icon si-4">QC</div><span class="skill-status ss-soon">Coming soon</span></div>
+            <h3>Quarterly close.</h3>
+            <p>Bundle the wallet's quarter into a CSV summary, a PDF archive, and an email to your accountant. Run on day 5, every quarter.</p>
+            <div class="skill-meta"><span class="skill-tag">CSV</span><span class="skill-tag">Accountant</span><span class="skill-tag">VAT</span></div>
+          </article>
+          <article class="skill-card">
+            <div class="skill-card-head"><div class="skill-icon si-5">CB</div><span class="skill-status ss-soon">Coming soon</span></div>
+            <h3>Customer billing.</h3>
+            <p>Encode how you bill: who gets a custom note, who gets reminded twice, who needs a Stripe payment link. Same care, every invoice.</p>
+            <div class="skill-meta"><span class="skill-tag">Invoices out</span><span class="skill-tag">Reminders</span><span class="skill-tag">Tone</span></div>
+          </article>
+          <article class="skill-card">
+            <div class="skill-card-head"><div class="skill-icon si-6">GO</div><span class="skill-status ss-soon">Coming soon</span></div>
+            <h3>Growth ops.</h3>
+            <p>From the wallet's signals &mdash; new tools, larger spend, new geography &mdash; trigger the operating moves you'd make. Hire a contractor. Open a market. File a tax.</p>
+            <div class="skill-meta"><span class="skill-tag">Signals</span><span class="skill-tag">Playbooks</span><span class="skill-tag">Triggers</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="program">
+      <div class="inner">
+        <span class="label">The program</span>
+        <h2>Apply to ship your first skill, <em>in two weeks.</em></h2>
+        <p class="section-sub">A focused program for founders building with AI. We bring the substrate, the editor, the agent, and a community of operators shipping their first skills. You bring one workflow worth encoding. By the end of week two, an agent runs beside you.</p>
+
+        <article class="program-card">
+          <div>
+            <span class="label">Skills program</span>
+            <h2>Pick one routine. <em>Encode it once.</em> Run it forever.</h2>
+            <p>Two weeks, one workflow, one running agent. By the end of week two: a skill in production with a 90%+ approval rate &mdash; and the muscle to encode the next one yourself, anywhere your data lives.</p>
+            <div class="program-perks">
+              <div class="perk"><span class="perk-mark">★</span><span><strong>Pattern intelligence.</strong> Benchmarks from peers, surfaced in the agent.</span></div>
+              <div class="perk"><span class="perk-mark">★</span><span><strong>Portable substrate.</strong> Your skill, your data &mdash; runs anywhere, leaves with you.</span></div>
+              <div class="perk"><span class="perk-mark">★</span><span><strong>Founder community.</strong> Operators shipping their own skills, in the open.</span></div>
+            </div>
+            <div class="actions">
+              <a class="btn primary" href="mailto:hello@link.example?subject=Link%20Skills%20program%20%E2%80%93%20application">Apply now &rarr;</a>
+              <a class="btn secondary" href="/link-to-collect">Start with invoices &rarr;</a>
+            </div>
+          </div>
+          <div class="program-weeks">
+            <div class="week">
+              <div class="week-num">Week 01<br>Observe</div>
+              <div>
+                <strong>Find the routine worth encoding.</strong>
+                <ul>
+                  <li>Replay the last quarter from your wallet and tools</li>
+                  <li>Map the decisions hidden in the activity</li>
+                  <li>Pick one workflow with the strongest signal</li>
+                </ul>
+              </div>
+            </div>
+            <div class="week">
+              <div class="week-num">Week 02<br>Encode</div>
+              <div>
+                <strong>Ship the agent's first skill.</strong>
+                <ul>
+                  <li>Write the rules, examples, and review steps</li>
+                  <li>Link your data &mdash; safely, headlessly, no copy</li>
+                  <li>Run it for a week with founder approval</li>
+                </ul>
+              </div>
+            </div>
+            <div class="week">
+              <div class="week-num">After<br>Grow</div>
+              <div>
+                <strong>One skill, then the pattern.</strong>
+                <ul>
+                  <li>Hand the skill to a teammate, VA, or another tool</li>
+                  <li>Use the same loop to encode the next one</li>
+                  <li>The agent grows; the substrate stays yours</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="trust" class="white">
+      <div class="inner">
+        <span class="label">Your data, your control</span>
+        <h2>The agent prepares. You decide. <em>Your substrate stays yours.</em></h2>
+        <p class="section-sub">Every action stays under review. Skills propose. Founders approve. Your data stays linked safely to your tools &mdash; never absorbed into a closed system &mdash; and travels with you when you grow past us.</p>
+        <div class="trust">
+          <div>
+            <ul class="checks">
+              <li><span class="ok-dot">✓</span><span><strong>Founder approval, by default.</strong> Every outgoing action waits for a review until you decide otherwise.</span></li>
+              <li><span class="ok-dot">✓</span><span><strong>Linked, not absorbed.</strong> Skills run on your wallet, your accounting, your tools &mdash; without copying the data into a closed system.</span></li>
+              <li><span class="ok-dot">✓</span><span><strong>Plain rules, not black boxes.</strong> Anyone on the team can read what a skill does, where its data comes from, and why.</span></li>
+              <li><span class="ok-dot">✓</span><span><strong>Portable, by design.</strong> Pause the skill, edit the rules, take the substrate elsewhere. The judgment travels with you.</span></li>
+            </ul>
+          </div>
+          <div class="review-card">
+            <div class="review-head">
+              <div class="review-title">Review queue<small>Vendor follow-up · Today</small></div>
+              <span class="review-action">3 to approve</span>
+            </div>
+            <div class="review-row"><span class="check on"></span><div><strong>Reminder → Midjourney</strong><span class="by"> · invoice missing 16 days</span></div><span class="amount" style="color:var(--ink-60)">€60.00</span><span class="review-action">Approved</span></div>
+            <div class="review-row"><span class="check on"></span><div><strong>Reminder → OpenAI</strong><span class="by"> · invoice missing 14 days</span></div><span class="amount" style="color:var(--ink-60)">€118.20</span><span class="review-action">Approved</span></div>
+            <div class="review-row"><span class="check"></span><div><strong>Escalation → Vercel</strong><span class="by"> · billing role required</span></div><span class="amount" style="color:var(--ink-60)">€20.00</span><span class="review-action">Review</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="close">
+      <div class="inner">
+        <article class="close-card">
+          <div>
+            <span class="label">For the company of one</span>
+            <h2>Apply with one routine. <em>Leave with an agent.</em></h2>
+            <p class="section-sub">Two weeks. One workflow encoded. A founder community shipping the same way. The first $1B single-person company won't be built without an operating layer &mdash; this is yours.</p>
+          </div>
+          <div class="actions">
+            <a class="btn primary purple" href="mailto:hello@link.example?subject=Link%20Skills%20program%20%E2%80%93%20application">Apply now &rarr;</a>
+            <a class="btn secondary" href="/link-to-collect#product">Start with invoices &rarr;</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div><strong>Link / Skills</strong> is an AI agent for solo founders. Portable, headless substrate that learns from how millions of businesses run on Stripe and turns the routines in yours into callable skills &mdash; on your data, no lock-in.<p class="muted" style="color:var(--ink-40);font-size:12px;margin-top:8px">Product visualization for presentation purposes. Skill content, queues, advisor briefs, and peer benchmarks are illustrative.</p></div>
+      <div><p>Substrate: rules, examples, sources, review steps.</p><p>Standard: aligned with Anthropic, OpenAI, and the open agentskills.io community.</p><p>Adjacent surfaces: Link / Collect, Stripe Billing, accounting platforms, virtual assistants, and any tool the agent connects to.</p></div>
+    </div>
+  </footer>
+</body>
+</html>
