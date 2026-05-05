@@ -1,6 +1,9 @@
+import Image from "next/image";
+
 import { Approach } from "./approach";
 import { Cases } from "./cases";
 import {
+  aboutSection,
   ctaSection,
   footer,
   headlessSection,
@@ -13,21 +16,23 @@ import { ScrollReveal } from "./reveal";
 /*
  * AI Operator — public landing page.
  *
- * v2 narrative arc: a startup-style page about the approach, with a
- * single spine — Navigate, Encode, Build. The CV holds the personal
- * record; this page holds the working method. Each section is
- * self-contained, but the page reads top-to-bottom as one argument.
+ * v3 narrative arc: viewport-led product page. The CV holds the
+ * personal record; this page holds the working method made legible
+ * through a single thesis. Each chapter occupies its own viewport on
+ * desktop, snaps into place on scroll, and gracefully unfolds on
+ * narrower screens.
  *
  * Composition:
  *   01 Header / nav     (sticky)
- *   02 Hero             — Name the framework + flywheel visual.
- *   03 Approach         — Three motions, each with a Heimdall-style
+ *   02 Hero             — One sentence about the thesis + working motion panel.
+ *   03 About            — Who you'd be working with (CV portrait + features).
+ *   04 Approach         — Three motions, each with a Heimdall-style
  *                         "practice in motion" pop-out (client).
- *   04 Cases            — Heimdall-style showcase grid (client).
- *   05 Headless         — Interstitial: architecture, not a dashboard.
- *   06 Selected case    — HarvestFields, where everything lands.
- *   07 CTA              — One ask. Smallest commitment.
- *   08 Footer
+ *   05 Cases            — Heimdall-style showcase grid (client).
+ *   06 Headless         — Interstitial: architecture, not a dashboard.
+ *   07 Selected case    — HarvestFields, where everything lands.
+ *   08 CTA              — One ask. Smallest commitment.
+ *   09 Footer
  */
 
 function Arrow() {
@@ -145,6 +150,72 @@ export default function AiOperatorPage() {
               </span>
             </div>
           </aside>
+        </div>
+      </section>
+
+      {/* ─── About — who you'd be working with ─────────────────────── */}
+      <section className="aiop-section aiop-about" id="about">
+        <div className="aiop-wrap aiop-about__inner">
+          <div className="aiop-about__intro aiop-reveal">
+            <p className="aiop-eyebrow">{aboutSection.eyebrow}</p>
+            <h2 className="aiop-section-title aiop-about__title">
+              {aboutSection.title} <em>{aboutSection.titleEm}</em>
+            </h2>
+          </div>
+
+          <div className="aiop-about__row">
+            <figure className="aiop-about__portrait aiop-reveal">
+              <Image
+                src={aboutSection.portrait.src}
+                alt={aboutSection.portrait.alt}
+                width={820}
+                height={820}
+                priority={false}
+                sizes="(max-width: 880px) 100vw, 480px"
+                className="aiop-about__portrait-img"
+              />
+              <figcaption className="aiop-about__portrait-tag">
+                <span className="aiop-about__portrait-dot" aria-hidden="true" />
+                Antwerp · CET
+              </figcaption>
+            </figure>
+
+            <div className="aiop-about__copy aiop-reveal">
+              <p className="aiop-about__thesis">{aboutSection.thesis}</p>
+              <p className="aiop-about__body">{aboutSection.body}</p>
+              <div className="aiop-about__actions">
+                {aboutSection.actions.map((action) => (
+                  <a
+                    key={action.id}
+                    className="aiop-button aiop-button--ghost"
+                    href={action.href}
+                    {...(action.external
+                      ? { target: "_blank", rel: "noreferrer" }
+                      : {})}
+                  >
+                    {action.label}
+                    <Arrow />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <ul className="aiop-about__band aiop-reveal" role="list">
+            {aboutSection.features.map((feature) => (
+              <li
+                key={feature.id}
+                className={`aiop-about__band-cell aiop-about__band-cell--${feature.tone}`}
+              >
+                <span
+                  className="aiop-about__band-marker"
+                  aria-hidden="true"
+                />
+                <h3 className="aiop-about__band-label">{feature.label}</h3>
+                <p className="aiop-about__band-body">{feature.body}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

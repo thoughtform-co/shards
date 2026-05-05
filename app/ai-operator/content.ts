@@ -31,6 +31,7 @@ export const meta = {
   brandSub: "AI Operator · Forward-Deployed · Antwerp",
   status: "Embedded engagements available",
   links: [
+    { id: "about", label: "About", href: "#about" },
     { id: "approach", label: "Approach", href: "#approach" },
     { id: "cases", label: "Cases", href: "#cases" },
     { id: "headless", label: "Headless", href: "#headless" },
@@ -46,11 +47,11 @@ export const meta = {
 export const hero = {
   eyebrow: "Forward-deployed AI operator",
   titleLines: [
-    "Navigate. Encode.",
-    { em: "Build." },
+    "AI capability,",
+    { em: "built inside the work." },
   ] as const,
   lede:
-    "Embedded where strategy turns into practice. I help teams navigate AI inside real work, encode what makes the work good, and build the reusable capability underneath it.",
+    "Embedded with marketing and creative teams while AI rewires how they work. Strategy and building stay in the same hands. Navigate the workflow, encode what makes it good, build the engine the team owns.",
   meta: [
     { k: "BASED", v: "Antwerp · CET" },
     { k: "ROLE", v: "Lead Creative Technologist" },
@@ -77,6 +78,76 @@ export const hero = {
       { id: "learn", label: "Learn", position: "bottom-right" },
     ] as const,
   },
+} as const;
+
+/* ─────────────────────────────────────────────────────────────────────
+ * About — who is doing the work
+ *
+ * Inspired by the CV profile pop. Compact, photo + thesis + four
+ * practice areas presented as a feature list (Linear-style). Sits
+ * directly after the hero so visitors meet the operator before the
+ * method or the cases.
+ * ─────────────────────────────────────────────────────────────────── */
+
+export type AboutFeature = {
+  id: "transform" | "build" | "coach" | "scale";
+  tone: "gold" | "sage" | "slate" | "violet";
+  label: string;
+  body: string;
+};
+
+export const aboutSection = {
+  eyebrow: "Who you'd be working with",
+  title: "Vincent",
+  titleEm: "Buyssens.",
+  thesis:
+    "I sit alongside marketing and creative teams while AI rewires how they work.",
+  body:
+    "I navigate the workflow with the team, build the tool or agent or skill that transforms it, coach them until they don't need me, and turn what works into a pattern other teams can pick up. Ten years moving with the next wave; three years deep inside the AI one.",
+  portrait: {
+    src: "/images/vince.png",
+    alt: "Vincent Buyssens at his desk in Antwerp, working with Claude on a MacBook.",
+  },
+  actions: [
+    {
+      id: "email",
+      label: "vince@thoughtform.co",
+      href: "mailto:vince@thoughtform.co?subject=Forward-deployed%20AI%20operator",
+      external: false,
+    },
+    {
+      id: "linkedin",
+      label: "linkedin.com/in/starhaven",
+      href: "https://www.linkedin.com/in/starhaven/",
+      external: true,
+    },
+  ] as const,
+  features: [
+    {
+      id: "transform",
+      tone: "gold",
+      label: "Workflow Transformation",
+      body: "Embedded discovery alongside one team. Process re-design tuned to the deliverables that actually ship.",
+    },
+    {
+      id: "build",
+      tone: "sage",
+      label: "Tool & Agent Building",
+      body: "Skills, agents, MCP servers, and full systems. Custom for the work, not for a generic market.",
+    },
+    {
+      id: "coach",
+      tone: "slate",
+      label: "Embedded Coaching",
+      body: "Cohort journey from awareness to self-sufficient. Workshops, AI Stewards, and showcases running together.",
+    },
+    {
+      id: "scale",
+      tone: "violet",
+      label: "Pattern Scaling",
+      body: "Reusable playbooks and headless engines. One team's win becomes the next team's starting line.",
+    },
+  ] as AboutFeature[],
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -327,7 +398,7 @@ export const approachSteps: ApproachStep[] = [
           heading: "What it produced at Loop",
           bullets: [
             "Four production systems shipped: Mímir, Heimdall, Vesper, Babylon.",
-            "Three of them now expose their substrate headlessly via MCP.",
+            "Two of them, Mímir and Vesper, now expose their substrate headlessly via MCP.",
             "Same engines answer Claude, Cursor, Slack, dashboards, and in-tool buttons.",
             "Each system started inside a single team's bottleneck. Each one survived adoption.",
           ],
@@ -352,7 +423,7 @@ export const casesSection = {
   title: "Four engines.",
   titleEm: "Built from the inside, used daily.",
   lede:
-    "Each one started inside a single team's bottleneck. Each one survived adoption. Three of them now expose their substrate headlessly so the same engine answers Claude, Cursor, Slack, the dashboard, and an in-tool button.",
+    "Each one started inside a single team's bottleneck. Each one survived adoption. Two of them now expose their substrate headlessly so the same engine answers Claude, Cursor, Slack, the dashboard, and an in-tool button.",
   legend: [
     {
       mode: "Compress" as const,
@@ -420,7 +491,7 @@ export const cases: CaseProject[] = [
     workflowBefore:
       "Creative Strategy assembled briefs from memory across Reddit, Meta Ad Library, ad performance spreadsheets, and review notes. Every cycle started from scratch.",
     workflowAfter:
-      "Three-panel briefing composer with evidence in one view. Knowledge graph over reviews, ads, performance, prior briefings. Skill-backed strategy with degrees of freedom per workflow step.",
+      "One briefing composer pulls Reddit, Meta Ad Library, ad performance, and prior briefings into a single evidence view with a skill-backed strategy step.",
     capabilities: [
       { k: "Knowledge graph", v: "Reddit, Meta Ad Library, ad performance, prior briefings as one substrate." },
       { k: "Briefing composer", v: "Three-panel surface, Gemini concept imagery, reviewable drafts." },
@@ -448,50 +519,8 @@ export const cases: CaseProject[] = [
     ],
   },
   {
-    id: "heimdall",
-    num: "02",
-    name: "Heim",
-    nameEm: "dall",
-    tagline: "Workflow Orchestration",
-    subline: "Where strategy turns into pixels.",
-    team: "Studio · Marketing Ops",
-    status: "Production",
-    year: "2025",
-    oneLiner:
-      "The connective tissue between Monday, Figma, Frontify, Meta. Webhook-driven Claude extraction. Briefings flow from board to plugin to file. Where strategy turns into pixels.",
-    tone: "sage",
-    workflowMode: "Repair",
-    workflowBefore:
-      "Briefings lived in Monday. Designers worked in Figma. Assets shipped through Frontify. Each handoff was manual copy-paste. Pixels didn't trace back to briefs.",
-    workflowAfter:
-      "Webhook → Claude structured extraction → Figma briefing sync. Iterator plugin for variants and format derivation. Frontify intake. Document collections + RAG retrieval. One flow.",
-    capabilities: [
-      { k: "Monday → Figma sync", v: "Structured briefings, GraphQL pipeline, instant Figma plugin update." },
-      { k: "Iterator plugin", v: "Variants, format derivation, copy planning inside Figma." },
-      { k: "Frontify integration", v: "Asset intake, naming conventions, brand surface alignment." },
-      { k: "Showcase routes", v: "Client-facing project pages built from the same data." },
-    ],
-    metrics: [
-      { k: "Integrations", v: "8+" },
-      { k: "Plugins", v: "2" },
-      { k: "Status", v: "Production" },
-    ],
-    surfaces: ["Web app", "Figma plugin", "Iterator plugin", "GPT Actions API"],
-    stack: ["Next.js", "Supabase", "Vercel KV", "Monday", "Figma", "Frontify", "Meta", "Anthropic"],
-    companyLeverage:
-      "Used cross-department: Studio, Marketing Ops, and any team needing to bridge Monday → Figma → Frontify without manual copy-paste.",
-    image: "/cases/assets/heimdall.png",
-    screenshots: [
-      { src: "/cases/screenshots/heimdall/Heimdall-Briefing Overview.png", alt: "Heimdall: briefing overview" },
-      { src: "/cases/screenshots/heimdall/Heimdall-Briefing Closeup.png", alt: "Heimdall: briefing close-up" },
-      { src: "/cases/screenshots/heimdall/Heimdall-Figma Plugin.png", alt: "Heimdall: Figma plugin" },
-      { src: "/cases/screenshots/heimdall/Heimdall-Figma Template.png", alt: "Heimdall: Figma template" },
-      { src: "/cases/screenshots/heimdall/Heimdall-Feedback Summarizer.png", alt: "Heimdall: feedback summarizer" },
-    ],
-  },
-  {
     id: "vesper",
-    num: "03",
+    num: "02",
     name: "Ves",
     nameEm: "per",
     tagline: "AI Image & Video Generation",
@@ -506,7 +535,7 @@ export const cases: CaseProject[] = [
     workflowBefore:
       "Designers tabbed between Krea for generation, Claude for prompting, and separate tabs for image-to-video. Costs were opaque. Model choice overwhelmed the team.",
     workflowAfter:
-      "One interface. Prompt enhancement, generation, and image-to-video in a single flow. Only the models Studio actually uses. Full cost transparency per generation.",
+      "One canvas runs prompt enhancement, multi-model generation, and image-to-video on only the models Studio actually uses.",
     capabilities: [
       { k: "Prompt enhancement", v: "Claude refines visual prompts using the Loop product catalogue." },
       { k: "Multi-model generation", v: "Gemini Flash Image, Veo 3.1, Seedream, Kling under one tab." },
@@ -533,7 +562,7 @@ export const cases: CaseProject[] = [
   },
   {
     id: "babylon",
-    num: "04",
+    num: "03",
     name: "Baby",
     nameEm: "lon",
     tagline: "UGC Localization",
@@ -548,7 +577,7 @@ export const cases: CaseProject[] = [
     workflowBefore:
       "UGC localization bounced between agencies, transcripts, and Figma copy-paste. Each market handled separately. Quality scaled with reviewer headcount.",
     workflowAfter:
-      "Transcribe · translate · dub · review in one pipeline. Auto-verification through Gemini cross-check. One review step where humans still matter.",
+      "Transcribe, translate, dub, and Gemini-verify in one pipeline so reviewers only judge the rows where culture matters.",
     capabilities: [
       { k: "30+ markets", v: "Linear scale-out across languages, not reviewers." },
       { k: "Auto-verification", v: "Gemini cross-check against on-screen captions." },
@@ -569,6 +598,48 @@ export const cases: CaseProject[] = [
       { src: "/cases/screenshots/babylon/Babylon-Overview.png", alt: "Babylon: pipeline overview" },
       { src: "/cases/screenshots/babylon/Babylon-Dubbing Example.png", alt: "Babylon: dubbing example" },
       { src: "/cases/screenshots/babylon/Babylon-Analytics.png", alt: "Babylon: analytics dashboard" },
+    ],
+  },
+  {
+    id: "heimdall",
+    num: "04",
+    name: "Heim",
+    nameEm: "dall",
+    tagline: "Workflow Orchestration",
+    subline: "Where strategy turns into pixels.",
+    team: "Studio · Marketing Ops",
+    status: "Production",
+    year: "2025",
+    oneLiner:
+      "The connective tissue between Monday, Figma, Frontify, Meta. Webhook-driven Claude extraction. Briefings flow from board to plugin to file. Where strategy turns into pixels.",
+    tone: "sage",
+    workflowMode: "Repair",
+    workflowBefore:
+      "Briefings lived in Monday. Designers worked in Figma. Assets shipped through Frontify. Each handoff was manual copy-paste. Pixels didn't trace back to briefs.",
+    workflowAfter:
+      "One webhook chain moves briefings from Monday through Claude into Figma without a single manual copy-paste.",
+    capabilities: [
+      { k: "Monday → Figma sync", v: "Structured briefings, GraphQL pipeline, instant Figma plugin update." },
+      { k: "Iterator plugin", v: "Variants, format derivation, copy planning inside Figma." },
+      { k: "Frontify integration", v: "Asset intake, naming conventions, brand surface alignment." },
+      { k: "Showcase routes", v: "Client-facing project pages built from the same data." },
+    ],
+    metrics: [
+      { k: "Integrations", v: "8+" },
+      { k: "Plugins", v: "2" },
+      { k: "Status", v: "Production" },
+    ],
+    surfaces: ["Web app", "Figma plugin", "Iterator plugin", "GPT Actions API"],
+    stack: ["Next.js", "Supabase", "Vercel KV", "Monday", "Figma", "Frontify", "Meta", "Anthropic"],
+    companyLeverage:
+      "Used cross-department: Studio, Marketing Ops, and any team needing to bridge Monday → Figma → Frontify without manual copy-paste.",
+    image: "/cases/assets/heimdall.png",
+    screenshots: [
+      { src: "/cases/screenshots/heimdall/Heimdall-Briefing Overview.png", alt: "Heimdall: briefing overview" },
+      { src: "/cases/screenshots/heimdall/Heimdall-Briefing Closeup.png", alt: "Heimdall: briefing close-up" },
+      { src: "/cases/screenshots/heimdall/Heimdall-Figma Plugin.png", alt: "Heimdall: Figma plugin" },
+      { src: "/cases/screenshots/heimdall/Heimdall-Figma Template.png", alt: "Heimdall: Figma template" },
+      { src: "/cases/screenshots/heimdall/Heimdall-Feedback Summarizer.png", alt: "Heimdall: feedback summarizer" },
     ],
   },
 ];

@@ -199,13 +199,6 @@ function CaseRow({
             </ul>
 
             <footer className="aiop-case-row__shot-foot">
-              <ul className="aiop-case-row__surfaces" role="list">
-                {project.surfaces.map((surface) => (
-                  <li key={surface} className="aiop-case-row__surface">
-                    {surface}
-                  </li>
-                ))}
-              </ul>
               <button
                 type="button"
                 className="aiop-case-row__cta"
