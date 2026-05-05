@@ -110,10 +110,17 @@ export function FlywheelStage() {
       data-frame={dataFrame}
     >
       <div className="aiop-v2-stage">
-        <Orbit />
-        <FrameHero active={!animated || dataFrame === "hero"} />
-        <FrameLoop active={!animated || dataFrame === "loop"} />
-        <FrameMethod active={!animated || dataFrame === "method"} />
+        {/* Centred content container: gives every frame and the orbit
+         * the same max-width and side gutters so the layout never
+         * runs edge-to-edge on wide viewports. The animated mode
+         * uses this wrapper as the absolute-positioning context for
+         * the orbit and frames. */}
+        <div className="aiop-v2-stage__content">
+          <Orbit />
+          <FrameHero active={!animated || dataFrame === "hero"} />
+          <FrameLoop active={!animated || dataFrame === "loop"} />
+          <FrameMethod active={!animated || dataFrame === "method"} />
+        </div>
       </div>
     </div>
   );
