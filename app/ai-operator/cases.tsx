@@ -109,13 +109,40 @@ function CaseRow({
           </span>
           <span className="aiop-case-row__divider" aria-hidden="true" />
           <span className="aiop-case-row__team">{project.team}</span>
-          <span className="aiop-case-row__status">{project.status}</span>
+          <button
+            type="button"
+            className="aiop-case-row__cta"
+            onClick={() => onOpen(project)}
+            aria-label={`Open ${project.name}${project.nameEm ?? ""} case detail`}
+          >
+            View case detail
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 14 14"
+              aria-hidden="true"
+            >
+              <path
+                d="M3 7h8M8 4l3 3-3 3"
+                stroke="currentColor"
+                strokeWidth="1.4"
+                fill="none"
+              />
+            </svg>
+          </button>
         </header>
 
         <div className="aiop-case-row__grid">
           <aside className="aiop-case-row__rail">
             <div className="aiop-rail-block aiop-reveal">
-              <p className="aiop-rail-block__eyebrow">Project</p>
+              <p className="aiop-rail-block__eyebrow">
+                Project
+                <span
+                  className={`aiop-rail-block__status aiop-rail-block__status--${project.status.toLowerCase()}`}
+                  aria-label={`${project.status} status`}
+                  title={project.status}
+                />
+              </p>
               <h3 className="aiop-case-row__name">
                 {project.name}
                 {project.nameEm ? <em>{project.nameEm}</em> : null}
@@ -197,30 +224,6 @@ function CaseRow({
                 </li>
               ))}
             </ul>
-
-            <footer className="aiop-case-row__shot-foot">
-              <button
-                type="button"
-                className="aiop-case-row__cta"
-                onClick={() => onOpen(project)}
-                aria-label={`Open ${project.name}${project.nameEm ?? ""} case detail`}
-              >
-                View case detail
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 14 14"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M3 7h8M8 4l3 3-3 3"
-                    stroke="currentColor"
-                    strokeWidth="1.4"
-                    fill="none"
-                  />
-                </svg>
-              </button>
-            </footer>
           </div>
         </div>
       </div>

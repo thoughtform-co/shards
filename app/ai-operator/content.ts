@@ -525,7 +525,6 @@ export const cases: CaseProject[] = [
     metrics: [
       { k: "Sources unified", v: "4+" },
       { k: "Surfaces inheriting", v: "5" },
-      { k: "Status", v: "Production" },
     ],
     surfaces: ["Web app", "MCP server", "REST", "Slack bot"],
     stack: ["Next.js 16", "React 19", "Supabase + RLS", "Anthropic Skills", "Gemini", "MCP"],
@@ -569,7 +568,6 @@ export const cases: CaseProject[] = [
     metrics: [
       { k: "Models unified", v: "6+" },
       { k: "Krea margin", v: "0%" },
-      { k: "Status", v: "Production" },
     ],
     surfaces: ["Web app", "MCP server", "REST", "Claude / Cursor"],
     stack: ["Next.js 14", "TanStack Query", "Supabase + Prisma", "Anthropic", "Gemini", "Replicate", "Kling"],
@@ -611,7 +609,6 @@ export const cases: CaseProject[] = [
     metrics: [
       { k: "Markets", v: "30+" },
       { k: "Review steps", v: "1" },
-      { k: "Status", v: "Production" },
     ],
     surfaces: ["Web app", "Share-link review"],
     stack: ["Next.js", "Supabase", "Anthropic", "Gemini"],
@@ -651,7 +648,6 @@ export const cases: CaseProject[] = [
     metrics: [
       { k: "Integrations", v: "8+" },
       { k: "Plugins", v: "2" },
-      { k: "Status", v: "Production" },
     ],
     surfaces: ["Web app", "Figma plugin", "Iterator plugin", "GPT Actions API"],
     stack: ["Next.js", "Supabase", "Vercel KV", "Monday", "Figma", "Frontify", "Meta", "Anthropic"],

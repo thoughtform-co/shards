@@ -2724,28 +2724,34 @@
   gap: 20px;
 }
 
+/* Legend — three lanes (Compress / Repair / Invent) that key into the
+   workflow-shift pill on each case card. The pill is the loud tag;
+   the description is plain sans body in soft ink so they don't
+   compete. Items stack vertically (pill above definition) so the
+   description column has a consistent reading width regardless of
+   pill length, and the pill keeps its own visual moment. */
 .aiop-cases__legend {
   list-style: none;
-  margin: 8px 0 0;
-  padding: 16px 0 0;
+  margin: 16px 0 0;
+  padding: 18px 0 0;
   display: grid;
-  gap: 12px;
+  gap: 22px;
   border-top: 1px dashed var(--aiop-rule);
   grid-template-columns: 1fr;
 }
 
 @media (min-width: 720px) {
   .aiop-cases__legend {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px 40px;
   }
 }
 
 .aiop-cases__legend-item {
   display: flex;
-  align-items: baseline;
-  gap: 12px;
-  font-size: 13px;
-  line-height: 1.45;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
 }
 
 .aiop-cases__mode {
@@ -2767,11 +2773,13 @@
 .aiop-cases__mode--invent   { background: var(--aiop-violet); }
 
 .aiop-cases__legend-def {
-  font-family: var(--aiop-mono);
-  font-size: 11.5px;
-  letter-spacing: 0.04em;
-  color: var(--aiop-muted);
-  line-height: 1.45;
+  margin: 0;
+  font-family: var(--aiop-body);
+  font-size: 14px;
+  letter-spacing: 0;
+  color: var(--aiop-ink-soft);
+  line-height: 1.5;
+  max-width: 36ch;
 }
 
 .aiop-cases__list {
@@ -2851,22 +2859,9 @@
   color: var(--aiop-ink);
   flex: 1;
   min-width: 0;
-}
-
-.aiop-case-row__status {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--aiop-sage);
-}
-
-.aiop-case-row__status::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--aiop-sage);
-  box-shadow: 0 0 0 3px var(--aiop-sage-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* The Heimdall frame grid: rail (360px) + shot column. The rail sticks
@@ -2913,6 +2908,30 @@
   text-transform: uppercase;
   color: var(--aiop-case-accent);
   font-weight: 600;
+}
+
+/* Production / WIP pulse next to the PROJECT eyebrow. Stays sage so it
+   reads as a system "live in production" cue regardless of the case
+   accent (gold / sage / slate / violet) sitting beside it. */
+.aiop-rail-block__status {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 10px;
+  border-radius: 50%;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+
+.aiop-rail-block__status--production {
+  background: var(--aiop-sage);
+  box-shadow: 0 0 0 3px var(--aiop-sage-soft);
+}
+
+.aiop-rail-block__status--wip {
+  background: var(--aiop-gold-bright);
+  box-shadow: 0 0 0 3px var(--aiop-gold-soft);
 }
 
 .aiop-case-row__name {
@@ -2977,7 +2996,7 @@
 
 .aiop-rail-block--metrics {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 18px 14px;
   padding-top: 24px;
   padding-bottom: 8px;
@@ -3101,32 +3120,28 @@
   color: var(--aiop-ink-soft);
 }
 
-.aiop-case-row__shot-foot {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 14px;
-  padding-top: 12px;
-}
-
-/* Pill CTA, mirroring Heimdall's `.psec-cta` shape but tinted with the
-   per-case accent on hover instead of brand coral. */
+/* Pill CTA — now lives inline in the meta strip at the top of the
+   card, replacing the old "Production" tag. Tightened to fit the
+   strip's mono cadence (smaller padding + font, slightly looser
+   letter-spacing) and pinned right via margin-left:auto so it sits
+   opposite the project number regardless of team-name length. */
 .aiop-case-row__cta {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 12px 20px;
+  padding: 8px 16px;
+  margin-left: auto;
   font-family: var(--aiop-mono);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--aiop-paper);
   background: var(--aiop-ink);
   border: 1px solid var(--aiop-ink);
   border-radius: 999px;
   cursor: pointer;
+  flex-shrink: 0;
   transition: all 200ms ease;
 }
 
