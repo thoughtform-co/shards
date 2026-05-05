@@ -4830,105 +4830,85 @@
     will-change: transform;
   }
 
-  .aiop-v2-track.is-animated .aiop-v2-particle-band {
-    display: block;
+  /* Hero key visual: pixel-art Stripe-office wallpaper, dialed way
+   * down so it reads as atmospheric texture rather than imagery.
+   * Sits behind the hero copy, scrolls upward with the hero parallax,
+   * and is masked off the bottom so the particle band can take over
+   * the lower edge cleanly.
+   *
+   * Breaks out of the content container so the image spans the full
+   * viewport width while the hero copy stays inside its gutter; the
+   * side mask still pulls the edges into a vignette. */
+  .aiop-v2-track.is-animated .aiop-v2-frame--hero::before {
+    content: "";
     position: absolute;
-    z-index: 8;
-    left: 0;
-    right: 0;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 100vw;
+    transform: translateX(-50%);
+    pointer-events: none;
+    background-image: url("/ai-operator/v2-hero-bg.png");
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    /* Warm-shift the pixel art so the cool blue wall fuses into our
+     * cream/gold palette instead of fighting it. Opacity sits a bit
+     * higher than the band-era version since the band is no longer
+     * competing for the same lower zone of the hero. */
+    filter: sepia(0.42) saturate(0.55) contrast(0.78) brightness(1.04);
+    opacity: 0.18;
+    mix-blend-mode: multiply;
+    mask-image:
+      linear-gradient(180deg, transparent 0%, black 14%, black 64%, transparent 96%),
+      linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%);
+    mask-composite: intersect;
+    -webkit-mask-image:
+      linear-gradient(180deg, transparent 0%, black 14%, black 64%, transparent 96%),
+      linear-gradient(90deg, transparent 0%, black 6%, black 94%, transparent 100%);
+    -webkit-mask-composite: source-in;
+  }
+
+  /* Lift hero content above the wallpaper so text never gets washed
+   * out by the image even at the painting layer. */
+  .aiop-v2-track.is-animated .aiop-v2-frame--hero > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* The particle band has been retired in animated mode — it felt
+   * out of place against the pixel-art hero wallpaper. The bottom
+   * blend into the next section is now handled by the wallpaper's
+   * own bottom mask plus the cream wash on `.aiop-v2-frame--hero::after`
+   * just below. */
+  .aiop-v2-track.is-animated .aiop-v2-particle-band {
+    display: none;
+  }
+
+  /* Cream wash that takes over the lower edge of the hero so the
+   * wallpaper dissolves cleanly into the next (loop / method) frame
+   * during the cross-fade. Lives inside the hero frame so it inherits
+   * the parallax — it rides upward with the hero and never lingers
+   * behind once you scroll past. */
+  .aiop-v2-track.is-animated .aiop-v2-frame--hero::after {
+    content: "";
+    position: absolute;
+    left: 50%;
     bottom: -1px;
-    height: clamp(180px, 26vh, 320px);
-    opacity: 1;
-    overflow: hidden;
-    transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1);
-    /* The band rides up with the hero copy, slightly faster so it
-     * has fully cleared the viewport by the time the loop frame is
-     * fully active. Opacity also fades with hero progress so the
-     * band is invisible by the time the loop and method frames take
-     * over — it belongs to the hero section only. */
-    transform: translateY(calc(-160% * var(--aiop-v2-hero-progress, 0)));
-    opacity: calc(1 - var(--aiop-v2-hero-progress, 0));
-    will-change: transform;
+    width: 100vw;
+    height: clamp(160px, 28vh, 320px);
+    transform: translateX(-50%);
+    pointer-events: none;
     background:
       linear-gradient(
         180deg,
         transparent 0%,
-        rgba(248, 244, 232, 0.22) 18%,
-        rgba(248, 244, 232, 0.62) 38%,
-        rgba(236, 232, 220, 0.92) 62%,
+        rgba(236, 232, 220, 0.18) 22%,
+        rgba(236, 232, 220, 0.62) 52%,
         var(--v2-paper) 82%,
         var(--v2-paper-soft) 100%
       );
   }
-
-  .aiop-v2-track.is-animated .aiop-v2-particle-band::before,
-  .aiop-v2-track.is-animated .aiop-v2-particle-band::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
-
-  .aiop-v2-track.is-animated .aiop-v2-particle-band::before {
-    background:
-      radial-gradient(ellipse 78% 58% at 50% 88%, rgba(255, 250, 235, 0.78), transparent 72%),
-      radial-gradient(ellipse 36% 38% at 22% 70%, rgba(184, 135, 40, 0.16), transparent 70%),
-      radial-gradient(ellipse 38% 36% at 78% 74%, rgba(79, 107, 74, 0.14), transparent 72%),
-      radial-gradient(ellipse 26% 30% at 50% 56%, rgba(248, 244, 232, 0.55), transparent 78%);
-    filter: blur(14px);
-    mask-image: linear-gradient(180deg, transparent 0%, black 22%, black 100%);
-    -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 22%, black 100%);
-  }
-
-  .aiop-v2-track.is-animated .aiop-v2-particle-band::after {
-    top: 14%;
-    height: 72%;
-    background-image:
-      radial-gradient(circle at 7% 38%, rgba(43, 36, 28, 0.55) 0 1.1px, transparent 2px),
-      radial-gradient(circle at 23% 62%, rgba(184, 135, 40, 0.62) 0 1.3px, transparent 2.2px),
-      radial-gradient(circle at 38% 30%, rgba(79, 107, 74, 0.55) 0 1.2px, transparent 2px),
-      radial-gradient(circle at 51% 70%, rgba(43, 36, 28, 0.46) 0 1.1px, transparent 2px),
-      radial-gradient(circle at 64% 26%, rgba(184, 135, 40, 0.56) 0 1.4px, transparent 2.4px),
-      radial-gradient(circle at 78% 56%, rgba(98, 67, 185, 0.42) 0 1.2px, transparent 2.1px),
-      radial-gradient(circle at 91% 34%, rgba(43, 36, 28, 0.40) 0 1px, transparent 1.9px),
-      radial-gradient(circle at 14% 84%, rgba(184, 135, 40, 0.46) 0 1.2px, transparent 2.1px),
-      radial-gradient(circle at 47% 90%, rgba(79, 107, 74, 0.44) 0 1.1px, transparent 2px),
-      radial-gradient(circle at 86% 84%, rgba(43, 36, 28, 0.40) 0 1px, transparent 1.9px);
-    background-size:
-      138px 86px,
-      176px 92px,
-      152px 78px,
-      198px 96px,
-      162px 84px,
-      184px 90px,
-      144px 80px,
-      210px 100px,
-      168px 88px,
-      192px 94px;
-    background-repeat: repeat;
-    opacity: 0.85;
-    mask-image: linear-gradient(180deg, transparent 0%, black 18%, black 76%, transparent 100%);
-    -webkit-mask-image: linear-gradient(180deg, transparent 0%, black 18%, black 76%, transparent 100%);
-    animation: aiop-v2-band-drift 32s linear infinite;
-    will-change: background-position;
-  }
-
-  @keyframes aiop-v2-band-drift {
-    0% {
-      background-position:
-        0 0, 0 0, 0 0, 0 0, 0 0,
-        0 0, 0 0, 0 0, 0 0, 0 0;
-    }
-    100% {
-      background-position:
-        138px 0, -176px 0, 152px 0, -198px 0, 162px 0,
-        -184px 0, 144px 0, -210px 0, 168px 0, -192px 0;
-    }
-  }
-
-  /* The per-frame opacity overrides have been removed — the band's
-   * opacity is now driven by `--aiop-v2-hero-progress` so it fades
-   * smoothly with the hero scroll, not in stepped frame jumps. */
 
   /* Animated mode: the content wrapper becomes the centred
    * positioning context for the sticky stage. Frames and orbit
