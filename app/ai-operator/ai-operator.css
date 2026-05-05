@@ -1,0 +1,1871 @@
+/* ─────────────────────────────────────────────────────────────────────────
+ * AI Operator landing — route-local stylesheet.
+ *
+ * The Shards root layout is dark. This route is light retrofuturist:
+ * cream paper, warm ink, gold + sage + slate accents, sharp corners,
+ * notched chamfered buttons, soft grid background, backslash motifs.
+ * Inspired by Inversa (notched CTAs, bold uppercase), Hyperstudio (soft
+ * grid + slashes), Prime Intellect (technical panels), and Aether (light
+ * editorial substrate language).
+ *
+ * Sections:
+ *   01 Tokens + paper stage
+ *   02 Shared primitives (wrap, eyebrow, button, dot, panel, slash)
+ *   03 Header / nav
+ *   04 Hero
+ *   05 Motions (4 cards)
+ *   06 Proof (stat band + pillars)
+ *   07 Systems (4 cards)
+ *   08 Headless (substrate + surfaces)
+ *   09 HarvestFields case
+ *   10 Pattern (pre-AI receipts)
+ *   11 CTA + footer
+ *   12 Reveal motion
+ *   13 Responsive
+ * ──────────────────────────────────────────────────────────────────── */
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 01 · Tokens
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-shell {
+  --aiop-paper: #f3ece0;
+  --aiop-paper-2: #ebe3d3;
+  --aiop-paper-3: #e2d8c2;
+  --aiop-card: #fbf6e8;
+  --aiop-card-2: #fdf8eb;
+  --aiop-card-soft: #f7f0de;
+  --aiop-ink: #1a1612;
+  --aiop-ink-2: #2c241a;
+  --aiop-ink-soft: #3a322a;
+  --aiop-muted: #6c6356;
+  --aiop-muted-2: #8a7f70;
+  --aiop-rule: rgba(26, 22, 18, 0.12);
+  --aiop-rule-soft: rgba(26, 22, 18, 0.06);
+  --aiop-rule-strong: rgba(26, 22, 18, 0.20);
+
+  /* Accents — gold primary, sage + slate as secondary signal lanes. */
+  --aiop-gold: #9a7a2e;
+  --aiop-gold-bright: #b88728;
+  --aiop-gold-soft: rgba(184, 135, 40, 0.16);
+  --aiop-gold-edge: rgba(184, 135, 40, 0.32);
+  --aiop-sage: #4f6b4a;
+  --aiop-sage-soft: rgba(79, 107, 74, 0.16);
+  --aiop-sage-edge: rgba(79, 107, 74, 0.32);
+  --aiop-slate: #4f5b6b;
+  --aiop-slate-soft: rgba(79, 91, 107, 0.16);
+  --aiop-slate-edge: rgba(79, 91, 107, 0.32);
+  --aiop-violet: #6243b9;
+  --aiop-violet-soft: rgba(98, 67, 185, 0.14);
+
+  --aiop-page-pad: clamp(20px, 5vw, 56px);
+  --aiop-section-y: clamp(72px, 10vw, 128px);
+
+  --aiop-display: var(--aiop-display, "Bodoni Moda"), "Didot", "Bodoni 72", Georgia, serif;
+  --aiop-body: var(--aiop-body, "IBM Plex Sans"), "Inter", system-ui, sans-serif;
+  --aiop-mono: var(--aiop-mono, "IBM Plex Mono"), ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Notched button corner cut size (Inversa-inspired chamfer). */
+  --aiop-notch: 14px;
+
+  background: var(--aiop-paper);
+  color: var(--aiop-ink);
+  font-family: var(--aiop-body);
+  display: block;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Paper stage lifted over the dark Shards body. Soft grid + radial
+   warmth. Decorative; degrades cleanly without it. */
+.aiop-stage {
+  min-height: 100dvh;
+  width: 100%;
+  min-width: 0;
+  background: var(--aiop-paper);
+  color: var(--aiop-ink);
+  font-family: var(--aiop-body);
+  font-feature-settings: "ss01", "kern", "liga", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.005em;
+  position: relative;
+  overflow-x: clip;
+}
+
+.aiop-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 45% at 12% 10%, rgba(184, 135, 40, 0.08), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 88% 6%, rgba(79, 107, 74, 0.06), transparent 60%),
+    linear-gradient(180deg, var(--aiop-paper) 0%, var(--aiop-paper-2) 100%);
+  z-index: 0;
+}
+
+.aiop-stage > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Soft grid texture — Hyperstudio reference. 24px cells, ultra-low
+   contrast lines, masked with a radial so the grid fades at the
+   margins. */
+.aiop-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26, 22, 18, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 22, 18, 0.045) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse 90% 100% at 50% 30%, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 100% at 50% 30%, black 30%, transparent 80%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Backslash motif — Hyperstudio reference. Two diagonal hairlines
+   sliding away to the right. Stamp it into corners or section dividers
+   via `.aiop-slash`. */
+.aiop-slash {
+  display: inline-block;
+  width: 22px;
+  height: 14px;
+  background:
+    linear-gradient(135deg, transparent 0 6px, var(--aiop-gold-bright) 6px 7px, transparent 7px 14px),
+    linear-gradient(135deg, transparent 0 12px, var(--aiop-gold-bright) 12px 13px, transparent 13px 20px);
+  flex-shrink: 0;
+}
+
+.aiop-slash--ink {
+  background:
+    linear-gradient(135deg, transparent 0 6px, var(--aiop-ink) 6px 7px, transparent 7px 14px),
+    linear-gradient(135deg, transparent 0 12px, var(--aiop-ink) 12px 13px, transparent 13px 20px);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 02 · Shared primitives
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-wrap {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding-inline: var(--aiop-page-pad);
+}
+
+.aiop-section {
+  position: relative;
+  padding-block: var(--aiop-section-y);
+}
+
+.aiop-section--tight {
+  padding-block: clamp(48px, 7vw, 88px);
+}
+
+.aiop-rule {
+  border: 0;
+  height: 1px;
+  background: var(--aiop-rule);
+  margin: 0;
+}
+
+/* Eyebrow — short uppercase tag with mono caps + leading rule + slash. */
+.aiop-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-gold-bright);
+}
+
+.aiop-eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: var(--aiop-gold-bright);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.aiop-eyebrow--ink {
+  color: var(--aiop-muted);
+}
+.aiop-eyebrow--ink::before {
+  background: var(--aiop-ink);
+}
+
+/* Section title — display serif, generous, italic em on the second half. */
+.aiop-section-title {
+  font-family: var(--aiop-display);
+  font-weight: 500;
+  font-size: clamp(34px, 5vw, 64px);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--aiop-ink);
+  max-width: 22ch;
+  margin: 18px 0 0;
+}
+
+.aiop-section-title em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--aiop-ink-2);
+}
+
+.aiop-section-lede {
+  font-family: var(--aiop-body);
+  font-size: clamp(16px, 1.2vw, 19px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  max-width: 60ch;
+  margin: 22px 0 0;
+}
+
+/* Notched / chamfered button — bottom-right corner cut, Inversa-style.
+   Built with clip-path so the cut survives any background. */
+.aiop-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px 14px 22px;
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-paper);
+  background: var(--aiop-ink);
+  border: 1px solid var(--aiop-ink);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 140ms ease, color 140ms ease, transform 140ms ease;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - var(--aiop-notch)),
+    calc(100% - var(--aiop-notch)) 100%,
+    0 100%
+  );
+}
+
+.aiop-button:hover {
+  background: var(--aiop-gold);
+  color: var(--aiop-paper);
+  transform: translateY(-1px);
+}
+
+.aiop-button__arrow {
+  display: inline-block;
+  transition: transform 140ms ease;
+}
+
+.aiop-button:hover .aiop-button__arrow {
+  transform: translateX(2px);
+}
+
+.aiop-button--ghost {
+  background: transparent;
+  color: var(--aiop-ink);
+  border: 1px solid var(--aiop-ink);
+}
+
+.aiop-button--ghost:hover {
+  background: var(--aiop-ink);
+  color: var(--aiop-paper);
+}
+
+.aiop-button--gold {
+  background: var(--aiop-gold-bright);
+  color: var(--aiop-ink);
+  border-color: var(--aiop-gold-bright);
+}
+
+.aiop-button--gold:hover {
+  background: var(--aiop-gold);
+  color: var(--aiop-paper);
+}
+
+/* Color dot for instrumentation labels. */
+.aiop-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: var(--aiop-gold-bright);
+  flex-shrink: 0;
+}
+.aiop-dot--sage { background: var(--aiop-sage); }
+.aiop-dot--slate { background: var(--aiop-slate); }
+.aiop-dot--violet { background: var(--aiop-violet); }
+
+/* Pulsing dot — small status chip indicator. */
+.aiop-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--aiop-gold-bright);
+  box-shadow: 0 0 0 4px var(--aiop-gold-soft);
+  flex-shrink: 0;
+}
+
+/* Surface panel — base technical card chrome. Sharp corners, single
+   hairline border, restrained shadow. Used by every card on the page
+   so the rhythm reads consistent. */
+.aiop-panel {
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-strong);
+  position: relative;
+  box-shadow:
+    0 1px 2px rgba(26, 22, 18, 0.04),
+    0 14px 38px rgba(26, 22, 18, 0.06);
+}
+
+.aiop-panel--inset {
+  background: var(--aiop-card-soft);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 03 · Header / nav
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(243, 236, 224, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+.aiop-header__inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  padding-block: 16px;
+}
+
+.aiop-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--aiop-ink);
+}
+
+.aiop-brand__mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.aiop-brand__diamond {
+  width: 9px;
+  height: 9px;
+  background: var(--aiop-gold-bright);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.aiop-brand__name {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.aiop-brand__sub {
+  color: var(--aiop-muted);
+  letter-spacing: 0.06em;
+  font-size: 11px;
+  text-transform: uppercase;
+  display: none;
+}
+
+@media (min-width: 720px) {
+  .aiop-brand__sub {
+    display: inline;
+    border-left: 1px solid var(--aiop-rule);
+    padding-left: 12px;
+    margin-left: 4px;
+  }
+}
+
+.aiop-nav {
+  display: none;
+  justify-content: center;
+  gap: 28px;
+  font-family: var(--aiop-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+@media (min-width: 960px) {
+  .aiop-nav {
+    display: inline-flex;
+  }
+}
+
+.aiop-nav a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 120ms ease;
+}
+
+.aiop-nav a:hover {
+  color: var(--aiop-ink);
+}
+
+.aiop-header__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px 9px 14px;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-strong);
+  text-decoration: none;
+  transition: background 120ms ease, color 120ms ease;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    0 100%
+  );
+}
+
+.aiop-header__cta:hover {
+  background: var(--aiop-ink);
+  color: var(--aiop-paper);
+}
+
+.aiop-header__cta-pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--aiop-gold-bright);
+  box-shadow: 0 0 0 3px var(--aiop-gold-soft);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 04 · Hero
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-hero {
+  position: relative;
+  padding-block: clamp(72px, 10vw, 132px) clamp(56px, 8vw, 96px);
+  overflow: hidden;
+}
+
+.aiop-hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 80px);
+  align-items: stretch;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 900px) {
+  .aiop-hero__inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aiop-hero__copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+}
+
+.aiop-hero__title {
+  font-family: var(--aiop-display);
+  font-weight: 500;
+  font-size: clamp(38px, 6.2vw, 84px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.aiop-hero__title-line {
+  display: block;
+}
+
+.aiop-hero__title-line em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--aiop-ink-2);
+}
+
+.aiop-hero__lede {
+  font-family: var(--aiop-body);
+  font-size: clamp(16px, 1.2vw, 19px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  max-width: 56ch;
+}
+
+.aiop-hero__meta {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 28px;
+  margin-top: 8px;
+  padding-top: 18px;
+  border-top: 1px dashed var(--aiop-rule);
+}
+
+@media (min-width: 600px) {
+  .aiop-hero__meta {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.aiop-hero__meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-family: var(--aiop-mono);
+}
+
+.aiop-hero__meta-k {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted-2);
+}
+
+.aiop-hero__meta-v {
+  font-size: 13px;
+  color: var(--aiop-ink);
+}
+
+.aiop-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+/* Hero panel — instrument frame with status header, version stamp, and
+   the four-motion ladder underneath. Aether-inspired but flatter,
+   more Prime Intellect technical. */
+.aiop-hero__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px 22px 24px;
+  background: var(--aiop-card-2);
+  border: 1px solid var(--aiop-rule-strong);
+}
+
+.aiop-hero__panel::before,
+.aiop-hero__panel::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: var(--aiop-gold-bright);
+}
+
+.aiop-hero__panel::before {
+  top: -1px;
+  left: -1px;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.aiop-hero__panel::after {
+  bottom: -1px;
+  right: -1px;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.aiop-hero__panel-tag {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--aiop-rule);
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.aiop-hero__panel-tag-l {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--aiop-ink);
+  font-weight: 500;
+}
+
+.aiop-hero__panel-tag-r {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--aiop-muted);
+  font-size: 10px;
+}
+
+.aiop-hero__panel-version {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 9px;
+  background: var(--aiop-sage-soft);
+  color: var(--aiop-sage);
+  letter-spacing: 0.10em;
+  font-size: 9.5px;
+  font-weight: 600;
+}
+
+.aiop-hero__panel-version::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--aiop-sage);
+}
+
+.aiop-hero__panel-sub {
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--aiop-muted);
+  margin: -4px 0 0;
+}
+
+.aiop-hero__panel-layers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--aiop-rule);
+  border: 1px solid var(--aiop-rule);
+}
+
+.aiop-hero__panel-layer {
+  display: grid;
+  grid-template-columns: 36px 90px 1fr;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  background: var(--aiop-card);
+  font-family: var(--aiop-body);
+  font-size: 13.5px;
+  color: var(--aiop-ink);
+}
+
+.aiop-hero__panel-layer-n {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  color: var(--aiop-gold-bright);
+  font-weight: 600;
+}
+
+.aiop-hero__panel-layer-name {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.aiop-hero__panel-layer-note {
+  color: var(--aiop-muted);
+  font-size: 12.5px;
+}
+
+.aiop-hero__panel-foot {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: -2px;
+}
+
+.aiop-hero__panel-foot::before {
+  content: "↻";
+  color: var(--aiop-gold-bright);
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 05 · Motions — four practice surfaces of the embedded role
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-motions {
+  background:
+    linear-gradient(180deg, var(--aiop-paper-2) 0%, var(--aiop-paper) 100%);
+  border-block: 1px solid var(--aiop-rule);
+}
+
+.aiop-motions__head {
+  display: grid;
+  gap: 24px;
+  align-items: end;
+  margin-bottom: 56px;
+}
+
+@media (min-width: 800px) {
+  .aiop-motions__head {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+}
+
+.aiop-motions__grid {
+  display: grid;
+  gap: 24px;
+}
+
+@media (min-width: 720px) {
+  .aiop-motions__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1080px) {
+  .aiop-motions__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.aiop-motion {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px 22px 22px;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-strong);
+  position: relative;
+  transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms ease;
+}
+
+.aiop-motion::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 48px;
+  height: 2px;
+  background: var(--aiop-gold-bright);
+}
+
+.aiop-motion--navigate::before { background: var(--aiop-gold-bright); }
+.aiop-motion--build::before { background: var(--aiop-sage); }
+.aiop-motion--coach::before { background: var(--aiop-slate); }
+.aiop-motion--scale::before { background: var(--aiop-violet); }
+
+.aiop-motion:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 1px 2px rgba(26, 22, 18, 0.04),
+    0 18px 40px rgba(26, 22, 18, 0.10);
+}
+
+.aiop-motion__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.aiop-motion__n {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--aiop-gold-bright);
+  font-weight: 600;
+}
+
+.aiop-motion--build .aiop-motion__n { color: var(--aiop-sage); }
+.aiop-motion--coach .aiop-motion__n { color: var(--aiop-slate); }
+.aiop-motion--scale .aiop-motion__n { color: var(--aiop-violet); }
+
+.aiop-motion__name {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  text-align: right;
+}
+
+.aiop-motion__headline {
+  font-family: var(--aiop-display);
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.18;
+  letter-spacing: -0.012em;
+  color: var(--aiop-ink);
+  margin: 6px 0 0;
+}
+
+.aiop-motion__body {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-motion__artifacts {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 14px 0 0;
+  border-top: 1px dashed var(--aiop-rule);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: var(--aiop-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--aiop-muted);
+}
+
+.aiop-motion__artifacts li {
+  display: flex;
+  gap: 8px;
+}
+
+.aiop-motion__artifacts li::before {
+  content: "›";
+  color: var(--aiop-gold-bright);
+  font-weight: 600;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 06 · Proof — Loop stat band + pillar stack
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-proof {
+  position: relative;
+}
+
+.aiop-proof__head {
+  display: grid;
+  gap: 24px;
+  align-items: end;
+  margin-bottom: 56px;
+}
+
+@media (min-width: 800px) {
+  .aiop-proof__head {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+}
+
+.aiop-stats {
+  display: grid;
+  gap: 1px;
+  background: var(--aiop-rule);
+  border: 1px solid var(--aiop-rule-strong);
+  margin-bottom: 56px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 720px) {
+  .aiop-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1080px) {
+  .aiop-stats {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.aiop-stat {
+  position: relative;
+  padding: 26px 22px 24px;
+  background: linear-gradient(180deg, var(--aiop-card-soft) 0%, var(--aiop-card) 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.aiop-stat__v {
+  font-family: var(--aiop-display);
+  font-weight: 500;
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--aiop-ink);
+}
+
+.aiop-stat__k {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  line-height: 1.45;
+}
+
+.aiop-pillars {
+  display: grid;
+  gap: 32px;
+}
+
+.aiop-pillar-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--aiop-gold-edge);
+}
+
+.aiop-pillar-row--sage { border-top-color: var(--aiop-sage-edge); }
+.aiop-pillar-row--slate { border-top-color: var(--aiop-slate-edge); }
+
+@media (max-width: 720px) {
+  .aiop-pillar-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+.aiop-pillar-row__label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-gold-bright);
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.aiop-pillar-row--sage .aiop-pillar-row__label { color: var(--aiop-sage); }
+.aiop-pillar-row--slate .aiop-pillar-row__label { color: var(--aiop-slate); }
+
+.aiop-pillar-row__lead {
+  font-family: var(--aiop-display);
+  font-size: clamp(20px, 2vw, 28px);
+  line-height: 1.18;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--aiop-ink);
+  margin: 0 0 14px;
+}
+
+.aiop-pillar-row__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.aiop-pillar-row__list li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-pillar-row__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  background: var(--aiop-gold-bright);
+}
+
+.aiop-pillar-row--sage .aiop-pillar-row__list li::before { background: var(--aiop-sage); }
+.aiop-pillar-row--slate .aiop-pillar-row__list li::before { background: var(--aiop-slate); }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 07 · Systems — four shipped production tools
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-systems {
+  background:
+    linear-gradient(180deg, var(--aiop-paper-2) 0%, var(--aiop-paper) 100%);
+  border-block: 1px solid var(--aiop-rule);
+}
+
+.aiop-systems__head {
+  display: grid;
+  gap: 24px;
+  align-items: end;
+  margin-bottom: 56px;
+}
+
+@media (min-width: 800px) {
+  .aiop-systems__head {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+}
+
+.aiop-systems__grid {
+  display: grid;
+  gap: 24px;
+}
+
+@media (min-width: 880px) {
+  .aiop-systems__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.aiop-system {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-strong);
+  position: relative;
+  overflow: hidden;
+}
+
+.aiop-system::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--aiop-gold-bright);
+}
+
+.aiop-system--gold::before { background: var(--aiop-gold-bright); }
+.aiop-system--sage::before { background: var(--aiop-sage); }
+.aiop-system--slate::before { background: var(--aiop-slate); }
+.aiop-system--violet::before { background: var(--aiop-violet); }
+
+.aiop-system__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 26px 24px 16px;
+  border-bottom: 1px dashed var(--aiop-rule);
+}
+
+.aiop-system__name {
+  font-family: var(--aiop-display);
+  font-weight: 500;
+  font-size: clamp(28px, 2.6vw, 36px);
+  line-height: 1;
+  letter-spacing: -0.025em;
+  color: var(--aiop-ink);
+}
+
+.aiop-system__name em {
+  font-style: italic;
+  color: var(--aiop-gold-bright);
+  font-weight: 500;
+}
+
+.aiop-system--sage .aiop-system__name em { color: var(--aiop-sage); }
+.aiop-system--slate .aiop-system__name em { color: var(--aiop-slate); }
+.aiop-system--violet .aiop-system__name em { color: var(--aiop-violet); }
+
+.aiop-system__status {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-sage);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.aiop-system__status::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--aiop-sage);
+  box-shadow: 0 0 0 3px var(--aiop-sage-soft);
+}
+
+.aiop-system__role-row {
+  padding: 14px 24px 18px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 16px;
+  border-bottom: 1px solid var(--aiop-rule);
+  font-family: var(--aiop-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+}
+
+.aiop-system__role {
+  color: var(--aiop-ink);
+  font-weight: 500;
+}
+
+.aiop-system__team {
+  color: var(--aiop-muted);
+  text-align: right;
+}
+
+@media (max-width: 480px) {
+  .aiop-system__role-row {
+    grid-template-columns: 1fr;
+  }
+  .aiop-system__team {
+    text-align: left;
+  }
+}
+
+.aiop-system__body {
+  padding: 18px 24px 6px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-system__bullets {
+  list-style: none;
+  margin: 0;
+  padding: 6px 24px 18px;
+  display: grid;
+  gap: 8px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-system__bullets li {
+  position: relative;
+  padding-left: 16px;
+}
+
+.aiop-system__bullets li::before {
+  content: "›";
+  position: absolute;
+  left: 0;
+  color: var(--aiop-gold-bright);
+  font-weight: 600;
+}
+
+.aiop-system--sage .aiop-system__bullets li::before { color: var(--aiop-sage); }
+.aiop-system--slate .aiop-system__bullets li::before { color: var(--aiop-slate); }
+.aiop-system--violet .aiop-system__bullets li::before { color: var(--aiop-violet); }
+
+.aiop-system__foot {
+  background: var(--aiop-card-soft);
+  border-top: 1px solid var(--aiop-rule);
+  padding: 14px 24px;
+  display: grid;
+  gap: 10px;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--aiop-muted);
+}
+
+.aiop-system__surfaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.aiop-system__surface {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+  color: var(--aiop-ink);
+  font-size: 10.5px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+.aiop-system__stack {
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  line-height: 1.55;
+  color: var(--aiop-muted);
+}
+
+.aiop-system__stack-k {
+  color: var(--aiop-gold-bright);
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  margin-right: 6px;
+  text-transform: uppercase;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 08 · Headless — substrate + surfaces
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-headless__head {
+  display: grid;
+  gap: 24px;
+  align-items: end;
+  margin-bottom: 56px;
+}
+
+@media (min-width: 800px) {
+  .aiop-headless__head {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+}
+
+.aiop-headless__diagram {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 32px;
+  align-items: stretch;
+}
+
+@media (max-width: 880px) {
+  .aiop-headless__diagram {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aiop-headless__substrate {
+  background: linear-gradient(180deg, #1a1612, #0f0c08);
+  color: #f3ece0;
+  padding: 28px 26px 30px;
+  position: relative;
+}
+
+.aiop-headless__substrate::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 35% at 12% 0%, rgba(184, 135, 40, 0.18), transparent 65%),
+    radial-gradient(ellipse 50% 50% at 100% 100%, rgba(184, 135, 40, 0.08), transparent 70%);
+  pointer-events: none;
+}
+
+.aiop-headless__substrate > * {
+  position: relative;
+  z-index: 1;
+}
+
+.aiop-headless__substrate-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(243, 236, 224, 0.15);
+  margin-bottom: 18px;
+}
+
+.aiop-headless__substrate-title {
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--aiop-gold-bright);
+}
+
+.aiop-headless__substrate-badge {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(243, 236, 224, 0.7);
+  padding: 4px 10px;
+  border: 1px solid rgba(243, 236, 224, 0.25);
+}
+
+.aiop-headless__layers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: rgba(243, 236, 224, 0.10);
+  border: 1px solid rgba(243, 236, 224, 0.10);
+}
+
+.aiop-headless__layer {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: #15110d;
+  font-family: var(--aiop-body);
+  font-size: 13.5px;
+}
+
+.aiop-headless__layer-tag {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-gold-bright);
+  font-weight: 600;
+}
+
+.aiop-headless__layer-name {
+  color: rgba(243, 236, 224, 0.9);
+  font-weight: 500;
+}
+
+.aiop-headless__layer-meta {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  color: rgba(243, 236, 224, 0.5);
+}
+
+@media (max-width: 480px) {
+  .aiop-headless__layer {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .aiop-headless__layer-meta {
+    text-align: left;
+  }
+}
+
+.aiop-headless__substrate-foot {
+  margin-top: 18px;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(243, 236, 224, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.aiop-headless__substrate-foot::before {
+  content: "↳";
+  color: var(--aiop-gold-bright);
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+.aiop-headless__surfaces {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.aiop-headless__surface {
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-strong);
+  padding: 22px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+.aiop-headless__surface::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 16px;
+  height: 16px;
+  background: var(--aiop-paper-2);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.aiop-headless__surface-icon {
+  font-family: var(--aiop-mono);
+  font-size: 22px;
+  color: var(--aiop-gold-bright);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.aiop-headless__surface-name {
+  font-family: var(--aiop-display);
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  color: var(--aiop-ink);
+}
+
+.aiop-headless__surface-verb {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--aiop-muted);
+}
+
+.aiop-headless__foot {
+  list-style: none;
+  margin: 56px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 24px;
+}
+
+@media (min-width: 800px) {
+  .aiop-headless__foot {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.aiop-headless__foot-point h3 {
+  font-family: var(--aiop-display);
+  font-weight: 500;
+  font-size: 19px;
+  margin: 0 0 8px;
+  color: var(--aiop-ink);
+}
+
+.aiop-headless__foot-point p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 09 · HarvestFields case
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-case {
+  background:
+    linear-gradient(180deg, var(--aiop-paper-2) 0%, var(--aiop-paper-3) 100%);
+  border-block: 1px solid var(--aiop-rule);
+  position: relative;
+  overflow: hidden;
+}
+
+.aiop-case::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      135deg,
+      transparent 0,
+      transparent 80px,
+      rgba(184, 135, 40, 0.04) 80px,
+      rgba(184, 135, 40, 0.04) 81px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.aiop-case > * {
+  position: relative;
+  z-index: 1;
+}
+
+.aiop-case__head {
+  display: grid;
+  gap: 24px;
+  margin-bottom: 56px;
+  align-items: end;
+}
+
+@media (min-width: 800px) {
+  .aiop-case__head {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+}
+
+.aiop-case__body {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+}
+
+@media (max-width: 880px) {
+  .aiop-case__body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aiop-case__pillars {
+  display: grid;
+  gap: 1px;
+  background: var(--aiop-rule);
+  border: 1px solid var(--aiop-rule-strong);
+}
+
+.aiop-case__pillar {
+  background: var(--aiop-card);
+  padding: 22px 22px 24px;
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.aiop-case__pillar-n {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--aiop-gold-bright);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.aiop-case__pillar-title {
+  font-family: var(--aiop-display);
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: var(--aiop-ink);
+  margin: 0 0 6px;
+}
+
+.aiop-case__pillar-body {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+}
+
+.aiop-case__panel {
+  background: linear-gradient(180deg, #1a1612, #0f0c08);
+  color: #f3ece0;
+  padding: 26px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: relative;
+}
+
+.aiop-case__panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(243, 236, 224, 0.7);
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(243, 236, 224, 0.15);
+}
+
+.aiop-case__panel-head strong {
+  color: var(--aiop-gold-bright);
+  font-weight: 600;
+}
+
+.aiop-case__metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: rgba(243, 236, 224, 0.08);
+  border: 1px solid rgba(243, 236, 224, 0.08);
+}
+
+.aiop-case__metric {
+  background: #15110d;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.aiop-case__metric-v {
+  font-family: var(--aiop-display);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--aiop-gold-bright);
+}
+
+.aiop-case__metric-k {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(243, 236, 224, 0.6);
+}
+
+.aiop-case__endpoints {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: rgba(243, 236, 224, 0.08);
+  border: 1px solid rgba(243, 236, 224, 0.08);
+}
+
+.aiop-case__endpoint {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 16px;
+  background: #15110d;
+  font-family: var(--aiop-mono);
+  font-size: 11.5px;
+}
+
+.aiop-case__endpoint-method {
+  color: var(--aiop-sage);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+.aiop-case__endpoint-path {
+  color: rgba(243, 236, 224, 0.85);
+  letter-spacing: 0.02em;
+}
+
+.aiop-case__endpoint-state {
+  color: rgba(243, 236, 224, 0.5);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.aiop-case__cta {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 10 · Pattern — pre-AI receipts
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-pattern__head {
+  display: grid;
+  gap: 24px;
+  align-items: end;
+  margin-bottom: 56px;
+}
+
+@media (min-width: 800px) {
+  .aiop-pattern__head {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+}
+
+.aiop-pattern__grid {
+  display: grid;
+  gap: 1px;
+  background: var(--aiop-rule);
+  border: 1px solid var(--aiop-rule-strong);
+}
+
+@media (min-width: 720px) {
+  .aiop-pattern__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.aiop-pattern__card {
+  background: var(--aiop-card);
+  padding: 26px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.aiop-pattern__meta {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.aiop-pattern__year {
+  color: var(--aiop-gold-bright);
+  font-weight: 600;
+}
+
+.aiop-pattern__source {
+  color: var(--aiop-muted);
+}
+
+.aiop-pattern__title {
+  font-family: var(--aiop-display);
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.18;
+  letter-spacing: -0.012em;
+  color: var(--aiop-ink);
+  margin: 0 0 6px;
+}
+
+.aiop-pattern__body {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 11 · CTA + footer
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-cta {
+  background: linear-gradient(180deg, var(--aiop-paper-2) 0%, var(--aiop-paper-3) 100%);
+  border-top: 1px solid var(--aiop-rule);
+  position: relative;
+}
+
+.aiop-cta__grid {
+  display: grid;
+  gap: 32px;
+  align-items: center;
+}
+
+@media (min-width: 800px) {
+  .aiop-cta__grid {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  }
+}
+
+.aiop-cta__title {
+  font-family: var(--aiop-display);
+  font-weight: 500;
+  font-size: clamp(34px, 4.6vw, 60px);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: var(--aiop-ink);
+  margin: 14px 0 0;
+}
+
+.aiop-cta__title em {
+  font-style: italic;
+  color: var(--aiop-ink-2);
+}
+
+.aiop-cta__body {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  margin: 16px 0 0;
+  max-width: 50ch;
+}
+
+.aiop-cta__fine {
+  font-family: var(--aiop-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--aiop-muted);
+  margin: 14px 0 0;
+}
+
+.aiop-cta__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+@media (min-width: 800px) {
+  .aiop-cta__actions {
+    align-items: flex-end;
+  }
+}
+
+.aiop-footer {
+  border-top: 1px solid var(--aiop-rule);
+  padding-block: 28px;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-footer__inner {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 12 · Reveal motion
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.aiop-reveal.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiop-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 13 · Responsive cleanup
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 600px) {
+  .aiop-hero__panel-layer {
+    grid-template-columns: 28px 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .aiop-hero__panel-layer-note {
+    grid-column: 2;
+  }
+}
