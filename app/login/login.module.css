@@ -1,0 +1,421 @@
+/* ────────────────────────────────────────────────────────────────────
+ * Shards login gate.
+ *
+ * Ported from the Delaware login gate but with two changes:
+ *   1. The paper/coral palette is declared at the module root via
+ *      `.scope` instead of relying on globals.css (shards' globals
+ *      ship a dark Sigil palette that would conflict with the
+ *      Delaware-style aesthetic).
+ *   2. The cityscape image is replaced with a CSS gradient mesh so
+ *      the route ships without new image assets.
+ * ──────────────────────────────────────────────────────────────────── */
+
+.scope {
+  --paper:        #faf6ec;
+  --paper-2:      #f3ece0;
+  --paper-card:   #fbf6e8;
+  --ink:          #1a1612;
+  --ink-soft:     #3a322a;
+  --ink-faint:    #8a7f70;
+  --rule:         rgba(26, 22, 18, 0.12);
+  --rule-soft:    rgba(26, 22, 18, 0.06);
+  --coral:        #d6573b;
+  --coral-deep:   #b04528;
+
+  --f-display: var(--font-display), "Bodoni Moda", Georgia, serif;
+  --f-sans:    var(--font-body), "IBM Plex Sans", system-ui, sans-serif;
+  --f-mono:    var(--font-mono), "IBM Plex Mono", ui-monospace, monospace;
+}
+
+.scene {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--paper-2);
+  isolation: isolate;
+  font-family: var(--f-sans);
+}
+
+/* CSS-only backdrop. A drifting gradient mesh stands in for Delaware's
+   cityscape. Three radial spheres on a warm paper base, with a slow
+   alternate animation so the still feels alive without being noisy. */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(60% 50% at 18% 12%, rgba(214, 87, 59, 0.18), transparent 65%),
+    radial-gradient(55% 45% at 85% 18%, rgba(202, 165, 84, 0.18), transparent 65%),
+    radial-gradient(70% 60% at 65% 92%, rgba(26, 22, 18, 0.20), transparent 70%),
+    radial-gradient(40% 35% at 12% 85%, rgba(91, 122, 78, 0.18), transparent 70%),
+    linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
+  animation: drift 22s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  from { transform: scale(1.02) translate3d(0, 0, 0); }
+  to   { transform: scale(1.06) translate3d(-1.5%, -0.6%, 0); }
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, #0A0A0A 6%, transparent) 0%,
+      color-mix(in oklab, #0A0A0A 0%, transparent) 28%,
+      color-mix(in oklab, #0A0A0A 0%, transparent) 60%,
+      color-mix(in oklab, #0A0A0A 26%, transparent) 100%
+    ),
+    radial-gradient(
+      120% 80% at 18% 95%,
+      color-mix(in oklab, #0A0A0A 32%, transparent) 0%,
+      transparent 55%
+    );
+}
+
+/* Top markers — brand on the left with a coloured pulse, location on
+   the right. Sit above the overlay so they read clearly against either
+   light or dark zones of the gradient. */
+.markerTop {
+  position: absolute;
+  top: clamp(20px, 3vh, 32px);
+  left: clamp(20px, 4vw, 36px);
+  right: clamp(20px, 4vw, 36px);
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, #FAFAF7 78%, transparent);
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.markerLeft {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.markerLeft .markerDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--coral);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--coral) 22%, transparent);
+}
+
+.markerRight {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: color-mix(in oklab, #FAFAF7 60%, transparent);
+}
+
+.markerSep {
+  color: color-mix(in oklab, #FAFAF7 36%, transparent);
+}
+
+/* Card pinned bottom-left, exactly like Delaware. */
+.cardWrap {
+  position: absolute;
+  inset: auto auto clamp(28px, 5vh, 56px) clamp(28px, 5vw, 56px);
+  z-index: 2;
+  width: min(400px, calc(100% - clamp(40px, 8vw, 80px)));
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--paper-card);
+  border: 1px solid color-mix(in oklab, var(--ink) 8%, var(--rule));
+  border-radius: 16px;
+  padding: clamp(26px, 3vw, 32px);
+  box-shadow:
+    0 1px 2px color-mix(in oklab, #0A0A0A 8%, transparent),
+    0 12px 32px color-mix(in oklab, #0A0A0A 18%, transparent),
+    0 32px 80px color-mix(in oklab, #0A0A0A 22%, transparent);
+  animation: cardIn 480ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card.shake {
+  animation: shake 220ms cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-5px); }
+  40%, 60% { transform: translateX(5px); }
+}
+
+.eyebrow {
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 14px;
+}
+
+.eyebrow .bar {
+  width: 18px;
+  height: 1.5px;
+  background: var(--coral);
+  display: inline-block;
+}
+
+/* Wordmark replaces Delaware's logo image. Bodoni Moda is loaded by
+   the root layout via `--font-display`. The display weight + tight
+   tracking gives the same instrument-grade gravity as the bitmap mark. */
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: clamp(20px, 3vh, 26px);
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.brandPeriod {
+  color: var(--coral);
+}
+
+.headline {
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: clamp(22px, 2.2vw, 26px);
+  line-height: 1.12;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+.support {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 38ch;
+}
+
+.form {
+  margin-top: clamp(22px, 3vh, 28px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  height: 50px;
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  background: var(--paper);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  overflow: hidden;
+}
+
+.field:focus-within {
+  border-color: color-mix(in oklab, var(--coral) 55%, var(--rule));
+  background: var(--paper-card);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--coral) 18%, transparent);
+}
+
+.field.error {
+  border-color: color-mix(in oklab, var(--coral) 65%, var(--rule));
+  background: color-mix(in oklab, var(--coral) 5%, var(--paper-card));
+}
+
+.input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0 16px;
+  font-family: var(--f-sans);
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+
+.input::placeholder {
+  color: var(--ink-faint);
+  letter-spacing: 0.01em;
+}
+
+.submit {
+  width: 100%;
+  height: 54px;
+  padding: 0 18px;
+  background: color-mix(in oklab, var(--ink) 4%, transparent);
+  color: var(--ink);
+  border: 1px solid color-mix(in oklab, var(--ink) 14%, var(--rule));
+  border-radius: 12px;
+  font-family: var(--f-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    gap 0.2s ease,
+    box-shadow 0.2s ease;
+  backdrop-filter: saturate(120%);
+  -webkit-backdrop-filter: saturate(120%);
+}
+
+.submit:hover:not(:disabled),
+.submit:focus-visible:not(:disabled) {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+  gap: 16px;
+  outline: none;
+  box-shadow: 0 6px 18px color-mix(in oklab, var(--ink) 24%, transparent);
+}
+
+.submit:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px color-mix(in oklab, var(--ink) 22%, transparent);
+}
+
+.submit:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.submitLabel {
+  display: inline-block;
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+  font-weight: 500;
+  font-size: 16px;
+  font-family: var(--f-sans);
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.submit:hover:not(:disabled) .arrow,
+.submit:focus-visible:not(:disabled) .arrow {
+  transform: translateX(3px);
+}
+
+.errorMsg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--coral-deep);
+  font-family: var(--f-mono);
+  letter-spacing: 0.04em;
+  min-height: 16px;
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.errorMsg[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.errorDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--coral);
+}
+
+.foot {
+  margin-top: clamp(22px, 3vh, 28px);
+  padding-top: 16px;
+  border-top: 1px dashed var(--rule);
+  font-family: var(--f-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.footMark {
+  color: var(--ink-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop { animation: none; }
+  .card { animation: none; }
+  .card.shake { animation: none; outline: 1px solid var(--coral); }
+  .submit, .arrow, .field { transition: none; }
+}
+
+@media (max-width: 720px) {
+  .markerTop {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+  }
+
+  .markerRight {
+    display: none;
+  }
+
+  .cardWrap {
+    inset: auto clamp(16px, 4vw, 24px) clamp(20px, 4vh, 32px) clamp(16px, 4vw, 24px);
+    width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .markerTop {
+    top: 16px;
+    left: 16px;
+    right: 16px;
+  }
+
+  .headline {
+    font-size: 21px;
+  }
+
+  .support {
+    font-size: 13.5px;
+  }
+}
