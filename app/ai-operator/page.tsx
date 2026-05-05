@@ -3,29 +3,28 @@ import Image from "next/image";
 import { Approach } from "./approach";
 import { Cases } from "./cases";
 import {
-  aboutSection,
   ctaSection,
   footer,
   headlessSection,
   hero,
   meta,
   selectedCaseSection,
+  visionSection,
 } from "./content";
 import { ScrollReveal } from "./reveal";
 
 /*
  * AI Operator — public landing page.
  *
- * v3 narrative arc: viewport-led product page. The CV holds the
- * personal record; this page holds the working method made legible
- * through a single thesis. Each chapter occupies its own viewport on
- * desktop, snaps into place on scroll, and gracefully unfolds on
- * narrower screens.
+ * v4 narrative arc: an interactive expansion of the CV. The hero is
+ * the personal profile (portrait + bio + contact). The page reads as
+ * a top-to-bottom argument: who, then how, then proof. Each chapter
+ * occupies its own viewport on desktop and unfolds on narrow screens.
  *
  * Composition:
  *   01 Header / nav     (sticky)
- *   02 Hero             — One sentence about the thesis + working motion panel.
- *   03 About            — Who you'd be working with (CV portrait + features).
+ *   02 Hero             — CV profile: name eyebrow + thesis + bio + portrait.
+ *   03 Vision           — Centered Navigate/Encode/Build flywheel + one CTA.
  *   04 Approach         — Three motions, each with a Heimdall-style
  *                         "practice in motion" pop-out (client).
  *   05 Cases            — Heimdall-style showcase grid (client).
@@ -74,7 +73,7 @@ export default function AiOperatorPage() {
         </div>
       </header>
 
-      {/* ─── Hero ───────────────────────────────────────────────────── */}
+      {/* ─── Hero — CV profile ──────────────────────────────────────── */}
       <section className="aiop-hero" id="top">
         <div className="aiop-grid-bg" aria-hidden="true" />
         <div className="aiop-wrap aiop-hero__inner">
@@ -109,121 +108,81 @@ export default function AiOperatorPage() {
               {hero.meta.map((row) => (
                 <div key={row.k} className="aiop-hero__meta-row">
                   <dt className="aiop-hero__meta-k">{row.k}</dt>
-                  <dd className="aiop-hero__meta-v">{row.v}</dd>
+                  <dd className="aiop-hero__meta-v">
+                    {row.href ? (
+                      <a
+                        className="aiop-hero__meta-link"
+                        href={row.href}
+                        {...(row.external
+                          ? { target: "_blank", rel: "noreferrer" }
+                          : {})}
+                      >
+                        {row.v}
+                      </a>
+                    ) : (
+                      row.v
+                    )}
+                  </dd>
                 </div>
               ))}
             </dl>
           </div>
 
-          <aside
-            className="aiop-hero__panel aiop-hero__panel--orbit aiop-reveal"
-            aria-label={hero.panel.label}
-          >
-            <span className="aiop-hero__panel-halo" aria-hidden="true" />
-            <header className="aiop-hero__panel-tag">
-              <span className="aiop-hero__panel-tag-l">
-                <span className="aiop-pulse" aria-hidden="true" />
-                {hero.panel.label}
-              </span>
-              <span className="aiop-hero__panel-version">
-                {hero.panel.live}
-              </span>
-            </header>
-
-            <div className="aiop-orbit" aria-hidden="true">
-              <span className="aiop-orbit__ring aiop-orbit__ring--outer" />
-              <span className="aiop-orbit__ring aiop-orbit__ring--inner" />
-
-              {hero.panel.orbits.map((orbit) => (
-                <span
-                  key={orbit.id}
-                  className={`aiop-orbit__pill aiop-orbit__pill--${orbit.position} aiop-orbit__pill--${orbit.id}`}
-                >
-                  <span className="aiop-orbit__dot" aria-hidden="true" />
-                  <span>{orbit.label}</span>
-                </span>
-              ))}
-
-              <span className="aiop-orbit__core">
-                <strong>{hero.panel.centerLabel}</strong>
-                <span>{hero.panel.centerSub}</span>
-              </span>
-            </div>
-          </aside>
+          <figure className="aiop-hero__portrait aiop-reveal">
+            <Image
+              src={hero.portrait.src}
+              alt={hero.portrait.alt}
+              width={820}
+              height={820}
+              priority
+              sizes="(max-width: 900px) 100vw, 540px"
+              className="aiop-hero__portrait-img"
+            />
+            <figcaption className="aiop-hero__portrait-tag">
+              <span className="aiop-hero__portrait-dot" aria-hidden="true" />
+              {hero.portrait.tag}
+            </figcaption>
+          </figure>
         </div>
       </section>
 
-      {/* ─── About — who you'd be working with ─────────────────────── */}
-      <section className="aiop-section aiop-about" id="about">
-        <div className="aiop-wrap aiop-about__inner">
-          <div className="aiop-about__intro aiop-reveal">
-            <p className="aiop-eyebrow">{aboutSection.eyebrow}</p>
-            <h2 className="aiop-section-title aiop-about__title">
-              {aboutSection.title} <em>{aboutSection.titleEm}</em>
-            </h2>
-          </div>
+      {/* ─── Vision — centered flywheel teaser ──────────────────────── */}
+      <section className="aiop-section aiop-vision" id="vision">
+        <div className="aiop-wrap aiop-vision__inner aiop-reveal">
+          <div
+            className="aiop-orbit aiop-orbit--centered"
+            role="img"
+            aria-label="Navigate, Encode, Build flywheel around a Substrate core"
+          >
+            <span
+              className="aiop-orbit__ring aiop-orbit__ring--outer"
+              aria-hidden="true"
+            />
+            <span
+              className="aiop-orbit__ring aiop-orbit__ring--inner"
+              aria-hidden="true"
+            />
 
-          <div className="aiop-about__row">
-            <figure className="aiop-about__portrait aiop-reveal">
-              <Image
-                src={aboutSection.portrait.src}
-                alt={aboutSection.portrait.alt}
-                width={820}
-                height={820}
-                priority={false}
-                sizes="(max-width: 880px) 100vw, 480px"
-                className="aiop-about__portrait-img"
-              />
-              <figcaption className="aiop-about__portrait-tag">
-                <span className="aiop-about__portrait-dot" aria-hidden="true" />
-                Antwerp · CET
-              </figcaption>
-            </figure>
-
-            <div className="aiop-about__copy aiop-reveal">
-              <p className="aiop-about__thesis">{aboutSection.thesis}</p>
-              <p className="aiop-about__body">{aboutSection.body}</p>
-              <ul
-                className="aiop-about__contact"
-                role="list"
-                aria-label="Contact details"
+            {visionSection.orbits.map((orbit) => (
+              <span
+                key={orbit.id}
+                className={`aiop-orbit__pill aiop-orbit__pill--${orbit.position} aiop-orbit__pill--${orbit.id}`}
               >
-                {aboutSection.contact.map((item) => (
-                  <li key={item.id} className="aiop-about__contact-item">
-                    {item.href ? (
-                      <a
-                        className="aiop-about__contact-link"
-                        href={item.href}
-                        {...(item.external
-                          ? { target: "_blank", rel: "noreferrer" }
-                          : {})}
-                      >
-                        {item.label}
-                      </a>
-                    ) : (
-                      <span>{item.label}</span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <ul className="aiop-about__band aiop-reveal" role="list">
-            {aboutSection.features.map((feature) => (
-              <li
-                key={feature.id}
-                className={`aiop-about__band-cell aiop-about__band-cell--${feature.tone}`}
-              >
-                <span
-                  className="aiop-about__band-marker"
-                  aria-hidden="true"
-                />
-                <h3 className="aiop-about__band-label">{feature.label}</h3>
-                <p className="aiop-about__band-body">{feature.body}</p>
-              </li>
+                <span className="aiop-orbit__dot" aria-hidden="true" />
+                <span>{orbit.label}</span>
+              </span>
             ))}
-          </ul>
+
+            <span className="aiop-orbit__core">
+              <strong>{visionSection.centerLabel}</strong>
+              <span>{visionSection.centerSub}</span>
+            </span>
+          </div>
+
+          <a className="aiop-button" href={visionSection.cta.href}>
+            {visionSection.cta.label}
+            <Arrow />
+          </a>
         </div>
       </section>
 

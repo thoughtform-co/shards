@@ -720,6 +720,110 @@
   letter-spacing: 0;
 }
 
+/* Hero portrait — square 1:1 frame on the right of the CV-profile hero.
+   Same chamfer + pulse-caption grammar as the (now-retired) about
+   portrait, scaled slightly larger so it carries the hero by itself.
+   Centered vertically in the grid so the photo and the copy column
+   read as paired weights regardless of the copy column's height. */
+.aiop-hero__portrait {
+  position: relative;
+  margin: 0;
+  align-self: center;
+  justify-self: end;
+  width: 100%;
+  max-width: 540px;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--aiop-rule-strong);
+  background: var(--aiop-card);
+  overflow: hidden;
+  box-shadow:
+    0 1px 2px rgba(26, 22, 18, 0.04),
+    0 28px 64px -28px rgba(26, 22, 18, 0.28);
+}
+
+.aiop-hero__portrait::before,
+.aiop-hero__portrait::after {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: var(--aiop-gold-bright);
+  z-index: 2;
+}
+
+.aiop-hero__portrait::before {
+  top: -1px;
+  left: -1px;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.aiop-hero__portrait::after {
+  bottom: -1px;
+  right: -1px;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.aiop-hero__portrait-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  filter: saturate(0.95) contrast(1.02);
+}
+
+.aiop-hero__portrait-tag {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: color-mix(in oklab, var(--aiop-ink) 80%, transparent);
+  color: var(--aiop-paper);
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  z-index: 3;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.aiop-hero__portrait-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--aiop-gold-bright);
+  box-shadow: 0 0 0 3px rgba(184, 135, 40, 0.28);
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .aiop-hero__portrait {
+    justify-self: center;
+    max-width: min(420px, 80vw);
+  }
+}
+
+/* Meta-link — email + linkedin in the four-up contact strip render as
+   anchors. Subtle hairline underline on hover so the strip still reads
+   as a quiet instrument footer rather than a CTA stack. */
+.aiop-hero__meta-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 140ms ease, border-color 140ms ease;
+}
+
+.aiop-hero__meta-link:hover,
+.aiop-hero__meta-link:focus-visible {
+  color: var(--aiop-gold-bright);
+  border-bottom-color: var(--aiop-gold-edge);
+  outline: none;
+}
+
 
 /* ═══════════════════════════════════════════════════════════════════════
  * 05 · Motions — four practice surfaces of the embedded role
@@ -1986,14 +2090,18 @@
   right: 0;
 }
 
+/* Bottom pills — symmetric Delaware-style 3-pill layout. Encode sits
+   bottom-right, Build sits bottom-left, both equidistant from the
+   horizontal centerline so the orbit reads as a clean triangle with
+   Navigate at the apex. */
 .aiop-orbit__pill--bottom-left {
   bottom: 4%;
-  left: 12%;
+  left: 8%;
 }
 
 .aiop-orbit__pill--bottom-right {
-  bottom: 24%;
-  right: 4%;
+  bottom: 4%;
+  right: 8%;
 }
 
 /* Central substrate core — round, soft-gradient, with the display
@@ -2037,6 +2145,63 @@
   .aiop-orbit {
     max-width: 320px;
   }
+}
+
+/* Centered orbit modifier — used by the Vision section. Drops the
+   panel-inherited top margin and bumps the max-width so the visual
+   carries an entire viewport on its own. */
+.aiop-orbit--centered {
+  margin: 0 auto;
+  max-width: 460px;
+}
+
+@media (max-width: 600px) {
+  .aiop-orbit--centered {
+    max-width: min(360px, 84vw);
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 14b · v4 — Vision section · centered flywheel teaser
+ *
+ * One viewport. Just the Navigate / Encode / Build orbit centered on
+ * the page with a single CTA below it pushing the visitor into the
+ * in-depth Approach section. No eyebrow, no title, no supporting
+ * copy: the visual is the whole argument.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-vision {
+  background: linear-gradient(180deg, var(--aiop-paper) 0%, var(--aiop-paper-2) 100%);
+  border-block: 1px solid var(--aiop-rule);
+  position: relative;
+  overflow: hidden;
+}
+
+.aiop-vision::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 50% 40% at 50% 0%, rgba(98, 67, 185, 0.10), transparent 60%),
+    radial-gradient(ellipse 40% 30% at 0% 100%, rgba(184, 135, 40, 0.08), transparent 60%),
+    radial-gradient(ellipse 40% 30% at 100% 100%, rgba(79, 107, 74, 0.08), transparent 60%);
+  z-index: 0;
+}
+
+.aiop-vision > * {
+  position: relative;
+  z-index: 1;
+}
+
+.aiop-vision__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(48px, 7vw, 80px);
+  text-align: center;
 }
 
 
@@ -3627,302 +3792,6 @@
 
 
 /* ═══════════════════════════════════════════════════════════════════════
- * 20 · v3 — About section · who you'd be working with
- *
- * Linear-style feature list paired with a square portrait. Two-column
- * layout on desktop: portrait anchored left with a CET pulse caption,
- * thesis + body + 4-tone feature stack on the right. Stacks on
- * narrower viewports.
- * ═══════════════════════════════════════════════════════════════════════ */
-
-.aiop-about {
-  background: linear-gradient(180deg, var(--aiop-paper) 0%, var(--aiop-paper-2) 100%);
-  border-block: 1px solid var(--aiop-rule);
-  position: relative;
-  overflow: hidden;
-}
-
-.aiop-about::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse 50% 35% at 0% 0%, rgba(184, 135, 40, 0.06), transparent 60%),
-    radial-gradient(ellipse 40% 30% at 100% 100%, rgba(79, 107, 74, 0.05), transparent 60%);
-  z-index: 0;
-}
-
-.aiop-about > * {
-  position: relative;
-  z-index: 1;
-}
-
-.aiop-about__inner {
-  display: grid;
-  gap: clamp(28px, 4vw, 48px);
-}
-
-.aiop-about__intro {
-  display: grid;
-  gap: 14px;
-  max-width: 60ch;
-}
-
-.aiop-about__title {
-  margin: 0;
-}
-
-.aiop-about__row {
-  display: grid;
-  grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.1fr);
-  gap: clamp(28px, 4vw, 64px);
-  align-items: start;
-}
-
-@media (max-width: 880px) {
-  .aiop-about__row {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-}
-
-/* Portrait — square frame with corner chamfers, pulse caption pinned
-   to the bottom-left so it reads like an instrument readout. */
-.aiop-about__portrait {
-  position: relative;
-  margin: 0;
-  border: 1px solid var(--aiop-rule-strong);
-  background: var(--aiop-card);
-  overflow: hidden;
-  aspect-ratio: 1 / 1;
-  box-shadow:
-    0 1px 2px rgba(26, 22, 18, 0.04),
-    0 24px 60px -28px rgba(26, 22, 18, 0.22);
-}
-
-.aiop-about__portrait::before,
-.aiop-about__portrait::after {
-  content: "";
-  position: absolute;
-  width: 14px;
-  height: 14px;
-  background: var(--aiop-gold-bright);
-  z-index: 2;
-}
-
-.aiop-about__portrait::before {
-  top: -1px;
-  left: -1px;
-  clip-path: polygon(0 0, 100% 0, 0 100%);
-}
-
-.aiop-about__portrait::after {
-  bottom: -1px;
-  right: -1px;
-  clip-path: polygon(100% 0, 100% 100%, 0 100%);
-}
-
-.aiop-about__portrait-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
-  filter: saturate(0.95) contrast(1.02);
-}
-
-.aiop-about__portrait-tag {
-  position: absolute;
-  left: 14px;
-  bottom: 14px;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  background: color-mix(in oklab, var(--aiop-ink) 80%, transparent);
-  color: var(--aiop-paper);
-  font-family: var(--aiop-mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  z-index: 3;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-
-.aiop-about__portrait-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--aiop-gold-bright);
-  box-shadow: 0 0 0 3px rgba(184, 135, 40, 0.28);
-  flex-shrink: 0;
-}
-
-/* Copy column — thesis as display italic, body in plain sans, then
-   the contact-button row. The four practice areas live below the row
-   in `.aiop-about__band`, not inside the copy column. */
-.aiop-about__copy {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.aiop-about__thesis {
-  margin: 0;
-  font-family: var(--aiop-display);
-  font-style: italic;
-  font-weight: 500;
-  font-size: clamp(22px, 2.6vw, 30px);
-  line-height: 1.25;
-  letter-spacing: -0.018em;
-  color: var(--aiop-ink);
-  max-width: 26ch;
-}
-
-.aiop-about__body {
-  margin: 0;
-  font-size: clamp(15px, 1.15vw, 17px);
-  line-height: 1.6;
-  color: var(--aiop-ink-soft);
-  max-width: 56ch;
-}
-
-/* Contact line sits directly under the body — subtle inline readout,
-   no frames, no boxes. Mono on muted ink with hairline middle-dot
-   separators between items so it reads like an instrument footer
-   rather than a CTA stack. Links pick up the gold accent on hover. */
-.aiop-about__contact {
-  list-style: none;
-  margin: 6px 0 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0;
-  font-family: var(--aiop-mono);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  color: var(--aiop-muted);
-  line-height: 1.6;
-}
-
-.aiop-about__contact-item {
-  display: inline-flex;
-  align-items: center;
-}
-
-.aiop-about__contact-item + .aiop-about__contact-item::before {
-  content: "·";
-  margin: 0 12px;
-  color: var(--aiop-rule-strong);
-  font-weight: 700;
-}
-
-.aiop-about__contact-link {
-  color: inherit;
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: color 140ms ease, border-color 140ms ease;
-}
-
-.aiop-about__contact-link:hover,
-.aiop-about__contact-link:focus-visible {
-  color: var(--aiop-gold-bright);
-  border-bottom-color: var(--aiop-gold-edge);
-  outline: none;
-}
-
-/* Horizontal practice band — sits beneath the photo + bio row. Four
-   cells on desktop, two on tablet, one on phone. Each cell carries a
-   tone-coloured marker bar above a Bodoni Moda label and a short
-   sans body, separated by hairline rules. The visual grammar mirrors
-   the Compress / Repair / Invent legend the user explicitly liked
-   so the page reads as one consistent micro-typography system. */
-.aiop-about__band {
-  list-style: none;
-  margin: clamp(28px, 3.5vw, 44px) 0 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  border-top: 1px solid var(--aiop-rule);
-  border-bottom: 1px solid var(--aiop-rule);
-}
-
-@media (max-width: 880px) {
-  .aiop-about__band {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (max-width: 560px) {
-  .aiop-about__band {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-.aiop-about__band-cell {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 14px;
-  padding: clamp(20px, 2.5vw, 32px);
-  border-left: 1px solid var(--aiop-rule);
-}
-
-.aiop-about__band-cell:first-child {
-  border-left: 0;
-}
-
-@media (max-width: 880px) {
-  .aiop-about__band-cell:nth-child(2n + 1) {
-    border-left: 0;
-  }
-  .aiop-about__band-cell:nth-child(n + 3) {
-    border-top: 1px solid var(--aiop-rule);
-  }
-}
-
-@media (max-width: 560px) {
-  .aiop-about__band-cell {
-    border-left: 0;
-    border-top: 1px solid var(--aiop-rule);
-  }
-  .aiop-about__band-cell:first-child {
-    border-top: 0;
-  }
-}
-
-.aiop-about__band-marker {
-  display: block;
-  width: 28px;
-  height: 4px;
-  background: var(--aiop-gold-bright);
-}
-
-.aiop-about__band-cell--gold   .aiop-about__band-marker { background: var(--aiop-gold-bright); }
-.aiop-about__band-cell--sage   .aiop-about__band-marker { background: var(--aiop-sage); }
-.aiop-about__band-cell--slate  .aiop-about__band-marker { background: var(--aiop-slate); }
-.aiop-about__band-cell--violet .aiop-about__band-marker { background: var(--aiop-violet); }
-
-.aiop-about__band-label {
-  margin: 0;
-  font-family: var(--aiop-display);
-  font-weight: 500;
-  font-size: clamp(17px, 1.4vw, 20px);
-  letter-spacing: -0.012em;
-  color: var(--aiop-ink);
-}
-
-.aiop-about__band-body {
-  margin: 0;
-  font-size: 13.5px;
-  line-height: 1.55;
-  color: var(--aiop-ink-soft);
-}
-
-
-/* ═══════════════════════════════════════════════════════════════════════
  * 21 · v3 — Viewport rhythm · chapter-led panels
  *
  * Each top-level chapter aims for at least one viewport on desktop so
@@ -3931,12 +3800,12 @@
  * navigation respects the sticky header height via `scroll-margin-top`
  * but we deliberately avoid `scroll-snap-type` because its proximity
  * mode can pull anchor jumps to neighbouring snap points and confuse
- * "About" vs "Cases" navigation. The viewport rhythm still reads as
+ * "Vision" vs "Cases" navigation. The viewport rhythm still reads as
  * one chapter per screen via `min-height` alone.
  * ═══════════════════════════════════════════════════════════════════════ */
 
 .aiop-hero,
-.aiop-about,
+.aiop-vision,
 .aiop-approach,
 .aiop-cases,
 .aiop-headless,
@@ -3948,11 +3817,11 @@
 
 /* Each focused chapter aims for a full viewport when content allows.
    Approach and Cases extend naturally because their content is wider
-   than one screen. Hero / About / Headless / HarvestFields case / CTA
+   than one screen. Hero / Vision / Headless / HarvestFields case / CTA
    use a hard min-height so short content fills the screen without
    leaving stranded whitespace, and content is vertically centered. */
 .aiop-hero,
-.aiop-about,
+.aiop-vision,
 .aiop-headless,
 .aiop-case,
 .aiop-cta {
@@ -3964,7 +3833,7 @@
 
 @media (max-width: 720px) {
   .aiop-hero,
-  .aiop-about,
+  .aiop-vision,
   .aiop-headless,
   .aiop-case,
   .aiop-cta {

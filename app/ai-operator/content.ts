@@ -1,25 +1,26 @@
 /*
  * AI Operator landing — content module.
  *
- * v2 narrative arc: a startup-style landing page about the approach,
- * not a CV. The CV holds the personal record; this page holds the
- * working method, made legible through one framework: Navigate,
- * Encode, Build. Each section is self-contained and the page reads
- * top-to-bottom as a single argument.
+ * v4 narrative arc: an interactive expansion of the CV. The hero is
+ * the personal profile (name eyebrow, thesis title, bio, portrait,
+ * contact strip). Section 02 is a single centered Navigate / Encode /
+ * Build flywheel that teases the in-depth Approach below. The rest
+ * of the page reads top-to-bottom as one argument.
  *
  * Page arc:
- *   01 Hero          — Name the framework. Navigate. Encode. Build.
- *   02 Approach      — The three motions, each with an executive-level
+ *   01 Hero          — CV profile: name, thesis, bio, portrait, contact.
+ *   02 Vision        — Centered flywheel + one CTA into Approach.
+ *   03 Approach      — Navigate / Encode / Build, each with an exec-level
  *                      visual and a Heimdall-style pop-out for detail.
- *   03 Cases         — Showcase grid of four production systems, each
+ *   04 Cases         — Showcase grid of four production systems, each
  *                      with a modal walk-through.
- *   04 Headless      — Architecture, not a dashboard. The interstitial
+ *   05 Headless      — Architecture, not a dashboard. The interstitial
  *                      that sets up the selected case.
- *   05 Selected case — HarvestFields, where everything comes together.
- *   06 CTA           — One ask. Smallest commitment that starts work.
+ *   06 Selected case — HarvestFields, where everything comes together.
+ *   07 CTA           — One ask. Smallest commitment that starts work.
  *
  * Voice: direct, punchy, warm. Strategy and building stay in the same
- * hands. No em-dashes. One thought per line when the thought matters.
+ * hands. One thought per line when the thought matters.
  */
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -31,7 +32,7 @@ export const meta = {
   brandSub: "AI Operator · Forward-Deployed · Antwerp",
   status: "Embedded engagements available",
   links: [
-    { id: "about", label: "About", href: "#about" },
+    { id: "vision", label: "Vision", href: "#vision" },
     { id: "approach", label: "Approach", href: "#approach" },
     { id: "cases", label: "Cases", href: "#cases" },
     { id: "headless", label: "Headless", href: "#headless" },
@@ -41,137 +42,73 @@ export const meta = {
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
- * Hero — name the framework, show the loop
+ * Hero — CV profile
+ *
+ * v4: the page is an interactive expansion of the CV. The hero opens
+ * with the operator's name as the eyebrow, the working thesis as the
+ * title, the bio as the lede, and a square portrait on the right.
+ * The meta strip carries the four contact lines from the CV instead
+ * of role/practice metadata.
  * ─────────────────────────────────────────────────────────────────── */
 
+export type HeroMetaItem = {
+  k: string;
+  v: string;
+  href?: string;
+  external?: boolean;
+};
+
 export const hero = {
-  eyebrow: "Forward-deployed AI operator",
+  eyebrow: "Vincent Buyssens",
   titleLines: [
     "AI capability,",
     { em: "built inside the work." },
   ] as const,
   lede:
-    "Embedded with marketing and creative teams while AI rewires how they work. Strategy and building stay in the same hands. Navigate the workflow, encode what makes it good, build the engine the team owns.",
+    "A creative technologist who's been navigating the tides of digital change for over a decade. I keep strategy and building in the same hands. Embedded where strategy turns into practice — I help teams navigate AI inside real work, encode what makes the work good, and build the reusable capability underneath it.",
   meta: [
-    { k: "BASED", v: "Antwerp · CET" },
-    { k: "ROLE", v: "Lead Creative Technologist" },
-    { k: "PRACTICE", v: "Thoughtform · Founder" },
-    { k: "AVAILABLE", v: "Embedded · sprint · keynote" },
-  ],
+    {
+      k: "EMAIL",
+      v: "vince@thoughtform.co",
+      href: "mailto:vince@thoughtform.co?subject=Forward-deployed%20AI%20operator",
+    },
+    { k: "PHONE", v: "+32 471 09 42 21" },
+    {
+      k: "LINKEDIN",
+      v: "linkedin.com/in/starhaven",
+      href: "https://www.linkedin.com/in/starhaven/",
+      external: true,
+    },
+    { k: "LOCATION", v: "Antwerp, Belgium" },
+  ] as HeroMetaItem[],
   actions: [
-    { id: "talk", label: "Talk about your team", href: "#cta", primary: true },
+    { id: "vision", label: "Explore vision", href: "#vision", primary: true },
     { id: "cases", label: "See the cases", href: "#cases" },
   ],
-  /* Working-motion orbit (ported from the Aether home hero). The four
-     pills sit on an implicit ring around a central substrate core; the
-     loop reads "Navigate, Encode, Build — and the substrate compounds
-     as the team learns from each turn." */
-  panel: {
-    label: "Working motion",
-    live: "Live · v0.4",
-    centerLabel: "Substrate",
-    centerSub: "Compounds",
-    orbits: [
-      { id: "navigate", label: "Navigate", position: "top" },
-      { id: "encode", label: "Encode", position: "right" },
-      { id: "build", label: "Build", position: "bottom-left" },
-      { id: "learn", label: "Learn", position: "bottom-right" },
-    ] as const,
+  portrait: {
+    src: "/images/vince.png",
+    alt: "Vincent Buyssens at his desk in Antwerp, working with Claude on a MacBook.",
+    tag: "Antwerp · CET",
   },
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
- * About — who is doing the work
+ * Vision — flywheel teaser
  *
- * Inspired by the CV profile pop. Compact, photo + thesis + four
- * practice areas presented as a feature list (Linear-style). Sits
- * directly after the hero so visitors meet the operator before the
- * method or the cases.
+ * A minimal second screen. Just the centered Navigate / Encode / Build
+ * orbit with a Substrate core, plus one short CTA pushing the visitor
+ * into the in-depth Approach section below.
  * ─────────────────────────────────────────────────────────────────── */
 
-export type AboutFeature = {
-  id: "strategy" | "adoption" | "building" | "creating";
-  tone: "gold" | "sage" | "slate" | "violet";
-  label: string;
-  body: string;
-};
-
-export type AboutContact = {
-  id: "email" | "linkedin" | "phone" | "location";
-  label: string;
-  href?: string;
-  external?: boolean;
-};
-
-export const aboutSection = {
-  eyebrow: "Who you'd be working with",
-  title: "Vincent",
-  titleEm: "Buyssens.",
-  thesis:
-    "I sit alongside marketing and creative teams while AI rewires how they work.",
-  body:
-    "I navigate the workflow with the team, build the tool or agent or skill that transforms it, coach them until they don't need me, and turn what works into a pattern other teams can pick up. Ten years moving with the next wave; three years deep inside the AI one.",
-  portrait: {
-    src: "/images/vince.png",
-    alt: "Vincent Buyssens at his desk in Antwerp, working with Claude on a MacBook.",
-  },
-  /* Subtle inline contact line — plain text + mono + middle-dot
-     separators. No frames, no boxes; the photo caption already
-     carries Antwerp · CET as a pulse readout. */
-  contact: [
-    {
-      id: "email",
-      label: "vince@thoughtform.co",
-      href: "mailto:vince@thoughtform.co?subject=Forward-deployed%20AI%20operator",
-    },
-    {
-      id: "linkedin",
-      label: "linkedin.com/in/starhaven",
-      href: "https://www.linkedin.com/in/starhaven/",
-      external: true,
-    },
-    {
-      id: "phone",
-      label: "+32 471 09 42 21",
-      href: "tel:+32471094221",
-    },
-    {
-      id: "location",
-      label: "Antwerp, Belgium",
-    },
-  ] as AboutContact[],
-  /* Practice areas — the four lanes the engagement actually lives in.
-     Reframed from the CV (Strategy / Adoption / Production / Building)
-     so the band reads as a Thoughtform spine rather than a job-spec
-     copy-paste: AI Strategy is the operating model layer, Adoption is
-     the cohort journey, Building is engineering, Creating is the
-     creative output rebuilt around AI. */
-  features: [
-    {
-      id: "strategy",
-      tone: "gold",
-      label: "AI Strategy",
-      body: "Operating model the team runs on.",
-    },
-    {
-      id: "adoption",
-      tone: "sage",
-      label: "Adoption",
-      body: "First win to self-sufficient.",
-    },
-    {
-      id: "building",
-      tone: "slate",
-      label: "Building",
-      body: "Tools, agents, headless engines.",
-    },
-    {
-      id: "creating",
-      tone: "violet",
-      label: "Creating",
-      body: "Studio practice rebuilt around AI.",
-    },
-  ] as AboutFeature[],
+export const visionSection = {
+  centerLabel: "Substrate",
+  centerSub: "Compounds",
+  orbits: [
+    { id: "navigate", label: "Navigate", position: "top" },
+    { id: "encode", label: "Encode", position: "bottom-right" },
+    { id: "build", label: "Build", position: "bottom-left" },
+  ] as const,
+  cta: { label: "See the method", href: "#approach" },
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
