@@ -51,7 +51,11 @@ export function FlywheelStage() {
 
   /* Track scroll position once the choreography is on. We map the
    * visible track range (track top → track bottom minus viewport
-   * height) to a 0..1 progress, then snap to the closest of N frames.
+   * height) to a 0..1 progress, then snap to the closest of N frames
+   * for the discrete `data-frame` attribute and write the smooth
+   * frame position to `--aiop-v2-frame-pos` so CSS can drive
+   * Legend-style scroll-coupled parallax (hero text + particle band
+   * translate upward while the orbit stays anchored).
    * Reading happens inside requestAnimationFrame so we never thrash
    * the scroll thread. */
   useEffect(() => {
@@ -59,6 +63,11 @@ export function FlywheelStage() {
       // No scroll listener in static mode. We deliberately don't
       // reset activeFrame here — the rendered `data-frame` is
       // derived below, so the leftover state has no visual effect.
+      const track = trackRef.current;
+      if (track) {
+        track.style.removeProperty("--aiop-v2-frame-pos");
+        track.style.removeProperty("--aiop-v2-hero-progress");
+      }
       return;
     }
 
@@ -73,12 +82,23 @@ export function FlywheelStage() {
         const viewHeight = window.innerHeight;
         const total = track.offsetHeight - viewHeight;
         if (total <= 0) {
+          track.style.setProperty("--aiop-v2-frame-pos", "0");
+          track.style.setProperty("--aiop-v2-hero-progress", "0");
           setActiveFrame("hero");
           return;
         }
         const scrolled = -rect.top;
         const p = Math.max(0, Math.min(1, scrolled / total));
         const framePos = p * (FRAMES.length - 1);
+        const heroProgress = Math.max(0, Math.min(1, framePos));
+        track.style.setProperty(
+          "--aiop-v2-frame-pos",
+          framePos.toFixed(4),
+        );
+        track.style.setProperty(
+          "--aiop-v2-hero-progress",
+          heroProgress.toFixed(4),
+        );
         const idx = Math.max(
           0,
           Math.min(FRAMES.length - 1, Math.round(framePos)),
@@ -110,6 +130,8 @@ export function FlywheelStage() {
       data-frame={dataFrame}
     >
       <div className="aiop-v2-stage">
+        <div className="aiop-v2-particle-band" aria-hidden="true" />
+
         {/* Centred content container: gives every frame and the orbit
          * the same max-width and side gutters so the layout never
          * runs edge-to-edge on wide viewports. The animated mode
