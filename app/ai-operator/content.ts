@@ -90,10 +90,17 @@ export const hero = {
  * ─────────────────────────────────────────────────────────────────── */
 
 export type AboutFeature = {
-  id: "transform" | "build" | "coach" | "scale";
+  id: "strategy" | "adoption" | "building" | "creating";
   tone: "gold" | "sage" | "slate" | "violet";
   label: string;
   body: string;
+};
+
+export type AboutContact = {
+  id: "email" | "linkedin" | "phone" | "location";
+  label: string;
+  href?: string;
+  external?: boolean;
 };
 
 export const aboutSection = {
@@ -108,12 +115,14 @@ export const aboutSection = {
     src: "/images/vince.png",
     alt: "Vincent Buyssens at his desk in Antwerp, working with Claude on a MacBook.",
   },
-  actions: [
+  /* Subtle inline contact line — plain text + mono + middle-dot
+     separators. No frames, no boxes; the photo caption already
+     carries Antwerp · CET as a pulse readout. */
+  contact: [
     {
       id: "email",
       label: "vince@thoughtform.co",
       href: "mailto:vince@thoughtform.co?subject=Forward-deployed%20AI%20operator",
-      external: false,
     },
     {
       id: "linkedin",
@@ -121,31 +130,46 @@ export const aboutSection = {
       href: "https://www.linkedin.com/in/starhaven/",
       external: true,
     },
-  ] as const,
+    {
+      id: "phone",
+      label: "+32 471 09 42 21",
+      href: "tel:+32471094221",
+    },
+    {
+      id: "location",
+      label: "Antwerp, Belgium",
+    },
+  ] as AboutContact[],
+  /* Practice areas — the four lanes the engagement actually lives in.
+     Reframed from the CV (Strategy / Adoption / Production / Building)
+     so the band reads as a Thoughtform spine rather than a job-spec
+     copy-paste: AI Strategy is the operating model layer, Adoption is
+     the cohort journey, Building is engineering, Creating is the
+     creative output rebuilt around AI. */
   features: [
     {
-      id: "transform",
+      id: "strategy",
       tone: "gold",
-      label: "Workflow Transformation",
-      body: "Embedded discovery alongside one team. Process re-design tuned to the deliverables that actually ship.",
+      label: "AI Strategy",
+      body: "Operating model the team runs on.",
     },
     {
-      id: "build",
+      id: "adoption",
       tone: "sage",
-      label: "Tool & Agent Building",
-      body: "Skills, agents, MCP servers, and full systems. Custom for the work, not for a generic market.",
+      label: "Adoption",
+      body: "First win to self-sufficient.",
     },
     {
-      id: "coach",
+      id: "building",
       tone: "slate",
-      label: "Embedded Coaching",
-      body: "Cohort journey from awareness to self-sufficient. Workshops, AI Stewards, and showcases running together.",
+      label: "Building",
+      body: "Tools, agents, headless engines.",
     },
     {
-      id: "scale",
+      id: "creating",
       tone: "violet",
-      label: "Pattern Scaling",
-      body: "Reusable playbooks and headless engines. One team's win becomes the next team's starting line.",
+      label: "Creating",
+      body: "Studio practice rebuilt around AI.",
     },
   ] as AboutFeature[],
 } as const;

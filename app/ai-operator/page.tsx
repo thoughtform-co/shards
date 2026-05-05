@@ -183,21 +183,29 @@ export default function AiOperatorPage() {
             <div className="aiop-about__copy aiop-reveal">
               <p className="aiop-about__thesis">{aboutSection.thesis}</p>
               <p className="aiop-about__body">{aboutSection.body}</p>
-              <div className="aiop-about__actions">
-                {aboutSection.actions.map((action) => (
-                  <a
-                    key={action.id}
-                    className="aiop-button aiop-button--ghost"
-                    href={action.href}
-                    {...(action.external
-                      ? { target: "_blank", rel: "noreferrer" }
-                      : {})}
-                  >
-                    {action.label}
-                    <Arrow />
-                  </a>
+              <ul
+                className="aiop-about__contact"
+                role="list"
+                aria-label="Contact details"
+              >
+                {aboutSection.contact.map((item) => (
+                  <li key={item.id} className="aiop-about__contact-item">
+                    {item.href ? (
+                      <a
+                        className="aiop-about__contact-link"
+                        href={item.href}
+                        {...(item.external
+                          ? { target: "_blank", rel: "noreferrer" }
+                          : {})}
+                      >
+                        {item.label}
+                      </a>
+                    ) : (
+                      <span>{item.label}</span>
+                    )}
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           </div>
 

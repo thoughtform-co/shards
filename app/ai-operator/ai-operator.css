@@ -3774,13 +3774,48 @@
   max-width: 56ch;
 }
 
-/* Contact buttons sit directly under the body. Two ghost buttons
-   (mailto + LinkedIn) reusing the existing notched chamfer style. */
-.aiop-about__actions {
+/* Contact line sits directly under the body — subtle inline readout,
+   no frames, no boxes. Mono on muted ink with hairline middle-dot
+   separators between items so it reads like an instrument footer
+   rather than a CTA stack. Links pick up the gold accent on hover. */
+.aiop-about__contact {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 6px;
+  gap: 0;
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--aiop-muted);
+  line-height: 1.6;
+}
+
+.aiop-about__contact-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.aiop-about__contact-item + .aiop-about__contact-item::before {
+  content: "·";
+  margin: 0 12px;
+  color: var(--aiop-rule-strong);
+  font-weight: 700;
+}
+
+.aiop-about__contact-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 140ms ease, border-color 140ms ease;
+}
+
+.aiop-about__contact-link:hover,
+.aiop-about__contact-link:focus-visible {
+  color: var(--aiop-gold-bright);
+  border-bottom-color: var(--aiop-gold-edge);
+  outline: none;
 }
 
 /* Horizontal practice band — sits beneath the photo + bio row. Four
