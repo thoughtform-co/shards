@@ -146,9 +146,13 @@ export default function AiOperatorPage() {
         </div>
       </section>
 
-      {/* ─── Vision — centered flywheel teaser ──────────────────────── */}
+      {/* ─── Vision — Adoption Automation Flywheel ──────────────────── */}
       <section className="aiop-section aiop-vision" id="vision">
         <div className="aiop-wrap aiop-vision__inner aiop-reveal">
+          <h2 className="aiop-section-title aiop-vision__title">
+            {visionSection.title} <em>{visionSection.titleEm}</em>
+          </h2>
+
           <div
             className="aiop-orbit aiop-orbit--centered"
             role="img"
@@ -179,10 +183,7 @@ export default function AiOperatorPage() {
             </span>
           </div>
 
-          <a className="aiop-button" href={visionSection.cta.href}>
-            {visionSection.cta.label}
-            <Arrow />
-          </a>
+          <p className="aiop-vision__caption">{visionSection.caption}</p>
         </div>
       </section>
 

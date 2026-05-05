@@ -28,9 +28,6 @@ export function Approach() {
       <div className="aiop-wrap">
         <header className="aiop-approach__head aiop-reveal">
           <p className="aiop-eyebrow">{approachSection.eyebrow}</p>
-          <h2 className="aiop-section-title">
-            {approachSection.title} <em>{approachSection.titleEm}</em>
-          </h2>
           <p className="aiop-section-lede">{approachSection.lede}</p>
         </header>
 
@@ -50,7 +47,6 @@ export function Approach() {
             >
               <div className="aiop-approach__copy">
                 <header className="aiop-approach__head-row">
-                  <span className="aiop-approach__n">{step.n}</span>
                   <h3 className="aiop-approach__label">{step.label}.</h3>
                 </header>
                 <p className="aiop-approach__headline">{step.headline}</p>

@@ -2163,12 +2163,13 @@
 
 
 /* ═══════════════════════════════════════════════════════════════════════
- * 14b · v4 — Vision section · centered flywheel teaser
+ * 14b · v4 — Vision section · The Adoption Automation Flywheel
  *
- * One viewport. Just the Navigate / Encode / Build orbit centered on
- * the page with a single CTA below it pushing the visitor into the
- * in-depth Approach section. No eyebrow, no title, no supporting
- * copy: the visual is the whole argument.
+ * One viewport. A centered section title above the Navigate / Encode /
+ * Build orbit, with the approach tagline as a display-italic caption
+ * beneath. The orbit is the visual anchor; the title names what it is,
+ * and the caption is the one-sentence statement of practice that the
+ * deeper Approach section unpacks below.
  * ═══════════════════════════════════════════════════════════════════════ */
 
 .aiop-vision {
@@ -2200,8 +2201,35 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(48px, 7vw, 80px);
+  gap: clamp(40px, 5vw, 64px);
   text-align: center;
+}
+
+/* Section title — centered, max-width tight enough to keep the line
+   break on small viewports natural ("The Adoption / Automation
+   Flywheel."). Inherits the display serif + italic em rhythm from
+   `.aiop-section-title`; we just override the default left-aligned
+   margin so the title sits on the section axis. */
+.aiop-vision__title {
+  margin: 0 auto;
+  text-align: center;
+  max-width: 22ch;
+}
+
+/* Caption — display-italic statement of practice, mirrors Delaware's
+   `loop-orbit-caption`. Soft ink, generous line-height, max ~62ch so
+   the sentence breaks gracefully without becoming a paragraph block. */
+.aiop-vision__caption {
+  margin: 0 auto;
+  max-width: 62ch;
+  text-align: center;
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(17px, 1.6vw, 21px);
+  line-height: 1.5;
+  letter-spacing: -0.012em;
+  color: var(--aiop-ink-soft);
 }
 
 
@@ -2271,18 +2299,6 @@
   align-items: baseline;
   gap: 14px;
 }
-
-.aiop-approach__n {
-  font-family: var(--aiop-mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  color: var(--aiop-gold-bright);
-  font-weight: 600;
-}
-
-.aiop-approach__step--violet .aiop-approach__n { color: var(--aiop-violet); }
-.aiop-approach__step--gold   .aiop-approach__n { color: var(--aiop-gold-bright); }
-.aiop-approach__step--sage   .aiop-approach__n { color: var(--aiop-sage); }
 
 .aiop-approach__label {
   margin: 0;
@@ -3923,38 +3939,24 @@
 
 
 /* ═══════════════════════════════════════════════════════════════════════
- * 23 · v3 — Approach / Flywheel polish
+ * 23 · v4 — Approach / Flywheel polish
  *
- * Tighten the section so the head reads like a Linear-style product
- * page above the fold: smaller eyebrow rule, larger thesis, calmer
- * intro density. The three step rows keep their visuals; the close
- * line gains a horizontal rule and centered alignment.
+ * The Vision section above already names and frames the flywheel. This
+ * section opens straight into the three motion rows after a slim
+ * eyebrow + lede stack. No H2 (the named title lives in Vision); the
+ * close line keeps its centered horizontal-rule treatment.
  * ═══════════════════════════════════════════════════════════════════════ */
 
 .aiop-approach__head {
-  display: grid;
-  gap: 18px;
-  align-items: end;
-  max-width: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
   margin-bottom: clamp(40px, 5vw, 64px);
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 880px) {
-  .aiop-approach__head {
-    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
-    gap: 32px;
-  }
-}
-
-.aiop-approach__head .aiop-section-title {
-  margin: 0;
-  max-width: 22ch;
+  max-width: 70ch;
 }
 
 .aiop-approach__head .aiop-section-lede {
   margin: 0;
-  align-self: end;
 }
 
 .aiop-approach__close {

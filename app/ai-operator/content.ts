@@ -101,6 +101,8 @@ export const hero = {
  * ─────────────────────────────────────────────────────────────────── */
 
 export const visionSection = {
+  title: "The Adoption",
+  titleEm: "Automation Flywheel.",
   centerLabel: "Substrate",
   centerSub: "Compounds",
   orbits: [
@@ -108,7 +110,8 @@ export const visionSection = {
     { id: "encode", label: "Encode", position: "bottom-right" },
     { id: "build", label: "Build", position: "bottom-left" },
   ] as const,
-  cta: { label: "See the method", href: "#approach" },
+  caption:
+    "My approach is navigating real work, teaching teams how to encode their expertise, and then building the first capability fast enough so strategy and delivery stay connected.",
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -177,7 +180,6 @@ export type ApproachModal = {
 
 export type ApproachStep = {
   id: "navigate" | "encode" | "build";
-  n: string;
   label: "Navigate" | "Encode" | "Build";
   tone: ApproachTone;
   headline: string;
@@ -190,7 +192,6 @@ export type ApproachStep = {
 export const approachSteps: ApproachStep[] = [
   {
     id: "navigate",
-    n: "01",
     label: "Navigate",
     tone: "violet",
     headline: "Inside the workflow until the patterns surface.",
@@ -253,7 +254,6 @@ export const approachSteps: ApproachStep[] = [
   },
   {
     id: "encode",
-    n: "02",
     label: "Encode",
     tone: "gold",
     headline: "Turn the way the team works into substrate the system can hold.",
@@ -315,7 +315,6 @@ export const approachSteps: ApproachStep[] = [
   },
   {
     id: "build",
-    n: "03",
     label: "Build",
     tone: "sage",
     headline: "Show a working proof on their own deliverable today.",
