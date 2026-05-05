@@ -1869,3 +1869,1749 @@
     grid-column: 2;
   }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 14 · v2 — Hero working-motion orbit
+ *
+ * Ported from the Aether home hero. Two concentric rings (dashed
+ * violet outer, solid hairline inner) host four pills positioned at
+ * top, right, bottom-left, bottom-right. A central "Substrate /
+ * Compounds" core anchors the geometry. Each pill carries a small
+ * coloured dot that matches the Approach section accents (Navigate
+ * violet, Encode gold, Build sage, Learn slate) so the orbit reads as
+ * the same vocabulary the rest of the page uses.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+/* Soft halo behind the orbit — subtle violet/gold/sage gradients echoing
+   the Aether hero panel halo. Confined to the panel via `inset: 0`
+   instead of `overflow: hidden` so the gold corner chamfers (panel
+   ::before / ::after) keep peeking through. */
+.aiop-hero__panel--orbit {
+  background: linear-gradient(180deg, var(--aiop-card-2), var(--aiop-card));
+  padding-bottom: 32px;
+}
+
+.aiop-hero__panel-halo {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 45% at 30% 0%, rgba(98, 67, 185, 0.20), transparent 65%),
+    radial-gradient(ellipse 40% 35% at 0% 80%, rgba(184, 135, 40, 0.14), transparent 65%),
+    radial-gradient(ellipse 40% 35% at 100% 90%, rgba(79, 107, 74, 0.14), transparent 65%);
+  opacity: 0.85;
+  z-index: 0;
+}
+
+.aiop-hero__panel--orbit > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* The orbit container is a square aspect-ratio box centered in the
+   panel. All children are absolutely positioned against this box so
+   the visual stays proportional at every viewport. */
+.aiop-orbit {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  margin: 12px auto 0;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+}
+
+.aiop-orbit__ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.aiop-orbit__ring--outer {
+  inset: 8%;
+  border: 1px dashed rgba(98, 67, 185, 0.32);
+}
+
+.aiop-orbit__ring--inner {
+  inset: 24%;
+  border: 1px solid var(--aiop-rule);
+}
+
+/* Pills are floated on the orbit perimeter. The shared chrome carries
+   a hairline border and a small drop shadow; per-pill positioning sets
+   the location, per-id rules colour the dot. */
+.aiop-orbit__pill {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+  border-radius: 999px;
+  font-family: var(--aiop-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--aiop-ink-soft);
+  box-shadow: 0 4px 14px rgba(26, 22, 18, 0.06);
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.aiop-orbit__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.aiop-orbit__pill--navigate .aiop-orbit__dot { background: var(--aiop-violet); }
+.aiop-orbit__pill--encode   .aiop-orbit__dot { background: var(--aiop-gold-bright); }
+.aiop-orbit__pill--build    .aiop-orbit__dot { background: var(--aiop-sage); }
+.aiop-orbit__pill--learn    .aiop-orbit__dot { background: var(--aiop-slate); }
+
+.aiop-orbit__pill--top {
+  top: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.aiop-orbit__pill--right {
+  top: 44%;
+  right: 0;
+}
+
+.aiop-orbit__pill--bottom-left {
+  bottom: 4%;
+  left: 12%;
+}
+
+.aiop-orbit__pill--bottom-right {
+  bottom: 24%;
+  right: 4%;
+}
+
+/* Central substrate core — round, soft-gradient, with the display
+   wordmark on top of a mono caps subline. */
+.aiop-orbit__core {
+  position: relative;
+  z-index: 2;
+  width: 46%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: linear-gradient(160deg, var(--aiop-card-2), var(--aiop-card-soft));
+  border: 1px solid var(--aiop-rule);
+  box-shadow: 0 8px 24px rgba(26, 22, 18, 0.10);
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 14px;
+}
+
+.aiop-orbit__core strong {
+  display: block;
+  font-family: var(--aiop-display);
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  color: var(--aiop-ink);
+}
+
+.aiop-orbit__core span {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--aiop-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .aiop-orbit {
+    max-width: 320px;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 15 · v2 — Approach (Navigate, Encode, Build) sections
+ *
+ * Three alternating rows. Each row pairs a copy column with an
+ * executive-level visual. The middle row reverses to keep the rhythm
+ * asymmetric. Each row has a "practice in motion" CTA that opens a
+ * Heimdall-style modal.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-approach {
+  background: linear-gradient(180deg, var(--aiop-paper) 0%, var(--aiop-paper-2) 100%);
+  border-block: 1px solid var(--aiop-rule);
+}
+
+.aiop-approach__head {
+  margin-bottom: 56px;
+  display: grid;
+  gap: 18px;
+  max-width: 60ch;
+}
+
+.aiop-approach__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+}
+
+.aiop-approach__step {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(40px, 6vw, 72px);
+  align-items: center;
+  padding-block: clamp(56px, 8vw, 88px);
+}
+
+.aiop-approach__step + .aiop-approach__step {
+  border-top: 1px solid var(--aiop-rule-soft);
+}
+
+.aiop-approach__step--reverse > .aiop-approach__copy {
+  order: 2;
+}
+
+@media (max-width: 880px) {
+  .aiop-approach__step {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .aiop-approach__step--reverse > .aiop-approach__copy {
+    order: unset;
+  }
+}
+
+.aiop-approach__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.aiop-approach__head-row {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.aiop-approach__n {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--aiop-gold-bright);
+  font-weight: 600;
+}
+
+.aiop-approach__step--violet .aiop-approach__n { color: var(--aiop-violet); }
+.aiop-approach__step--gold   .aiop-approach__n { color: var(--aiop-gold-bright); }
+.aiop-approach__step--sage   .aiop-approach__n { color: var(--aiop-sage); }
+
+.aiop-approach__label {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: clamp(28px, 3.4vw, 44px);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  color: var(--aiop-ink);
+}
+
+.aiop-approach__step--violet .aiop-approach__label { color: var(--aiop-violet); }
+.aiop-approach__step--gold   .aiop-approach__label { color: var(--aiop-gold-bright); }
+.aiop-approach__step--sage   .aiop-approach__label { color: var(--aiop-sage); }
+
+.aiop-approach__headline {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-size: clamp(22px, 2.4vw, 28px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.012em;
+  color: var(--aiop-ink);
+  max-width: 22ch;
+}
+
+.aiop-approach__body {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--aiop-ink-soft);
+  max-width: 52ch;
+}
+
+.aiop-approach__signal {
+  margin: 0;
+  padding: 12px 14px;
+  border-left: 2px solid var(--aiop-gold-bright);
+  background: var(--aiop-card-soft);
+  display: grid;
+  gap: 4px;
+  max-width: 44ch;
+  font-family: var(--aiop-mono);
+}
+
+.aiop-approach__step--violet .aiop-approach__signal { border-left-color: var(--aiop-violet); }
+.aiop-approach__step--gold   .aiop-approach__signal { border-left-color: var(--aiop-gold-bright); }
+.aiop-approach__step--sage   .aiop-approach__signal { border-left-color: var(--aiop-sage); }
+
+.aiop-approach__signal dt {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  margin: 0;
+}
+
+.aiop-approach__signal dd {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--aiop-ink);
+  font-family: var(--aiop-body);
+  font-weight: 500;
+}
+
+.aiop-approach__cta {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  margin-top: 4px;
+  background: transparent;
+  border: 0;
+  color: var(--aiop-gold-bright);
+  font-family: var(--aiop-mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 140ms ease;
+}
+
+.aiop-approach__cta::before {
+  content: "";
+  width: 32px;
+  height: 1px;
+  background: currentColor;
+}
+
+.aiop-approach__step--violet .aiop-approach__cta { color: var(--aiop-violet); }
+.aiop-approach__step--gold   .aiop-approach__cta { color: var(--aiop-gold-bright); }
+.aiop-approach__step--sage   .aiop-approach__cta { color: var(--aiop-sage); }
+
+.aiop-approach__cta-arrow {
+  transition: transform 140ms ease;
+}
+
+.aiop-approach__cta:hover {
+  color: var(--aiop-ink);
+}
+
+.aiop-approach__cta:hover .aiop-approach__cta-arrow {
+  transform: translateX(3px);
+}
+
+.aiop-approach__visual {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+}
+
+.aiop-approach__close {
+  margin: 56px 0 0;
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: clamp(17px, 1.6vw, 20px);
+  line-height: 1.45;
+  color: var(--aiop-ink-soft);
+  max-width: 68ch;
+  border-top: 1px solid var(--aiop-rule);
+  padding-top: 32px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 16 · v2 — Approach visuals
+ *
+ *   .aiop-rollout    Navigate visual: cohort journey + surfaces.
+ *   .aiop-substrate  Encode visual: dark substrate stack with inputs.
+ *   .aiop-engine     Build visual: engine + headless surfaces.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+/* — Rollout (Navigate) — */
+
+.aiop-rollout {
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-strong);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  flex: 1;
+}
+
+.aiop-rollout__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+.aiop-rollout__title {
+  font-family: var(--aiop-display);
+  font-size: 18px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--aiop-ink);
+}
+
+.aiop-rollout__sub {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-rollout__stages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.aiop-rollout__stage {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--aiop-card-soft);
+  border: 1px solid var(--aiop-rule);
+  position: relative;
+}
+
+.aiop-rollout__stage-tag {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--aiop-violet);
+  font-weight: 600;
+}
+
+.aiop-rollout__stage-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--aiop-ink);
+}
+
+.aiop-rollout__stage-arrow {
+  color: var(--aiop-violet);
+  font-size: 14px;
+  font-family: var(--aiop-mono);
+  margin: 0 -2px;
+}
+
+.aiop-rollout__surfaces {
+  list-style: none;
+  margin: 0;
+  padding: 14px 0 0;
+  border-top: 1px dashed var(--aiop-rule);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.aiop-rollout__surface {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--aiop-rule);
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--aiop-ink);
+  background: var(--aiop-card);
+}
+
+.aiop-rollout__surface-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--aiop-violet);
+  flex-shrink: 0;
+}
+
+.aiop-rollout__surface--violet .aiop-rollout__surface-dot { background: var(--aiop-violet); }
+.aiop-rollout__surface--gold   .aiop-rollout__surface-dot { background: var(--aiop-gold-bright); }
+.aiop-rollout__surface--sage   .aiop-rollout__surface-dot { background: var(--aiop-sage); }
+.aiop-rollout__surface--slate  .aiop-rollout__surface-dot { background: var(--aiop-slate); }
+
+.aiop-rollout__foot {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  border-top: 1px solid var(--aiop-rule-soft);
+  padding-top: 12px;
+}
+
+.aiop-rollout__foot-k { color: var(--aiop-violet); font-weight: 600; }
+.aiop-rollout__foot-v { color: var(--aiop-ink); }
+
+
+/* — Substrate (Encode) — */
+
+.aiop-substrate {
+  background: linear-gradient(180deg, #1a1612, #0f0c08);
+  color: #f3ece0;
+  padding: 22px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.aiop-substrate::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 12% 0%, rgba(184, 135, 40, 0.18), transparent 65%),
+    radial-gradient(ellipse 50% 50% at 100% 100%, rgba(184, 135, 40, 0.08), transparent 70%);
+  pointer-events: none;
+}
+
+.aiop-substrate > * {
+  position: relative;
+  z-index: 1;
+}
+
+.aiop-substrate__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(243, 236, 224, 0.15);
+}
+
+.aiop-substrate__head strong {
+  font-family: var(--aiop-display);
+  font-size: 18px;
+  font-style: italic;
+  color: var(--aiop-gold-bright);
+  font-weight: 500;
+}
+
+.aiop-substrate__head span {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(243, 236, 224, 0.7);
+}
+
+.aiop-substrate__layers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: rgba(243, 236, 224, 0.10);
+  border: 1px solid rgba(243, 236, 224, 0.10);
+}
+
+.aiop-substrate__layer {
+  display: grid;
+  grid-template-columns: 88px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  background: #15110d;
+  font-size: 12px;
+}
+
+.aiop-substrate__layer-tag {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-gold-bright);
+  font-weight: 600;
+}
+
+.aiop-substrate__layer-name {
+  color: rgba(243, 236, 224, 0.9);
+}
+
+.aiop-substrate__layer-meta {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: rgba(243, 236, 224, 0.5);
+}
+
+@media (max-width: 480px) {
+  .aiop-substrate__layer {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+.aiop-substrate__inputs {
+  display: grid;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(243, 236, 224, 0.18);
+}
+
+.aiop-substrate__inputs-h {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(243, 236, 224, 0.6);
+  font-weight: 600;
+}
+
+.aiop-substrate__inputs-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.aiop-substrate__input {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 4px;
+  border: 1px solid rgba(243, 236, 224, 0.15);
+  border-radius: 999px;
+  background: rgba(243, 236, 224, 0.04);
+  color: rgba(243, 236, 224, 0.9);
+  font-size: 11.5px;
+}
+
+.aiop-substrate__input-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(243, 236, 224, 0.15);
+  font-family: var(--aiop-mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: rgba(243, 236, 224, 0.95);
+}
+
+.aiop-substrate__input--ink    .aiop-substrate__input-dot { background: rgba(243, 236, 224, 0.20); color: var(--aiop-ink); }
+.aiop-substrate__input--violet .aiop-substrate__input-dot { background: rgba(98, 67, 185, 0.45); }
+.aiop-substrate__input--sage   .aiop-substrate__input-dot { background: rgba(79, 107, 74, 0.5); }
+.aiop-substrate__input--gold   .aiop-substrate__input-dot { background: rgba(184, 135, 40, 0.5); color: var(--aiop-ink); }
+.aiop-substrate__input--slate  .aiop-substrate__input-dot { background: rgba(79, 91, 107, 0.5); }
+
+.aiop-substrate__foot {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(243, 236, 224, 0.6);
+  text-align: center;
+  font-style: normal;
+}
+
+
+/* — Engine (Build) — */
+
+.aiop-engine {
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-strong);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+.aiop-engine__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+.aiop-engine__title {
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  color: var(--aiop-ink);
+  font-weight: 500;
+}
+
+.aiop-engine__sub {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-engine__diagram {
+  display: grid;
+  gap: 14px;
+}
+
+.aiop-engine__core {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background: linear-gradient(180deg, #1a1612, #0f0c08);
+  color: var(--aiop-paper);
+  position: relative;
+}
+
+.aiop-engine__core::before,
+.aiop-engine__core::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--aiop-sage);
+}
+
+.aiop-engine__core::before {
+  top: -1px;
+  left: -1px;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.aiop-engine__core::after {
+  bottom: -1px;
+  right: -1px;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+.aiop-engine__core-l {
+  font-family: var(--aiop-display);
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--aiop-sage);
+}
+
+.aiop-engine__core-r {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(243, 236, 224, 0.7);
+  padding: 3px 8px;
+  border: 1px solid rgba(243, 236, 224, 0.25);
+}
+
+.aiop-engine__surfaces {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.aiop-engine__surface {
+  background: var(--aiop-card-soft);
+  border: 1px solid var(--aiop-rule);
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  align-items: center;
+  gap: 0 10px;
+}
+
+.aiop-engine__surface-icon {
+  grid-row: 1 / span 2;
+  font-family: var(--aiop-mono);
+  font-size: 18px;
+  color: var(--aiop-sage);
+  font-weight: 500;
+  align-self: center;
+}
+
+.aiop-engine__surface-name {
+  font-family: var(--aiop-display);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--aiop-ink);
+  letter-spacing: -0.01em;
+}
+
+.aiop-engine__surface-verb {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--aiop-muted);
+}
+
+.aiop-engine__foot {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  border-top: 1px solid var(--aiop-rule-soft);
+  padding-top: 12px;
+}
+
+.aiop-engine__foot-k { color: var(--aiop-sage); font-weight: 600; }
+.aiop-engine__foot-v { color: var(--aiop-ink); }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 17 · v2 — Cases (Heimdall-style showcase)
+ *
+ * Each case is a row that mirrors Heimdall's `FrameSection`: a sticky
+ * left rail of project metadata + summary + workflow shift + metrics +
+ * stack chips, and a right column carrying the screenshot frame, a
+ * 2x2 capability tile grid, and a "View case detail" CTA. Per-case
+ * accent driven by `--aiop-case-accent`.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-cases {
+  background: linear-gradient(180deg, var(--aiop-paper-2) 0%, var(--aiop-paper) 100%);
+  border-block: 1px solid var(--aiop-rule);
+}
+
+.aiop-cases__head {
+  margin-bottom: 56px;
+  display: grid;
+  gap: 20px;
+}
+
+.aiop-cases__legend {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 16px 0 0;
+  display: grid;
+  gap: 12px;
+  border-top: 1px dashed var(--aiop-rule);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .aiop-cases__legend {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.aiop-cases__legend-item {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.aiop-cases__mode {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--aiop-paper);
+  background: var(--aiop-ink);
+  flex-shrink: 0;
+}
+
+.aiop-cases__mode--repair   { background: var(--aiop-slate); }
+.aiop-cases__mode--compress { background: var(--aiop-gold-bright); color: var(--aiop-ink); }
+.aiop-cases__mode--invent   { background: var(--aiop-violet); }
+
+.aiop-cases__legend-def {
+  font-family: var(--aiop-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: var(--aiop-muted);
+  line-height: 1.45;
+}
+
+.aiop-cases__list {
+  display: grid;
+  gap: 0;
+}
+
+/* Per-case accent token. Set inline via `style` from the JSX so the
+   accent applies to descendant nodes (eyebrow, period, frame ring,
+   metric numerals, CTA) without colour leaking into siblings. */
+.aiop-case-row {
+  --aiop-case-accent: var(--aiop-gold-bright);
+  position: relative;
+  padding-block: clamp(64px, 9vw, 112px);
+}
+
+.aiop-case-row + .aiop-case-row {
+  border-top: 1px solid var(--aiop-rule);
+}
+
+.aiop-case-row--gold   { --aiop-case-accent: var(--aiop-gold-bright); }
+.aiop-case-row--sage   { --aiop-case-accent: var(--aiop-sage); }
+.aiop-case-row--slate  { --aiop-case-accent: var(--aiop-slate); }
+.aiop-case-row--violet { --aiop-case-accent: var(--aiop-violet); }
+
+.aiop-case-row__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* Top meta strip: project number, divider, team eyebrow, status pulse. */
+.aiop-case-row__meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--aiop-rule);
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.aiop-case-row__num {
+  color: var(--aiop-case-accent);
+  font-weight: 600;
+}
+
+.aiop-case-row__num-total {
+  color: var(--aiop-muted);
+  font-weight: 400;
+  letter-spacing: 0.10em;
+}
+
+.aiop-case-row__divider {
+  width: 1px;
+  height: 12px;
+  background: var(--aiop-rule);
+  display: inline-block;
+}
+
+.aiop-case-row__team {
+  color: var(--aiop-ink);
+  flex: 1;
+  min-width: 0;
+}
+
+.aiop-case-row__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--aiop-sage);
+}
+
+.aiop-case-row__status::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--aiop-sage);
+  box-shadow: 0 0 0 3px var(--aiop-sage-soft);
+}
+
+/* The Heimdall frame grid: rail (360px) + shot column. The rail sticks
+   on desktop while the visitor scrolls past the screenshot rotation. */
+.aiop-case-row__grid {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 64px);
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .aiop-case-row__grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+.aiop-case-row__rail {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+@media (min-width: 961px) {
+  .aiop-case-row__rail {
+    position: sticky;
+    top: 88px;
+    align-self: start;
+  }
+}
+
+.aiop-rail-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.aiop-rail-block__eyebrow {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-case-accent);
+  font-weight: 600;
+}
+
+.aiop-case-row__name {
+  margin: 4px 0 0;
+  font-family: var(--aiop-display);
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 500;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  color: var(--aiop-ink);
+}
+
+.aiop-case-row__name em {
+  font-style: italic;
+  color: var(--aiop-case-accent);
+  font-weight: 500;
+}
+
+.aiop-case-row__period {
+  color: var(--aiop-case-accent);
+}
+
+.aiop-case-row__tagline {
+  margin: 4px 0 0;
+  font-family: var(--aiop-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  color: var(--aiop-muted-2);
+  text-transform: uppercase;
+}
+
+.aiop-case-row__subline {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.4;
+  color: var(--aiop-ink-soft);
+  font-weight: 500;
+}
+
+.aiop-case-row__lede {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.6;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-case-row__workflow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.aiop-case-row__workflow-text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--aiop-ink);
+}
+
+.aiop-rail-block--metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px 14px;
+  padding-top: 24px;
+  padding-bottom: 8px;
+  border-top: 1px solid var(--aiop-rule);
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+.aiop-case-row__metric {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.aiop-case-row__metric-v {
+  font-family: var(--aiop-display);
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  color: var(--aiop-ink);
+  line-height: 1;
+}
+
+.aiop-case-row__metric-k {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  line-height: 1.35;
+}
+
+.aiop-case-row__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.aiop-case-row__chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 11px;
+  background: var(--aiop-card-soft);
+  border: 1px solid var(--aiop-rule);
+  border-radius: 999px;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--aiop-ink);
+  font-weight: 400;
+}
+
+/* Right column: screenshot frame, capability tiles, footer with surfaces + CTA. */
+.aiop-case-row__shot {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.aiop-shot-frame {
+  position: relative;
+  border: 1px solid var(--aiop-rule);
+  overflow: hidden;
+  background: #0A0A0A;
+  aspect-ratio: 16 / 11;
+  box-shadow:
+    0 1px 3px rgba(26, 22, 18, 0.06),
+    0 24px 60px -24px rgba(26, 22, 18, 0.28),
+    0 0 0 8px color-mix(in oklab, var(--aiop-case-accent) 12%, transparent);
+}
+
+.aiop-shot-frame > img,
+.aiop-shot-frame .aiop-gallery {
+  width: 100%;
+  height: 100%;
+}
+
+.aiop-shot-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.aiop-case-row__caps {
+  list-style: none;
+  margin: 0;
+  padding: 24px 0 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 40px;
+  border-top: 1px solid var(--aiop-rule);
+}
+
+@media (max-width: 640px) {
+  .aiop-case-row__caps {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.aiop-case-row__cap {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.aiop-case-row__cap-k {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--aiop-ink);
+}
+
+.aiop-case-row__cap-v {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-case-row__shot-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding-top: 12px;
+}
+
+.aiop-case-row__surfaces {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.aiop-case-row__surface {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--aiop-ink);
+}
+
+/* Pill CTA, mirroring Heimdall's `.psec-cta` shape but tinted with the
+   per-case accent on hover instead of brand coral. */
+.aiop-case-row__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--aiop-paper);
+  background: var(--aiop-ink);
+  border: 1px solid var(--aiop-ink);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
+.aiop-case-row__cta:hover {
+  background: var(--aiop-case-accent);
+  border-color: var(--aiop-case-accent);
+  color: var(--aiop-ink);
+  gap: 12px;
+}
+
+.aiop-case-row__cta svg {
+  transition: transform 140ms ease;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 17b · v2 — Screenshot gallery (used by case rows + modal hero)
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-gallery {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.aiop-gallery__track {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.aiop-gallery__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 600ms ease;
+  pointer-events: none;
+}
+
+.aiop-gallery__slide.is-active {
+  opacity: 1;
+  position: relative;
+  pointer-events: auto;
+}
+
+.aiop-gallery__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.aiop-gallery__dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  padding: 6px 10px;
+  background: color-mix(in oklab, var(--aiop-ink) 70%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 999px;
+  z-index: 2;
+}
+
+.aiop-gallery__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(243, 236, 224, 0.45);
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  transition: background 200ms ease, border-color 200ms ease, transform 200ms ease;
+}
+
+.aiop-gallery__dot:hover {
+  border-color: var(--aiop-paper);
+  transform: scale(1.15);
+}
+
+.aiop-gallery__dot.is-active {
+  background: var(--aiop-case-accent, var(--aiop-paper));
+  border-color: var(--aiop-case-accent, var(--aiop-paper));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiop-gallery__slide { transition: none; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 18 · v2 — Selected case · CTA fine print
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-case__cta-fine {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.10em;
+  color: var(--aiop-muted);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 19 · v2 — Modal shell + body
+ *
+ * Inspired by the Heimdall ProjectModal: an overlay with a centered
+ * inset card. Per-item accent injected via `--aiop-modal-accent`.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: color-mix(in oklab, var(--aiop-ink) 60%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(16px, 3vw, 32px);
+  overflow-y: auto;
+  animation: aiopModalFade 200ms ease;
+}
+
+@keyframes aiopModalFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes aiopModalRise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.aiop-modal {
+  --aiop-modal-accent: var(--aiop-gold-bright);
+  width: min(960px, 100%);
+  max-height: calc(100dvh - 64px);
+  background: var(--aiop-paper);
+  border: 1px solid var(--aiop-rule-strong);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: auto 0;
+  animation: aiopModalRise 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.aiop-modal::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--aiop-modal-accent);
+  z-index: 1;
+}
+
+.aiop-modal__close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--aiop-card-soft);
+  border: 1px solid var(--aiop-rule);
+  color: var(--aiop-modal-accent);
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+
+.aiop-modal__close:hover {
+  background: var(--aiop-modal-accent);
+  color: var(--aiop-paper);
+  border-color: var(--aiop-modal-accent);
+}
+
+.aiop-modal__scroll {
+  overflow-y: auto;
+  padding: clamp(40px, 5vw, 56px) clamp(28px, 5vw, 56px) clamp(32px, 4vw, 48px);
+}
+
+.aiop-modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.aiop-modal__hero {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+.aiop-eyebrow--violet { color: var(--aiop-violet); }
+.aiop-eyebrow--violet::before { background: var(--aiop-violet); }
+.aiop-eyebrow--gold { color: var(--aiop-gold-bright); }
+.aiop-eyebrow--gold::before { background: var(--aiop-gold-bright); }
+.aiop-eyebrow--sage { color: var(--aiop-sage); }
+.aiop-eyebrow--sage::before { background: var(--aiop-sage); }
+.aiop-eyebrow--slate { color: var(--aiop-slate); }
+.aiop-eyebrow--slate::before { background: var(--aiop-slate); }
+
+.aiop-modal__title {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-weight: 500;
+  color: var(--aiop-ink);
+}
+
+.aiop-modal__title em {
+  font-style: italic;
+  color: var(--aiop-modal-accent);
+  font-weight: 500;
+}
+
+.aiop-modal__tagline {
+  margin: -2px 0 0;
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-modal__lede {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--aiop-ink-soft);
+  max-width: 60ch;
+}
+
+/* Modal screenshot — mirrors `.aiop-shot-frame` but with a softer
+   shadow and the modal accent ring driven by `--aiop-modal-accent`. */
+.aiop-modal__shot {
+  margin: 8px 0 4px;
+  position: relative;
+  border: 1px solid var(--aiop-rule);
+  overflow: hidden;
+  background: #0A0A0A;
+  aspect-ratio: 16 / 10;
+  box-shadow:
+    0 1px 3px rgba(26, 22, 18, 0.06),
+    0 24px 48px -24px rgba(26, 22, 18, 0.22),
+    0 0 0 6px color-mix(in oklab, var(--aiop-modal-accent) 12%, transparent);
+}
+
+.aiop-modal__shot > img,
+.aiop-modal__shot .aiop-gallery {
+  width: 100%;
+  height: 100%;
+}
+
+.aiop-modal__shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+
+.aiop-modal__meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0;
+  margin: 12px 0 0;
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-rule);
+}
+
+.aiop-modal__meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  background: var(--aiop-card);
+  font-family: var(--aiop-mono);
+}
+
+.aiop-modal__meta-row dt {
+  margin: 0;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-modal__meta-row dd {
+  margin: 0;
+  font-size: 13px;
+  color: var(--aiop-ink);
+}
+
+.aiop-modal__section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.aiop-modal__section-heading {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: var(--aiop-ink);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.aiop-modal__section-heading::before {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: var(--aiop-modal-accent);
+}
+
+.aiop-modal__bullets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.aiop-modal__bullets li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-modal__bullets li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  background: var(--aiop-modal-accent);
+}
+
+.aiop-modal__caps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 36px;
+}
+
+@media (max-width: 720px) {
+  .aiop-modal__caps {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aiop-modal__cap {
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.aiop-modal__cap-n {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--aiop-modal-accent);
+  font-weight: 600;
+  padding-top: 3px;
+}
+
+.aiop-modal__cap-k {
+  margin: 0 0 4px;
+  font-family: var(--aiop-display);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--aiop-ink);
+}
+
+.aiop-modal__cap-v {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-modal__compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--aiop-rule);
+  border: 1px solid var(--aiop-rule-strong);
+}
+
+@media (max-width: 720px) {
+  .aiop-modal__compare {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aiop-modal__compare-col {
+  background: var(--aiop-card-soft);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.aiop-modal__compare-col--after {
+  background: var(--aiop-card);
+  border-left: 2px solid var(--aiop-modal-accent);
+}
+
+@media (max-width: 720px) {
+  .aiop-modal__compare-col--after {
+    border-left: 0;
+    border-top: 2px solid var(--aiop-modal-accent);
+  }
+}
+
+.aiop-modal__compare-label {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-modal__compare-text {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--aiop-ink);
+}
+
+.aiop-modal__body-text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--aiop-ink-soft);
+  max-width: 60ch;
+}
+
+.aiop-modal__stack {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  line-height: 1.55;
+  letter-spacing: 0.04em;
+  color: var(--aiop-muted);
+}
+
+.aiop-modal__signal {
+  margin: 8px 0 0;
+  padding: 18px 22px;
+  background: var(--aiop-card-soft);
+  border-left: 3px solid var(--aiop-modal-accent);
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--aiop-ink);
+}

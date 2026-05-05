@@ -1,22 +1,22 @@
 /*
  * AI Operator landing — content module.
  *
- * Public portfolio page for Vincent Buyssens. Maps the embedded
- * forward-deployed operator profile (workflows + tools + coaching +
- * pattern scaling) onto the proof already in the world: Loop's AI
- * mandate, the four shipped systems (Mímir, Heimdall, Vesper, Babylon),
- * the headless substrate move, and the HarvestFields case as a
- * standalone demonstration of strategy → engine → surface delivery.
+ * v2 narrative arc: a startup-style landing page about the approach,
+ * not a CV. The CV holds the personal record; this page holds the
+ * working method, made legible through one framework: Navigate,
+ * Encode, Build. Each section is self-contained and the page reads
+ * top-to-bottom as a single argument.
  *
  * Page arc:
- *   01 Hero        — Name the role. State the motion.
- *   02 Motions     — Four practice surfaces of the embedded role.
- *   03 Loop proof  — Stat band + the embedded mandate in one paragraph.
- *   04 Systems     — Four production systems shipped from the inside.
- *   05 Headless    — Same engine, many surfaces. Skills teach. MCP runs.
- *   06 HarvestFields — Compressed case: brand speed = brand safety.
- *   07 Pattern     — Pre-AI receipts: same instincts, longer record.
- *   08 CTA         — Email, LinkedIn, CV.
+ *   01 Hero          — Name the framework. Navigate. Encode. Build.
+ *   02 Approach      — The three motions, each with an executive-level
+ *                      visual and a Heimdall-style pop-out for detail.
+ *   03 Cases         — Showcase grid of four production systems, each
+ *                      with a modal walk-through.
+ *   04 Headless      — Architecture, not a dashboard. The interstitial
+ *                      that sets up the selected case.
+ *   05 Selected case — HarvestFields, where everything comes together.
+ *   06 CTA           — One ask. Smallest commitment that starts work.
  *
  * Voice: direct, punchy, warm. Strategy and building stay in the same
  * hands. No em-dashes. One thought per line when the thought matters.
@@ -29,300 +29,564 @@
 export const meta = {
   brandLeft: "Vincent Buyssens",
   brandSub: "AI Operator · Forward-Deployed · Antwerp",
-  status: "Embedded at Loop Earplugs",
+  status: "Embedded engagements available",
   links: [
-    { id: "motions", label: "Motions", href: "#motions" },
-    { id: "proof", label: "Loop proof", href: "#proof" },
-    { id: "systems", label: "Systems", href: "#systems" },
+    { id: "approach", label: "Approach", href: "#approach" },
+    { id: "cases", label: "Cases", href: "#cases" },
     { id: "headless", label: "Headless", href: "#headless" },
-    { id: "harvestfields", label: "Case", href: "#harvestfields" },
+    { id: "harvestfields", label: "Selected case", href: "#harvestfields" },
   ],
   cta: { label: "Get in touch", href: "#cta" },
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
- * Hero
+ * Hero — name the framework, show the loop
  * ─────────────────────────────────────────────────────────────────── */
 
 export const hero = {
   eyebrow: "Forward-deployed AI operator",
   titleLines: [
-    "I sit alongside",
-    "marketing & creative teams",
-    { em: "while AI rewires how they work." },
+    "Navigate. Encode.",
+    { em: "Build." },
   ] as const,
   lede:
-    "Embedded with the team. Building the tool inside the work. Coaching until they don't need me. Turning what works into a pattern other teams can pick up.",
+    "Embedded where strategy turns into practice. I help teams navigate AI inside real work, encode what makes the work good, and build the reusable capability underneath it.",
   meta: [
     { k: "BASED", v: "Antwerp · CET" },
     { k: "ROLE", v: "Lead Creative Technologist" },
-    { k: "EMBEDDED", v: "Loop Earplugs" },
     { k: "PRACTICE", v: "Thoughtform · Founder" },
+    { k: "AVAILABLE", v: "Embedded · sprint · keynote" },
   ],
   actions: [
-    { id: "cv", label: "Read the CV", href: "#cta", primary: true },
-    { id: "systems", label: "See the tools", href: "#systems" },
+    { id: "talk", label: "Talk about your team", href: "#cta", primary: true },
+    { id: "cases", label: "See the cases", href: "#cases" },
   ],
+  /* Working-motion orbit (ported from the Aether home hero). The four
+     pills sit on an implicit ring around a central substrate core; the
+     loop reads "Navigate, Encode, Build — and the substrate compounds
+     as the team learns from each turn." */
   panel: {
-    label: "Operating motion",
-    sub: "Navigate · Build · Coach · Scale",
-    version: "Live · v0.4",
-    layers: [
-      { tag: "01", body: "Navigate", note: "Inside the workflow until the patterns surface." },
-      { tag: "02", body: "Build", note: "The tool, agent, or skill. In the same hands. In real time." },
-      { tag: "03", body: "Coach", note: "Until the cohort starts every task with an AI tool." },
-      { tag: "04", body: "Scale", note: "What worked for one marketer becomes a pattern peers inherit." },
+    label: "Working motion",
+    live: "Live · v0.4",
+    centerLabel: "Substrate",
+    centerSub: "Compounds",
+    orbits: [
+      { id: "navigate", label: "Navigate", position: "top" },
+      { id: "encode", label: "Encode", position: "right" },
+      { id: "build", label: "Build", position: "bottom-left" },
+      { id: "learn", label: "Learn", position: "bottom-right" },
     ] as const,
-    foot: "Substrate compounds. Models stay disposable.",
   },
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
- * Motions — the four practice surfaces of the embedded role
+ * Approach — Navigate, Encode, Build (the flywheel, explained)
+ *
+ * Three self-contained sections. Each one pairs a copy column with an
+ * executive-level visual, plus a Heimdall-style pop-out card that goes
+ * one level deeper. The visuals draw inspiration from the Loop AI
+ * adoption rollout (Navigate), the Aether substrate card (Encode),
+ * and the headless engine concept (Build).
  * ─────────────────────────────────────────────────────────────────── */
 
-export const motionsSection = {
-  eyebrow: "What the role actually is",
-  title: "Four motions.",
-  titleEm: "One operator, in the same hands.",
+export const approachSection = {
+  eyebrow: "The flywheel",
+  title: "One method.",
+  titleEm: "Three motions that compound.",
   lede:
-    "The bottleneck isn't ideas about AI. It's the gap between strategy and shipping. I close that gap by staying inside the work, in real time, with the team that owns it.",
+    "Adoption and building are the same flywheel. Teaching teams to navigate AI leads to encoding workflows. Encoded workflows lead to tools. Tools inspire more navigation. Each turn makes the next turn lighter.",
+  close:
+    "The same loop ran on Vesper, Heimdall, Mímir, Babylon, and the company-wide Claude rollout at Loop.",
 } as const;
 
-export type Motion = {
-  n: string;
-  id: "navigate" | "build" | "coach" | "scale";
-  name: string;
-  headline: string;
-  body: string;
-  artifacts: string[];
+export type ApproachTone = "violet" | "gold" | "sage";
+
+export type RolloutVisual = {
+  kind: "rollout";
+  title: string;
+  sub: string;
+  stages: { tag: string; label: string }[];
+  surfaces: { tone: "violet" | "gold" | "sage" | "slate"; name: string }[];
+  meta: { k: string; v: string };
 };
 
-export const motions: Motion[] = [
+export type SubstrateVisual = {
+  kind: "substrate";
+  title: string;
+  sub: string;
+  layers: { tag: string; name: string; meta: string }[];
+  inputs: {
+    initial: string;
+    tone: "violet" | "gold" | "sage" | "slate" | "ink";
+    label: string;
+  }[];
+  foot: string;
+};
+
+export type EngineVisual = {
+  kind: "engine";
+  title: string;
+  sub: string;
+  surfaces: { icon: string; name: string; verb: string }[];
+  meta: { k: string; v: string };
+};
+
+export type ApproachVisual = RolloutVisual | SubstrateVisual | EngineVisual;
+
+export type ApproachModal = {
+  eyebrow: string;
+  title: string;
+  titleEm: string;
+  lede: string;
+  meta: { k: string; v: string }[];
+  sections: { heading: string; bullets: string[] }[];
+  signal: string;
+};
+
+export type ApproachStep = {
+  id: "navigate" | "encode" | "build";
+  n: string;
+  label: "Navigate" | "Encode" | "Build";
+  tone: ApproachTone;
+  headline: string;
+  body: string;
+  signal: { k: string; v: string };
+  visual: ApproachVisual;
+  modal: ApproachModal;
+};
+
+export const approachSteps: ApproachStep[] = [
   {
-    n: "01",
     id: "navigate",
-    name: "Workflow Transformation",
-    headline: "Find the workflow that, if transformed, changes everything else.",
+    n: "01",
+    label: "Navigate",
+    tone: "violet",
+    headline: "Inside the workflow until the patterns surface.",
     body:
-      "Sit with one team inside their highest-leverage routine. Watch where judgment actually happens. Surface the parts that should be encoded, automated, or re-shaped. Field notes, not slide decks.",
-    artifacts: [
-      "Embedded discovery · 1–2 weeks per cohort",
-      "Workflow brief · before / after",
-      "Maturity model · per marketer",
-    ],
+      "Sit alongside the team in their highest-leverage routines. Watch where judgment actually happens. Coach the cohort from awareness to first win to self-sufficient. Workshops, AI Stewards, showcases, and quick-starts running in parallel — pull, push, and structure together.",
+    signal: { k: "Outcome", v: "A workflow brief and a maturity model per marketer." },
+    visual: {
+      kind: "rollout",
+      title: "Cohort journey",
+      sub: "Awareness → Self-sufficient",
+      stages: [
+        { tag: "01", label: "Aware" },
+        { tag: "02", label: "First win" },
+        { tag: "03", label: "Regular use" },
+        { tag: "04", label: "Transformed" },
+        { tag: "05", label: "Self-sufficient" },
+      ],
+      surfaces: [
+        { tone: "violet", name: "Workshops" },
+        { tone: "gold", name: "Quick-starts" },
+        { tone: "sage", name: "AI Stewards" },
+        { tone: "slate", name: "Showcases" },
+      ],
+      meta: { k: "Pattern", v: "Pull · push · structure" },
+    },
+    modal: {
+      eyebrow: "01 · Navigate",
+      title: "What navigation looks like",
+      titleEm: "across an actual cohort.",
+      lede:
+        "Not 20 workshops a week. One strategic session per team. Navigate leads, the cohort documents what works, AI Stewards pick it up from there. Pull (early adopters), push (workshops, steward support), and structure (onboarding, showcases) running together.",
+      meta: [
+        { k: "DURATION", v: "Continuous · 1–2 weeks per team" },
+        { k: "ARTIFACT", v: "Workflow brief · maturity model" },
+        { k: "OWNER", v: "Operator + cohort lead" },
+      ],
+      sections: [
+        {
+          heading: "How the work runs",
+          bullets: [
+            "Embedded discovery alongside one team for 1–2 weeks per cohort.",
+            "Workshops and quick-start sessions tuned to the team's actual deliverables.",
+            "AI Stewards activated as in-team multipliers so the cohort can extend the work without me.",
+            "Bi-weekly showcases turn one team's wins into another team's signal.",
+            "Maturity model per marketer: aware → first win → regular → transformed → self-sufficient.",
+          ],
+        },
+        {
+          heading: "What it produced at Loop",
+          bullets: [
+            "Claude rollout from 5 to 130+ users across legal, finance, analytics, marketing, and studio.",
+            "90% of briefings now start with an AI tool.",
+            "Bottom-up adoption met top-down structure: a peer-coordination model with Tech, People, Legal.",
+            "Junior PM and Full-Stack Engineer hires planned to remove single-person dependency.",
+          ],
+        },
+      ],
+      signal: "Adoption isn't a campaign. It's a cohort journey with infrastructure behind every step.",
+    },
   },
   {
+    id: "encode",
     n: "02",
+    label: "Encode",
+    tone: "gold",
+    headline: "Turn the way the team works into substrate the system can hold.",
+    body:
+      "Field notes become legible substrate. Voice rules, examples, sources, loops. The operator drafts; the team ratifies; engineering versions. Plain text the team owns. Reviewable like code. The asset that survives the next model and the next interface.",
+    signal: { k: "Outcome", v: "A Skill the team owns. Versioned. Headless." },
+    visual: {
+      kind: "substrate",
+      title: "Aether layer",
+      sub: "Encoded substrate · headless",
+      layers: [
+        { tag: "Rules", name: "how the team decides", meta: "12 entries" },
+        { tag: "Examples", name: "what good looks like", meta: "38 artifacts" },
+        { tag: "Sources", name: "the data it can read", meta: "3 connectors" },
+        { tag: "Loops", name: "who confirms it", meta: "2 gates" },
+      ],
+      inputs: [
+        { initial: "B", tone: "ink", label: "Brand book" },
+        { initial: "L", tone: "violet", label: "Lead's judgment" },
+        { initial: "P", tone: "sage", label: "Past work" },
+        { initial: "R", tone: "gold", label: "Regs & policy" },
+        { initial: "F", tone: "slate", label: "Review feedback" },
+      ],
+      foot: "Connects to your data — doesn't replace it.",
+    },
+    modal: {
+      eyebrow: "02 · Encode",
+      title: "What encoding looks like",
+      titleEm: "as substrate the team owns.",
+      lede:
+        "Skills capture brand voice, claim registries, audience registers, decision rules. Each Skill is plain text the team can read and reviewable like code. Drafts by the operator, ratified by the team, versioned in Git. Headless from day one — Claude today, Gemini tomorrow, MCP everywhere.",
+      meta: [
+        { k: "CADENCE", v: "Drafted weekly · ratified by review" },
+        { k: "ARTIFACT", v: "Skill bundle (Markdown + examples)" },
+        { k: "OWNER", v: "Cohort + operator" },
+      ],
+      sections: [
+        {
+          heading: "Anatomy of a Skill",
+          bullets: [
+            "Rules — plain conditions and locked policies the agent enforces.",
+            "Examples — saved past work the Skill should imitate.",
+            "Sources — briefs, boards, registries, calendars, linked safely.",
+            "Loops — who reviews, where escalations go, what gets logged.",
+          ],
+        },
+        {
+          heading: "Encoded at Loop",
+          bullets: [
+            "10+ reusable Skills shipped: tone of voice, paid social copy, marketplace, CRM, GenAI prompting, presentations, localization, naming, employer branding, constellations.",
+            "Skills span Studio, Performance, CRM, E-commerce, People, Legal, and UGC.",
+            "Each Skill exposed via MCP so any model-powered surface can call it.",
+            "Models change. Tools change. The Skill carries forward.",
+          ],
+        },
+      ],
+      signal: "Encoding is the hinge. Without it, every prompt starts from zero.",
+    },
+  },
+  {
     id: "build",
-    name: "Tool & Agent Building",
+    n: "03",
+    label: "Build",
+    tone: "sage",
     headline: "Show a working proof on their own deliverable today.",
     body:
-      "Build the tool, agent, automation, or Skill that transforms it. Custom to the team's deliverables and rhythm. In the same hands as the strategy. Most of the time, on their screen, while we work.",
-    artifacts: [
-      "Skills · MCP servers · Headless APIs",
-      "Agents · Webhooks · Cron",
-      "Custom internal apps · Cursor / Claude Code",
-    ],
-  },
-  {
-    n: "03",
-    id: "coach",
-    name: "Embedded Coaching",
-    headline: "From awareness to first win to self-sufficient.",
-    body:
-      "Walk every marketer through the journey: aware of AI, first win, regular integration, full workflow transformation, self-sufficient. Activate AI Stewards as in-team multipliers so the cohort can extend the work without me.",
-    artifacts: [
-      "Workshops · curriculum · 1:1 coaching",
-      "AI Steward activation",
-      "Adoption tracking against a maturity model",
-    ],
-  },
-  {
-    n: "04",
-    id: "scale",
-    name: "Pattern Scaling",
-    headline: "What worked for one marketer becomes a pattern peers inherit.",
-    body:
-      "Recognize patterns across the cohort and scale what works. A tool built for one marketer becomes a Skill for their peers. Document tools, playbooks, and transformation patterns so the next operator picks them up cleanly.",
-    artifacts: [
-      "Reusable Skills · documented",
-      "Cross-team rollouts",
-      "Operator playbooks for the next cohort",
-    ],
+      "Build the tool, agent, automation, or Skill that transforms the workflow. In the same hands as the strategy. Most often on their screen, while we work. Vibe-coded inside days; hardened to production over weeks; exposed headlessly so every surface inherits the same engine.",
+    signal: { k: "Outcome", v: "A thin running surface the team uses daily." },
+    visual: {
+      kind: "engine",
+      title: "Same engine. Many surfaces.",
+      sub: "Build the engine, not the dashboard.",
+      surfaces: [
+        { icon: "⌘", name: "Chat", verb: "Claude · Cursor" },
+        { icon: "{ }", name: "API", verb: "MCP · REST" },
+        { icon: "◐", name: "Agent", verb: "Scheduled · autonomous" },
+        { icon: "⤴", name: "In-tool", verb: "Slack · Figma · Monday" },
+      ],
+      meta: { k: "Posture", v: "Engine first · interface last" },
+    },
+    modal: {
+      eyebrow: "03 · Build",
+      title: "What building looks like",
+      titleEm: "from prototype to production.",
+      lede:
+        "Vibe-coded prototypes within days. Hardened to production over weeks by an engineer paired with the operator. Live next to the work in Slack, Figma, Monday, custom UIs. Same engine exposed via REST, MCP, scheduled agents, in-tool buttons. The interface is one face of many.",
+      meta: [
+        { k: "TEMPO", v: "Days to demo · weeks to harden" },
+        { k: "SHAPE", v: "Engine + surfaces · headless first" },
+        { k: "STACK", v: "Next.js · Supabase · Anthropic · MCP" },
+      ],
+      sections: [
+        {
+          heading: "How it ships",
+          bullets: [
+            "Day-one prototype on the team's actual deliverable. No deck-first detours.",
+            "Engineer hardens what the operator vibe-codes; loop keeps turning while it ships.",
+            "Headless API + MCP server from day one so the engine isn't tied to one UI.",
+            "Token allowlists, scopes, audit log, durable rate buckets — policy lives in one verifier.",
+          ],
+        },
+        {
+          heading: "What it produced at Loop",
+          bullets: [
+            "Four production systems shipped: Mímir, Heimdall, Vesper, Babylon.",
+            "Three of them now expose their substrate headlessly via MCP.",
+            "Same engines answer Claude, Cursor, Slack, dashboards, and in-tool buttons.",
+            "Each system started inside a single team's bottleneck. Each one survived adoption.",
+          ],
+        },
+      ],
+      signal: "The dashboard is one face of many. The engine underneath is the asset.",
+    },
   },
 ];
 
 /* ─────────────────────────────────────────────────────────────────────
- * Loop proof — stat band + embedded mandate
+ * Cases — Heimdall-style showcase grid
+ *
+ * Four production systems, each its own row. The grid mirrors the
+ * Heimdall showcase pattern: a left rail with name, status, summary,
+ * and capabilities; an accented frame on the right with capability
+ * highlights; a "View detail" CTA that opens the modal.
  * ─────────────────────────────────────────────────────────────────── */
 
-export const proofSection = {
-  eyebrow: "Loop Earplugs · 2024 — Present",
-  title: "Embedded with marketing & studio.",
-  titleEm: "Company-wide AI mandate.",
-  lede:
-    "Operates as a peer alongside Technology, People, and Legal. Aligned directly with the executive team on AI strategy and governance. The work below isn't a pitch deck. It's the operating model the company runs on today.",
-  stats: [
-    { value: "130+", label: "Claude users · cohort grown from 5", tone: "gold" as const },
-    { value: "90%", label: "Briefings start with an AI tool", tone: "sage" as const },
-    { value: "2–3×", label: "Faster than external agencies, above ROAS", tone: "slate" as const },
-    { value: "10+", label: "Reusable Skills · transferable across the cohort", tone: "gold" as const },
-    { value: "4", label: "Production systems shipped to live use", tone: "sage" as const },
-    { value: "30+", label: "Languages · UGC localization pipeline", tone: "slate" as const },
-  ],
-  pillars: [
-    {
-      id: "strategy",
-      label: "Strategy",
-      tone: "gold" as const,
-      lead: "Designed the operating model the company runs on.",
-      points: [
-        "Pioneered AI adoption as one of Belgium's first ChatGPT Enterprise companies.",
-        "Spearheaded the company-wide AI vision with the executive team.",
-        "Authored a four-function operating model with clear swim lanes between strategy, governance, adoption, and building.",
-      ],
-    },
-    {
-      id: "adoption",
-      label: "Adoption",
-      tone: "sage" as const,
-      lead: "Coached the full cohort journey from awareness to self-sufficiency.",
-      points: [
-        "Designed curriculum, ran workshops, aligned stakeholders, activated AI Stewards as in-team multipliers.",
-        "Scaled Claude from 5 to 130+ users across legal, finance, analytics, marketing, and studio.",
-        "Built 10+ reusable Skills encoding brand voice, paid social copy, marketplace, and keynote creation.",
-      ],
-    },
-    {
-      id: "production",
-      label: "Production",
-      tone: "slate" as const,
-      lead: "Transformed marketing & studio into AI-first creative teams.",
-      points: [
-        "90% of briefings now involve AI; marketers start every task with an AI tool.",
-        "Campaigns ship 2–3× faster than external agencies, consistently above ROAS benchmark.",
-        "AI for generation. Human judgment for taste and brand.",
-      ],
-    },
-  ],
-} as const;
-
-/* ─────────────────────────────────────────────────────────────────────
- * Systems — four production systems shipped at Loop
- * ─────────────────────────────────────────────────────────────────── */
-
-export const systemsSection = {
-  eyebrow: "Built from the inside",
-  title: "Four production systems.",
-  titleEm: "Shipped, used daily, owned by the team.",
+export const casesSection = {
+  eyebrow: "Cases · in production",
+  title: "Four engines.",
+  titleEm: "Built from the inside, used daily.",
   lede:
     "Each one started inside a single team's bottleneck. Each one survived adoption. Three of them now expose their substrate headlessly so the same engine answers Claude, Cursor, Slack, the dashboard, and an in-tool button.",
+  legend: [
+    {
+      mode: "Compress" as const,
+      def: "Collapse fragmented steps into one continuous flow.",
+    },
+    {
+      mode: "Repair" as const,
+      def: "Fix the gaps between tools the team must keep using.",
+    },
+    {
+      mode: "Invent" as const,
+      def: "Build a workflow that didn't exist before.",
+    },
+  ],
 } as const;
 
-export type System = {
-  id: string;
-  name: string;
-  nameEm?: string;
-  role: string;
-  team: string;
-  body: string;
-  bullets: string[];
-  surfaces: string[];
-  stack: string;
-  tone: "gold" | "sage" | "slate" | "violet";
-  status: string;
+export type CaseTone = "gold" | "sage" | "slate" | "violet";
+export type WorkflowMode = "Repair" | "Compress" | "Invent";
+
+export type ProjectScreenshot = {
+  src: string;
+  alt: string;
+  caption?: string;
 };
 
-export const systems: System[] = [
+export type CaseProject = {
+  id: string;
+  num: string;
+  name: string;
+  nameEm?: string;
+  tagline: string;
+  subline?: string;
+  team: string;
+  status: "Production" | "WIP";
+  year: string;
+  oneLiner: string;
+  tone: CaseTone;
+  workflowMode: WorkflowMode;
+  workflowBefore: string;
+  workflowAfter: string;
+  capabilities: { k: string; v: string }[];
+  metrics: { k: string; v: string }[];
+  surfaces: string[];
+  stack: string[];
+  companyLeverage: string;
+  image: string;
+  screenshots: ProjectScreenshot[];
+};
+
+export const cases: CaseProject[] = [
   {
     id: "mimir",
+    num: "01",
     name: "Mí",
     nameEm: "mir",
-    role: "Creative-strategy briefing engine",
+    tagline: "Brand Intelligence",
+    subline: "Loop's own knowledge, structured.",
     team: "Creative Strategy · Marketing",
-    body:
-      "Surfaces customer voice, ad performance, and competitive signals as composable building blocks. Drafts evidence-grounded briefs. Exposed headlessly via MCP — Claude, Cursor, Slack, and ChatGPT all stand on the same engine.",
-    bullets: [
-      "Knowledge graph over Reddit, Meta Ad Library, ad performance, prior briefings.",
-      "Three-panel briefing composer + Gemini concept imagery.",
-      "Skill-backed briefing strategy. Degrees of freedom per workflow step.",
-      "MCP server with token allowlists, scopes, audit log, durable rate buckets.",
+    status: "Production",
+    year: "2025",
+    oneLiner:
+      "Customer voice, ad performance, competitive signals, and prior briefings as composable building blocks. Drafts evidence-grounded briefs. Same engine in Claude, Cursor, Slack, ChatGPT.",
+    tone: "gold",
+    workflowMode: "Compress",
+    workflowBefore:
+      "Creative Strategy assembled briefs from memory across Reddit, Meta Ad Library, ad performance spreadsheets, and review notes. Every cycle started from scratch.",
+    workflowAfter:
+      "Three-panel briefing composer with evidence in one view. Knowledge graph over reviews, ads, performance, prior briefings. Skill-backed strategy with degrees of freedom per workflow step.",
+    capabilities: [
+      { k: "Knowledge graph", v: "Reddit, Meta Ad Library, ad performance, prior briefings as one substrate." },
+      { k: "Briefing composer", v: "Three-panel surface, Gemini concept imagery, reviewable drafts." },
+      { k: "Headless MCP server", v: "Token allowlists, scopes, audit log, durable rate buckets." },
+      { k: "Skill-backed strategy", v: "Degrees of freedom locked or free per workflow step." },
+    ],
+    metrics: [
+      { k: "Sources unified", v: "4+" },
+      { k: "Surfaces inheriting", v: "5" },
+      { k: "Status", v: "Production" },
     ],
     surfaces: ["Web app", "MCP server", "REST", "Slack bot"],
-    stack: "Next.js 16 · React 19 · Supabase + RLS · Anthropic Skills API · Gemini · MCP",
-    tone: "gold",
-    status: "Production",
+    stack: ["Next.js 16", "React 19", "Supabase + RLS", "Anthropic Skills", "Gemini", "MCP"],
+    companyLeverage:
+      "Creative Strategy uses it for briefings. Product uses it for persona development. Anyone needing to think with Loop's own data inherits the same intelligence layer.",
+    image: "/cases/assets/mimir.png",
+    screenshots: [
+      { src: "/cases/screenshots/mimir/Mimir-Feed.png", alt: "Mímir: intelligence feed" },
+      { src: "/cases/screenshots/mimir/Mimir-Briefing Flow.png", alt: "Mímir: briefing composer" },
+      { src: "/cases/screenshots/mimir/Mimir_Briefing May.png", alt: "Mímir: May briefing output" },
+      { src: "/cases/screenshots/mimir/Mimir-Loop Ads.png", alt: "Mímir: Loop Ads performance" },
+      { src: "/cases/screenshots/mimir/Mimir-Loop Ads-Closeup.png", alt: "Mímir: ad detail close-up" },
+      { src: "/cases/screenshots/mimir/MImir-Customer Review.png", alt: "Mímir: customer review insights" },
+      { src: "/cases/screenshots/mimir/Mimir-Personas.png", alt: "Mímir: audience personas" },
+    ],
   },
   {
     id: "heimdall",
+    num: "02",
     name: "Heim",
     nameEm: "dall",
-    role: "Production bridge across the creative stack",
+    tagline: "Workflow Orchestration",
+    subline: "Where strategy turns into pixels.",
     team: "Studio · Marketing Ops",
-    body:
-      "The connective tissue between Monday, Figma, and Frontify. Webhook → Claude structured extraction → Figma briefing sync; ops kanban; iterator plugin for variants and format derivation; Frontify intake; document collections + RAG retrieval. Where strategy turns into pixels.",
-    bullets: [
-      "Monday GraphQL pipeline → structured briefings synced into Figma.",
-      "Iterator Figma plugin: variants, format derivation, copy planning.",
-      "Frontify integration · HiBob leave sync · admin hub.",
-      "Showcase routes for client-facing project pages.",
+    status: "Production",
+    year: "2025",
+    oneLiner:
+      "The connective tissue between Monday, Figma, Frontify, Meta. Webhook-driven Claude extraction. Briefings flow from board to plugin to file. Where strategy turns into pixels.",
+    tone: "sage",
+    workflowMode: "Repair",
+    workflowBefore:
+      "Briefings lived in Monday. Designers worked in Figma. Assets shipped through Frontify. Each handoff was manual copy-paste. Pixels didn't trace back to briefs.",
+    workflowAfter:
+      "Webhook → Claude structured extraction → Figma briefing sync. Iterator plugin for variants and format derivation. Frontify intake. Document collections + RAG retrieval. One flow.",
+    capabilities: [
+      { k: "Monday → Figma sync", v: "Structured briefings, GraphQL pipeline, instant Figma plugin update." },
+      { k: "Iterator plugin", v: "Variants, format derivation, copy planning inside Figma." },
+      { k: "Frontify integration", v: "Asset intake, naming conventions, brand surface alignment." },
+      { k: "Showcase routes", v: "Client-facing project pages built from the same data." },
+    ],
+    metrics: [
+      { k: "Integrations", v: "8+" },
+      { k: "Plugins", v: "2" },
+      { k: "Status", v: "Production" },
     ],
     surfaces: ["Web app", "Figma plugin", "Iterator plugin", "GPT Actions API"],
-    stack: "Next.js · Supabase · Vercel KV · Monday · Figma · Frontify · Meta · Anthropic",
-    tone: "sage",
-    status: "Production",
+    stack: ["Next.js", "Supabase", "Vercel KV", "Monday", "Figma", "Frontify", "Meta", "Anthropic"],
+    companyLeverage:
+      "Used cross-department: Studio, Marketing Ops, and any team needing to bridge Monday → Figma → Frontify without manual copy-paste.",
+    image: "/cases/assets/heimdall.png",
+    screenshots: [
+      { src: "/cases/screenshots/heimdall/Heimdall-Briefing Overview.png", alt: "Heimdall: briefing overview" },
+      { src: "/cases/screenshots/heimdall/Heimdall-Briefing Closeup.png", alt: "Heimdall: briefing close-up" },
+      { src: "/cases/screenshots/heimdall/Heimdall-Figma Plugin.png", alt: "Heimdall: Figma plugin" },
+      { src: "/cases/screenshots/heimdall/Heimdall-Figma Template.png", alt: "Heimdall: Figma template" },
+      { src: "/cases/screenshots/heimdall/Heimdall-Feedback Summarizer.png", alt: "Heimdall: feedback summarizer" },
+    ],
   },
   {
     id: "vesper",
+    num: "03",
     name: "Ves",
     nameEm: "per",
-    role: "In-house generation workspace",
+    tagline: "AI Image & Video Generation",
+    subline: "Replaced Krea. Built in-house.",
     team: "Studio · Creative",
-    body:
-      "Replaced the fragmented vendor stack Studio used to tab through. Multi-model image and video generation, prompt enhancement tied to the Loop product catalogue, image-to-video, real-time gallery. Same Claude Skill behind Claude.ai and behind the in-product enhance button.",
-    bullets: [
-      "6+ models unified behind one interface (Gemini, OpenAI, Replicate, Veo).",
-      "Prompt enhancement Skill grounded in the product catalogue.",
-      "Image-to-video, animate-still, PDF brief image extraction.",
-      "Headless REST + MCP. Tokens scoped per credential, per model, per scope.",
+    status: "Production",
+    year: "2025",
+    oneLiner:
+      "Replaced the fragmented vendor stack Studio used to tab through. Multi-model image and video generation, prompt enhancement tied to the Loop product catalogue, image-to-video, real-time gallery.",
+    tone: "slate",
+    workflowMode: "Compress",
+    workflowBefore:
+      "Designers tabbed between Krea for generation, Claude for prompting, and separate tabs for image-to-video. Costs were opaque. Model choice overwhelmed the team.",
+    workflowAfter:
+      "One interface. Prompt enhancement, generation, and image-to-video in a single flow. Only the models Studio actually uses. Full cost transparency per generation.",
+    capabilities: [
+      { k: "Prompt enhancement", v: "Claude refines visual prompts using the Loop product catalogue." },
+      { k: "Multi-model generation", v: "Gemini Flash Image, Veo 3.1, Seedream, Kling under one tab." },
+      { k: "Image-to-video", v: "Animate-still without leaving the canvas. Small fix, big flow." },
+      { k: "Headless REST + MCP", v: "Same Skill behind Claude.ai and the in-product enhance button." },
+    ],
+    metrics: [
+      { k: "Models unified", v: "6+" },
+      { k: "Krea margin", v: "0%" },
+      { k: "Status", v: "Production" },
     ],
     surfaces: ["Web app", "MCP server", "REST", "Claude / Cursor"],
-    stack: "Next.js 14 · TanStack Query · Supabase + Prisma · Anthropic · Gemini · Replicate",
-    tone: "slate",
-    status: "Production",
+    stack: ["Next.js 14", "TanStack Query", "Supabase + Prisma", "Anthropic", "Gemini", "Replicate", "Kling"],
+    companyLeverage:
+      "Any team generating visual content (Product, E-commerce, CRM) can use Vesper without depending on Studio. Cost transparency gives leadership real spend-per-asset data.",
+    image: "/cases/assets/vesper.png",
+    screenshots: [
+      { src: "/cases/screenshots/vesper/Vesper-Home.png", alt: "Vesper: home dashboard" },
+      { src: "/cases/screenshots/vesper/Vesper-Prompt.png", alt: "Vesper: prompt enhancement" },
+      { src: "/cases/screenshots/vesper/Vesper-Brainstorm.png", alt: "Vesper: brainstorm mode" },
+      { src: "/cases/screenshots/vesper/Vesper-Video.png", alt: "Vesper: video generation" },
+      { src: "/cases/screenshots/vesper/Vesper-Img-2-Video.png", alt: "Vesper: image-to-video" },
+    ],
   },
   {
     id: "babylon",
+    num: "04",
     name: "Baby",
     nameEm: "lon",
-    role: "UGC localization pipeline",
+    tagline: "UGC Localization",
+    subline: "30+ markets, one review step.",
     team: "Marketing · Localization",
-    body:
-      "30+ languages, one pipeline, one review step. Cross-checks transcription against on-screen captions through Gemini so verification is automatic and proofreaders only see the rows where cultural judgment actually matters.",
-    bullets: [
-      "Transcribe · translate · dub across 30+ markets.",
-      "Auto-verification through Gemini cross-check.",
-      "Single proofread surface, no Figma seat needed.",
-      "Scales linearly with languages, not with reviewers.",
+    status: "Production",
+    year: "2025",
+    oneLiner:
+      "30+ languages, one pipeline, one review step. Cross-checks transcription against on-screen captions through Gemini so verification is automatic and proofreaders only see the rows where cultural judgment counts.",
+    tone: "violet",
+    workflowMode: "Invent",
+    workflowBefore:
+      "UGC localization bounced between agencies, transcripts, and Figma copy-paste. Each market handled separately. Quality scaled with reviewer headcount.",
+    workflowAfter:
+      "Transcribe · translate · dub · review in one pipeline. Auto-verification through Gemini cross-check. One review step where humans still matter.",
+    capabilities: [
+      { k: "30+ markets", v: "Linear scale-out across languages, not reviewers." },
+      { k: "Auto-verification", v: "Gemini cross-check against on-screen captions." },
+      { k: "Single proofread surface", v: "Share-link review, no Figma seat needed." },
+      { k: "Custom review module", v: "Cultural judgment surfaced where it actually matters." },
+    ],
+    metrics: [
+      { k: "Markets", v: "30+" },
+      { k: "Review steps", v: "1" },
+      { k: "Status", v: "Production" },
     ],
     surfaces: ["Web app", "Share-link review"],
-    stack: "Next.js · Supabase · Anthropic · Gemini",
-    tone: "violet",
-    status: "Production",
+    stack: ["Next.js", "Supabase", "Anthropic", "Gemini"],
+    companyLeverage:
+      "UGC scales linearly with languages, not with reviewers. The same pipeline pattern is reusable for any voice-over heavy content.",
+    image: "/cases/assets/babylon.png",
+    screenshots: [
+      { src: "/cases/screenshots/babylon/Babylon-Overview.png", alt: "Babylon: pipeline overview" },
+      { src: "/cases/screenshots/babylon/Babylon-Dubbing Example.png", alt: "Babylon: dubbing example" },
+      { src: "/cases/screenshots/babylon/Babylon-Analytics.png", alt: "Babylon: analytics dashboard" },
+    ],
   },
 ];
 
 /* ─────────────────────────────────────────────────────────────────────
- * Headless — same engine, many surfaces
+ * Headless interstitial — architecture, not a dashboard
+ *
+ * Sets up the selected case. Names the architectural shift behind every
+ * production system above. Same engine, many surfaces. Build the engine,
+ * not the dashboard. The substrate is the asset.
  * ─────────────────────────────────────────────────────────────────── */
 
 export const headlessSection = {
   eyebrow: "Architecture, not a dashboard",
-  title: "Skills teach.",
-  titleEm: "MCP runs.",
+  title: "Build the engine.",
+  titleEm: "Not the dashboard.",
   lede:
-    "Salesforce announced Headless 360. Stripe shipped agentic infrastructure. The pattern is the same in every case: the interface gets demoted, the substrate gets promoted. Mímir and Vesper both moved that way at Loop. Build the engine, not the dashboard.",
+    "Salesforce shipped Headless 360. Stripe shipped agentic infrastructure. The pattern is the same in every case: the interface gets demoted, the substrate gets promoted. Mímir and Vesper both moved that way at Loop. The dashboard becomes one face of many. The engine underneath is the asset every future surface inherits.",
   layers: [
     { tag: "RULES", name: "How the team decides", meta: "Versioned. Reviewable." },
     { tag: "EXAMPLES", name: "What good looks like", meta: "Past work, encoded." },
@@ -350,23 +614,27 @@ export const headlessSection = {
     },
     {
       id: "engine",
-      title: "Build the engine, not the dashboard.",
+      title: "Software for few.",
       body:
-        "The dashboard becomes one face of many. The engine underneath is the asset every future surface inherits.",
+        "Built by the team that uses it. Specific. Not built for millions, built for the team of ten that ships every day.",
     },
   ],
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
- * HarvestFields — strategic case
+ * Selected case — HarvestFields, where everything comes together
+ *
+ * Compressed teaser for the long-form case at /ai-operator/harvestfields.
+ * Three pillars (diagnosis, reframe, architecture) and a HarvestFields
+ * engine snapshot. The CTA opens the full case page.
  * ─────────────────────────────────────────────────────────────────── */
 
-export const caseSection = {
+export const selectedCaseSection = {
   eyebrow: "Selected case · synthetic data, real architecture",
   title: "HarvestFields.",
   titleEm: "Brand speed and brand safety as one engine.",
   lede:
-    "A working prototype I built to demonstrate the same operating model on a brand the size of Vandemoortele. Two workflows look like two problems: localisation needs speed, brand review needs control. The shared gap is the same: brand memory is unencoded.",
+    "Where Navigate, Encode, and Build come together on a brand the size of Vandemoortele. Two workflows that look like two problems — localisation needs speed, brand review needs control — share the same root cause: brand memory is unencoded. Encode it once, both problems shrink.",
   pillars: [
     {
       n: "01",
@@ -384,69 +652,23 @@ export const caseSection = {
       n: "03",
       title: "Architecture",
       body:
-        "One engine. Two postures. Six-check decision rail. Every run becomes an eval case. Headless from day one — Web, Copilot Studio, Power Automate, MCP, all calling the same protocol.",
+        "One engine. Two postures. Every run becomes an eval case. Headless from day one — Web, Copilot Studio, Power Automate, MCP, all calling the same protocol.",
     },
   ],
   cta: {
     label: "Read the full case",
     href: "/ai-operator/harvestfields",
   },
-  endpoints: [
-    { method: "POST", path: "/v1/localise", state: "ready" },
-    { method: "POST", path: "/v1/brand-check", state: "ready" },
-    { method: "POST", path: "/v1/eval/run", state: "demo" },
-  ],
   metrics: [
     { v: "243", k: "Chunks · grounded substrate" },
     { v: "5", k: "Drift categories tracked" },
     { v: "4", k: "Audience registers" },
     { v: "4", k: "Target languages" },
   ],
-} as const;
-
-/* ─────────────────────────────────────────────────────────────────────
- * Pattern — pre-AI receipts
- * ─────────────────────────────────────────────────────────────────── */
-
-export const patternSection = {
-  eyebrow: "Same instincts, longer record",
-  title: "Reading momentum is older than AI.",
-  titleEm: "Working with probabilities, knowing when to walk away.",
-  lede:
-    "I've been navigating the tides of digital change for over a decade. The skills that now shape AI work were practiced first inside communities, platforms, and classrooms.",
-  cards: [
-    {
-      id: "pokemon",
-      year: "2016",
-      source: "Belgian Press",
-      title: "Pokémon Go Belgium",
-      body:
-        "Belgium's first Pokémon Go consultant. Co-founded the country's hub. 1,000-person hunt on Antwerp's Kammenstraat. Then 16,000 with Antwerp Zoo. Advised Unizo on how local entrepreneurs could turn the wave into customers.",
-    },
-    {
-      id: "expanse",
-      year: "2018",
-      source: "Newsweek · Forbes",
-      title: "Save The Expanse",
-      body:
-        "SyFy cancelled the show in 2018. Stood up a Discord. Coordinated tweetstorms. Pushed the petition past 100k. Crowdfunded a banner plane to circle Amazon Studios. Amazon picked the show up. Three more seasons followed.",
-    },
-    {
-      id: "thomas-more",
-      year: "2019–2024",
-      source: "Thomas More",
-      title: "Lecturer · AI lead across four media programs",
-      body:
-        "Five years lecturing on AI, internet culture, storytelling, community management. AI strategy lead across four programs from 2022. COVID lockdowns moved classes online — World of Warcraft became the classroom, Instagram Live became the broadcast channel.",
-    },
-    {
-      id: "storyme",
-      year: "2023–2024",
-      source: "StoryMe · Tool of NA",
-      title: "AI Captain · early Generative AI direction",
-      body:
-        "Led production of \"Welcome to Latent Land,\" Belgium's first hybrid AI-video production. Directed AI on Under Armour's \"Forever Is Made Now\" campaign with Anthony Joshua. Co-drafted the AI Charter for the Belgian Union of Advertisers.",
-    },
+  endpoints: [
+    { method: "POST", path: "/v1/localise", state: "ready" },
+    { method: "POST", path: "/v1/brand-check", state: "ready" },
+    { method: "POST", path: "/v1/eval/run", state: "demo" },
   ],
 } as const;
 
@@ -455,18 +677,21 @@ export const patternSection = {
  * ─────────────────────────────────────────────────────────────────── */
 
 export const ctaSection = {
-  eyebrow: "If the shape of the role fits",
+  eyebrow: "Smallest commitment that starts work",
   title: "Let's talk.",
-  titleEm: "Embedded with your team. Inside the work.",
+  titleEm: "Inside one of your team's routines.",
   body:
-    "I'm available for forward-deployed operator engagements: long embedded mandates like Loop, fixed accelerator programs, or focused encoding sprints alongside one team.",
+    "Embedded mandates, accelerator programs, or focused encoding sprints alongside one team. We start with one workflow and work outward.",
   fine:
-    "Antwerp / CET, comfortable working remotely with US-based teams. CV available on request.",
+    "Antwerp · CET. Comfortable working remotely with US-based teams. CV available on request.",
   primary: {
     label: "vince@thoughtform.co",
     href: "mailto:vince@thoughtform.co?subject=Forward-deployed%20AI%20operator",
   },
-  secondary: { label: "linkedin.com/in/starhaven", href: "https://www.linkedin.com/in/starhaven/" },
+  secondary: {
+    label: "linkedin.com/in/starhaven",
+    href: "https://www.linkedin.com/in/starhaven/",
+  },
 } as const;
 
 export const footer = {
