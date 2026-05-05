@@ -3985,3 +3985,1099 @@
   background: var(--aiop-rule);
   max-width: 88px;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 24 · v2 — AI Operator (Legend-inspired re-cut)
+ *
+ * This block owns the entire `/ai-operator/v2` route. Everything is
+ * namespaced under `.aiop-v2*` so the V1 page is untouched. The
+ * choreography is opt-in: JS adds `.is-animated` to the track only on
+ * wide viewports without `prefers-reduced-motion`, otherwise the same
+ * DOM falls back to a static top-to-bottom stack.
+ *
+ * Sub-sections:
+ *   24a · Tokens + page chrome
+ *   24b · Header
+ *   24c · Track + stage (static stack, default)
+ *   24d · Orbit + pills (static placement)
+ *   24e · Frames — Hero, Loop, Method (static layouts)
+ *   24f · Animated mode — sticky stage, frame swap, orbit choreography
+ *   24g · Footer
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+
+/* ─── 24a · Tokens + page chrome ─────────────────────────────────── */
+
+.aiop-v2 {
+  --v2-ink: #131313;
+  --v2-ink-soft: #2c2924;
+  --v2-muted: #6c6356;
+  --v2-muted-2: #8a7f70;
+  --v2-paper: #ece8dc;
+  --v2-paper-soft: #f1ede1;
+  --v2-paper-bright: #f8f4e8;
+  --v2-card: #fbf6e8;
+  --v2-rule: rgba(19, 19, 19, 0.10);
+  --v2-rule-strong: rgba(19, 19, 19, 0.16);
+  --v2-accent: var(--aiop-gold-bright);
+  --v2-accent-soft: rgba(184, 135, 40, 0.14);
+  --v2-accent-edge: rgba(184, 135, 40, 0.30);
+  --v2-sage: var(--aiop-sage);
+  --v2-violet: var(--aiop-violet);
+  --v2-slate: var(--aiop-slate);
+
+  --v2-pad-x: clamp(20px, 5vw, 64px);
+  --v2-header-h: 64px;
+
+  /* Flywheel sizing — scales with viewport width but stays sane. */
+  --v2-fw-size: clamp(280px, 28vw, 420px);
+  --v2-fw-radius-x: calc(var(--v2-fw-size) * 0.42);
+  --v2-fw-radius-y: calc(var(--v2-fw-size) * 0.38);
+
+  background: var(--v2-paper);
+  color: var(--v2-ink);
+}
+
+/* Atmospheric layer: very soft warm wash so the flat paper has depth.
+ * Sits behind the orbit; never picks up cursor events. */
+.aiop-v2::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 22%, rgba(184, 135, 40, 0.10), transparent 65%),
+    radial-gradient(ellipse 50% 40% at 8% 90%, rgba(79, 107, 74, 0.08), transparent 65%),
+    radial-gradient(ellipse 50% 40% at 92% 90%, rgba(98, 67, 185, 0.06), transparent 70%),
+    linear-gradient(180deg, var(--v2-paper-soft) 0%, var(--v2-paper) 60%, var(--v2-paper-soft) 100%);
+}
+
+.aiop-v2 > * {
+  position: relative;
+  z-index: 1;
+}
+
+
+/* ─── 24b · Header ───────────────────────────────────────────────── */
+
+.aiop-v2-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in oklab, var(--v2-paper) 84%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--v2-rule);
+}
+
+.aiop-v2-header__inner {
+  max-width: 1416px;
+  margin: 0 auto;
+  padding: 14px var(--v2-pad-x);
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 24px;
+  min-height: var(--v2-header-h);
+}
+
+.aiop-v2-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--v2-ink);
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+.aiop-v2-brand__diamond {
+  width: 8px;
+  height: 8px;
+  background: var(--v2-accent);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.aiop-v2-brand__name {
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+.aiop-v2-brand__sub {
+  display: none;
+  color: var(--v2-muted);
+  font-size: 11px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  border-left: 1px solid var(--v2-rule);
+  padding-left: 12px;
+}
+
+@media (min-width: 720px) {
+  .aiop-v2-brand__sub {
+    display: inline-block;
+  }
+}
+
+.aiop-v2-header__status {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  justify-self: center;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--v2-muted);
+  padding: 6px 14px;
+  border: 1px solid var(--v2-rule);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--v2-paper-bright) 90%, transparent);
+}
+
+@media (min-width: 1080px) {
+  .aiop-v2-header__status {
+    display: inline-flex;
+  }
+}
+
+.aiop-v2-header__pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--v2-accent);
+  box-shadow: 0 0 0 3px var(--v2-accent-soft);
+  flex-shrink: 0;
+}
+
+.aiop-v2-header__nav {
+  display: none;
+  gap: 22px;
+  font-family: var(--aiop-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--v2-muted);
+}
+
+@media (min-width: 720px) {
+  .aiop-v2-header__nav {
+    display: inline-flex;
+  }
+}
+
+.aiop-v2-header__nav a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 140ms ease;
+}
+
+.aiop-v2-header__nav a:hover {
+  color: var(--v2-ink);
+}
+
+.aiop-v2-header__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  background: var(--v2-ink);
+  color: var(--v2-paper-bright);
+  border: 1px solid var(--v2-ink);
+  border-radius: 999px;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 140ms ease, color 140ms ease;
+}
+
+.aiop-v2-header__cta:hover {
+  background: var(--v2-accent);
+  color: var(--v2-ink);
+  border-color: var(--v2-accent);
+}
+
+
+/* ─── 24c · Track + stage (static stack, default) ───────────────── */
+
+.aiop-v2-track {
+  position: relative;
+  /* Default: normal flow, frames stack one on top of another. The
+   * animated mode overrides this to install the sticky stage. */
+}
+
+.aiop-v2-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* Reusable centred padding for the static frames. Animated mode
+   * uses absolute positioning instead and ignores this padding. */
+  padding-inline: var(--v2-pad-x);
+  max-width: 1416px;
+  margin: 0 auto;
+}
+
+
+/* ─── 24d · Orbit + pills (static placement) ─────────────────────── */
+
+.aiop-v2-orbit {
+  position: relative;
+  width: var(--v2-fw-size);
+  aspect-ratio: 1 / 1;
+  margin: clamp(28px, 5vw, 56px) auto;
+  display: grid;
+  place-items: center;
+  /* Static-mode pulse is suppressed; the choreographed mode adds it.
+   * Transition lives on the orbit so the position swap into the
+   * method frame is gentle. */
+  transition:
+    width 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    height 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aiop-v2-orbit__ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  transition: opacity 600ms ease;
+}
+
+.aiop-v2-orbit__ring--outer {
+  inset: 4%;
+  border: 1px dashed var(--v2-accent-edge);
+}
+
+.aiop-v2-orbit__ring--inner {
+  inset: 22%;
+  border: 1px solid var(--v2-rule);
+}
+
+.aiop-v2-orbit__core {
+  position: relative;
+  z-index: 2;
+  width: 42%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 25%, var(--v2-paper-bright), var(--v2-card) 70%);
+  border: 1px solid var(--v2-rule);
+  box-shadow: 0 6px 22px rgba(19, 19, 19, 0.08);
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 12px;
+  transition: opacity 600ms ease, transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aiop-v2-orbit__core strong {
+  display: block;
+  font-family: var(--aiop-display);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: var(--v2-ink);
+}
+
+.aiop-v2-orbit__core span {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--aiop-mono);
+  font-size: 9px;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--v2-muted);
+  font-weight: 600;
+}
+
+.aiop-v2-orbit__pill {
+  position: absolute;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--v2-paper-bright);
+  border: 1px solid var(--v2-rule);
+  border-radius: 999px;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--v2-ink);
+  white-space: nowrap;
+  box-shadow: 0 2px 10px rgba(19, 19, 19, 0.06);
+  transition:
+    top 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    left 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    right 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    bottom 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 700ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 200ms ease;
+}
+
+.aiop-v2-orbit__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--v2-accent);
+  flex-shrink: 0;
+}
+
+.aiop-v2-orbit__pill--navigate .aiop-v2-orbit__dot { background: var(--v2-violet); }
+.aiop-v2-orbit__pill--encode   .aiop-v2-orbit__dot { background: var(--v2-accent); }
+.aiop-v2-orbit__pill--build    .aiop-v2-orbit__dot { background: var(--v2-sage); }
+
+/* Default orbital layout: Navigate at the apex, Encode lower-right,
+ * Build lower-left — same triangle the V1 vision section uses, just
+ * scaled to the larger V2 orbit. */
+.aiop-v2-orbit__pill--navigate {
+  top: -2%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.aiop-v2-orbit__pill--encode {
+  top: 76%;
+  left: 88%;
+  transform: translate(-50%, -50%);
+}
+
+.aiop-v2-orbit__pill--build {
+  top: 76%;
+  left: 12%;
+  transform: translate(-50%, -50%);
+}
+
+/* The slot is a transparent placeholder inside frames. In static
+ * mode we still need to reserve space where the orbit would sit; in
+ * animated mode the orbit is absolutely positioned over it. */
+.aiop-v2-flywheel-slot {
+  display: none;
+}
+
+
+/* ─── 24e · Frames — Hero, Loop, Method (static layouts) ────────── */
+
+.aiop-v2-frame {
+  position: relative;
+  padding-block: clamp(48px, 7vw, 96px);
+  border-bottom: 1px solid var(--v2-rule);
+  /* Static frames are always visible. Animated mode flips this. */
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.aiop-v2-frame:last-of-type {
+  border-bottom: none;
+}
+
+.aiop-v2-frame__head {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: clamp(28px, 4vw, 48px);
+  text-align: center;
+}
+
+.aiop-v2-mono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--v2-accent);
+}
+
+.aiop-v2-mono__sep {
+  color: var(--v2-muted-2);
+  opacity: 0.6;
+}
+
+.aiop-v2-mono--ink {
+  justify-content: flex-start;
+  color: var(--v2-muted);
+}
+
+.aiop-v2-mono__bullet {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--v2-accent);
+  flex-shrink: 0;
+}
+
+.aiop-v2-display {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-weight: 500;
+  font-size: clamp(36px, 5.6vw, 64px);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+  color: var(--v2-ink);
+  max-width: 22ch;
+  margin-inline: auto;
+}
+
+.aiop-v2-display em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--v2-ink-soft);
+}
+
+.aiop-v2-display__line {
+  display: block;
+}
+
+.aiop-v2-display--md {
+  font-size: clamp(26px, 3.4vw, 38px);
+  line-height: 1.12;
+  max-width: 18ch;
+  margin-inline: 0;
+}
+
+/* Triptych frames (Hero, Loop) — left text, centre flywheel slot,
+ * right text. Static mode is always single column (the orbit is
+ * rendered above the frames in the stage flex column). The animated
+ * mode block below restores the triptych and shows the orbit slot. */
+.aiop-v2-frame__body {
+  display: grid;
+  gap: clamp(24px, 4vw, 48px);
+  grid-template-columns: 1fr;
+}
+
+.aiop-v2-side {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 56ch;
+  margin-inline: auto;
+  text-align: left;
+}
+
+.aiop-v2-side--right {
+  /* Bio block stays compact even when there's room. */
+  max-width: 48ch;
+}
+
+.aiop-v2-side__body {
+  margin: 0;
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 1.6;
+  color: var(--v2-ink-soft);
+}
+
+.aiop-v2-side__name {
+  margin: 4px 0 0;
+  font-family: var(--aiop-display);
+  font-size: clamp(22px, 2.4vw, 28px);
+  font-weight: 500;
+  letter-spacing: -0.018em;
+  color: var(--v2-ink);
+  line-height: 1.1;
+}
+
+.aiop-v2-side__role {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--v2-muted);
+}
+
+.aiop-v2-side__title {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(19px, 1.9vw, 23px);
+  line-height: 1.3;
+  letter-spacing: -0.012em;
+  color: var(--v2-ink);
+}
+
+.aiop-v2-side__meta {
+  margin: 8px 0 0;
+  display: grid;
+  gap: 10px 24px;
+  grid-template-columns: 1fr;
+  padding-top: 14px;
+  border-top: 1px dashed var(--v2-rule);
+}
+
+@media (min-width: 480px) {
+  .aiop-v2-side__meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.aiop-v2-side__meta div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: var(--aiop-mono);
+}
+
+.aiop-v2-side__meta dt {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--v2-muted-2);
+}
+
+.aiop-v2-side__meta dd {
+  margin: 0;
+  font-size: 13px;
+  color: var(--v2-ink);
+}
+
+.aiop-v2-side__metrics {
+  margin: 6px 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--v2-rule);
+  border: 1px solid var(--v2-rule-strong);
+}
+
+.aiop-v2-side__metric {
+  background: var(--v2-card);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 4px;
+}
+
+.aiop-v2-side__metric dt {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--v2-muted);
+}
+
+.aiop-v2-side__metric dd {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-size: clamp(22px, 2.6vw, 30px);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  color: var(--v2-ink);
+  line-height: 1;
+}
+
+.aiop-v2-button {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 18px;
+  background: var(--v2-ink);
+  color: var(--v2-paper-bright);
+  border: 1px solid var(--v2-ink);
+  border-radius: 999px;
+  font-family: var(--aiop-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 140ms ease, color 140ms ease, transform 140ms ease;
+}
+
+.aiop-v2-button:hover {
+  background: var(--v2-accent);
+  color: var(--v2-ink);
+  border-color: var(--v2-accent);
+}
+
+.aiop-v2-button__arrow {
+  transition: transform 140ms ease;
+}
+
+.aiop-v2-button:hover .aiop-v2-button__arrow {
+  transform: translateX(3px);
+}
+
+/* Method frame static rows */
+.aiop-v2-method__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(28px, 4vw, 48px);
+}
+
+.aiop-v2-method__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+  padding-top: 28px;
+  border-top: 1px solid var(--v2-rule);
+}
+
+.aiop-v2-method__pill-anchor {
+  /* In static mode, the pill anchor is a real label rendered from
+   * the orbit pill via CSS. The pill itself sits absolutely above
+   * the row top, anchored to the row container. */
+  display: none;
+}
+
+.aiop-v2-method__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 60ch;
+}
+
+.aiop-v2-method__headline {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-weight: 500;
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.2;
+  letter-spacing: -0.014em;
+  color: var(--v2-ink);
+}
+
+.aiop-v2-method__body {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--v2-ink-soft);
+}
+
+.aiop-v2-method__signal {
+  margin: 6px 0 0;
+  padding: 12px 14px;
+  display: grid;
+  gap: 4px;
+  background: var(--v2-card);
+  border-left: 2px solid var(--v2-accent);
+  font-family: var(--aiop-mono);
+  max-width: 52ch;
+}
+
+.aiop-v2-method__row--navigate .aiop-v2-method__signal {
+  border-left-color: var(--v2-violet);
+}
+
+.aiop-v2-method__row--encode .aiop-v2-method__signal {
+  border-left-color: var(--v2-accent);
+}
+
+.aiop-v2-method__row--build .aiop-v2-method__signal {
+  border-left-color: var(--v2-sage);
+}
+
+.aiop-v2-method__signal dt {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--v2-muted-2);
+}
+
+.aiop-v2-method__signal dd {
+  margin: 0;
+  font-family: var(--aiop-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--v2-ink);
+  line-height: 1.45;
+}
+
+.aiop-v2-method__visual {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--v2-rule);
+  border: 1px solid var(--v2-rule-strong);
+}
+
+.aiop-v2-method__visual-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 12px;
+  background: var(--v2-card);
+}
+
+.aiop-v2-method__visual-v {
+  font-family: var(--aiop-display);
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--v2-accent);
+  line-height: 1;
+}
+
+.aiop-v2-method__row--navigate .aiop-v2-method__visual-v { color: var(--v2-violet); }
+.aiop-v2-method__row--encode   .aiop-v2-method__visual-v { color: var(--v2-accent); }
+.aiop-v2-method__row--build    .aiop-v2-method__visual-v { color: var(--v2-sage); }
+
+.aiop-v2-method__visual-k {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--v2-muted);
+  line-height: 1.35;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 24f · Animated mode — sticky stage, frame swap, orbit choreography
+ *
+ * Activated by JS adding `.is-animated` to `.aiop-v2-track` whenever
+ * the viewport is wide enough and the user has not asked for reduced
+ * motion. Everything below this comment only applies to that mode.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 960px) {
+  .aiop-v2-track.is-animated {
+    /* Each frame transition gets one viewport of scroll, so the total
+     * track is N viewports tall (3 frames → 3vh × 100). The sticky
+     * stage stays pinned for the whole range. */
+    height: 300vh;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-stage {
+    position: sticky;
+    top: var(--v2-header-h);
+    height: calc(100vh - var(--v2-header-h));
+    width: 100%;
+    max-width: none;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  /* Every frame stacks at the same coordinates inside the stage.
+   * Visibility is owned by the `is-active` class set by JS based on
+   * the scroll position. The transition cross-fades them gently. */
+  .aiop-v2-track.is-animated .aiop-v2-frame {
+    position: absolute;
+    inset: 0;
+    padding: clamp(32px, 5vw, 72px) var(--v2-pad-x);
+    border: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1);
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: clamp(20px, 3vw, 36px);
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-frame.is-active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-frame__head {
+    align-items: flex-start;
+    text-align: left;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: clamp(20px, 3vw, 48px);
+    flex-wrap: wrap;
+    margin-bottom: 0;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-frame--hero .aiop-v2-frame__head {
+    flex-direction: column;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-mono {
+    justify-content: flex-start;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-display {
+    text-align: left;
+    margin-inline: 0;
+    max-width: 28ch;
+  }
+
+  /* Hero title in animated mode: tighter, two-line lockup so it
+   * never reaches across the orbit. The eyebrow + 2-line title +
+   * gap take ~25–28% of the stage; the orbit sits in the lower
+   * remainder via the calc(top) below. */
+  .aiop-v2-track.is-animated .aiop-v2-frame--hero .aiop-v2-display {
+    font-size: clamp(34px, 4.4vw, 56px);
+    line-height: 1.05;
+    max-width: 14ch;
+  }
+
+  /* Triptych frames: left column / orbit slot / right column. */
+  .aiop-v2-track.is-animated .aiop-v2-frame__body--triptych {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(var(--v2-fw-size), 1.1fr) minmax(0, 1fr);
+    gap: clamp(28px, 4vw, 56px);
+    align-items: center;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-side {
+    margin-inline: 0;
+    max-width: none;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-side--left {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-side--right {
+    align-items: flex-end;
+    text-align: right;
+    max-width: none;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-side--right .aiop-v2-mono {
+    justify-content: flex-end;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-side--right .aiop-v2-side__meta {
+    grid-template-columns: 1fr;
+    text-align: right;
+    align-items: flex-end;
+    border-top: 1px dashed var(--v2-rule);
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-side--right .aiop-v2-side__meta div {
+    align-items: flex-end;
+  }
+
+  /* Loop side cards inherit a tighter heading. */
+  .aiop-v2-track.is-animated .aiop-v2-display--md {
+    max-width: 16ch;
+  }
+
+  /* Flywheel slot is a real placeholder in animated mode so the
+   * surrounding triptych reserves room for the orbit. */
+  .aiop-v2-track.is-animated .aiop-v2-flywheel-slot {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    pointer-events: none;
+    /* Subtle visual echo so the slot isn't completely invisible to
+     * sighted users while frames cross-fade. */
+    background:
+      radial-gradient(ellipse 50% 50% at 50% 50%, var(--v2-accent-soft), transparent 70%);
+    opacity: 0.35;
+  }
+
+  /* The orbit lives at the stage centre. JS data-frame attribute
+   * tells it which choreography to play. The CSS transition handles
+   * the actual motion. The vertical position uses a small offset so
+   * the orbit sits in the body's optical centre — not the stage's
+   * geometric centre — once the frame header is rendered above. */
+  .aiop-v2-track.is-animated .aiop-v2-orbit {
+    position: absolute;
+    z-index: 5;
+    top: 56%;
+    left: 50%;
+    width: var(--v2-fw-size);
+    height: var(--v2-fw-size);
+    margin: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Hero & Loop: orbit centred (body-centred via top: 56%). Loop
+   * slightly shrinks the orbit so the eye reads it as having
+   * "moved" between sections, even though sticky keeps the absolute
+   * position intact. */
+  .aiop-v2-track.is-animated[data-frame="loop"] .aiop-v2-orbit {
+    transform: translate(-50%, -50%) scale(0.94) rotate(-6deg);
+  }
+
+  .aiop-v2-track.is-animated[data-frame="loop"] .aiop-v2-orbit__core {
+    transform: rotate(6deg);
+  }
+
+  /* Method: the orbit rings + core fade out. The container expands
+   * to fill the stage so pills can fly to row anchors. */
+  .aiop-v2-track.is-animated[data-frame="method"] .aiop-v2-orbit {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: none;
+    pointer-events: none;
+  }
+
+  .aiop-v2-track.is-animated[data-frame="method"] .aiop-v2-orbit__ring,
+  .aiop-v2-track.is-animated[data-frame="method"] .aiop-v2-orbit__core {
+    opacity: 0;
+  }
+
+  /* Pill flight to row anchors. The percentages match the row
+   * `top` values below so each pill physically lands on its row's
+   * left side. */
+  .aiop-v2-track.is-animated[data-frame="method"] .aiop-v2-orbit__pill {
+    background: var(--v2-card);
+    box-shadow: 0 4px 14px rgba(19, 19, 19, 0.10);
+  }
+
+  .aiop-v2-track.is-animated[data-frame="method"] .aiop-v2-orbit__pill--navigate {
+    top: 32%;
+    left: calc(var(--v2-pad-x) + 4px);
+    transform: translate(0, -50%);
+  }
+
+  .aiop-v2-track.is-animated[data-frame="method"] .aiop-v2-orbit__pill--encode {
+    top: 58%;
+    left: calc(var(--v2-pad-x) + 4px);
+    transform: translate(0, -50%);
+  }
+
+  .aiop-v2-track.is-animated[data-frame="method"] .aiop-v2-orbit__pill--build {
+    top: 84%;
+    left: calc(var(--v2-pad-x) + 4px);
+    transform: translate(0, -50%);
+  }
+
+  /* Method frame layout in animated mode: rows are absolutely
+   * placed so they line up with the flying pills. The pill anchor
+   * column reserves a fixed inset so headline / body never overlap
+   * with the pill. */
+  .aiop-v2-track.is-animated .aiop-v2-frame--method {
+    grid-template-rows: auto 1fr;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-method__rows {
+    position: relative;
+    display: block;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-method__row {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: clamp(20px, 3vw, 44px);
+    align-items: center;
+    padding: 0 var(--v2-pad-x);
+    border: 0;
+    transform: translateY(-50%);
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-method__row--navigate { top: 18%; }
+  .aiop-v2-track.is-animated .aiop-v2-method__row--encode   { top: 47%; }
+  .aiop-v2-track.is-animated .aiop-v2-method__row--build    { top: 76%; }
+
+  .aiop-v2-track.is-animated .aiop-v2-method__pill-anchor {
+    display: block;
+    height: 1px;
+    /* Just here to occupy the first grid track so headline/body sit
+     * to the right of the flying pill. */
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-method__copy {
+    max-width: 52ch;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-method__headline {
+    font-size: clamp(18px, 1.8vw, 22px);
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-method__body {
+    font-size: 14px;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-method__signal {
+    display: none;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-method__visual {
+    grid-template-columns: repeat(2, 1fr);
+    align-self: center;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-method__visual-cell {
+    padding: 12px 14px;
+  }
+
+  /* Hide the in-flow orbit margin in animated mode — the orbit is
+   * absolutely positioned and the stage is fixed-height. */
+  .aiop-v2-track.is-animated .aiop-v2-orbit {
+    margin: 0;
+  }
+}
+
+
+/* ─── 24g · Footer ───────────────────────────────────────────────── */
+
+.aiop-v2-footer {
+  border-top: 1px solid var(--v2-rule);
+  padding: 24px var(--v2-pad-x);
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--v2-muted);
+  background: color-mix(in oklab, var(--v2-paper) 92%, transparent);
+}
+
+.aiop-v2-footer__inner {
+  max-width: 1416px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+
+/* ─── 24h · Reduced motion safety net ────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .aiop-v2-track,
+  .aiop-v2-track.is-animated {
+    height: auto !important;
+  }
+
+  .aiop-v2-track .aiop-v2-stage,
+  .aiop-v2-track.is-animated .aiop-v2-stage {
+    position: relative !important;
+    top: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .aiop-v2-track .aiop-v2-frame,
+  .aiop-v2-track.is-animated .aiop-v2-frame {
+    position: relative !important;
+    inset: auto !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .aiop-v2-orbit,
+  .aiop-v2-orbit__pill,
+  .aiop-v2-orbit__core,
+  .aiop-v2-orbit__ring {
+    transition: none !important;
+  }
+}
+
