@@ -165,7 +165,6 @@ function Orbit() {
 
       <div className="aiop-v2-orbit__core">
         <strong>Substrate</strong>
-        <span>Compounds</span>
       </div>
 
       <span className="aiop-v2-orbit__pill aiop-v2-orbit__pill--navigate">
@@ -212,7 +211,17 @@ function FrameHero({ active }: { active: boolean }) {
             <span className="aiop-v2-mono__bullet" aria-hidden="true" />
             {v2Hero.vision.label}
           </p>
-          <p className="aiop-v2-side__body">{v2Hero.vision.body}</p>
+          {v2Hero.vision.paragraphs.map((paragraph) => (
+            <p key={paragraph} className="aiop-v2-side__body">
+              {paragraph}
+            </p>
+          ))}
+          <a className="aiop-v2-button" href={v2Hero.vision.cta.href}>
+            {v2Hero.vision.cta.label}
+            <span className="aiop-v2-button__arrow" aria-hidden="true">
+              →
+            </span>
+          </a>
         </aside>
 
         <div className="aiop-v2-flywheel-slot" aria-hidden="true" />
@@ -223,16 +232,17 @@ function FrameHero({ active }: { active: boolean }) {
             {v2Hero.bio.label}
           </p>
           <p className="aiop-v2-side__name">{v2Hero.bio.name}</p>
-          <p className="aiop-v2-side__role">{v2Hero.bio.role}</p>
-          <p className="aiop-v2-side__body">{v2Hero.bio.body}</p>
-          <dl className="aiop-v2-side__meta">
-            {v2Hero.bio.meta.map((row) => (
-              <div key={row.k}>
-                <dt>{row.k}</dt>
-                <dd>{row.v}</dd>
-              </div>
-            ))}
-          </dl>
+          {v2Hero.bio.paragraphs.map((paragraph) => (
+            <p key={paragraph} className="aiop-v2-side__body">
+              {paragraph}
+            </p>
+          ))}
+          <a className="aiop-v2-button" href={v2Hero.bio.cta.href}>
+            {v2Hero.bio.cta.label}
+            <span className="aiop-v2-button__arrow" aria-hidden="true">
+              →
+            </span>
+          </a>
         </aside>
       </div>
     </section>
@@ -279,7 +289,11 @@ function FrameLoop({ active }: { active: boolean }) {
             {v2Loop.proof.label}
           </p>
           <h3 className="aiop-v2-side__title">{v2Loop.proof.title}</h3>
-          <p className="aiop-v2-side__body">{v2Loop.proof.body}</p>
+          {v2Loop.proof.paragraphs.map((paragraph) => (
+            <p key={paragraph} className="aiop-v2-side__body">
+              {paragraph}
+            </p>
+          ))}
           <dl className="aiop-v2-side__metrics">
             {v2Loop.proof.metrics.map((m) => (
               <div key={m.k} className="aiop-v2-side__metric">

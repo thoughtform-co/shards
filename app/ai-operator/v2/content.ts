@@ -37,20 +37,27 @@ export const v2Hero = {
 
   vision: {
     label: "Vision",
-    body:
-      "The relationship between human intelligence and AI is the work of our generation. I help teams navigate it inside their actual work, encode what makes that work good, and build the capability underneath.",
+    /* Two short paragraphs with a paragraph break between — the
+     * thesis sentence first, the operator promise second. Read top
+     * to bottom under the Vision eyebrow. */
+    paragraphs: [
+      "The relationship between human intelligence and AI is the work of our generation.",
+      "I help teams navigate it inside their actual work, encode what makes that work good, and build the capability underneath.",
+    ],
+    cta: { label: "Explore Vision", href: "#vision" },
   },
 
   bio: {
     label: "Operator",
     name: "Vincent Buyssens",
-    role: "Creative Technologist",
-    body:
-      "Embedded at Loop Earplugs. Founder of Thoughtform. Strategy and building stay in the same hands.",
-    meta: [
-      { k: "Based in", v: "Antwerp · CET" },
-      { k: "Reach", v: "vince@thoughtform.co" },
+    /* Bio copy is now folded into the body paragraphs; the standalone
+     * role label and meta rows are intentionally omitted on V2 so the
+     * right column reads as a tight intro + CTA pair. */
+    paragraphs: [
+      "Creative technologist navigating the tides of digital change for over a decade.",
+      "Embedded at Loop Earplugs to transform marketing with AI.",
     ],
+    cta: { label: "Read CV", href: "#cv" },
   },
 } as const;
 
@@ -61,24 +68,31 @@ export const v2Loop = {
   chapter: "Proof",
 
   vision: {
-    label: "Substrate compounds",
-    title: "Each turn",
-    titleEm: "makes the next turn lighter.",
+    label: "My vision on AI",
+    /* Title splits at the verb so the italic em carries the move
+     * (mirrors the Hero "AI capability, built inside the work."
+     * cadence). */
+    title: "AI adoption and automation",
+    titleEm: "is the same flywheel.",
     body:
-      "Models change. Tools change. The substrate carries forward — and turns adoption into a capability the team owns.",
+      "Navigating real work, encoding know-how and building the first capability fast enough so strategy and delivery stay connected.",
     cta: { label: "See the engines", href: "/ai-operator#cases" },
   },
 
   proof: {
-    label: "Loop Earplugs · 18 months",
+    label: "AI at Loop Earplugs",
     title: "The same loop, across an entire marketing department.",
-    body:
-      "Started with a cohort of five Claude users. Today, 130+ across legal, finance, analytics, and the studio. 90% of briefings now begin with an AI tool. Four production engines — Mímir, Vesper, Heimdall, Babylon — each one built from a single team's bottleneck.",
+    /* Two paragraphs: the embedded mandate first, the company-wide
+     * fluency mandate second. The space between reads as a beat. */
+    paragraphs: [
+      "Embedded inside marketing to transform everything from our content creation pipeline to building \u201Ctools-for-few\u201D around team bottlenecks.",
+      "Responsible for company-wide Claude rollout and AI fluency.",
+    ],
     metrics: [
-      { v: "130+", k: "Claude users" },
-      { v: "90%", k: "Briefings with AI" },
-      { v: "4", k: "Production engines" },
-      { v: "10+", k: "Reusable Skills" },
+      { v: "4", k: "Full-stack AI tools" },
+      { v: "20+", k: "Workflows encoded in Skills" },
+      { v: "10+", k: "Teams self-sufficient with Claude" },
+      { v: "90%", k: "Paid social content with AI" },
     ],
   },
 } as const;

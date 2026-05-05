@@ -4039,6 +4039,12 @@
   --v2-fw-radius-x: calc(var(--v2-fw-size) * 0.42);
   --v2-fw-radius-y: calc(var(--v2-fw-size) * 0.38);
 
+  /* Notched chamfer — Inversa-style bottom-right corner cut. The
+   * primary CTAs use the larger value, the header pill uses the
+   * smaller one. Mirrors the V1 `.aiop-button` grammar. */
+  --v2-notch: 12px;
+  --v2-notch-sm: 9px;
+
   background: var(--v2-paper);
   color: var(--v2-ink);
 }
@@ -4056,6 +4062,55 @@
     radial-gradient(ellipse 50% 40% at 8% 90%, rgba(79, 107, 74, 0.08), transparent 65%),
     radial-gradient(ellipse 50% 40% at 92% 90%, rgba(98, 67, 185, 0.06), transparent 70%),
     linear-gradient(180deg, var(--v2-paper-soft) 0%, var(--v2-paper) 60%, var(--v2-paper-soft) 100%);
+}
+
+/* Ambient instrument grid — Raycast / Linear style backdrop. Pinned to
+ * the viewport (position: fixed) so the grid stays anchored while the
+ * sticky stage swaps frames through it. Two 1px hairline layers form
+ * a 38px square cell; a radial mask fades the grid out toward all
+ * four edges so it never touches the chrome or the page gutter.
+ * Sits beneath every interactive element via z-index 0; the
+ * `.aiop-v2 > *` rule below promotes children to z-index 1.
+ *
+ * Visibility is owned by the rule below: the grid hides whenever the
+ * hero frame is active (animated mode), and fades back in once the
+ * visitor scrolls into Loop / Method. In static mode it stays
+ * visible throughout. */
+.aiop-v2::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(to right, rgba(19, 19, 19, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(19, 19, 19, 0.055) 1px, transparent 1px);
+  background-size: 38px 38px;
+  background-position: 50% 50%;
+  mask-image: radial-gradient(
+    ellipse 62% 58% at 50% 50%,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.85) 28%,
+    rgba(0, 0, 0, 0.4) 62%,
+    transparent 92%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 62% 58% at 50% 50%,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 0.85) 28%,
+    rgba(0, 0, 0, 0.4) 62%,
+    transparent 92%
+  );
+  opacity: 1;
+  transition: opacity 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hide the grid behind the hero — only show it once the visitor
+ * scrolls into Loop / Method. Uses :has() so no JS coupling is
+ * needed. Static mode (no `.is-animated` on the track) keeps the
+ * grid visible throughout. */
+.aiop-v2:has(.aiop-v2-track.is-animated[data-frame="hero"])::after {
+  opacity: 0;
 }
 
 .aiop-v2 > * {
@@ -4186,21 +4241,45 @@
 }
 
 .aiop-v2-header__cta {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 9px 16px;
+  padding: 10px 18px;
   background: var(--v2-ink);
   color: var(--v2-paper-bright);
   border: 1px solid var(--v2-ink);
-  border-radius: 999px;
   font-family: var(--aiop-mono);
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: 0.10em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
   transition: background 140ms ease, color 140ms ease;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - var(--v2-notch-sm)),
+    calc(100% - var(--v2-notch-sm)) 100%,
+    0 100%
+  );
+}
+
+.aiop-v2-header__cta::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: var(--v2-notch-sm);
+  height: var(--v2-notch-sm);
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    transparent calc(50% - 1px),
+    var(--v2-ink) calc(50% - 1px),
+    var(--v2-ink) 50%,
+    transparent 50%
+  );
 }
 
 .aiop-v2-header__cta:hover {
@@ -4303,12 +4382,15 @@
 .aiop-v2-orbit__core strong {
   display: block;
   font-family: var(--aiop-display);
-  font-size: 18px;
+  font-size: clamp(18px, 1.6vw, 22px);
   font-weight: 500;
-  letter-spacing: -0.012em;
+  letter-spacing: -0.014em;
   color: var(--v2-ink);
 }
 
+/* Legacy subtitle slot kept for backwards-compat; the V2 hero/loop
+ * orbits no longer render a span beneath the strong, but if a future
+ * variant brings it back the existing styling holds. */
 .aiop-v2-orbit__core span {
   display: block;
   margin-top: 4px;
@@ -4522,8 +4604,19 @@
 .aiop-v2-side__body {
   margin: 0;
   font-size: clamp(15px, 1.2vw, 17px);
-  line-height: 1.6;
+  /* IBM Plex Sans Medium reads a little heavier than the default
+   * 400 so paragraph text holds its own next to the display title
+   * (Legend-inspired). Loaded weights: 300/400/500/600. */
+  font-weight: 500;
+  line-height: 1.55;
   color: var(--v2-ink-soft);
+}
+
+/* Consecutive body paragraphs sit a touch further apart than the
+ * default 14px side gap so the second sentence reads as a fresh
+ * beat rather than a continuation. */
+.aiop-v2-side__body + .aiop-v2-side__body {
+  margin-top: 6px;
 }
 
 .aiop-v2-side__name {
@@ -4626,29 +4719,62 @@
   line-height: 1;
 }
 
+/* Body CTA — notched, Inversa-style chamfer on the bottom-right
+ * corner. Built with `clip-path` so the cut survives any background.
+ * The `::after` pseudo paints a 1px diagonal stroke along the cut so
+ * the chamfer edge stays visible even on hover when the background
+ * shifts to gold. */
 .aiop-v2-button {
+  position: relative;
   align-self: flex-start;
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 11px 18px;
+  padding: 12px 20px 12px 20px;
   background: var(--v2-ink);
   color: var(--v2-paper-bright);
   border: 1px solid var(--v2-ink);
-  border-radius: 999px;
   font-family: var(--aiop-mono);
   font-size: 11.5px;
   font-weight: 500;
-  letter-spacing: 0.10em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
-  transition: background 140ms ease, color 140ms ease, transform 140ms ease;
+  transition:
+    background 140ms ease,
+    color 140ms ease,
+    transform 140ms ease;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - var(--v2-notch)),
+    calc(100% - var(--v2-notch)) 100%,
+    0 100%
+  );
+}
+
+.aiop-v2-button::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: var(--v2-notch);
+  height: var(--v2-notch);
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    transparent calc(50% - 1px),
+    var(--v2-ink) calc(50% - 1px),
+    var(--v2-ink) 50%,
+    transparent 50%
+  );
 }
 
 .aiop-v2-button:hover {
   background: var(--v2-accent);
   color: var(--v2-ink);
   border-color: var(--v2-accent);
+  transform: translateY(-1px);
 }
 
 .aiop-v2-button__arrow {
@@ -4704,7 +4830,9 @@
 .aiop-v2-method__body {
   margin: 0;
   font-size: 15px;
-  line-height: 1.6;
+  /* Match the medium weight on side bodies for a cohesive read. */
+  font-weight: 500;
+  line-height: 1.55;
   color: var(--v2-ink-soft);
 }
 
@@ -4886,27 +5014,33 @@
   }
 
   /* Cream wash that takes over the lower edge of the hero so the
-   * wallpaper dissolves cleanly into the next (loop / method) frame
-   * during the cross-fade. Lives inside the hero frame so it inherits
-   * the parallax — it rides upward with the hero and never lingers
-   * behind once you scroll past. */
+   * wallpaper dissolves seamlessly into the next (loop / method)
+   * frame during the cross-fade. Lives inside the hero frame so it
+   * inherits the parallax — it rides upward with the hero and never
+   * lingers behind once you scroll past.
+   *
+   * Stretched tall (~50vh) with very gradual stops so the eye never
+   * catches a hard band; the first third is fully transparent, then
+   * the wash creeps in across the lower half of the hero. */
   .aiop-v2-track.is-animated .aiop-v2-frame--hero::after {
     content: "";
     position: absolute;
     left: 50%;
     bottom: -1px;
     width: 100vw;
-    height: clamp(160px, 28vh, 320px);
+    height: clamp(320px, 52vh, 580px);
     transform: translateX(-50%);
     pointer-events: none;
     background:
       linear-gradient(
         180deg,
         transparent 0%,
-        rgba(236, 232, 220, 0.18) 22%,
-        rgba(236, 232, 220, 0.62) 52%,
-        var(--v2-paper) 82%,
-        var(--v2-paper-soft) 100%
+        transparent 30%,
+        rgba(236, 232, 220, 0.06) 48%,
+        rgba(236, 232, 220, 0.22) 64%,
+        rgba(236, 232, 220, 0.50) 78%,
+        rgba(236, 232, 220, 0.80) 90%,
+        var(--v2-paper) 100%
       );
   }
 
@@ -4965,7 +5099,17 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 18px;
+    gap: 16px;
+  }
+
+  /* Hero frame sits a touch higher than the shared frame padding so
+   * the title hugs the top edge and the triptych below feels lifted.
+   * Top is intentionally tight; bottom carries extra room so the
+   * cream wash + parallax have somewhere to breathe. */
+  .aiop-v2-track.is-animated .aiop-v2-frame--hero {
+    padding-block-start: clamp(18px, 2.6vw, 40px);
+    padding-block-end: clamp(64px, 9vw, 140px);
+    gap: clamp(14px, 2vw, 26px);
   }
 
   .aiop-v2-track.is-animated .aiop-v2-mono {
@@ -5032,6 +5176,12 @@
     align-items: flex-end;
   }
 
+  /* CTAs sit at the foot of each aside. The right column anchors its
+   * pill to the gutter edge, mirroring the right-aligned text above. */
+  .aiop-v2-track.is-animated .aiop-v2-side--right .aiop-v2-button {
+    align-self: flex-end;
+  }
+
   /* Loop side cards inherit a tighter heading. */
   .aiop-v2-track.is-animated .aiop-v2-display--md {
     max-width: 16ch;
@@ -5067,10 +5217,18 @@
     transform: translate(-50%, -50%);
   }
 
-  /* Hero & Loop: orbit centred (body-centred via top: 56%). Loop
-   * slightly shrinks the orbit so the eye reads it as having
-   * "moved" between sections, even though sticky keeps the absolute
-   * position intact. */
+  /* Hero: orbit pulled up a touch so the whole composition sits in
+   * the upper half of the viewport (Legend-inspired). Loop falls
+   * back to the shared 56% so the substrate-compounds card on the
+   * left and the proof metrics on the right still read as flanking
+   * the orbit centre. */
+  .aiop-v2-track.is-animated[data-frame="hero"] .aiop-v2-orbit {
+    top: 50%;
+  }
+
+  /* Hero & Loop: orbit centred (body-centred via top). Loop slightly
+   * shrinks the orbit so the eye reads it as having "moved" between
+   * sections, even though sticky keeps the absolute position intact. */
   .aiop-v2-track.is-animated[data-frame="loop"] .aiop-v2-orbit {
     transform: translate(-50%, -50%) scale(0.94) rotate(-6deg);
   }
@@ -5194,6 +5352,64 @@
   .aiop-v2-track.is-animated .aiop-v2-orbit {
     margin: 0;
   }
+
+  /* ─ Loop frame · slightly slower settle ─────────────────────────
+   * Frame 02 (Loop / Proof) takes a beat longer than Hero / Method
+   * so the substrate-compounds card on the left and the proof
+   * metrics on the right feel like they arrive AFTER the frame
+   * container, not with it. The container fade is stretched and
+   * the three triptych slots (head, left side, flywheel slot,
+   * right side) each get their own short stagger delay.
+   *
+   * Hero and Method keep the shared 700ms cross-fade; only Loop
+   * is overridden here. */
+  .aiop-v2-track.is-animated .aiop-v2-frame--loop {
+    transition: opacity 1100ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-frame--loop .aiop-v2-frame__head,
+  .aiop-v2-track.is-animated .aiop-v2-frame--loop .aiop-v2-side,
+  .aiop-v2-track.is-animated .aiop-v2-frame--loop .aiop-v2-flywheel-slot {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 950ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 950ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-frame--loop.is-active .aiop-v2-frame__head {
+    opacity: 1;
+    transform: none;
+    transition-delay: 80ms;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-frame--loop.is-active .aiop-v2-side--left {
+    opacity: 1;
+    transform: none;
+    transition-delay: 220ms;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-frame--loop.is-active .aiop-v2-flywheel-slot {
+    opacity: 1;
+    transform: none;
+    transition-delay: 320ms;
+  }
+
+  .aiop-v2-track.is-animated .aiop-v2-frame--loop.is-active .aiop-v2-side--right {
+    opacity: 1;
+    transform: none;
+    transition-delay: 380ms;
+  }
+
+  /* Orbit settles into its loop-state pose at the same slower pace so
+   * the rotate + scale reads as part of the same gentle arrival. */
+  .aiop-v2-track.is-animated[data-frame="loop"] .aiop-v2-orbit {
+    transition:
+      width 950ms cubic-bezier(0.16, 1, 0.3, 1),
+      height 950ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 950ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
 }
 
 
@@ -5265,6 +5481,21 @@
   .aiop-v2-track .aiop-v2-particle-band,
   .aiop-v2-track.is-animated .aiop-v2-particle-band {
     transform: none !important;
+  }
+
+  /* Loop frame stagger: same belt + braces. The translateY entry on
+   * Frame 02's children is purely cosmetic; under reduced motion the
+   * triptych is laid out statically so children must reset to their
+   * resting state with no transition. */
+  .aiop-v2-track .aiop-v2-frame--loop .aiop-v2-frame__head,
+  .aiop-v2-track.is-animated .aiop-v2-frame--loop .aiop-v2-frame__head,
+  .aiop-v2-track .aiop-v2-frame--loop .aiop-v2-side,
+  .aiop-v2-track.is-animated .aiop-v2-frame--loop .aiop-v2-side,
+  .aiop-v2-track .aiop-v2-frame--loop .aiop-v2-flywheel-slot,
+  .aiop-v2-track.is-animated .aiop-v2-frame--loop .aiop-v2-flywheel-slot {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 
