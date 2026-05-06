@@ -43,6 +43,22 @@ function Arrow() {
   );
 }
 
+function renderHeroLede(paragraph: string) {
+  return paragraph.split(/(navigate|encode|build)/g).map((part, idx) =>
+    part === "navigate" || part === "encode" || part === "build" ? (
+      <span
+        key={`${part}-${idx}`}
+        className={`aiop-hero__lede-pill aiop-hero__lede-pill--${part}`}
+      >
+        <span className="aiop-hero__lede-pill-dot" aria-hidden="true" />
+        {part}
+      </span>
+    ) : (
+      part
+    ),
+  );
+}
+
 export default function AiOperatorPage() {
   return (
     <main className="aiop-stage">
@@ -92,7 +108,7 @@ export default function AiOperatorPage() {
             </h1>
             <div className="aiop-hero__lede">
               {hero.lede.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
+                <p key={paragraph}>{renderHeroLede(paragraph)}</p>
               ))}
               <p>
                 <strong>{hero.ledeStrong}</strong>

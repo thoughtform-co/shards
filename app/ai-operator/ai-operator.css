@@ -538,6 +538,44 @@
   margin-top: 1.45em;
 }
 
+.aiop-hero__lede-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-inline: 2px;
+  padding: 3px 9px;
+  vertical-align: 0.08em;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(26, 22, 18, 0.06);
+  color: var(--aiop-ink-soft);
+  font-size: 0.72em;
+  font-weight: 560;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.aiop-hero__lede-pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.aiop-hero__lede-pill--navigate .aiop-hero__lede-pill-dot {
+  background: var(--aiop-violet);
+}
+
+.aiop-hero__lede-pill--encode .aiop-hero__lede-pill-dot {
+  background: var(--aiop-gold-bright);
+}
+
+.aiop-hero__lede-pill--build .aiop-hero__lede-pill-dot {
+  background: var(--aiop-sage);
+}
+
 .aiop-hero__lede strong {
   color: var(--aiop-ink);
   font-weight: 620;
@@ -4109,22 +4147,53 @@
 /* ═══════════════════════════════════════════════════════════════════════
  * 23 · v4 — Approach / Flywheel polish
  *
- * The Vision section above already names and frames the flywheel. This
- * section opens straight into the three motion rows after a slim
- * eyebrow + lede stack. No H2 (the named title lives in Vision); the
- * close line keeps its centered horizontal-rule treatment.
+ * The section opens with the same compact title language as Vision,
+ * then moves straight into the three motion rows. The close line keeps
+ * its centered horizontal-rule treatment.
  * ═══════════════════════════════════════════════════════════════════════ */
 
 .aiop-approach__head {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(280px, 0.72fr);
+  gap: clamp(36px, 7vw, 108px);
+  align-items: start;
   margin-bottom: clamp(40px, 5vw, 64px);
-  max-width: 70ch;
+  max-width: 980px;
 }
 
-.aiop-approach__head .aiop-section-lede {
+.aiop-approach__head .aiop-section-title {
   margin: 0;
+}
+
+.aiop-approach__caption {
+  margin: 0;
+  max-width: 38ch;
+  text-align: left;
+  font-family: var(--aiop-body);
+  font-style: normal;
+  font-weight: 620;
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  color: var(--aiop-ink-soft);
+}
+
+@media (max-width: 860px) {
+  .aiop-approach__head {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    text-align: center;
+  }
+
+  .aiop-approach__head .aiop-section-title,
+  .aiop-approach__caption {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .aiop-approach__caption {
+    max-width: 58ch;
+  }
 }
 
 .aiop-approach__close {

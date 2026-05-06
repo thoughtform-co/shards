@@ -66,7 +66,7 @@ export const hero = {
   ] as const,
   lede: [
     "The relationship between human intelligence and AI is the work of our generation.",
-    "As an embedded Creative Technologist, I helped marketing teams navigate AI inside their work, encode what makes it good, and build the capability on top of it.",
+    "As an embedded Creative Technologist at Loop Earplugs, I helped marketing teams navigate AI inside their work, encode what makes it good, and build the capability on top of it.",
   ] as const,
   ledeStrong:
     "Now, I want to help Stripe build the economic layer for the age of co-intelligence.",
@@ -134,11 +134,10 @@ export const visionSection = {
  * ─────────────────────────────────────────────────────────────────── */
 
 export const approachSection = {
-  eyebrow: "The flywheel",
-  title: "One method.",
-  titleEm: "Three motions that compound.",
-  lede:
-    "Adoption and building are the same flywheel. Teaching teams to navigate AI leads to encoding workflows. Encoded workflows lead to tools. Tools inspire more navigation. Each turn makes the next turn lighter.",
+  title: "The AI flywheel",
+  titleEm: "at Loop",
+  caption:
+    "Running AI Adoption at Loop since 2023. Moved from AI Team to Marketing to transform everything from Studio work to Performance from within.",
   close:
     "The same loop ran on Vesper, Heimdall, Mímir, Babylon, and the company-wide Claude rollout at Loop.",
 } as const;
@@ -205,8 +204,8 @@ export const approachSteps: ApproachStep[] = [
     tone: "violet",
     headline: "Inside the workflow until the patterns surface.",
     body:
-      "Sit alongside the team in their highest-leverage routines. Watch where judgment actually happens. Coach the cohort from awareness to first win to self-sufficient. Workshops, AI Stewards, showcases, and quick-starts running in parallel — pull, push, and structure together.",
-    signal: { k: "Outcome", v: "A workflow brief and a maturity model per marketer." },
+      "AI sits between a tool and a collaborator. Deterministic enough to automate, interpretive enough to think with. The skill is knowing which mode the task needs. That's what navigation teaches.",
+    signal: { k: "Outcome", v: "AI intuition and a workflow brief per team." },
     visual: {
       kind: "rollout",
       title: "Cohort journey",
@@ -231,7 +230,7 @@ export const approachSteps: ApproachStep[] = [
       title: "What navigation looks like",
       titleEm: "across an actual cohort.",
       lede:
-        "Not 20 workshops a week. One strategic session per team. Navigate leads, the cohort documents what works, AI Stewards pick it up from there. Pull (early adopters), push (workshops, steward support), and structure (onboarding, showcases) running together.",
+        "AI is trained on us but is not like us. AI intuition is learning how to navigate this strange new intelligence and working out how to ask for what you want. Once teams understand they're working with a smart, albeit alien, colleague that just needs context, you can start encoding their expertise into substrates you can build agents on.",
       meta: [
         { k: "DURATION", v: "Continuous · 1–2 weeks per team" },
         { k: "ARTIFACT", v: "Workflow brief · maturity model" },

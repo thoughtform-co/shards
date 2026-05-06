@@ -27,8 +27,10 @@ export function Approach() {
     <section className="aiop-section aiop-approach" id="approach">
       <div className="aiop-wrap">
         <header className="aiop-approach__head aiop-reveal">
-          <p className="aiop-eyebrow">{approachSection.eyebrow}</p>
-          <p className="aiop-section-lede">{approachSection.lede}</p>
+          <h2 className="aiop-section-title">
+            {approachSection.title} <em>{approachSection.titleEm}</em>
+          </h2>
+          <p className="aiop-approach__caption">{approachSection.caption}</p>
         </header>
 
         <ol className="aiop-approach__list" role="list">
