@@ -2097,6 +2097,54 @@
 
 
 /* ═══════════════════════════════════════════════════════════════════════
+ * 13.5 · Hero ambient morph
+ *
+ * The Loop-circle-to-Stripe-parallelogram particle morph lives inside
+ * the hero as a faint atmospheric layer, behind both the copy column
+ * and the portrait. A square WebGL canvas is centered with a soft
+ * radial mask so the particles fade to nothing at the edges and never
+ * read as a competing element. Pointer-events stay off so the layer
+ * never intercepts hits on the hero CTAs or links.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-hero__morph {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.18;
+  mix-blend-mode: multiply;
+  mask-image: radial-gradient(ellipse 65% 70% at 50% 50%, black 10%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 65% 70% at 50% 50%, black 10%, transparent 80%);
+}
+
+.aiop-morph-canvas {
+  position: relative;
+  width: min(78vh, 820px);
+  aspect-ratio: 1 / 1;
+  max-width: 96%;
+}
+
+.aiop-morph-canvas canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (max-width: 900px) {
+  .aiop-hero__morph {
+    opacity: 0.13;
+  }
+
+  .aiop-morph-canvas {
+    width: min(92vw, 560px);
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
  * 14 · v2 — Hero working-motion orbit
  *
  * Ported from the Aether home hero. Two concentric rings (dashed

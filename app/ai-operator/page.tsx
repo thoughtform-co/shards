@@ -11,6 +11,7 @@ import {
   selectedCaseSection,
   visionSection,
 } from "./content";
+import { LoopStripeMorph } from "./loop-stripe-morph";
 import { ScrollReveal } from "./reveal";
 import { v2Loop } from "./v2/content";
 
@@ -93,6 +94,9 @@ export default function AiOperatorPage() {
       {/* ─── Hero — CV profile ──────────────────────────────────────── */}
       <section className="aiop-hero" id="top">
         <div className="aiop-grid-bg" aria-hidden="true" />
+        <div className="aiop-hero__morph" aria-hidden="true">
+          <LoopStripeMorph />
+        </div>
         <div className="aiop-wrap aiop-hero__inner">
           <div className="aiop-hero__copy aiop-reveal">
             <p className="aiop-eyebrow">
