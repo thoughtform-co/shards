@@ -90,7 +90,14 @@ export default function AiOperatorPage() {
                 </span>
               ))}
             </h1>
-            <p className="aiop-hero__lede">{hero.lede}</p>
+            <div className="aiop-hero__lede">
+              {hero.lede.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+              <p>
+                <strong>{hero.ledeStrong}</strong>
+              </p>
+            </div>
 
             <div className="aiop-hero__actions">
               {hero.actions.map((action) => (

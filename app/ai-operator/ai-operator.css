@@ -206,21 +206,22 @@
   background: var(--aiop-ink);
 }
 
-/* Section title — display serif, generous, italic em on the second half. */
+/* Section title — Linear-style product heading: tight sans, smaller scale,
+   with restrained emphasis when the copy calls for it. */
 .aiop-section-title {
-  font-family: var(--aiop-display);
-  font-weight: 500;
-  font-size: clamp(34px, 5vw, 64px);
-  line-height: 1.04;
-  letter-spacing: -0.02em;
+  font-family: var(--aiop-body);
+  font-weight: 620;
+  font-size: clamp(30px, 3.6vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
   color: var(--aiop-ink);
-  max-width: 22ch;
+  max-width: 17ch;
   margin: 18px 0 0;
 }
 
 .aiop-section-title em {
   font-style: italic;
-  font-weight: 500;
+  font-weight: 560;
   color: var(--aiop-ink-2);
 }
 
@@ -527,7 +528,19 @@
   line-height: 1.55;
   color: var(--aiop-ink-soft);
   max-width: 56ch;
-  white-space: pre-line;
+}
+
+.aiop-hero__lede p {
+  margin: 0;
+}
+
+.aiop-hero__lede p + p {
+  margin-top: 1.45em;
+}
+
+.aiop-hero__lede strong {
+  color: var(--aiop-ink);
+  font-weight: 620;
 }
 
 .aiop-hero__meta {
@@ -1940,17 +1953,18 @@
 }
 
 .aiop-cta__title {
-  font-family: var(--aiop-display);
-  font-weight: 500;
-  font-size: clamp(34px, 4.6vw, 60px);
-  line-height: 1.04;
-  letter-spacing: -0.025em;
+  font-family: var(--aiop-body);
+  font-weight: 620;
+  font-size: clamp(30px, 3.5vw, 46px);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
   color: var(--aiop-ink);
   margin: 14px 0 0;
 }
 
 .aiop-cta__title em {
   font-style: italic;
+  font-weight: 560;
   color: var(--aiop-ink-2);
 }
 
@@ -2347,7 +2361,7 @@
 .aiop-vision__title {
   margin: 0;
   text-align: left;
-  max-width: 13.5ch;
+  max-width: 16ch;
 }
 
 /* Caption — plain-language thesis paired with the title. */
@@ -2378,7 +2392,7 @@
   }
 
   .aiop-vision__title {
-    max-width: 18ch;
+    max-width: 19ch;
   }
 
   .aiop-vision__caption {
@@ -4704,11 +4718,11 @@
 
 .aiop-v2-display {
   margin: 0;
-  font-family: var(--aiop-display);
-  font-weight: 500;
-  font-size: clamp(36px, 5.6vw, 64px);
-  line-height: 1.04;
-  letter-spacing: -0.025em;
+  font-family: var(--aiop-body);
+  font-weight: 620;
+  font-size: clamp(32px, 4.4vw, 52px);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
   color: var(--v2-ink);
   max-width: 22ch;
   margin-inline: auto;
@@ -4716,7 +4730,7 @@
 
 .aiop-v2-display em {
   font-style: italic;
-  font-weight: 500;
+  font-weight: 560;
   color: var(--v2-ink-soft);
 }
 
@@ -4725,7 +4739,7 @@
 }
 
 .aiop-v2-display--md {
-  font-size: clamp(26px, 3.4vw, 38px);
+  font-size: clamp(24px, 2.8vw, 34px);
   line-height: 1.12;
   max-width: 18ch;
   margin-inline: 0;
@@ -5302,8 +5316,8 @@
   .aiop-v2-track.is-animated .aiop-v2-frame--hero .aiop-v2-display {
     text-align: center;
     margin-inline: auto;
-    font-size: clamp(36px, 4.6vw, 60px);
-    line-height: 1.05;
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.08;
     max-width: 22ch;
   }
 

@@ -64,8 +64,12 @@ export const hero = {
     "AI capability,",
     { em: "built inside the work." },
   ] as const,
-  lede:
-    "The relationship between human intelligence and AI is the work of our generation.\n\nAs an embedded Creative Technologist at Loop, I helped marketing teams navigate AI inside what they already do, encode what makes it good, and build the capability underneath.\n\nStripe is the same journey at a different scale.",
+  lede: [
+    "The relationship between human intelligence and AI is the work of our generation.",
+    "As an embedded Creative Technologist, I helped marketing teams navigate AI inside their work, encode what makes it good, and build the capability on top of it.",
+  ] as const,
+  ledeStrong:
+    "Now, I want to help Stripe build the economic layer for the age of co-intelligence.",
   meta: [
     {
       k: "EMAIL",
