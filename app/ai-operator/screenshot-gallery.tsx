@@ -2,14 +2,21 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ProjectScreenshot } from "./content";
+import { useReducedMotion } from "./use-reduced-motion";
 
 /*
  * ScreenshotGallery — auto-rotating image carousel.
  *
  * Mirror of Heimdall's `ScreenshotGallery` adapted to the AI Operator
  * route's class namespace. Cycles every 4.5s, pauses on hover/focus,
- * respects prefers-reduced-motion, and falls back to a single image
- * when only one screenshot is provided.
+ * respects prefers-reduced-motion (live), and falls back to a single
+ * image when only one screenshot is provided.
+ *
+ * The dots are plain buttons rather than a `tablist`: we don't render
+ * separate tab panels and we don't implement arrow-key tab navigation,
+ * so claiming the role would over-promise the keyboard contract. Each
+ * dot still carries a descriptive label and `aria-current` tracks the
+ * active slide.
  */
 
 interface ScreenshotGalleryProps {
@@ -28,13 +35,7 @@ export function ScreenshotGallery({
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const reducedRef = useRef(false);
-
-  useEffect(() => {
-    reducedRef.current = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-  }, []);
+  const reduced = useReducedMotion();
 
   const count = screenshots.length;
 
@@ -45,29 +46,24 @@ export function ScreenshotGallery({
     }
   }, []);
 
+  /* Autoplay: a single source of truth. The interval is re-armed any
+   * time the conditions change (count, pause, motion preference, or
+   * the active slide) so a manual click resets the dwell window. */
   useEffect(() => {
-    if (count <= 1 || paused || reducedRef.current) {
+    if (count <= 1 || paused || reduced) {
       clearTimer();
       return;
     }
+    clearTimer();
     timerRef.current = setInterval(() => {
       setActive((prev) => (prev + 1) % count);
     }, INTERVAL_MS);
     return clearTimer;
-  }, [count, paused, clearTimer]);
+  }, [count, paused, reduced, active, clearTimer]);
 
-  const goTo = useCallback(
-    (idx: number) => {
-      setActive(idx);
-      clearTimer();
-      if (count > 1 && !reducedRef.current) {
-        timerRef.current = setInterval(() => {
-          setActive((prev) => (prev + 1) % count);
-        }, INTERVAL_MS);
-      }
-    },
-    [count, clearTimer],
-  );
+  const goTo = useCallback((idx: number) => {
+    setActive(idx);
+  }, []);
 
   if (count === 0) return null;
 
@@ -91,7 +87,7 @@ export function ScreenshotGallery({
       <div className="aiop-gallery__track">
         {screenshots.map((shot, i) => (
           <div
-            key={shot.src}
+            key={`${i}-${shot.src}`}
             className={`aiop-gallery__slide${i === active ? " is-active" : ""}`}
             aria-hidden={i !== active}
           >
@@ -105,18 +101,13 @@ export function ScreenshotGallery({
         ))}
       </div>
 
-      <div
-        className="aiop-gallery__dots"
-        role="tablist"
-        aria-label={`${name} screenshots`}
-      >
+      <div className="aiop-gallery__dots" aria-label={`${name} screenshots`}>
         {screenshots.map((shot, i) => (
           <button
-            key={shot.src}
+            key={`${i}-${shot.src}`}
             type="button"
-            role="tab"
-            aria-selected={i === active}
             aria-label={shot.caption ?? shot.alt}
+            aria-current={i === active ? "true" : undefined}
             className={`aiop-gallery__dot${i === active ? " is-active" : ""}`}
             onClick={() => goTo(i)}
           />

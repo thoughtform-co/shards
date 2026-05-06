@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 
 /*
  * Shared modal shell for the AI Operator landing.
@@ -9,6 +9,11 @@ import { useEffect, type CSSProperties, type ReactNode } from "react";
  * a fixed-width inset card, escape-key close, body scroll lock while
  * open, and an accent color hook (`--aiop-modal-accent`) that lets the
  * caller tint the close button + accent stripe per item.
+ *
+ * Callers typically pass an inline `onClose` (e.g. `() => setOpen(null)`),
+ * so we route the latest handler through a ref. The lifecycle effect then
+ * only depends on `open`, keeping the keydown listener and body scroll
+ * lock from being torn down and reattached on every parent render.
  */
 export function OperatorModal({
   open,
@@ -23,10 +28,18 @@ export function OperatorModal({
   ariaLabel: string;
   children: ReactNode;
 }) {
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        e.stopPropagation();
+        onCloseRef.current();
+      }
     };
     document.addEventListener("keydown", onKey);
     const prev = document.body.style.overflow;
@@ -35,7 +48,7 @@ export function OperatorModal({
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
     };
-  }, [open, onClose]);
+  }, [open]);
 
   if (!open) return null;
 

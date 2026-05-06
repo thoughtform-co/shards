@@ -13,7 +13,6 @@ import {
 } from "./content";
 import { LoopStripeMorph } from "./loop-stripe-morph";
 import { ScrollReveal } from "./reveal";
-import { v2Loop } from "./v2/content";
 
 /*
  * AI Operator — public landing page.
@@ -151,7 +150,7 @@ export default function AiOperatorPage() {
             </figure>
 
             <dl className="aiop-hero__proof-grid" aria-label="Loop AI transformation proof points">
-              {v2Loop.proof.metrics.map((metric) => (
+              {hero.proofMetrics.map((metric) => (
                 <div key={metric.k} className="aiop-hero__proof-block">
                   <dt>{metric.k}</dt>
                   <dd>{metric.v}</dd>

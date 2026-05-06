@@ -94,6 +94,15 @@ export const hero = {
     alt: "Vincent Buyssens at his desk in Antwerp, working with Claude on a MacBook.",
     tag: "Antwerp · CET",
   },
+  /* Proof grid below the portrait. Mirrors the Loop AI transformation
+   * metrics shown on V2; kept here so V1 owns its own hero data and
+   * doesn't reach into the V2 content module. */
+  proofMetrics: [
+    { v: "4", k: "Full-stack\nAI tools" },
+    { v: "20+", k: "Workflows encoded\nin Skills" },
+    { v: "10+", k: "Self-sufficient teams\nwith Claude" },
+    { v: "90%", k: "Paid social content\nwith AI" },
+  ],
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────

@@ -214,6 +214,11 @@ export function LoopStripeMorph() {
     let frameId = 0;
     let visible = true;
     let lastT = performance.now();
+    /* Cycle-local clock. Advances only while the section is on-screen
+     * so the morph picks up exactly where it paused after scrolling
+     * back. Kept as a closure variable rather than stamped on the
+     * frame function so the lifecycle is obvious to future readers. */
+    let morphTime = 0;
 
     const io = new IntersectionObserver(
       (entries) => {
@@ -232,12 +237,8 @@ export function LoopStripeMorph() {
       const dt = now - lastT;
       lastT = now;
 
-      const elapsed = (frame as unknown as { _t?: number })._t ?? 0;
-      const next = elapsed + dt;
-      (frame as unknown as { _t?: number })._t = next;
-
-      const p = phaseProgress(next);
-      applyProgress(p);
+      morphTime += dt;
+      applyProgress(phaseProgress(morphTime));
 
       const breath = Math.sin(now * 0.0006) * 0.012;
       points.rotation.z = breath;

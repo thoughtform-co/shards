@@ -2079,6 +2079,18 @@
   }
 }
 
+/* No-script safety net: if JS is unavailable the IntersectionObserver
+ * never runs and `.is-in` is never added, which would leave every
+ * reveal section invisible. `scripting: none` is supported in modern
+ * browsers; in older ones the `<noscript>` fallback below covers it. */
+@media (scripting: none) {
+  .aiop-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 
 /* ═══════════════════════════════════════════════════════════════════════
  * 13 · Responsive cleanup
