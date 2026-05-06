@@ -2507,18 +2507,35 @@
 }
 
 .aiop-approach__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   margin: 0;
-  font-family: var(--aiop-display);
-  font-style: italic;
-  font-size: clamp(28px, 3.4vw, 44px);
-  font-weight: 500;
-  letter-spacing: -0.025em;
-  color: var(--aiop-ink);
+  padding: 9px 18px;
+  width: fit-content;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(26, 22, 18, 0.06);
+  font-family: var(--aiop-body);
+  font-size: clamp(18px, 1.9vw, 23px);
+  font-style: normal;
+  font-weight: 620;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  color: var(--aiop-ink-soft);
 }
 
-.aiop-approach__step--violet .aiop-approach__label { color: var(--aiop-violet); }
-.aiop-approach__step--gold   .aiop-approach__label { color: var(--aiop-gold-bright); }
-.aiop-approach__step--sage   .aiop-approach__label { color: var(--aiop-sage); }
+.aiop-approach__label-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.aiop-approach__step--violet .aiop-approach__label-dot { background: var(--aiop-violet); }
+.aiop-approach__step--gold   .aiop-approach__label-dot { background: var(--aiop-gold-bright); }
+.aiop-approach__step--sage   .aiop-approach__label-dot { background: var(--aiop-sage); }
 
 .aiop-approach__headline {
   margin: 0;
@@ -2617,6 +2634,7 @@
   align-self: stretch;
   display: flex;
   flex-direction: column;
+  gap: 14px;
 }
 
 .aiop-approach__close {
@@ -2648,8 +2666,7 @@
   padding: 22px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  flex: 1;
+  gap: 20px;
 }
 
 .aiop-rollout__head {
@@ -2662,10 +2679,10 @@
 }
 
 .aiop-rollout__title {
-  font-family: var(--aiop-display);
-  font-size: 18px;
-  font-weight: 500;
-  font-style: italic;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   color: var(--aiop-ink);
 }
 
@@ -2675,6 +2692,67 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--aiop-muted);
+}
+
+.aiop-rollout__block {
+  padding-top: 2px;
+}
+
+.aiop-rollout__block + .aiop-rollout__block {
+  border-top: 1px dashed var(--aiop-rule);
+  padding-top: 18px;
+}
+
+.aiop-rollout__block-label {
+  margin: 0 0 10px;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
+}
+
+.aiop-rollout__chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 14px;
+}
+
+.aiop-rollout__outputs {
+  grid-template-columns: repeat(3, minmax(0, max-content));
+  align-items: center;
+}
+
+.aiop-rollout__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--aiop-ink);
+}
+
+.aiop-rollout__chip--encode {
+  justify-content: flex-start;
+}
+
+.aiop-rollout__chip-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--aiop-violet);
+  flex-shrink: 0;
+}
+
+.aiop-rollout__output-arrow {
+  color: var(--aiop-gold-bright);
+  font-family: var(--aiop-mono);
+  margin-left: 4px;
 }
 
 .aiop-rollout__stages {
@@ -2690,10 +2768,10 @@
 .aiop-rollout__stage {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  background: var(--aiop-card-soft);
-  border: 1px solid var(--aiop-rule);
+  gap: 7px;
+  padding: 0;
+  background: transparent;
+  border: 0;
   position: relative;
 }
 
@@ -2706,7 +2784,9 @@
 }
 
 .aiop-rollout__stage-label {
-  font-size: 13px;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.02em;
   font-weight: 500;
   color: var(--aiop-ink);
 }
@@ -2718,55 +2798,10 @@
   margin: 0 -2px;
 }
 
-.aiop-rollout__surfaces {
-  list-style: none;
-  margin: 0;
-  padding: 14px 0 0;
-  border-top: 1px dashed var(--aiop-rule);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.aiop-rollout__surface {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  border: 1px solid var(--aiop-rule);
-  font-family: var(--aiop-mono);
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  color: var(--aiop-ink);
-  background: var(--aiop-card);
-}
-
-.aiop-rollout__surface-dot {
-  width: 6px;
-  height: 6px;
-  background: var(--aiop-violet);
-  flex-shrink: 0;
-}
-
-.aiop-rollout__surface--violet .aiop-rollout__surface-dot { background: var(--aiop-violet); }
-.aiop-rollout__surface--gold   .aiop-rollout__surface-dot { background: var(--aiop-gold-bright); }
-.aiop-rollout__surface--sage   .aiop-rollout__surface-dot { background: var(--aiop-sage); }
-.aiop-rollout__surface--slate  .aiop-rollout__surface-dot { background: var(--aiop-slate); }
-
 .aiop-rollout__foot {
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--aiop-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  color: var(--aiop-muted);
   border-top: 1px solid var(--aiop-rule-soft);
-  padding-top: 12px;
+  padding-top: 18px;
 }
-
-.aiop-rollout__foot-k { color: var(--aiop-violet); font-weight: 600; }
-.aiop-rollout__foot-v { color: var(--aiop-ink); }
 
 
 /* — Substrate (Encode) — */

@@ -148,9 +148,9 @@ export type RolloutVisual = {
   kind: "rollout";
   title: string;
   sub: string;
+  inputs: string[];
   stages: { tag: string; label: string }[];
-  surfaces: { tone: "violet" | "gold" | "sage" | "slate"; name: string }[];
-  meta: { k: string; v: string };
+  outputs: string[];
 };
 
 export type SubstrateVisual = {
@@ -202,28 +202,22 @@ export const approachSteps: ApproachStep[] = [
     id: "navigate",
     label: "Navigate",
     tone: "violet",
-    headline: "Inside the workflow until the patterns surface.",
+    headline: "Teach the teams what they are working with",
     body:
       "AI sits between a tool and a collaborator. Deterministic enough to automate, interpretive enough to think with. The skill is knowing which mode the task needs. That's what navigation teaches.",
     signal: { k: "Outcome", v: "AI intuition and a workflow brief per team." },
     visual: {
       kind: "rollout",
-      title: "Cohort journey",
-      sub: "Awareness → Self-sufficient",
+      title: "Navigate",
+      sub: "Inside the workflow",
+      inputs: ["The team's actual work", "How they evaluate it"],
       stages: [
-        { tag: "01", label: "Aware" },
-        { tag: "02", label: "First win" },
-        { tag: "03", label: "Regular use" },
-        { tag: "04", label: "Transformed" },
-        { tag: "05", label: "Self-sufficient" },
+        { tag: "01", label: "Baseline" },
+        { tag: "02", label: "Question" },
+        { tag: "03", label: "Workshop" },
+        { tag: "04", label: "Hand off" },
       ],
-      surfaces: [
-        { tone: "violet", name: "Workshops" },
-        { tone: "gold", name: "Quick-starts" },
-        { tone: "sage", name: "AI Stewards" },
-        { tone: "slate", name: "Showcases" },
-      ],
-      meta: { k: "Pattern", v: "Pull · push · structure" },
+      outputs: ["AI Intuition", "Workflow brief", "Encode"],
     },
     modal: {
       eyebrow: "01 · Navigate",

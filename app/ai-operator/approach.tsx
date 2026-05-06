@@ -49,7 +49,10 @@ export function Approach() {
             >
               <div className="aiop-approach__copy">
                 <header className="aiop-approach__head-row">
-                  <h3 className="aiop-approach__label">{step.label}.</h3>
+                  <h3 className="aiop-approach__label">
+                    <span className="aiop-approach__label-dot" aria-hidden="true" />
+                    {step.label}
+                  </h3>
                 </header>
                 <p className="aiop-approach__headline">{step.headline}</p>
                 <p className="aiop-approach__body">{step.body}</p>
@@ -57,16 +60,6 @@ export function Approach() {
                   <dt>{step.signal.k}</dt>
                   <dd>{step.signal.v}</dd>
                 </dl>
-                <button
-                  type="button"
-                  className="aiop-approach__cta"
-                  onClick={() => setOpen(step)}
-                >
-                  Practice in motion
-                  <span className="aiop-approach__cta-arrow" aria-hidden="true">
-                    →
-                  </span>
-                </button>
               </div>
               <div className="aiop-approach__visual">
                 {step.visual.kind === "rollout" && (
@@ -78,6 +71,16 @@ export function Approach() {
                 {step.visual.kind === "engine" && (
                   <EngineCard visual={step.visual} />
                 )}
+                <button
+                  type="button"
+                  className="aiop-approach__cta"
+                  onClick={() => setOpen(step)}
+                >
+                  Practice in motion
+                  <span className="aiop-approach__cta-arrow" aria-hidden="true">
+                    →
+                  </span>
+                </button>
               </div>
             </li>
           ))}
@@ -109,33 +112,64 @@ function RolloutCard({ visual }: { visual: RolloutVisual }) {
         <span className="aiop-rollout__title">{visual.title}</span>
         <span className="aiop-rollout__sub">{visual.sub}</span>
       </header>
-      <ol className="aiop-rollout__stages" role="list">
-        {visual.stages.map((stage, idx) => (
-          <li key={stage.tag} className="aiop-rollout__stage">
-            <span className="aiop-rollout__stage-tag">{stage.tag}</span>
-            <span className="aiop-rollout__stage-label">{stage.label}</span>
-            {idx < visual.stages.length - 1 ? (
-              <span className="aiop-rollout__stage-arrow" aria-hidden="true">
-                ›
-              </span>
-            ) : null}
-          </li>
-        ))}
-      </ol>
-      <ul className="aiop-rollout__surfaces" role="list">
-        {visual.surfaces.map((surface) => (
-          <li
-            key={surface.name}
-            className={`aiop-rollout__surface aiop-rollout__surface--${surface.tone}`}
-          >
-            <span className="aiop-rollout__surface-dot" aria-hidden="true" />
-            {surface.name}
-          </li>
-        ))}
-      </ul>
+      <section className="aiop-rollout__block">
+        <p className="aiop-rollout__block-label">Inputs</p>
+        <ul className="aiop-rollout__chips" role="list">
+          {visual.inputs.map((input) => (
+            <li key={input} className="aiop-rollout__chip">
+              <span className="aiop-rollout__chip-dot" aria-hidden="true" />
+              {input}
+            </li>
+          ))}
+        </ul>
+      </section>
+      <section className="aiop-rollout__block">
+        <p className="aiop-rollout__block-label">How it runs</p>
+        <ol className="aiop-rollout__stages" role="list">
+          {visual.stages.map((stage, idx) => (
+            <li key={stage.tag} className="aiop-rollout__stage">
+              <span className="aiop-rollout__stage-tag">{stage.tag}</span>
+              <span className="aiop-rollout__stage-label">{stage.label}</span>
+              {idx < visual.stages.length - 1 ? (
+                <span className="aiop-rollout__stage-arrow" aria-hidden="true">
+                  ›
+                </span>
+              ) : null}
+            </li>
+          ))}
+        </ol>
+      </section>
       <footer className="aiop-rollout__foot">
-        <span className="aiop-rollout__foot-k">{visual.meta.k}</span>
-        <span className="aiop-rollout__foot-v">{visual.meta.v}</span>
+        <div>
+          <p className="aiop-rollout__block-label">Outputs</p>
+          <ul className="aiop-rollout__chips aiop-rollout__outputs" role="list">
+            {visual.outputs.map((output, idx) => (
+              <li
+                key={output}
+                className={`aiop-rollout__chip${
+                  output === "Encode" ? " aiop-rollout__chip--encode" : ""
+                }`}
+              >
+                {output === "Encode" ? (
+                  <span className="aiop-term-pill aiop-term-pill--encode">
+                    <span className="aiop-term-pill__dot" aria-hidden="true" />
+                    Encode
+                  </span>
+                ) : (
+                  <>
+                    <span className="aiop-rollout__chip-dot" aria-hidden="true" />
+                    {output}
+                  </>
+                )}
+                {idx < visual.outputs.length - 1 ? (
+                  <span className="aiop-rollout__output-arrow" aria-hidden="true">
+                    →
+                  </span>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </div>
       </footer>
     </article>
   );
