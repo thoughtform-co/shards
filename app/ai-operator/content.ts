@@ -65,7 +65,7 @@ export const hero = {
     { em: "built inside the work." },
   ] as const,
   lede:
-    "A creative technologist who's been navigating the tides of digital change for over a decade. I keep strategy and building in the same hands. Embedded where strategy turns into practice — I help teams navigate AI inside real work, encode what makes the work good, and build the reusable capability underneath it.",
+    "The relationship between human intelligence and AI is the work of our generation.\n\nAs an embedded Creative Technologist at Loop, I helped marketing teams navigate AI inside what they already do, encode what makes it good, and build the capability underneath.\n\nStripe is the same journey at a different scale.",
   meta: [
     {
       k: "EMAIL",
@@ -101,17 +101,22 @@ export const hero = {
  * ─────────────────────────────────────────────────────────────────── */
 
 export const visionSection = {
-  title: "The Adoption",
-  titleEm: "Automation Flywheel.",
-  centerLabel: "Substrate",
-  centerSub: "Compounds",
+  title: "Adoption & Automation",
+  titleEm: "are the same flywheel.",
+  centerLabel: "SUBSTRATE",
+  centerFiles: [
+    "how-teams-work.md",
+    "stripe-mkt-strategy.skill",
+    "weekly-standup-transcript.txt",
+  ],
+  satelliteLabel: "Headless",
   orbits: [
     { id: "navigate", label: "Navigate", position: "top" },
     { id: "encode", label: "Encode", position: "bottom-right" },
     { id: "build", label: "Build", position: "bottom-left" },
   ] as const,
   caption:
-    "My approach is navigating real work, teaching teams how to encode their expertise, and then building the first capability fast enough so strategy and delivery stay connected.",
+    "Most companies run adoption and automation as two tracks. One teaches people, the other builds tools. AI makes them one loop. The teaching produces the substrate the tools run on.",
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────

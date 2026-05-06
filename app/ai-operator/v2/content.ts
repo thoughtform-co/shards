@@ -69,11 +69,11 @@ export const v2Loop = {
 
   vision: {
     label: "My vision on AI",
-    /* Title splits at the verb so the italic em carries the move
+    /* Title splits at the keyword so only the conceptual anchor
      * (mirrors the Hero "AI capability, built inside the work."
      * cadence). */
-    title: "AI adoption and automation",
-    titleEm: "is the same flywheel.",
+    title: "AI adoption and automation is the same",
+    titleEm: "flywheel.",
     body:
       "Navigating real work, encoding know-how and building the first capability fast enough so strategy and delivery stay connected.",
     cta: { label: "See the engines", href: "/ai-operator#cases" },
@@ -81,7 +81,9 @@ export const v2Loop = {
 
   proof: {
     label: "AI at Loop Earplugs",
-    title: "The same loop, across an entire marketing department.",
+    title: "The same",
+    titleEm: "flywheel",
+    titleSuffix: ", across an entire marketing department.",
     /* Two paragraphs: the embedded mandate first, the company-wide
      * fluency mandate second. The space between reads as a beat. */
     paragraphs: [
@@ -89,10 +91,10 @@ export const v2Loop = {
       "Responsible for company-wide Claude rollout and AI fluency.",
     ],
     metrics: [
-      { v: "4", k: "Full-stack AI tools" },
-      { v: "20+", k: "Workflows encoded in Skills" },
-      { v: "10+", k: "Teams self-sufficient with Claude" },
-      { v: "90%", k: "Paid social content with AI" },
+      { v: "4", k: "Full-stack\nAI tools" },
+      { v: "20+", k: "Workflows encoded\nin Skills" },
+      { v: "10+", k: "Self-sufficient teams\nwith Claude" },
+      { v: "90%", k: "Paid social content\nwith AI" },
     ],
   },
 } as const;

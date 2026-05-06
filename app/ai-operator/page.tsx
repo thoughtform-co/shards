@@ -12,6 +12,7 @@ import {
   visionSection,
 } from "./content";
 import { ScrollReveal } from "./reveal";
+import { v2Loop } from "./v2/content";
 
 /*
  * AI Operator — public landing page.
@@ -103,46 +104,34 @@ export default function AiOperatorPage() {
                 </a>
               ))}
             </div>
+          </div>
 
-            <dl className="aiop-hero__meta">
-              {hero.meta.map((row) => (
-                <div key={row.k} className="aiop-hero__meta-row">
-                  <dt className="aiop-hero__meta-k">{row.k}</dt>
-                  <dd className="aiop-hero__meta-v">
-                    {row.href ? (
-                      <a
-                        className="aiop-hero__meta-link"
-                        href={row.href}
-                        {...(row.external
-                          ? { target: "_blank", rel: "noreferrer" }
-                          : {})}
-                      >
-                        {row.v}
-                      </a>
-                    ) : (
-                      row.v
-                    )}
-                  </dd>
+          <div className="aiop-hero__media aiop-reveal">
+            <figure className="aiop-hero__portrait">
+              <Image
+                src={hero.portrait.src}
+                alt={hero.portrait.alt}
+                width={820}
+                height={820}
+                priority
+                sizes="(max-width: 900px) 100vw, 540px"
+                className="aiop-hero__portrait-img"
+              />
+              <figcaption className="aiop-hero__portrait-tag">
+                <span className="aiop-hero__portrait-dot" aria-hidden="true" />
+                {hero.portrait.tag}
+              </figcaption>
+            </figure>
+
+            <dl className="aiop-hero__proof-grid" aria-label="Loop AI transformation proof points">
+              {v2Loop.proof.metrics.map((metric) => (
+                <div key={metric.k} className="aiop-hero__proof-block">
+                  <dt>{metric.k}</dt>
+                  <dd>{metric.v}</dd>
                 </div>
               ))}
             </dl>
           </div>
-
-          <figure className="aiop-hero__portrait aiop-reveal">
-            <Image
-              src={hero.portrait.src}
-              alt={hero.portrait.alt}
-              width={820}
-              height={820}
-              priority
-              sizes="(max-width: 900px) 100vw, 540px"
-              className="aiop-hero__portrait-img"
-            />
-            <figcaption className="aiop-hero__portrait-tag">
-              <span className="aiop-hero__portrait-dot" aria-hidden="true" />
-              {hero.portrait.tag}
-            </figcaption>
-          </figure>
         </div>
       </section>
 
@@ -156,7 +145,7 @@ export default function AiOperatorPage() {
           <div
             className="aiop-orbit aiop-orbit--centered"
             role="img"
-            aria-label="Navigate, Encode, Build flywheel around a Substrate core"
+            aria-label="Navigate, Encode, Build flywheel around a substrate file stack, with a Headless satellite"
           >
             <span
               className="aiop-orbit__ring aiop-orbit__ring--outer"
@@ -179,7 +168,17 @@ export default function AiOperatorPage() {
 
             <span className="aiop-orbit__core">
               <strong>{visionSection.centerLabel}</strong>
-              <span>{visionSection.centerSub}</span>
+              <span className="aiop-orbit__core-files">
+                {visionSection.centerFiles.map((file) => (
+                  <span key={file}>{file}</span>
+                ))}
+              </span>
+            </span>
+            <span className="aiop-orbit__satellite" aria-hidden="true">
+              <span className="aiop-orbit__satellite-dot" />
+              <span className="aiop-orbit__satellite-label">
+                {visionSection.satelliteLabel}
+              </span>
             </span>
           </div>
 

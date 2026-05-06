@@ -288,7 +288,9 @@ function FrameLoop({ active }: { active: boolean }) {
             <span className="aiop-v2-mono__bullet" aria-hidden="true" />
             {v2Loop.proof.label}
           </p>
-          <h3 className="aiop-v2-side__title">{v2Loop.proof.title}</h3>
+          <h3 className="aiop-v2-side__title">
+            {v2Loop.proof.title} <em>{v2Loop.proof.titleEm}</em>{v2Loop.proof.titleSuffix}
+          </h3>
           {v2Loop.proof.paragraphs.map((paragraph) => (
             <p key={paragraph} className="aiop-v2-side__body">
               {paragraph}
