@@ -2295,11 +2295,10 @@
 /* ═══════════════════════════════════════════════════════════════════════
  * 14b · v4 — Vision section · The Adoption Automation Flywheel
  *
- * One viewport. A centered section title above the Navigate / Encode /
- * Build orbit, with the approach tagline as a display-italic caption
- * beneath. The orbit is the visual anchor; the title names what it is,
- * and the caption is the one-sentence statement of practice that the
- * deeper Approach section unpacks below.
+ * One viewport. A Linear-inspired title/copy pair introduces the
+ * Navigate / Encode / Build orbit. The orbit remains the visual anchor,
+ * while the header frames the adoption/automation thesis as an editorial
+ * split rather than a centered poster line.
  * ═══════════════════════════════════════════════════════════════════════ */
 
 .aiop-vision {
@@ -2331,35 +2330,60 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(40px, 5vw, 64px);
-  text-align: center;
+  gap: clamp(44px, 5vw, 72px);
 }
 
-/* Section title — centered, max-width tight enough to keep the line
-   break on small viewports natural ("The Adoption / Automation
-   Flywheel."). Inherits the display serif + italic em rhythm from
-   `.aiop-section-title`; we just override the default left-aligned
-   margin so the title sits on the section axis. */
+.aiop-vision__head {
+  width: min(100%, 980px);
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(280px, 0.72fr);
+  gap: clamp(36px, 7vw, 108px);
+  align-items: start;
+  margin: 0 auto;
+}
+
+/* Section title — left-aligned in the split header so it has the same
+   title/aside relationship as Linear's product sections. */
 .aiop-vision__title {
-  margin: 0 auto;
-  text-align: center;
-  max-width: 22ch;
+  margin: 0;
+  text-align: left;
+  max-width: 13.5ch;
 }
 
-/* Caption — plain-language thesis under the orbit. Soft ink, generous
-   line-height, max ~66ch so the sentence breaks gracefully without
-   becoming a loose paragraph block. */
+/* Caption — plain-language thesis paired with the title. */
 .aiop-vision__caption {
-  margin: 0 auto;
-  max-width: 66ch;
-  text-align: center;
+  margin: 0;
+  max-width: 38ch;
+  text-align: left;
   font-family: var(--aiop-body);
   font-style: normal;
-  font-weight: 650;
-  font-size: clamp(16px, 1.35vw, 19px);
-  line-height: 1.5;
+  font-weight: 620;
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.45;
   letter-spacing: -0.005em;
   color: var(--aiop-ink-soft);
+}
+
+@media (max-width: 860px) {
+  .aiop-vision__head {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    text-align: center;
+  }
+
+  .aiop-vision__title,
+  .aiop-vision__caption {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .aiop-vision__title {
+    max-width: 18ch;
+  }
+
+  .aiop-vision__caption {
+    max-width: 58ch;
+  }
 }
 
 

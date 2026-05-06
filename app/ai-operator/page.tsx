@@ -138,9 +138,13 @@ export default function AiOperatorPage() {
       {/* ─── Vision — Adoption Automation Flywheel ──────────────────── */}
       <section className="aiop-section aiop-vision" id="vision">
         <div className="aiop-wrap aiop-vision__inner aiop-reveal">
-          <h2 className="aiop-section-title aiop-vision__title">
-            {visionSection.title} <em>{visionSection.titleEm}</em>
-          </h2>
+          <div className="aiop-vision__head">
+            <h2 className="aiop-section-title aiop-vision__title">
+              {visionSection.title} <em>{visionSection.titleEm}</em>
+            </h2>
+
+            <p className="aiop-vision__caption">{visionSection.caption}</p>
+          </div>
 
           <div
             className="aiop-orbit aiop-orbit--centered"
@@ -181,8 +185,6 @@ export default function AiOperatorPage() {
               </span>
             </span>
           </div>
-
-          <p className="aiop-vision__caption">{visionSection.caption}</p>
         </div>
       </section>
 
