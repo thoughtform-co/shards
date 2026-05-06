@@ -4060,6 +4060,17 @@
   background: var(--aiop-modal-accent);
 }
 
+.aiop-modal__section-note {
+  margin: 14px 0 0;
+  padding-left: 18px;
+  border-left: 1px solid color-mix(in oklab, var(--aiop-modal-accent) 45%, transparent);
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
 .aiop-modal__caps {
   list-style: none;
   margin: 0;

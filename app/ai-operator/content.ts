@@ -182,7 +182,7 @@ export type ApproachModal = {
   titleEm: string;
   lede: string;
   meta: { k: string; v: string }[];
-  sections: { heading: string; bullets: string[] }[];
+  sections: { heading: string; bullets: string[]; note?: string }[];
   signal: string;
 };
 
@@ -245,11 +245,12 @@ export const approachSteps: ApproachStep[] = [
         {
           heading: "What it produced at Loop",
           bullets: [
-            "Claude rollout from 5 to 130+ users across legal, finance, analytics, marketing, and studio.",
-            "90% of briefings now start with an AI tool.",
-            "Bottom-up adoption met top-down structure: a peer-coordination model with Tech, People, Legal.",
-            "Junior PM and Full-Stack Engineer hires planned to remove single-person dependency.",
+            "One of the first brands in Belgium to put ChatGPT Enterprise into daily production, in 2024.",
+            "Full mandate on the Claude Enterprise rollout, from adoption to aligning with legal, IT, and founders.",
+            "Scalable plan across 15+ teams, built to make every Looper self-sufficient.",
+            "Claude Skills + Monday automation surfacing weekly progress and wins.",
           ],
+          note: "None of this is Claude-specific — the fluency transfers to any generative AI tool.",
         },
       ],
       signal: "Adoption isn't a campaign. It's a cohort journey with infrastructure behind every step.",

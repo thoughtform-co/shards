@@ -309,6 +309,9 @@ function ApproachModalBody({ step }: { step: ApproachStep }) {
               <li key={bullet}>{bullet}</li>
             ))}
           </ul>
+          {section.note ? (
+            <p className="aiop-modal__section-note">{section.note}</p>
+          ) : null}
         </section>
       ))}
 
