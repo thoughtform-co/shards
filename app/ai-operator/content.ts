@@ -240,11 +240,12 @@ export const approachSteps: ApproachStep[] = [
         {
           heading: "How the work runs",
           bullets: [
-            "Embedded discovery alongside one team for 1–2 weeks per cohort.",
-            "Workshops and quick-start sessions tuned to the team's actual deliverables.",
-            "AI Stewards activated as in-team multipliers so the cohort can extend the work without me.",
-            "Bi-weekly showcases turn one team's wins into another team's signal.",
-            "Maturity model per marketer: aware → first win → regular → transformed → self-sufficient.",
+            "Getting Started docs set the baseline.",
+            'Every team member answers one question: "What would a smart new colleague need to know?" Each answer becomes a candidate Skill.',
+            "45-minute workshop per team. We run each answer through Claude, see where it works and where it breaks, build one Skill before the session ends.",
+            "That single session is the ignition: people leave with a working mental model and start briefing AI like a colleague the same week.",
+            "The session gets transcribed into a Monday doc the team owns and updates.",
+            "AI Stewards inside the team take it from there. Bi-weekly showcases let other teams copy what works.",
           ],
         },
         {
