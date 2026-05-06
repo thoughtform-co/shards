@@ -63,24 +63,23 @@ export function Approach() {
               </div>
               <div className="aiop-approach__visual">
                 {step.visual.kind === "rollout" && (
-                  <RolloutCard visual={step.visual} />
+                  <RolloutCard
+                    visual={step.visual}
+                    onPractice={() => setOpen(step)}
+                  />
                 )}
                 {step.visual.kind === "substrate" && (
-                  <SubstrateCard visual={step.visual} />
+                  <SubstrateCard
+                    visual={step.visual}
+                    onPractice={() => setOpen(step)}
+                  />
                 )}
                 {step.visual.kind === "engine" && (
-                  <EngineCard visual={step.visual} />
+                  <EngineCard
+                    visual={step.visual}
+                    onPractice={() => setOpen(step)}
+                  />
                 )}
-                <button
-                  type="button"
-                  className="aiop-approach__cta"
-                  onClick={() => setOpen(step)}
-                >
-                  Practice in motion
-                  <span className="aiop-approach__cta-arrow" aria-hidden="true">
-                    →
-                  </span>
-                </button>
               </div>
             </li>
           ))}
@@ -105,7 +104,13 @@ export function Approach() {
 
 /* ─── Visuals ──────────────────────────────────────────────────────── */
 
-function RolloutCard({ visual }: { visual: RolloutVisual }) {
+function RolloutCard({
+  visual,
+  onPractice,
+}: {
+  visual: RolloutVisual;
+  onPractice: () => void;
+}) {
   return (
     <article className="aiop-rollout">
       <header className="aiop-rollout__head">
@@ -171,11 +176,18 @@ function RolloutCard({ visual }: { visual: RolloutVisual }) {
           </ul>
         </div>
       </footer>
+      <VisualAction onClick={onPractice} />
     </article>
   );
 }
 
-function SubstrateCard({ visual }: { visual: SubstrateVisual }) {
+function SubstrateCard({
+  visual,
+  onPractice,
+}: {
+  visual: SubstrateVisual;
+  onPractice: () => void;
+}) {
   return (
     <article className="aiop-substrate">
       <header className="aiop-substrate__head">
@@ -208,11 +220,18 @@ function SubstrateCard({ visual }: { visual: SubstrateVisual }) {
         </ul>
       </div>
       <p className="aiop-substrate__foot">{visual.foot}</p>
+      <VisualAction onClick={onPractice} />
     </article>
   );
 }
 
-function EngineCard({ visual }: { visual: EngineVisual }) {
+function EngineCard({
+  visual,
+  onPractice,
+}: {
+  visual: EngineVisual;
+  onPractice: () => void;
+}) {
   return (
     <article className="aiop-engine">
       <header className="aiop-engine__head">
@@ -240,7 +259,19 @@ function EngineCard({ visual }: { visual: EngineVisual }) {
         <span className="aiop-engine__foot-k">{visual.meta.k}</span>
         <span className="aiop-engine__foot-v">{visual.meta.v}</span>
       </footer>
+      <VisualAction onClick={onPractice} />
     </article>
+  );
+}
+
+function VisualAction({ onClick }: { onClick: () => void }) {
+  return (
+    <button type="button" className="aiop-visual-action" onClick={onClick}>
+      See how it runs
+      <span className="aiop-visual-action__arrow" aria-hidden="true">
+        →
+      </span>
+    </button>
   );
 }
 

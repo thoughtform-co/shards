@@ -2630,11 +2630,63 @@
   transform: translateX(3px);
 }
 
+.aiop-visual-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  margin-top: auto;
+  padding: 14px 0 0;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--aiop-rule-soft);
+  color: var(--aiop-gold-bright);
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 140ms ease;
+}
+
+.aiop-visual-action::before {
+  content: "";
+  width: 32px;
+  height: 1px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.aiop-visual-action__arrow {
+  transition: transform 140ms ease;
+}
+
+.aiop-visual-action:hover {
+  color: var(--aiop-ink);
+}
+
+.aiop-visual-action:hover .aiop-visual-action__arrow {
+  transform: translateX(3px);
+}
+
+.aiop-substrate .aiop-visual-action {
+  border-top-color: rgba(243, 236, 224, 0.15);
+}
+
+.aiop-substrate .aiop-visual-action:hover {
+  color: var(--aiop-paper);
+}
+
+.aiop-approach__step--violet .aiop-visual-action { color: var(--aiop-violet); }
+.aiop-approach__step--gold   .aiop-visual-action { color: var(--aiop-gold-bright); }
+.aiop-approach__step--sage   .aiop-visual-action { color: var(--aiop-sage); }
+
 .aiop-approach__visual {
   align-self: stretch;
   display: flex;
   flex-direction: column;
-  gap: 14px;
 }
 
 .aiop-approach__close {
@@ -2667,6 +2719,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  flex: 1;
 }
 
 .aiop-rollout__head {
