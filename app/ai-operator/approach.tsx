@@ -225,7 +225,7 @@ function ApproachModalBody({ step }: { step: ApproachStep }) {
         <h2 className="aiop-modal__title">
           {modal.title} <em>{modal.titleEm}</em>
         </h2>
-        <p className="aiop-modal__lede">{modal.lede}</p>
+        <p className="aiop-modal__lede">{renderModalLede(modal.lede)}</p>
         <dl className="aiop-modal__meta">
           {modal.meta.map((row) => (
             <div key={row.k} className="aiop-modal__meta-row">
@@ -253,6 +253,22 @@ function ApproachModalBody({ step }: { step: ApproachStep }) {
 }
 
 /* ─── Helpers ─────────────────────────────────────────────────────── */
+
+function renderModalLede(lede: string) {
+  return lede.split(/(Navigate|Encode|Build)/g).map((part, idx) =>
+    part === "Navigate" || part === "Encode" || part === "Build" ? (
+      <span
+        key={`${part}-${idx}`}
+        className={`aiop-term-pill aiop-term-pill--${part.toLowerCase()}`}
+      >
+        <span className="aiop-term-pill__dot" aria-hidden="true" />
+        {part}
+      </span>
+    ) : (
+      part
+    ),
+  );
+}
 
 function toneAccent(tone: ApproachStep["tone"]): string {
   switch (tone) {

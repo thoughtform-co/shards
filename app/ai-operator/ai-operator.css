@@ -3774,6 +3774,44 @@
   max-width: 60ch;
 }
 
+.aiop-term-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-inline: 2px;
+  padding: 3px 9px;
+  vertical-align: 0.08em;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(26, 22, 18, 0.06);
+  color: var(--aiop-ink-soft);
+  font-size: 0.76em;
+  font-weight: 560;
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.aiop-term-pill__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.aiop-term-pill--navigate .aiop-term-pill__dot {
+  background: var(--aiop-violet);
+}
+
+.aiop-term-pill--encode .aiop-term-pill__dot {
+  background: var(--aiop-gold-bright);
+}
+
+.aiop-term-pill--build .aiop-term-pill__dot {
+  background: var(--aiop-sage);
+}
+
 /* Modal screenshot — mirrors `.aiop-shot-frame` but with a softer
    shadow and the modal accent ring driven by `--aiop-modal-accent`. */
 .aiop-modal__shot {

@@ -230,7 +230,7 @@ export const approachSteps: ApproachStep[] = [
       title: "What navigation looks like",
       titleEm: "across an actual cohort.",
       lede:
-        "AI is trained on us but is not like us. AI intuition is learning how to navigate this strange new intelligence and working out how to ask for what you want. Once teams understand they're working with a smart, albeit alien, colleague that just needs context, you can start encoding their expertise into substrates you can build agents on.",
+        "AI is trained on us but is not like us. AI intuition is learning how to Navigate this strange new intelligence and working out how to ask for what you want. Once teams understand they're working with a smart, albeit alien, colleague that just needs context, you can start to Encode their expertise into substrates you can Build agents on.",
       meta: [
         { k: "DURATION", v: "Continuous · 1–2 weeks per team" },
         { k: "ARTIFACT", v: "Workflow brief · maturity model" },
