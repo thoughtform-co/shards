@@ -51,11 +51,15 @@
   --aiop-rule-soft: rgba(26, 22, 18, 0.06);
   --aiop-rule-strong: rgba(26, 22, 18, 0.20);
 
-  /* Accents — gold primary, sage + slate as secondary signal lanes. */
-  --aiop-gold: #9a7a2e;
-  --aiop-gold-bright: #b88728;
-  --aiop-gold-soft: rgba(184, 135, 40, 0.16);
-  --aiop-gold-edge: rgba(184, 135, 40, 0.32);
+  /* Accents — formerly gold primary; now Stripe violet. Token names
+     retained to keep the diff small; values resolve to the same purple
+     family as `--violet*` in globals so the route shares one accent
+     lane with the rest of the platform. Sage + slate stay as the
+     secondary signal lanes; ink + paper stay as the structural greys. */
+  --aiop-gold: #4d3399;
+  --aiop-gold-bright: #6243b9;
+  --aiop-gold-soft: rgba(98, 67, 185, 0.16);
+  --aiop-gold-edge: rgba(98, 67, 185, 0.32);
   --aiop-sage: #4f6b4a;
   --aiop-sage-soft: rgba(79, 107, 74, 0.16);
   --aiop-sage-edge: rgba(79, 107, 74, 0.32);
@@ -112,7 +116,7 @@
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(ellipse 60% 45% at 12% 10%, rgba(184, 135, 40, 0.08), transparent 60%),
+    radial-gradient(ellipse 60% 45% at 12% 10%, rgba(98, 67, 185, 0.08), transparent 60%),
     radial-gradient(ellipse 50% 40% at 88% 6%, rgba(79, 107, 74, 0.06), transparent 60%),
     linear-gradient(180deg, var(--aiop-paper) 0%, var(--aiop-paper-2) 100%);
   z-index: 0;
@@ -267,8 +271,8 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--aiop-paper);
-  background: var(--aiop-ink);
-  border: 1px solid var(--aiop-ink);
+  background: var(--aiop-gold-bright);
+  border: 1px solid var(--aiop-gold-bright);
   cursor: pointer;
   text-decoration: none;
   transition: background 140ms ease, color 140ms ease, transform 140ms ease;
@@ -283,6 +287,7 @@
 
 .aiop-button:hover {
   background: var(--aiop-gold);
+  border-color: var(--aiop-gold);
   color: var(--aiop-paper);
   transform: translateY(-1px);
 }
@@ -876,7 +881,7 @@
   height: 6px;
   border-radius: 50%;
   background: var(--aiop-gold-bright);
-  box-shadow: 0 0 0 3px rgba(184, 135, 40, 0.28);
+  box-shadow: 0 0 0 3px rgba(98, 67, 185, 0.28);
   flex-shrink: 0;
 }
 
@@ -1517,8 +1522,8 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 35% at 12% 0%, rgba(184, 135, 40, 0.18), transparent 65%),
-    radial-gradient(ellipse 50% 50% at 100% 100%, rgba(184, 135, 40, 0.08), transparent 70%);
+    radial-gradient(ellipse 60% 35% at 12% 0%, rgba(98, 67, 185, 0.18), transparent 65%),
+    radial-gradient(ellipse 50% 50% at 100% 100%, rgba(98, 67, 185, 0.08), transparent 70%);
   pointer-events: none;
 }
 
@@ -1727,8 +1732,8 @@
       135deg,
       transparent 0,
       transparent 80px,
-      rgba(184, 135, 40, 0.04) 80px,
-      rgba(184, 135, 40, 0.04) 81px
+      rgba(98, 67, 185, 0.04) 80px,
+      rgba(98, 67, 185, 0.04) 81px
     );
   pointer-events: none;
   z-index: 0;
@@ -2203,7 +2208,7 @@
   pointer-events: none;
   background:
     radial-gradient(ellipse 60% 45% at 30% 0%, rgba(98, 67, 185, 0.20), transparent 65%),
-    radial-gradient(ellipse 40% 35% at 0% 80%, rgba(184, 135, 40, 0.14), transparent 65%),
+    radial-gradient(ellipse 40% 35% at 0% 80%, rgba(98, 67, 185, 0.14), transparent 65%),
     radial-gradient(ellipse 40% 35% at 100% 90%, rgba(79, 107, 74, 0.14), transparent 65%);
   opacity: 0.85;
   z-index: 0;
@@ -2447,7 +2452,7 @@
   pointer-events: none;
   background:
     radial-gradient(ellipse 50% 40% at 50% 0%, rgba(98, 67, 185, 0.10), transparent 60%),
-    radial-gradient(ellipse 40% 30% at 0% 100%, rgba(184, 135, 40, 0.08), transparent 60%),
+    radial-gradient(ellipse 40% 30% at 0% 100%, rgba(98, 67, 185, 0.08), transparent 60%),
     radial-gradient(ellipse 40% 30% at 100% 100%, rgba(79, 107, 74, 0.08), transparent 60%);
   z-index: 0;
 }
@@ -2997,8 +3002,8 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 60% 40% at 12% 0%, rgba(184, 135, 40, 0.18), transparent 65%),
-    radial-gradient(ellipse 50% 50% at 100% 100%, rgba(184, 135, 40, 0.08), transparent 70%);
+    radial-gradient(ellipse 60% 40% at 12% 0%, rgba(98, 67, 185, 0.18), transparent 65%),
+    radial-gradient(ellipse 50% 50% at 100% 100%, rgba(98, 67, 185, 0.08), transparent 70%);
   pointer-events: none;
 }
 
@@ -3133,7 +3138,7 @@
 .aiop-substrate__input--ink    .aiop-substrate__input-dot { background: rgba(243, 236, 224, 0.20); color: var(--aiop-ink); }
 .aiop-substrate__input--violet .aiop-substrate__input-dot { background: rgba(98, 67, 185, 0.45); }
 .aiop-substrate__input--sage   .aiop-substrate__input-dot { background: rgba(79, 107, 74, 0.5); }
-.aiop-substrate__input--gold   .aiop-substrate__input-dot { background: rgba(184, 135, 40, 0.5); color: var(--aiop-ink); }
+.aiop-substrate__input--gold   .aiop-substrate__input-dot { background: rgba(98, 67, 185, 0.5); color: var(--aiop-ink); }
 .aiop-substrate__input--slate  .aiop-substrate__input-dot { background: rgba(79, 91, 107, 0.5); }
 
 .aiop-substrate__foot {
@@ -4324,6 +4329,9 @@
   position: relative;
 }
 
+/* The chamfer stroke now reads on a purple button, so the diagonal
+   matches the button color rather than ink — keeps the corner cut as
+   one continuous shape instead of a black sliver on a violet field. */
 .aiop-button::after {
   content: "";
   position: absolute;
@@ -4335,13 +4343,34 @@
   background: linear-gradient(
     135deg,
     transparent calc(50% - 1px),
-    var(--aiop-ink) calc(50% - 1px),
-    var(--aiop-ink) 50%,
+    var(--aiop-gold-bright) calc(50% - 1px),
+    var(--aiop-gold-bright) 50%,
+    transparent 50%
+  );
+}
+
+.aiop-button:hover::after {
+  background: linear-gradient(
+    135deg,
+    transparent calc(50% - 1px),
+    var(--aiop-gold) calc(50% - 1px),
+    var(--aiop-gold) 50%,
     transparent 50%
   );
 }
 
 .aiop-button--gold::after {
+  background: linear-gradient(
+    135deg,
+    transparent calc(50% - 1px),
+    var(--aiop-gold-bright) calc(50% - 1px),
+    var(--aiop-gold-bright) 50%,
+    transparent 50%
+  );
+}
+
+/* Ghost button keeps its ink chamfer to match the ink outline. */
+.aiop-button--ghost::after {
   background: linear-gradient(
     135deg,
     transparent calc(50% - 1px),
@@ -4498,8 +4527,8 @@
   --v2-rule: rgba(19, 19, 19, 0.10);
   --v2-rule-strong: rgba(19, 19, 19, 0.16);
   --v2-accent: var(--aiop-gold-bright);
-  --v2-accent-soft: rgba(184, 135, 40, 0.14);
-  --v2-accent-edge: rgba(184, 135, 40, 0.30);
+  --v2-accent-soft: rgba(98, 67, 185, 0.14);
+  --v2-accent-edge: rgba(98, 67, 185, 0.30);
   --v2-sage: var(--aiop-sage);
   --v2-violet: var(--aiop-violet);
   --v2-slate: var(--aiop-slate);
@@ -4535,7 +4564,7 @@
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(ellipse 70% 50% at 50% 22%, rgba(184, 135, 40, 0.10), transparent 65%),
+    radial-gradient(ellipse 70% 50% at 50% 22%, rgba(98, 67, 185, 0.10), transparent 65%),
     radial-gradient(ellipse 50% 40% at 8% 90%, rgba(79, 107, 74, 0.08), transparent 65%),
     radial-gradient(ellipse 50% 40% at 92% 90%, rgba(98, 67, 185, 0.06), transparent 70%),
     linear-gradient(180deg, var(--v2-paper-soft) 0%, var(--v2-paper) 60%, var(--v2-paper-soft) 100%);
@@ -4977,7 +5006,7 @@
       color-mix(in oklab, var(--v2-paper) 78%, transparent) 62%,
       var(--v2-paper-soft) 100%
     ),
-    radial-gradient(circle at 18% 68%, rgba(184, 135, 40, 0.18) 0 1px, transparent 1.8px),
+    radial-gradient(circle at 18% 68%, rgba(98, 67, 185, 0.18) 0 1px, transparent 1.8px),
     radial-gradient(circle at 47% 72%, rgba(19, 19, 19, 0.12) 0 1px, transparent 1.7px),
     radial-gradient(circle at 76% 66%, rgba(79, 107, 74, 0.14) 0 1px, transparent 1.8px);
   background-size: auto, 148px 42px, 196px 48px, 172px 44px;

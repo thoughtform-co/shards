@@ -42,11 +42,7 @@ function Rail({ side }: { side: "left" | "right" }) {
                 style={{
                   height: 1,
                   width: isMajor ? 20 : 10,
-                  background: isMajor
-                    ? i === 12
-                      ? "var(--violet)"
-                      : "var(--gold)"
-                    : "var(--gold-30)",
+                  background: isMajor ? "var(--gold)" : "var(--gold-30)",
                 }}
               />
               {isLeft && TICK_LABELS[i] && (

@@ -176,11 +176,11 @@
   line-height: 1;
 }
 
-/* The single place violet and gold co-render — Stripe's gradient
-   register applied to exactly one glyph, so it punctuates without
-   taking over the page. */
+/* Stripe's 2025 identity gradient (violet -> magenta) applied to
+   exactly one glyph, so the brand moment lands without spreading
+   magenta into the platform palette. */
 .brandPeriod {
-  background: linear-gradient(120deg, var(--violet) 0%, #caa554 100%);
+  background: linear-gradient(120deg, var(--violet) 0%, #ec4899 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
