@@ -2700,32 +2700,50 @@
 }
 
 .aiop-visual-action {
+  --aiop-visual-accent: var(--aiop-gold-bright);
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 14px;
   width: 100%;
   margin-top: auto;
-  padding: 14px 0 0;
-  background: transparent;
-  border: 0;
-  border-top: 1px solid var(--aiop-rule-soft);
-  color: var(--aiop-gold-bright);
+  min-height: 54px;
+  padding: 15px 16px;
+  background:
+    linear-gradient(
+      100deg,
+      transparent 0%,
+      color-mix(in oklab, var(--aiop-visual-accent) 18%, transparent) 36%,
+      color-mix(in oklab, var(--aiop-paper) 26%, transparent) 50%,
+      transparent 64%
+    ) -70% 0 / 42% 100% no-repeat,
+    linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--aiop-visual-accent) 22%, var(--aiop-ink) 78%) 0%,
+      color-mix(in oklab, var(--aiop-visual-accent) 10%, var(--aiop-ink) 90%) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--aiop-visual-accent) 42%, var(--aiop-ink) 58%);
+  color: var(--aiop-paper);
   font-family: var(--aiop-mono);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   cursor: pointer;
-  transition: color 140ms ease;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 12px 26px -26px rgba(26, 22, 18, 0.6);
+  animation: aiopVisualActionScan 4.8s ease-in-out infinite;
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease;
 }
 
 .aiop-visual-action::before {
-  content: "";
-  width: 32px;
-  height: 1px;
-  background: currentColor;
-  flex-shrink: 0;
+  content: none;
 }
 
 .aiop-visual-action__arrow {
@@ -2733,7 +2751,12 @@
 }
 
 .aiop-visual-action:hover {
-  color: var(--aiop-ink);
+  border-color: color-mix(in oklab, var(--aiop-visual-accent) 70%, var(--aiop-paper) 30%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 16px 30px -24px rgba(26, 22, 18, 0.7);
+  animation-duration: 2.8s;
+  transform: translateY(-1px);
 }
 
 .aiop-visual-action:hover .aiop-visual-action__arrow {
@@ -2741,16 +2764,34 @@
 }
 
 .aiop-substrate .aiop-visual-action {
-  border-top-color: rgba(243, 236, 224, 0.15);
+  border-color: color-mix(in oklab, var(--aiop-visual-accent) 34%, var(--aiop-paper) 14%);
 }
 
 .aiop-substrate .aiop-visual-action:hover {
   color: var(--aiop-paper);
 }
 
-.aiop-approach__step--violet .aiop-visual-action { color: var(--aiop-violet); }
-.aiop-approach__step--gold   .aiop-visual-action { color: var(--aiop-gold-bright); }
-.aiop-approach__step--sage   .aiop-visual-action { color: var(--aiop-sage); }
+.aiop-approach__step--violet .aiop-visual-action { --aiop-visual-accent: var(--aiop-violet); }
+.aiop-approach__step--gold   .aiop-visual-action { --aiop-visual-accent: var(--aiop-gold-bright); }
+.aiop-approach__step--sage   .aiop-visual-action { --aiop-visual-accent: var(--aiop-sage); }
+
+@keyframes aiopVisualActionScan {
+  0%,
+  22% {
+    background-position: -70% 0, 0 0;
+  }
+  68%,
+  100% {
+    background-position: 170% 0, 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiop-visual-action {
+    animation: none;
+    background-position: 170% 0, 0 0;
+  }
+}
 
 .aiop-approach__visual {
   align-self: stretch;

@@ -332,7 +332,7 @@ export const approachSteps: ApproachStep[] = [
     tone: "sage",
     headline: "Show a working proof on their own deliverable today.",
     body:
-      "Build the tool, agent, automation, or Skill that transforms the workflow. In the same hands as the strategy. Most often on their screen, while we work. Vibe-coded inside days; hardened to production over weeks; exposed headlessly so every surface inherits the same engine.",
+      "I build on their screen, with their data, on their actual deliverable. A proof of concept usually takes a day. The ones that stick get hardened into headless engines any future tool or agent can call. Then I onboard the person I built it for. They understand the domain better than I do. That makes them the right owner.",
     signal: { k: "Outcome", v: "A thin running surface the team uses daily." },
     visual: {
       kind: "engine",
