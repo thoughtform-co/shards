@@ -106,6 +106,39 @@ export const hero = {
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
+ * Quote bridge — interstitial between hero and Vision
+ *
+ * A short, scroll-driven beat that anchors the flywheel to a credible
+ * outside diagnosis (Benedict Evans on the asking gap) and shows the
+ * visitor that three intuitive challenges sit inside that one sentence.
+ * Each phrase morphs into its Navigate / Encode / Build pill as the
+ * visitor scrolls toward the orbit a viewport later.
+ *
+ * Voice: keep the phrases plain and a touch human. The framework
+ * vocabulary lives on the pills, not in the phrases.
+ * ─────────────────────────────────────────────────────────────────── */
+
+export type QuoteBridgeRow = {
+  id: "navigate" | "encode" | "build";
+  phrase: string;
+  pill: "Navigate" | "Encode" | "Build";
+};
+
+export const quoteBridgeSection = {
+  eyebrow: "The asking gap",
+  quote:
+    "A lot of the challenge is working out how to ask for what you want.",
+  attribName: "Benedict Evans",
+  attribMeta: "Independent tech analyst",
+  intro: "Three challenges live inside that one sentence.",
+  rows: [
+    { id: "navigate", phrase: "Figuring out the map.", pill: "Navigate" },
+    { id: "encode", phrase: "Figuring out how to ask.", pill: "Encode" },
+    { id: "build", phrase: "Figuring out what you want.", pill: "Build" },
+  ] satisfies QuoteBridgeRow[],
+} as const;
+
+/* ─────────────────────────────────────────────────────────────────────
  * Vision — flywheel teaser
  *
  * A minimal second screen. Just the centered Navigate / Encode / Build

@@ -12,6 +12,7 @@ import {
   visionSection,
 } from "./content";
 import { LoopStripeMorph } from "./loop-stripe-morph";
+import { QuoteBridge } from "./quote-bridge";
 import { ScrollReveal } from "./reveal";
 import { SoftwareForFew } from "./software-for-few";
 
@@ -26,18 +27,21 @@ import { SoftwareForFew } from "./software-for-few";
  * Composition:
  *   01 Header / nav     (sticky)
  *   02 Hero             — CV profile: name eyebrow + thesis + bio + portrait.
- *   03 Vision           — Centered Navigate/Encode/Build flywheel + one CTA.
- *   04 Approach         — Three motions, each with a Heimdall-style
+ *   03 Quote bridge     — Benedict Evans on the asking gap. Three phrases
+ *                         morph into Navigate/Encode/Build pills as the
+ *                         visitor scrolls toward the orbit (client).
+ *   04 Vision           — Centered Navigate/Encode/Build flywheel + one CTA.
+ *   05 Approach         — Three motions, each with a Heimdall-style
  *                         "practice in motion" pop-out (client). Pinned
  *                         to viewport bottom so its last viewport stays
  *                         frozen while the next section reveals over it.
- *   05 Software for few — Interstitial that slides up over the frozen
+ *   06 Software for few — Interstitial that slides up over the frozen
  *                         Approach (parallax-reveal pair, client).
- *   06 Cases            — Heimdall-style showcase grid (client).
- *   07 Headless         — Interstitial: architecture, not a dashboard.
- *   08 Selected case    — HarvestFields, where everything lands.
- *   09 CTA              — One ask. Smallest commitment.
- *   10 Footer
+ *   07 Cases            — Heimdall-style showcase grid (client).
+ *   08 Headless         — Interstitial: architecture, not a dashboard.
+ *   09 Selected case    — HarvestFields, where everything lands.
+ *   10 CTA              — One ask. Smallest commitment.
+ *   11 Footer
  */
 
 function Arrow() {
@@ -165,6 +169,9 @@ export default function AiOperatorPage() {
           </div>
         </div>
       </section>
+
+      {/* ─── Quote bridge — Evans on the asking gap ──────────────────── */}
+      <QuoteBridge />
 
       {/* ─── Vision — Adoption Automation Flywheel ──────────────────── */}
       <section className="aiop-section aiop-vision" id="vision">
