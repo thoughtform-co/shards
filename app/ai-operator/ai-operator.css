@@ -3265,7 +3265,23 @@
 .aiop-cases__head {
   margin-bottom: 56px;
   display: grid;
-  gap: 20px;
+  gap: 22px 48px;
+  align-items: start;
+}
+
+.aiop-cases__head .aiop-section-title,
+.aiop-cases__head .aiop-section-lede {
+  margin-top: 0;
+}
+
+@media (min-width: 800px) {
+  .aiop-cases__head {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  }
+
+  .aiop-cases__legend {
+    grid-column: 1 / -1;
+  }
 }
 
 /* Legend — three lanes (Compress / Repair / Invent) that key into the
@@ -6187,20 +6203,56 @@
   font-weight: 620;
 }
 
+.aiop-few__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin-top: 2px;
+}
+
+.aiop-few__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0 7px;
+  border-bottom: 1px solid color-mix(in oklab, var(--aiop-sage) 44%, var(--aiop-rule-strong));
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
+  text-decoration: none;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.aiop-few__link:hover {
+  border-color: var(--aiop-gold-bright);
+  color: var(--aiop-gold);
+}
+
 
 /* ─── 25e · Comparison rows ──────────────────────────────────────── */
 
-/* The comparison sits flat on the bleed surface so the copy column
-   and the rows read as one card on the colored background, not a
-   white pop-out floating in front of it. The only visual frame
-   between rows is a subtle hairline. */
+/* The comparison reads as an inset panel inside the colored surface:
+   integrated with the larger card, but still collected enough to feel
+   like a discrete overview rather than three loose divider rows. */
 .aiop-few__card {
   position: relative;
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  padding: 0;
-  box-shadow: none;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-card-2) 46%, transparent) 0%,
+      color-mix(in oklab, var(--aiop-paper) 28%, transparent) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--aiop-sage) 24%, var(--aiop-rule));
+  border-radius: 10px;
+  padding: clamp(8px, 1vw, 12px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 18px 44px -34px rgba(26, 22, 18, 0.35);
 }
 
 .aiop-few__rows {
@@ -6208,9 +6260,7 @@
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 0;
-  border-top: 1px solid color-mix(in oklab, var(--aiop-sage) 28%, var(--aiop-rule));
-  border-bottom: 1px solid color-mix(in oklab, var(--aiop-sage) 28%, var(--aiop-rule));
+  gap: 4px;
 }
 
 .aiop-few__row {
@@ -6218,13 +6268,13 @@
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr) auto;
   align-items: center;
   gap: clamp(14px, 2vw, 28px);
-  padding: clamp(14px, 1.6vw, 22px) clamp(4px, 0.6vw, 12px);
-  border-bottom: 1px solid color-mix(in oklab, var(--aiop-sage) 20%, var(--aiop-rule));
-  transition: background 220ms ease;
-}
-
-.aiop-few__row:last-child {
-  border-bottom: 0;
+  padding: clamp(13px, 1.4vw, 19px) clamp(12px, 1.4vw, 18px);
+  border: 1px solid transparent;
+  border-radius: 7px;
+  transition:
+    background 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
 }
 
 .aiop-few__row-label {
@@ -6253,10 +6303,17 @@
 
 .aiop-few__row--highlight {
   position: relative;
-  background: color-mix(in oklab, var(--aiop-sage) 18%, transparent);
-  border-top: 1px solid color-mix(in oklab, var(--aiop-sage) 44%, var(--aiop-rule));
-  border-bottom: 1px solid color-mix(in oklab, var(--aiop-sage) 44%, var(--aiop-rule));
-  padding-left: clamp(14px, 1.4vw, 22px);
+  background:
+    linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--aiop-sage) 18%, var(--aiop-card-2)) 0%,
+      color-mix(in oklab, var(--aiop-sage) 10%, var(--aiop-card-2)) 100%
+    );
+  border-color: color-mix(in oklab, var(--aiop-sage) 34%, var(--aiop-rule-strong));
+  padding-left: clamp(18px, 1.6vw, 24px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    0 14px 30px -26px rgba(26, 22, 18, 0.38);
 }
 
 .aiop-few__row--highlight::before {

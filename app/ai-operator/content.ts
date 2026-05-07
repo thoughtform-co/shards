@@ -637,7 +637,11 @@ export const softwareForFewSection = {
   title: "Software",
   titleEm: "for few.",
   body:
-    "Off-the-shelf SaaS is too generic. A dev agency is too expensive for a team of ten. In that gap, AI lets the team build the tool themselves, in days, not months, by the people who understand the problem best.",
+    "The late-2025 leap in AI models opened a new category: people with a clear read on their users and workflows can now build software for few. The deeper shift is headless. The interface becomes temporary. The engine underneath is what compounds.",
+  actions: [
+    { id: "cases", label: "Explore cases", href: "#cases" },
+    { id: "headless", label: "Headless vision", href: "#headless" },
+  ],
   rows: [
     {
       id: "saas",

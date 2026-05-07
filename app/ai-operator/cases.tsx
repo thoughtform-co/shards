@@ -30,7 +30,6 @@ export function Cases() {
     <section className="aiop-section aiop-cases" id="cases">
       <div className="aiop-wrap">
         <header className="aiop-cases__head aiop-reveal">
-          <p className="aiop-eyebrow">{casesSection.eyebrow}</p>
           <h2 className="aiop-section-title">
             {casesSection.title} <em>{casesSection.titleEm}</em>
           </h2>

@@ -146,6 +146,13 @@ export function SoftwareForFew() {
             {softwareForFewSection.titleEm}
           </h2>
           <p className="aiop-few__body">{softwareForFewSection.body}</p>
+          <div className="aiop-few__actions" aria-label="Software for few links">
+            {softwareForFewSection.actions.map((action) => (
+              <a key={action.id} className="aiop-few__link" href={action.href}>
+                {action.label}
+              </a>
+            ))}
+          </div>
         </div>
 
         <div className="aiop-few__card aiop-reveal" role="presentation">
