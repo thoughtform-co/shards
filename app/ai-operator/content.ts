@@ -130,7 +130,7 @@ export type QuoteBridgePart = {
 
 export const quoteBridgeSection = {
   attribName: "Benedict Evans",
-  attribMeta: "Independent tech analyst",
+  attribMeta: "On the asking gap",
   quoteParts: [
     { text: "A lot of the challenge is " },
     { text: "working out", mark: "navigate", pill: "Navigate" },
@@ -183,7 +183,7 @@ export const approachSection = {
   title: "The AI flywheel",
   titleEm: "at Loop",
   caption:
-    "Running AI Adoption at Loop since 2023. Moved from AI Team to Marketing to transform everything from Studio work to Performance from within.",
+    "Running AI Adoption at Loop since 2024. Moved from AI Team to Marketing to transform everything from Studio work to Performance from within.",
   close:
     "The same loop ran on Vesper, Heimdall, Mímir, Babylon, and the company-wide Claude rollout at Loop.",
 } as const;
@@ -306,9 +306,9 @@ export const approachSteps: ApproachStep[] = [
     id: "encode",
     label: "Encode",
     tone: "gold",
-    headline: "Turn the way the team works into substrate the system can hold.",
+    headline: "Turn how the team works into a layer that outlives the model.",
     body:
-      "Everyone building seriously with AI lands in the same place. The structured knowledge underneath the model is what lasts. At Loop, I encoded 10+ workflows into plain text: brand voice, claim gates, creative prompting, marketplace copy. A teammate can read it. An agent can run on it. A tool we build next quarter inherits it whole. Models change. The encoded layer carries forward.",
+      "The model doesn't know your brand, your standards, or your review process. You have to teach it. At Loop, I encoded 10+ workflows into plain text: brand voice, claim gates, creative prompting, marketplace copy. A teammate can read it. An agent can run on it. A tool we build next quarter inherits it whole. Models change. The encoded layer carries forward.",
     signal: { k: "Outcome", v: "A Skill the team owns. Versioned. Headless." },
     visual: {
       kind: "substrate",
@@ -369,7 +369,7 @@ export const approachSteps: ApproachStep[] = [
     tone: "sage",
     headline: "Show a working proof on their own deliverable today.",
     body:
-      "I build on their screen, with their data, on their actual deliverable. A proof of concept usually takes a day. The ones that stick get hardened into headless engines any future tool or agent can call. Then I onboard the person I built it for. They understand the domain better than I do. That makes them the right owner.",
+      "Once the bottleneck is named and the process encoded, building is the fast part. I capture user frustrations in a Teams call, turn the transcript into a user story in Cursor, and either build the interface around it or expose the logic headlessly via MCP/API. Then I hand it to the person I built it for. Nobody understands their domain better than they do.",
     signal: { k: "Outcome", v: "A thin running surface the team uses daily." },
     visual: {
       kind: "engine",

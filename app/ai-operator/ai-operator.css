@@ -3421,8 +3421,8 @@
 }
 
 .aiop-cases__mode--repair   { background: var(--aiop-slate); }
-.aiop-cases__mode--compress { background: var(--aiop-gold-bright); color: var(--aiop-ink); }
-.aiop-cases__mode--invent   { background: var(--aiop-violet); }
+.aiop-cases__mode--compress { background: var(--aiop-violet); color: var(--aiop-paper); }
+.aiop-cases__mode--invent   { background: var(--aiop-sage); color: var(--aiop-paper); }
 
 .aiop-cases__legend-def {
   margin: 0;
