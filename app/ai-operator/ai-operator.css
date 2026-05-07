@@ -69,6 +69,15 @@
   --aiop-violet: #6243b9;
   --aiop-violet-soft: rgba(98, 67, 185, 0.14);
 
+  /* Amber — restored as the third distinct lane colour so the
+     Navigate / Encode / Build trio reads as violet / amber / sage
+     instead of "purple twice". `--aiop-gold-bright` stays mapped to
+     violet for the route's primary chrome (Stripe alignment); amber
+     is reserved for trio-specific signal. */
+  --aiop-amber: #b58a36;
+  --aiop-amber-soft: rgba(181, 138, 54, 0.16);
+  --aiop-amber-edge: rgba(181, 138, 54, 0.32);
+
   --aiop-page-pad: clamp(20px, 5vw, 56px);
   --aiop-section-y: clamp(72px, 10vw, 128px);
   /* Sticky header height — used to offset section snap points and
@@ -594,7 +603,7 @@
 }
 
 .aiop-hero__lede-pill--encode .aiop-hero__lede-pill-dot {
-  background: var(--aiop-gold-bright);
+  background: var(--aiop-amber);
 }
 
 .aiop-hero__lede-pill--build .aiop-hero__lede-pill-dot {
@@ -2278,7 +2287,7 @@
 }
 
 .aiop-orbit__pill--navigate .aiop-orbit__dot { background: var(--aiop-violet); }
-.aiop-orbit__pill--encode   .aiop-orbit__dot { background: var(--aiop-gold-bright); }
+.aiop-orbit__pill--encode   .aiop-orbit__dot { background: var(--aiop-amber); }
 .aiop-orbit__pill--build    .aiop-orbit__dot { background: var(--aiop-sage); }
 .aiop-orbit__pill--learn    .aiop-orbit__dot { background: var(--aiop-slate); }
 
@@ -4001,7 +4010,7 @@
 }
 
 .aiop-term-pill--encode .aiop-term-pill__dot {
-  background: var(--aiop-gold-bright);
+  background: var(--aiop-amber);
 }
 
 .aiop-term-pill--build .aiop-term-pill__dot {
@@ -6459,21 +6468,21 @@
 /* ═══════════════════════════════════════════════════════════════════════
  * 26 · v4 — Quote bridge (Evans on the asking gap)
  *
- * Interstitial between the hero and the Vision flywheel. The Evans
- * sentence renders on one editorial line; three operative phrases
- * inside the sentence — `the challenge`, `how to ask`, `what you want`
- * — are tinted in their lane colour and a pill hangs directly beneath
- * each, naming the framework piece (Navigate / Encode / Build) that
- * the phrase maps to.
+ * Full-viewport interstitial between the hero and the Vision flywheel.
+ * The Evans sentence sits as the editorial centerpiece; three operative
+ * phrases inside it — `the challenge`, `how to ask`, `what you want` —
+ * are framed as subtle bordered chips in the trio's lane colours
+ * (violet / amber / sage). No eyebrow, no pill labels — the colour
+ * itself foreshadows the orbit that lands one section later.
  *
- * Pure presentation — no scroll handler, no progress variable, no
- * morph state machine. The page-level `ScrollReveal` handles entry
- * fade via the `aiop-reveal` class and respects reduced motion in one
- * place rather than per-component.
+ * Pure presentation — no scroll handler, no progress variable. The
+ * page-level `ScrollReveal` handles entry fade via the `aiop-reveal`
+ * class and respects reduced motion in one place rather than per
+ * component.
  *
  * Sub-sections:
  *   26a · Section + atmosphere
- *   26b · Quote (one line on desktop) + inline marks + hanging pills
+ *   26b · Quote + inline mark chips
  *   26c · Attribution
  *   26d · Responsive
  * ═══════════════════════════════════════════════════════════════════════ */
@@ -6487,9 +6496,17 @@
   isolation: isolate;
   background: linear-gradient(180deg, var(--aiop-paper) 0%, var(--aiop-paper-2) 100%);
   border-block: 1px solid var(--aiop-rule);
-  /* Quieter interstitial padding so the bridge reads as a beat between
-     hero and flywheel rather than another full chapter. */
-  padding-block: clamp(72px, 10vw, 120px);
+  padding-block: clamp(80px, 10vw, 120px);
+  /* Full-viewport chapter on desktop so the quote has room to breathe.
+     `min-height: 100dvh` accounts for mobile browser chrome; flex
+     centering pins the figure vertically in the available space. The
+     sticky header height is subtracted so the figure clears the chrome
+     on narrow heights as well. */
+  min-height: calc(100dvh - var(--aiop-header-h));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .aiop-bridge__bleed {
@@ -6507,10 +6524,10 @@
   opacity: 0.55;
 }
 
-/* Three washes — one per pill lane (violet, gold, sage) — so the
-   atmospheric color hints subtly at the trio that's about to resolve
-   in the rows below. Positions are loose triangles that mirror the
-   eventual orbit positions in Vision. */
+/* Three washes — one per lane (violet, amber, sage) — so the
+   atmospheric colour hints at the trio about to resolve in the chips
+   below. Positions are loose triangles that mirror the eventual orbit
+   positions in Vision. */
 .aiop-bridge__wash--a {
   width: 38%;
   aspect-ratio: 1 / 1;
@@ -6530,7 +6547,7 @@
   top: 18%;
   background: radial-gradient(
     circle,
-    color-mix(in oklab, var(--aiop-gold-bright) 22%, transparent) 0%,
+    color-mix(in oklab, var(--aiop-amber) 24%, transparent) 0%,
     transparent 62%
   );
 }
@@ -6578,50 +6595,47 @@
 }
 
 
-/* ─── 26b · Quote (one line on desktop) + inline marks + hanging pills */
+/* ─── 26b · Quote + inline mark chips ────────────────────────────── */
 
-/* The quote figure — wide enough to fit the full Evans sentence on one
-   line at the desktop breakpoint without forcing horizontal scroll. */
+/* The quote figure — wide enough to fit the full Evans sentence on
+   one line at the desktop breakpoint. */
 .aiop-bridge__quote {
   margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(28px, 3vw, 40px);
-  max-width: min(100%, 1000px);
+  gap: clamp(36px, 4vw, 56px);
+  max-width: min(100%, 1100px);
 }
 
-/* The pull quote — italic display, sized so the full sentence fits on
-   one line at >= 960px and wraps naturally below that. Bottom padding
-   reserves the space for hanging pills attached to the marks below. */
+/* The pull quote — italic display, sized as the editorial centerpiece
+   of the bridge. Larger than v3 so it breathes inside the full-viewport
+   chapter; one line on desktop, wraps naturally below that. */
 .aiop-bridge__pull {
   margin: 0;
   font-family: var(--aiop-display);
   font-style: italic;
   font-weight: 480;
-  font-size: clamp(18px, 1.85vw, 26px);
-  line-height: 1.4;
+  font-size: clamp(22px, 2.2vw, 32px);
+  line-height: 1.35;
   letter-spacing: -0.018em;
   color: var(--aiop-ink);
-  position: relative;
   text-align: center;
-  padding-bottom: clamp(46px, 5vw, 60px);
 }
 
-/* Force one-line on desktop. Below 960px the sentence wraps; pills
-   still anchor under their marks via absolute positioning. */
-@media (min-width: 960px) {
+/* One-line on desktop. The breakpoint is sized so the quote at its
+   max font-size still fits comfortably inside the centred container. */
+@media (min-width: 1100px) {
   .aiop-bridge__pull {
     white-space: nowrap;
   }
 }
 
 /* Open quote mark — set in the violet lane so it visually rhymes with
-   the Navigate pill and the brand wordmark italic emphasis. Sized
-   relative to the (now smaller) sentence text. */
+   the Navigate chip and the brand wordmark italic emphasis. */
 .aiop-bridge__pull-mark {
   font-family: var(--aiop-display);
-  font-size: clamp(34px, 3.4vw, 50px);
+  font-size: clamp(40px, 4vw, 58px);
   line-height: 0;
   vertical-align: -0.42em;
   color: var(--aiop-violet);
@@ -6630,106 +6644,42 @@
   opacity: 0.6;
 }
 
-/* A marked phrase inside the quote. `inline-block` keeps the phrase
-   together as a single unit (so the pill below stays under the whole
-   phrase) and gives the pill a stable positioning context. */
+/* A marked phrase inside the quote — rendered as a subtle inline chip
+   in its lane colour. `inline-block` + `white-space: nowrap` keeps
+   each phrase together so the chip never breaks across lines, even
+   when the surrounding quote wraps. */
 .aiop-bridge__mark {
-  position: relative;
   display: inline-block;
   white-space: nowrap;
-}
-
-/* Per-lane text colour — colour-mix shifts the phrase toward its lane
-   colour just enough to register as part of the trio without breaking
-   the unified italic feel of the quote. Sage gets a slightly higher
-   mix because green reads quieter than violet at the same percentage. */
-.aiop-bridge__mark--navigate .aiop-bridge__mark-text {
-  color: color-mix(in oklab, var(--aiop-violet) 55%, var(--aiop-ink));
-}
-
-.aiop-bridge__mark--encode .aiop-bridge__mark-text {
-  color: color-mix(in oklab, var(--aiop-gold-bright) 55%, var(--aiop-ink));
-}
-
-.aiop-bridge__mark--build .aiop-bridge__mark-text {
-  color: color-mix(in oklab, var(--aiop-sage) 65%, var(--aiop-ink));
-}
-
-/* Short vertical hairline that visually leads from the bottom of each
-   mark down to the top of its pill. Subtle — just enough to show that
-   the pill belongs to the phrase above it. */
-.aiop-bridge__mark::after {
-  content: "";
-  position: absolute;
-  top: calc(100% + 2px);
-  left: 50%;
-  transform: translateX(-50%);
-  width: 1px;
-  height: 10px;
-  opacity: 0.55;
-}
-
-.aiop-bridge__mark--navigate::after {
-  background: var(--aiop-violet);
-}
-
-.aiop-bridge__mark--encode::after {
-  background: var(--aiop-gold-bright);
-}
-
-.aiop-bridge__mark--build::after {
-  background: var(--aiop-sage);
-}
-
-/* Hanging pill — absolutely positioned below its mark so the mark
-   stays inline with the surrounding quote text. Pill chrome matches
-   `.aiop-orbit__pill` so the trio lands on a familiar shape by the
-   time the visitor reaches Vision. */
-.aiop-bridge__mark .aiop-bridge__pill {
-  position: absolute;
-  top: calc(100% + 14px);
-  left: 50%;
-  transform: translateX(-50%);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  background: var(--aiop-card);
+  padding: 1px 10px;
+  margin: 0 2px;
   border: 1px solid var(--aiop-rule);
-  border-radius: 999px;
-  font-family: var(--aiop-body);
-  font-style: normal;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: var(--aiop-ink-soft);
-  white-space: nowrap;
-  box-shadow: 0 4px 14px rgba(26, 22, 18, 0.06);
+  border-radius: 4px;
+  background: transparent;
+  /* The italic spans render slightly tall in their boxes; this nudges
+     the chip down so its baseline reads with the surrounding quote. */
+  vertical-align: baseline;
 }
 
-.aiop-bridge__pill-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  background: var(--aiop-rule-strong);
+/* Per-lane chip treatments — text colour, border, and a faint
+   background tint, all derived from the lane token via `color-mix` so
+   the chip carries lane signal without dominating the editorial line. */
+.aiop-bridge__mark--navigate {
+  color: color-mix(in oklab, var(--aiop-violet) 60%, var(--aiop-ink));
+  border-color: color-mix(in oklab, var(--aiop-violet) 32%, transparent);
+  background: color-mix(in oklab, var(--aiop-violet) 7%, transparent);
 }
 
-.aiop-bridge__pill-name {
-  display: inline-block;
+.aiop-bridge__mark--encode {
+  color: color-mix(in oklab, var(--aiop-amber) 70%, var(--aiop-ink-2));
+  border-color: color-mix(in oklab, var(--aiop-amber) 38%, transparent);
+  background: color-mix(in oklab, var(--aiop-amber) 9%, transparent);
 }
 
-/* Per-mark pill dot colours — match the orbit pills in Vision. */
-.aiop-bridge__mark--navigate .aiop-bridge__pill-dot {
-  background: var(--aiop-violet);
-}
-
-.aiop-bridge__mark--encode .aiop-bridge__pill-dot {
-  background: var(--aiop-gold-bright);
-}
-
-.aiop-bridge__mark--build .aiop-bridge__pill-dot {
-  background: var(--aiop-sage);
+.aiop-bridge__mark--build {
+  color: color-mix(in oklab, var(--aiop-sage) 70%, var(--aiop-ink));
+  border-color: color-mix(in oklab, var(--aiop-sage) 34%, transparent);
+  background: color-mix(in oklab, var(--aiop-sage) 8%, transparent);
 }
 
 
@@ -6766,23 +6716,19 @@
 
 /* ─── 26d · Responsive ───────────────────────────────────────────── */
 
-/* Below 960px the quote wraps naturally. Each mark is `inline-block`
-   so the phrase + pill pair stays together; the pill still anchors
-   under its mark via absolute positioning, so it appears directly
-   beneath whichever line the mark ended up on. We bump the bottom
-   padding slightly to make room for the worst-case stacking. */
-@media (max-width: 959px) {
-  .aiop-bridge__pull {
-    padding-bottom: clamp(44px, 8vw, 60px);
+/* Below the desktop nowrap breakpoint the quote wraps naturally; the
+   chips stay intact (each one is still a single inline-block) and
+   wrap with the surrounding text as needed. Drop the section's
+   full-viewport min-height so vertical short-form viewports don't
+   stretch the bridge into an awkward empty slab. */
+@media (max-width: 720px) {
+  .aiop-bridge {
+    min-height: 0;
+    padding-block: clamp(72px, 12vw, 120px);
   }
-}
 
-/* Very narrow: smaller pill chrome so two pills on the same line don't
-   collide horizontally. */
-@media (max-width: 480px) {
-  .aiop-bridge__mark .aiop-bridge__pill {
-    font-size: 11px;
-    padding: 5px 12px;
+  .aiop-bridge__mark {
+    padding: 0 8px;
   }
 }
 

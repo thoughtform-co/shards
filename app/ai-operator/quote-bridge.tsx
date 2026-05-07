@@ -1,19 +1,20 @@
 import { quoteBridgeSection } from "./content";
 
 /*
- * QuoteBridge — interstitial between the hero and the Navigate / Encode /
- * Build flywheel.
+ * QuoteBridge — full-viewport interstitial between the hero and the
+ * Navigate / Encode / Build flywheel.
  *
  * Anchors the framework to a credible outside diagnosis (Benedict Evans
- * on the asking gap). The Evans sentence renders on one editorial line;
- * three operative phrases inside the sentence — `the challenge`,
- * `how to ask`, `what you want` — are tinted in their lane colour and
- * a pill hangs directly beneath each, naming the framework piece they
- * map to.
+ * on the asking gap). The Evans sentence renders as the editorial
+ * centerpiece; three operative phrases inside it — `the challenge`,
+ * `how to ask`, `what you want` — are framed as subtle chips in their
+ * lane colour (violet / amber / sage). The section deliberately holds
+ * no eyebrow and no pill labels: the colour itself is the
+ * foreshadowing for the orbit that lands one section later.
  *
- * Pure presentation — no scroll handler, no client state. The page-level
- * `ScrollReveal` handles entry fade via `aiop-reveal` and respects
- * reduced motion in one place rather than per-component.
+ * Pure presentation — no scroll handler, no client state. Entry fade
+ * is handled by the page-level `ScrollReveal` via the `aiop-reveal`
+ * class.
  */
 export function QuoteBridge() {
   return (
@@ -31,8 +32,6 @@ export function QuoteBridge() {
 
       <div className="aiop-wrap aiop-bridge__inner">
         <figure className="aiop-bridge__quote aiop-reveal">
-          <p className="aiop-eyebrow">{quoteBridgeSection.eyebrow}</p>
-
           <blockquote
             id="aiop-bridge-quote"
             className="aiop-bridge__pull"
@@ -41,16 +40,12 @@ export function QuoteBridge() {
               &ldquo;
             </span>
             {quoteBridgeSection.quoteParts.map((part, idx) =>
-              part.mark && part.pill ? (
+              part.mark ? (
                 <span
                   key={idx}
                   className={`aiop-bridge__mark aiop-bridge__mark--${part.mark}`}
                 >
-                  <span className="aiop-bridge__mark-text">{part.text}</span>
-                  <span className="aiop-bridge__pill" aria-hidden="true">
-                    <span className="aiop-bridge__pill-dot" />
-                    <span className="aiop-bridge__pill-name">{part.pill}</span>
-                  </span>
+                  {part.text}
                 </span>
               ) : (
                 <span key={idx}>{part.text}</span>

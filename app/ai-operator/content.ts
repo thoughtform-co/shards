@@ -109,34 +109,34 @@ export const hero = {
  * Quote bridge — interstitial between hero and Vision
  *
  * Anchors the flywheel to a credible outside diagnosis (Benedict Evans
- * on the asking gap). The Evans sentence renders on one line with three
- * phrases — `the challenge`, `how to ask`, `what you want` — lit up in
- * their lane colours and a pill (Navigate / Encode / Build) hanging
- * directly beneath each.
+ * on the asking gap). Lives at full-viewport scale so the Evans
+ * sentence has room to breathe; three operative phrases inside the
+ * sentence — `the challenge`, `how to ask`, `what you want` — are
+ * subtly framed in their lane colours (violet / amber / sage). No
+ * eyebrow, no pill labels. The framework vocabulary lands one section
+ * later, in the orbit. Here, the colour itself is the foreshadowing.
  *
  * The sentence is stored as an array of parts so the renderer can mark
  * the three operative phrases without parsing prose at runtime. Plain
- * `text` parts are connective tissue; `mark` parts get a colour shift
- * and a pill.
+ * `text` parts are connective tissue; `mark` parts get the chip
+ * treatment.
  * ─────────────────────────────────────────────────────────────────── */
 
 export type QuoteBridgePart = {
   text: string;
   mark?: "navigate" | "encode" | "build";
-  pill?: "Navigate" | "Encode" | "Build";
 };
 
 export const quoteBridgeSection = {
-  eyebrow: "The asking gap",
   attribName: "Benedict Evans",
   attribMeta: "Independent tech analyst",
   quoteParts: [
     { text: "A lot of " },
-    { text: "the challenge", mark: "navigate", pill: "Navigate" },
+    { text: "the challenge", mark: "navigate" },
     { text: " is working out " },
-    { text: "how to ask", mark: "encode", pill: "Encode" },
+    { text: "how to ask", mark: "encode" },
     { text: " for " },
-    { text: "what you want", mark: "build", pill: "Build" },
+    { text: "what you want", mark: "build" },
     { text: "." },
   ] satisfies QuoteBridgePart[],
 } as const;
