@@ -866,10 +866,25 @@
   filter: saturate(0.95) contrast(1.02);
 }
 
-.aiop-hero__portrait-tag {
+/* Caption strip — pinned to the bottom of the portrait, spanning its
+   full inset width. Flex `space-between` pushes the name tag to the
+   left and the title tag to the right; both are individual chips so
+   they each carry their own translucent ink chrome. */
+.aiop-hero__portrait-caption {
   position: absolute;
   left: 14px;
+  right: 14px;
   bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.aiop-hero__portrait-tag {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -880,9 +895,10 @@
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  z-index: 3;
+  white-space: nowrap;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  pointer-events: auto;
 }
 
 .aiop-hero__portrait-dot {
@@ -892,6 +908,16 @@
   background: var(--aiop-gold-bright);
   box-shadow: 0 0 0 3px rgba(98, 67, 185, 0.28);
   flex-shrink: 0;
+}
+
+/* Narrow viewports: stack name above title so both stay readable when
+   the portrait shrinks below the side-by-side threshold. */
+@media (max-width: 540px) {
+  .aiop-hero__portrait-caption {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
 }
 
 @media (max-width: 900px) {

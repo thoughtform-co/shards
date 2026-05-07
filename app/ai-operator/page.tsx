@@ -152,9 +152,14 @@ export default function AiOperatorPage() {
                 sizes="(max-width: 900px) 100vw, 540px"
                 className="aiop-hero__portrait-img"
               />
-              <figcaption className="aiop-hero__portrait-tag">
-                <span className="aiop-hero__portrait-dot" aria-hidden="true" />
-                {hero.portrait.tag}
+              <figcaption className="aiop-hero__portrait-caption">
+                <span className="aiop-hero__portrait-tag aiop-hero__portrait-tag--name">
+                  <span className="aiop-hero__portrait-dot" aria-hidden="true" />
+                  {hero.portrait.name}
+                </span>
+                <span className="aiop-hero__portrait-tag aiop-hero__portrait-tag--title">
+                  {hero.portrait.title}
+                </span>
               </figcaption>
             </figure>
 

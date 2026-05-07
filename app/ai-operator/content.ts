@@ -92,7 +92,8 @@ export const hero = {
   portrait: {
     src: "/images/vince.png",
     alt: "Vincent Buyssens at his desk in Antwerp, working with Claude on a MacBook.",
-    tag: "Antwerp · CET",
+    name: "Vince Buyssens",
+    title: "Creative Technologist",
   },
   /* Proof grid below the portrait. Mirrors the Loop AI transformation
    * metrics shown on V2; kept here so V1 owns its own hero data and
