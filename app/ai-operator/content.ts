@@ -130,7 +130,7 @@ export type QuoteBridgePart = {
 
 export const quoteBridgeSection = {
   attribName: "Benedict Evans",
-  attribMeta: "On the asking gap",
+  attribMeta: "On why so many people struggle with AI",
   quoteParts: [
     { text: "A lot of the challenge is " },
     { text: "working out", mark: "navigate", pill: "Navigate" },
