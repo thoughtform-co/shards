@@ -7041,3 +7041,128 @@
   }
 }
 
+
+/* ─── 26g · Bridge -> Orbit handoff layer ────────────────────────── */
+
+/* The handoff layer is a fixed-positioned sibling of the bridge that
+   carries each Navigate / Encode / Build pill from its morphed quote
+   position into the centred orbit position in the Vision section. JS
+   in `quote-bridge.tsx` measures the source bridge mark and the
+   destination orbit pill on every scroll tick and writes the
+   interpolated centre into `--handoff-cx` / `--handoff-cy` on each
+   handoff pill, so the pills physically translate from chip to orbit
+   while the bridge stays frozen and Vision slides up underneath.
+
+   The layer renders only when `quote-bridge.tsx` declares the section
+   `is-animated` (desktop, no reduced-motion). On narrow viewports and
+   under reduced-motion the layer is not in the DOM at all and the
+   static chips + orbit pills remain visible exactly as before. */
+
+.aiop-bridge__handoff {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  /* Above the bridge AND vision sections so the pills stay visible as
+     vision slides up over the bridge. The header sits at a higher z so
+     navigation still wins. */
+  z-index: 30;
+}
+
+.aiop-handoff-pill {
+  /* Default off-screen so an unmeasured pill never flashes at (0, 0)
+     before the first scroll tick has run. */
+  --handoff-cx: -9999px;
+  --handoff-cy: -9999px;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+  border-radius: 999px;
+  font-family: var(--aiop-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--aiop-ink-soft);
+  box-shadow: 0 4px 14px rgba(26, 22, 18, 0.06);
+  white-space: nowrap;
+
+  /* JS sets the pill's centre on every scroll tick; the trailing
+     `translate(-50%, -50%)` centres the pill on those coords so it
+     reads as anchored to the same point as both endpoints (the wider
+     morphed bridge mark on one end, the smaller orbit pill on the
+     other) without a position jump when sizes differ. */
+  transform:
+    translate3d(var(--handoff-cx), var(--handoff-cy), 0)
+    translate(-50%, -50%);
+
+  /* Crossfade in over the morph end (0.45 -> 0.55). The bridge marks
+     fade out in the same window so the visitor sees a clean takeover
+     at the original quote position before flight begins. */
+  opacity: clamp(
+    0,
+    calc((var(--aiop-bridge-progress, 0) - 0.45) / 0.1),
+    1
+  );
+
+  will-change: transform, opacity;
+}
+
+.aiop-handoff-pill__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.aiop-handoff-pill--navigate .aiop-handoff-pill__dot { background: var(--aiop-violet); }
+.aiop-handoff-pill--encode   .aiop-handoff-pill__dot { background: var(--aiop-amber); }
+.aiop-handoff-pill--build    .aiop-handoff-pill__dot { background: var(--aiop-sage); }
+
+@media (min-width: 960px) and (prefers-reduced-motion: no-preference) {
+  /* Bridge marks fade out as the handoff pills fade in, so the
+     visitor sees a clean takeover at the original quote position. The
+     existing morph chrome rules above still run on the mark; this just
+     gates the mark's final visibility so it doesn't compete with the
+     handoff pill once the flight begins. */
+  .aiop-bridge.is-animated .aiop-bridge__mark {
+    opacity: clamp(
+      0,
+      calc(1 - (var(--aiop-bridge-progress, 0) - 0.45) / 0.1),
+      1
+    );
+  }
+
+  /* Vision orbit pills wait for the handoff to land. They take over at
+     0.85 -> 0.95, by which time each handoff pill has settled at the
+     orbit position and the orbit pill paints in on top with the same
+     chrome. `transition: none` keeps the scroll-driven opacity from
+     fighting the parent reveal's 600ms transition. */
+  .aiop-bridge-and-vision .aiop-orbit__pill {
+    opacity: clamp(
+      0,
+      calc((var(--aiop-bridge-progress, 0) - 0.85) / 0.1),
+      1
+    );
+    transition: none;
+  }
+}
+
+/* Reduced-motion safety net. When QuoteBridge withholds `is-animated`
+   it also stops rendering the handoff layer, but if a media-query
+   change happens mid-session we still want the orbit pills and bridge
+   marks to remain visible by default. */
+@media (prefers-reduced-motion: reduce) {
+  .aiop-bridge .aiop-bridge__mark {
+    opacity: 1 !important;
+  }
+
+  .aiop-bridge-and-vision .aiop-orbit__pill {
+    opacity: 1 !important;
+  }
+}

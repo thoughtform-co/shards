@@ -217,6 +217,7 @@ export default function AiOperatorPage() {
                 <span
                   key={orbit.id}
                   className={`aiop-orbit__pill aiop-orbit__pill--${orbit.position} aiop-orbit__pill--${orbit.id}`}
+                  data-aiop-phase={orbit.id}
                 >
                   <span className="aiop-orbit__dot" aria-hidden="true" />
                   <span>{orbit.label}</span>
