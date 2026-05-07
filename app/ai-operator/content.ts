@@ -432,13 +432,12 @@ export type CaseProject = {
   team: string;
   status: "Production" | "WIP";
   year: string;
-  oneLiner: string;
+  challenge: string;
   tone: CaseTone;
   workflowMode: WorkflowMode;
   workflowBefore: string;
   workflowAfter: string;
   capabilities: { k: string; v: string }[];
-  metrics: { k: string; v: string }[];
   surfaces: string[];
   stack: string[];
   companyLeverage: string;
@@ -457,28 +456,24 @@ export const cases: CaseProject[] = [
     team: "Creative Strategy · Marketing",
     status: "Production",
     year: "2025",
-    oneLiner:
-      "Customer voice, ad performance, competitive signals, and prior briefings as composable building blocks. Drafts evidence-grounded briefs. Same engine in Claude, Cursor, Slack, ChatGPT.",
+    challenge:
+      "Creative Strategy drove the briefings, but each cycle meant manual digging across Reddit, ad dashboards, Meta Ad Library, and past notes, with Loop's proprietary ad data too sensitive to hand to outside tools.",
     tone: "gold",
     workflowMode: "Compress",
     workflowBefore:
       "Creative Strategy assembled briefs from memory across Reddit, Meta Ad Library, ad performance spreadsheets, and review notes. Every cycle started from scratch.",
     workflowAfter:
-      "One briefing composer pulls Reddit, Meta Ad Library, ad performance, and prior briefings into a single evidence view with a skill-backed strategy step.",
+      "Mímir unifies customer voice, ad performance, competitive signals, and prior briefings into a permissioned knowledge graph that surfaces relevant insight while a brief is being written.",
     capabilities: [
-      { k: "Knowledge graph", v: "Reddit, Meta Ad Library, ad performance, prior briefings as one substrate." },
-      { k: "Briefing composer", v: "Three-panel surface, Gemini concept imagery, reviewable drafts." },
-      { k: "Headless MCP server", v: "Token allowlists, scopes, audit log, durable rate buckets." },
-      { k: "Skill-backed strategy", v: "Degrees of freedom locked or free per workflow step." },
+      { k: "Permissioned graph", v: "Customer voice, paid performance, competitor ads, and prior strategy as one substrate." },
+      { k: "Proactive briefing", v: "Relevant insights surface while strategists compose the brief, not after another search pass." },
+      { k: "Headless substrate", v: "The same interpretation layer answers the web app, Claude, Cursor, Slack, and ChatGPT." },
+      { k: "Shared BI layer", v: "Expanded from Creative Strategy into Insights and Product Marketing use cases." },
     ],
-    metrics: [
-      { k: "Sources unified", v: "4+" },
-      { k: "Surfaces inheriting", v: "5" },
-    ],
-    surfaces: ["Web app", "MCP server", "REST", "Slack bot"],
-    stack: ["Next.js 16", "React 19", "Supabase + RLS", "Anthropic Skills", "Gemini", "MCP"],
+    surfaces: ["Web app", "MCP server", "Claude", "Cursor", "Slack", "ChatGPT"],
+    stack: ["Next.js", "Supabase", "Gemini", "Claude Skills", "MCP", "Slack"],
     companyLeverage:
-      "Creative Strategy uses it for briefings. Product uses it for persona development. Anyone needing to think with Loop's own data inherits the same intelligence layer.",
+      "Started with Creative Strategy, then expanded to Insights and Product Marketing. The key move was encoding how Loop reads customer voice, paid performance, competitors, and prior strategy into a substrate any surface can inherit.",
     image: "/cases/assets/mimir.png",
     screenshots: [
       { src: "/cases/screenshots/mimir/Mimir-Feed.png", alt: "Mímir: intelligence feed" },
@@ -500,8 +495,8 @@ export const cases: CaseProject[] = [
     team: "Studio · Creative",
     status: "Production",
     year: "2025",
-    oneLiner:
-      "Replaced the fragmented vendor stack Studio used to tab through. Multi-model image and video generation, prompt enhancement tied to the Loop product catalogue, image-to-video, real-time gallery.",
+    challenge:
+      "Studio was losing creative flow to scattered generation tools, opaque costs, and too many model choices. The team needed one opinionated canvas tied to Loop's product context.",
     tone: "slate",
     workflowMode: "Compress",
     workflowBefore:
@@ -514,12 +509,8 @@ export const cases: CaseProject[] = [
       { k: "Image-to-video", v: "Animate-still without leaving the canvas. Small fix, big flow." },
       { k: "Headless REST + MCP", v: "Same Skill behind Claude.ai and the in-product enhance button." },
     ],
-    metrics: [
-      { k: "Models unified", v: "6+" },
-      { k: "Krea margin", v: "0%" },
-    ],
     surfaces: ["Web app", "MCP server", "REST", "Claude / Cursor"],
-    stack: ["Next.js 14", "TanStack Query", "Supabase + Prisma", "Anthropic", "Gemini", "Replicate", "Kling"],
+    stack: ["Next.js", "TanStack Query", "Supabase", "Prisma", "Anthropic", "Gemini", "Replicate", "Kling"],
     companyLeverage:
       "Any team generating visual content (Product, E-commerce, CRM) can use Vesper without depending on Studio. Cost transparency gives leadership real spend-per-asset data.",
     image: "/cases/assets/vesper.png",
@@ -541,8 +532,8 @@ export const cases: CaseProject[] = [
     team: "Marketing · Localization",
     status: "Production",
     year: "2025",
-    oneLiner:
-      "30+ languages, one pipeline, one review step. Cross-checks transcription against on-screen captions through Gemini so verification is automatic and proofreaders only see the rows where cultural judgment counts.",
+    challenge:
+      "UGC localization had to scale across 30+ markets without turning every language into another agency handoff, Figma copy-paste loop, and reviewer queue.",
     tone: "violet",
     workflowMode: "Invent",
     workflowBefore:
@@ -554,10 +545,6 @@ export const cases: CaseProject[] = [
       { k: "Auto-verification", v: "Gemini cross-check against on-screen captions." },
       { k: "Single proofread surface", v: "Share-link review, no Figma seat needed." },
       { k: "Custom review module", v: "Cultural judgment surfaced where it actually matters." },
-    ],
-    metrics: [
-      { k: "Markets", v: "30+" },
-      { k: "Review steps", v: "1" },
     ],
     surfaces: ["Web app", "Share-link review"],
     stack: ["Next.js", "Supabase", "Anthropic", "Gemini"],
@@ -580,8 +567,8 @@ export const cases: CaseProject[] = [
     team: "Studio · Marketing Ops",
     status: "Production",
     year: "2025",
-    oneLiner:
-      "The connective tissue between Monday, Figma, Frontify, Meta. Webhook-driven Claude extraction. Briefings flow from board to plugin to file. Where strategy turns into pixels.",
+    challenge:
+      "Briefs, design work, assets, and feedback lived in different tools. Every handoff lost structure, added copy-paste, and made pixels hard to trace back to strategy.",
     tone: "sage",
     workflowMode: "Repair",
     workflowBefore:
@@ -593,10 +580,6 @@ export const cases: CaseProject[] = [
       { k: "Iterator plugin", v: "Variants, format derivation, copy planning inside Figma." },
       { k: "Frontify integration", v: "Asset intake, naming conventions, brand surface alignment." },
       { k: "Showcase routes", v: "Client-facing project pages built from the same data." },
-    ],
-    metrics: [
-      { k: "Integrations", v: "8+" },
-      { k: "Plugins", v: "2" },
     ],
     surfaces: ["Web app", "Figma plugin", "Iterator plugin", "GPT Actions API"],
     stack: ["Next.js", "Supabase", "Vercel KV", "Monday", "Figma", "Frontify", "Meta", "Anthropic"],

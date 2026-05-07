@@ -14,7 +14,7 @@ import { ScreenshotGallery } from "./screenshot-gallery";
  * Cases — Heimdall-style showcase.
  *
  * Each case is a row that mirrors Heimdall's `FrameSection`: a sticky
- * left rail of project metadata + summary + workflow shift + metrics +
+ * left rail of project metadata + challenge + workflow shift +
  * stack, paired with a right column carrying the screenshot frame, a
  * 2x2 capability tile grid, and a "View case detail" CTA.
  *
@@ -154,8 +154,8 @@ function CaseRow({
             </div>
 
             <div className="aiop-rail-block aiop-reveal">
-              <p className="aiop-rail-block__eyebrow">Summary</p>
-              <p className="aiop-case-row__lede">{project.oneLiner}</p>
+              <p className="aiop-rail-block__eyebrow">Challenge</p>
+              <p className="aiop-case-row__lede">{project.challenge}</p>
             </div>
 
             <div className="aiop-rail-block aiop-reveal">
@@ -170,15 +170,6 @@ function CaseRow({
                   {project.workflowAfter}
                 </p>
               </div>
-            </div>
-
-            <div className="aiop-rail-block aiop-rail-block--metrics aiop-reveal">
-              {project.metrics.map((metric) => (
-                <div key={metric.k} className="aiop-case-row__metric">
-                  <span className="aiop-case-row__metric-v">{metric.v}</span>
-                  <span className="aiop-case-row__metric-k">{metric.k}</span>
-                </div>
-              ))}
             </div>
 
             <div className="aiop-rail-block aiop-reveal">
@@ -247,7 +238,7 @@ function CaseModalBody({ project }: { project: CaseProject }) {
           <span className="aiop-case-row__period">.</span>
         </h2>
         <p className="aiop-modal__tagline">{project.tagline}</p>
-        <p className="aiop-modal__lede">{project.oneLiner}</p>
+        <p className="aiop-modal__lede">{project.challenge}</p>
 
         <div className="aiop-modal__shot">
           {project.screenshots.length > 1 ? (
