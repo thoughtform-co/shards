@@ -367,7 +367,7 @@ export const approachSteps: ApproachStep[] = [
     id: "build",
     label: "Build",
     tone: "sage",
-    headline: "Show a working proof on their own deliverable today.",
+    headline: "Hand the team a running system they actually own.",
     body:
       "Once the bottleneck is named and the process encoded, building is the fast part. I capture user frustrations in a Teams call, turn the transcript into a user story in Cursor, and either build the interface around it or expose the logic headlessly via MCP/API. Then I hand it to the person I built it for. Nobody understands their domain better than they do.",
     signal: { k: "Outcome", v: "A thin running surface the team uses daily." },
