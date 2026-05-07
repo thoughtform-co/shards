@@ -308,7 +308,7 @@ export const approachSteps: ApproachStep[] = [
     tone: "gold",
     headline: "Turn how the team works into a layer that outlives the model.",
     body:
-      "The model doesn't know your brand, your standards, or your review process. You have to teach it. At Loop, I encoded 10+ workflows into plain text: brand voice, claim gates, creative prompting, marketplace copy. A teammate can read it. An agent can run on it. A tool we build next quarter inherits it whole. Models change. The encoded layer carries forward.",
+      "The model doesn't know your brand, your standards, or your review process. You have to teach it. At Loop, I encoded 10+ workflows into a portable machine substrate: brand voice, claim gates, creative prompting, marketplace copy. A teammate can read it and an agent can run on it. Models change, but the encoded layer carries forward.",
     signal: { k: "Outcome", v: "A Skill the team owns. Versioned. Headless." },
     visual: {
       kind: "substrate",
