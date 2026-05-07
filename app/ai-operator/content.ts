@@ -108,34 +108,37 @@ export const hero = {
 /* ─────────────────────────────────────────────────────────────────────
  * Quote bridge — interstitial between hero and Vision
  *
- * A short, scroll-driven beat that anchors the flywheel to a credible
- * outside diagnosis (Benedict Evans on the asking gap) and shows the
- * visitor that three intuitive challenges sit inside that one sentence.
- * Each phrase morphs into its Navigate / Encode / Build pill as the
- * visitor scrolls toward the orbit a viewport later.
+ * Anchors the flywheel to a credible outside diagnosis (Benedict Evans
+ * on the asking gap). The Evans sentence renders on one line with three
+ * phrases — `the challenge`, `how to ask`, `what you want` — lit up in
+ * their lane colours and a pill (Navigate / Encode / Build) hanging
+ * directly beneath each.
  *
- * Voice: keep the phrases plain and a touch human. The framework
- * vocabulary lives on the pills, not in the phrases.
+ * The sentence is stored as an array of parts so the renderer can mark
+ * the three operative phrases without parsing prose at runtime. Plain
+ * `text` parts are connective tissue; `mark` parts get a colour shift
+ * and a pill.
  * ─────────────────────────────────────────────────────────────────── */
 
-export type QuoteBridgeRow = {
-  id: "navigate" | "encode" | "build";
-  phrase: string;
-  pill: "Navigate" | "Encode" | "Build";
+export type QuoteBridgePart = {
+  text: string;
+  mark?: "navigate" | "encode" | "build";
+  pill?: "Navigate" | "Encode" | "Build";
 };
 
 export const quoteBridgeSection = {
   eyebrow: "The asking gap",
-  quote:
-    "A lot of the challenge is working out how to ask for what you want.",
   attribName: "Benedict Evans",
   attribMeta: "Independent tech analyst",
-  intro: "Three challenges live inside that one sentence.",
-  rows: [
-    { id: "navigate", phrase: "the map", pill: "Navigate" },
-    { id: "encode", phrase: "how to ask", pill: "Encode" },
-    { id: "build", phrase: "what you want", pill: "Build" },
-  ] satisfies QuoteBridgeRow[],
+  quoteParts: [
+    { text: "A lot of " },
+    { text: "the challenge", mark: "navigate", pill: "Navigate" },
+    { text: " is working out " },
+    { text: "how to ask", mark: "encode", pill: "Encode" },
+    { text: " for " },
+    { text: "what you want", mark: "build", pill: "Build" },
+    { text: "." },
+  ] satisfies QuoteBridgePart[],
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────

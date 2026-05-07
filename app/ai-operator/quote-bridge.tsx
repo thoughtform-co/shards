@@ -5,15 +5,15 @@ import { quoteBridgeSection } from "./content";
  * Build flywheel.
  *
  * Anchors the framework to a credible outside diagnosis (Benedict Evans
- * on the asking gap), then breaks his sentence into the three challenges
- * folded inside it. Each segment of the line carries a faint colour tint
- * matching the pill that sits directly beneath it, so the reader sees
- * the vocabulary land before the orbit names it a viewport later.
+ * on the asking gap). The Evans sentence renders on one editorial line;
+ * three operative phrases inside the sentence — `the challenge`,
+ * `how to ask`, `what you want` — are tinted in their lane colour and
+ * a pill hangs directly beneath each, naming the framework piece they
+ * map to.
  *
- * Pure presentation — no scroll handler, no client state. The entry
- * fade is handled by the page-level `ScrollReveal` via the `aiop-reveal`
- * class. Reduced-motion preferences are honoured there in a single
- * place rather than re-implemented per-component.
+ * Pure presentation — no scroll handler, no client state. The page-level
+ * `ScrollReveal` handles entry fade via `aiop-reveal` and respects
+ * reduced motion in one place rather than per-component.
  */
 export function QuoteBridge() {
   return (
@@ -32,6 +32,7 @@ export function QuoteBridge() {
       <div className="aiop-wrap aiop-bridge__inner">
         <figure className="aiop-bridge__quote aiop-reveal">
           <p className="aiop-eyebrow">{quoteBridgeSection.eyebrow}</p>
+
           <blockquote
             id="aiop-bridge-quote"
             className="aiop-bridge__pull"
@@ -39,10 +40,24 @@ export function QuoteBridge() {
             <span className="aiop-bridge__pull-mark" aria-hidden="true">
               &ldquo;
             </span>
-            <span className="aiop-bridge__pull-text">
-              {quoteBridgeSection.quote}
-            </span>
+            {quoteBridgeSection.quoteParts.map((part, idx) =>
+              part.mark && part.pill ? (
+                <span
+                  key={idx}
+                  className={`aiop-bridge__mark aiop-bridge__mark--${part.mark}`}
+                >
+                  <span className="aiop-bridge__mark-text">{part.text}</span>
+                  <span className="aiop-bridge__pill" aria-hidden="true">
+                    <span className="aiop-bridge__pill-dot" />
+                    <span className="aiop-bridge__pill-name">{part.pill}</span>
+                  </span>
+                </span>
+              ) : (
+                <span key={idx}>{part.text}</span>
+              ),
+            )}
           </blockquote>
+
           <figcaption className="aiop-bridge__attrib">
             <span className="aiop-bridge__attrib-rule" aria-hidden="true" />
             <span className="aiop-bridge__attrib-name">
@@ -53,25 +68,6 @@ export function QuoteBridge() {
             </span>
           </figcaption>
         </figure>
-
-        <p className="aiop-bridge__intro aiop-reveal">
-          {quoteBridgeSection.intro}
-        </p>
-
-        <ul className="aiop-bridge__line aiop-reveal" role="list">
-          {quoteBridgeSection.rows.map((row) => (
-            <li
-              key={row.id}
-              className={`aiop-bridge__seg aiop-bridge__seg--${row.id}`}
-            >
-              <span className="aiop-bridge__seg-text">{row.phrase}</span>
-              <span className="aiop-bridge__pill">
-                <span className="aiop-bridge__pill-dot" aria-hidden="true" />
-                <span className="aiop-bridge__pill-name">{row.pill}</span>
-              </span>
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
   );
