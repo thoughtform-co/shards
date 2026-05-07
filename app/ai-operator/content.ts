@@ -131,9 +131,9 @@ export const quoteBridgeSection = {
   attribName: "Benedict Evans",
   attribMeta: "Independent tech analyst",
   quoteParts: [
-    { text: "A lot of " },
-    { text: "the challenge", mark: "navigate" },
-    { text: " is working out " },
+    { text: "A lot of the challenge is " },
+    { text: "working out", mark: "navigate" },
+    { text: " " },
     { text: "how to ask", mark: "encode" },
     { text: " for " },
     { text: "what you want", mark: "build" },
