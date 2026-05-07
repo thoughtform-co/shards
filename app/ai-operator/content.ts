@@ -271,7 +271,7 @@ export const approachSteps: ApproachStep[] = [
     tone: "gold",
     headline: "Turn the way the team works into substrate the system can hold.",
     body:
-      "Field notes become legible substrate. Voice rules, examples, sources, loops. The operator drafts; the team ratifies; engineering versions. Plain text the team owns. Reviewable like code. The asset that survives the next model and the next interface.",
+      "Everyone building seriously with AI lands in the same place. The structured knowledge underneath the model is what lasts. At Loop, I encoded 10+ workflows into plain text: brand voice, claim gates, creative prompting, marketplace copy. A teammate can read it. An agent can run on it. A tool we build next quarter inherits it whole. Models change. The encoded layer carries forward.",
     signal: { k: "Outcome", v: "A Skill the team owns. Versioned. Headless." },
     visual: {
       kind: "substrate",
@@ -297,7 +297,7 @@ export const approachSteps: ApproachStep[] = [
       title: "What encoding looks like",
       titleEm: "as substrate the team owns.",
       lede:
-        "Skills capture brand voice, claim registries, audience registers, decision rules. Each Skill is plain text the team can read and reviewable like code. Drafts by the operator, ratified by the team, versioned in Git. Headless from day one — Claude today, Gemini tomorrow, MCP everywhere.",
+        "The same pattern showing up everywhere: structured knowledge the model can stand on. At the team level, that means capturing how decisions get made, what good output looks like, and where the authoritative data lives. The operator drafts. The team ratifies. Git versions. Portable across models from day one.",
       meta: [
         { k: "CADENCE", v: "Drafted weekly · ratified by review" },
         { k: "ARTIFACT", v: "Skill bundle (Markdown + examples)" },
@@ -307,18 +307,18 @@ export const approachSteps: ApproachStep[] = [
         {
           heading: "Anatomy of a Skill",
           bullets: [
-            "Rules — plain conditions and locked policies the agent enforces.",
-            "Examples — saved past work the Skill should imitate.",
-            "Sources — briefs, boards, registries, calendars, linked safely.",
-            "Loops — who reviews, where escalations go, what gets logged.",
+            "How the team decides — brand rules, claim gates, locked policies.",
+            "What good looks like — approved work, rejected drafts, the difference between them.",
+            "Where the data lives — briefs, boards, registries, linked not copied.",
+            "Who confirms — review gates, escalation paths, what gets logged.",
           ],
         },
         {
           heading: "Encoded at Loop",
           bullets: [
-            "10+ reusable Skills shipped: tone of voice, paid social copy, marketplace, CRM, GenAI prompting, presentations, localization, naming, employer branding, constellations.",
-            "Skills span Studio, Performance, CRM, E-commerce, People, Legal, and UGC.",
-            "Each Skill exposed via MCP so any model-powered surface can call it.",
+            "10+ reusable Skills shipped across Studio, Performance, CRM, E-commerce, People, Legal, and UGC.",
+            "Loopers teach each other how to use them. Non-technical team members build their own automations in Cowork.",
+            "Each Skill exposed headlessly so any model-powered surface can call it.",
             "Models change. Tools change. The Skill carries forward.",
           ],
         },
@@ -396,7 +396,7 @@ export const casesSection = {
   title: "Four engines.",
   titleEm: "Built from the inside, used daily.",
   lede:
-    "Each one started inside a single team's bottleneck. Each one survived adoption. Two of them now expose their substrate headlessly so the same engine answers Claude, Cursor, Slack, the dashboard, and an in-tool button.",
+    "At Loop, software for few became practical. Sitting inside the teams meant I could compress existing workflows, repair broken handoffs, invent new ones, and build durable AI-native engines around them.",
   legend: [
     {
       mode: "Compress" as const,
@@ -410,11 +410,15 @@ export const casesSection = {
       mode: "Invent" as const,
       def: "Build a workflow that didn't exist before.",
     },
+    {
+      mode: "Build" as const,
+      def: "Turn encoded knowledge into a working engine.",
+    },
   ],
 } as const;
 
 export type CaseTone = "gold" | "sage" | "slate" | "violet";
-export type WorkflowMode = "Repair" | "Compress" | "Invent";
+export type WorkflowMode = "Repair" | "Compress" | "Invent" | "Build";
 
 export type ProjectScreenshot = {
   src: string;
@@ -459,7 +463,7 @@ export const cases: CaseProject[] = [
     challenge:
       "Creative Strategy drove the briefings, but each cycle meant manual digging across Reddit, ad dashboards, Meta Ad Library, and past notes, with Loop's proprietary ad data too sensitive to hand to outside tools.",
     tone: "gold",
-    workflowMode: "Compress",
+    workflowMode: "Build",
     workflowBefore:
       "Creative Strategy assembled briefs from memory across Reddit, Meta Ad Library, ad performance spreadsheets, and review notes. Every cycle started from scratch.",
     workflowAfter:
