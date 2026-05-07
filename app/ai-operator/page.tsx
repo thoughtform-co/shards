@@ -28,9 +28,11 @@ import { SoftwareForFew } from "./software-for-few";
  *   02 Hero             — CV profile: name eyebrow + thesis + bio + portrait.
  *   03 Vision           — Centered Navigate/Encode/Build flywheel + one CTA.
  *   04 Approach         — Three motions, each with a Heimdall-style
- *                         "practice in motion" pop-out (client).
- *   05 Software for few — Sticky parallax interstitial naming the gap
- *                         the operator works in (client).
+ *                         "practice in motion" pop-out (client). Pinned
+ *                         to viewport bottom so its last viewport stays
+ *                         frozen while the next section reveals over it.
+ *   05 Software for few — Interstitial that slides up over the frozen
+ *                         Approach (parallax-reveal pair, client).
  *   06 Cases            — Heimdall-style showcase grid (client).
  *   07 Headless         — Interstitial: architecture, not a dashboard.
  *   08 Selected case    — HarvestFields, where everything lands.
@@ -217,11 +219,15 @@ export default function AiOperatorPage() {
         </div>
       </section>
 
-      {/* ─── Approach (client component) ──────────────────────────── */}
-      <Approach />
-
-      {/* ─── Software for few · sticky parallax interstitial ──────── */}
-      <SoftwareForFew />
+      {/* ─── Approach + Software-for-few · parallax-reveal pair ─────
+       *
+       * The wrapper sticky-pins Approach to viewport bottom so its last
+       * viewport stays frozen while SoftwareForFew, sitting below it in
+       * flow, slides up over it through natural scroll. */}
+      <div className="aiop-approach-and-few">
+        <Approach />
+        <SoftwareForFew />
+      </div>
 
       {/* ─── Cases (client component) ─────────────────────────────── */}
       <Cases />
