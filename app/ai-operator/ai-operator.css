@@ -5949,3 +5949,378 @@
   }
 }
 
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 25 · v4 — Software-for-few interstitial
+ *
+ * A near-full-bleed sticky parallax slide that bridges the Approach
+ * (flywheel breakdown) and the Cases grid. The track is a tall scroll
+ * container; the slide pins to the viewport for the duration of the
+ * track and the inner layers translate at different rates against the
+ * `--aiop-few-progress` variable written by `software-for-few.tsx`.
+ *
+ * The slide leans into the sage lane so it reads as a deliberate
+ * second-key beat between the gold-led Approach rows and the
+ * accent-driven Cases that follow. On narrow viewports and under
+ * reduced motion the same DOM falls back to a static stack — no
+ * sticky, no transforms, the variable is unset.
+ *
+ * Sub-sections:
+ *   25a · Track + sticky slide
+ *   25b · Full-bleed parallax washes
+ *   25c · Copy + comparison card layout
+ *   25d · Comparison rows
+ *   25e · Animated mode + reduced motion
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+
+/* ─── 25a · Track + sticky slide ─────────────────────────────────── */
+
+.aiop-few-track {
+  position: relative;
+  width: 100%;
+}
+
+.aiop-few {
+  position: relative;
+  /* Interstitial padding — calmer than a primary chapter so the slide
+     reads as a beat between Approach and Cases rather than its own
+     full chapter. The almost-full-width visual surface lives on
+     `.aiop-few__bleed`. */
+  padding-block: clamp(40px, 6vw, 88px);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+
+/* ─── 25b · Full-bleed parallax washes ───────────────────────────── */
+
+/* Bleed layer breaks out of the page padding so the slide reads as
+   almost full width while the copy stays inside `.aiop-wrap`. The
+   inner washes parallax against `--aiop-few-progress` (0..1, written
+   by JS in animated mode; unset otherwise). */
+.aiop-few__bleed {
+  position: absolute;
+  /* Subtle margin-on-all-sides so the slide reads as a card floating
+     in front of the page paper rather than covering the full viewport
+     edge-to-edge. */
+  inset: clamp(16px, 2.5vw, 36px) clamp(12px, 2vw, 32px);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-sage) 8%, var(--aiop-card-2)) 0%,
+      color-mix(in oklab, var(--aiop-sage) 5%, var(--aiop-paper)) 60%,
+      color-mix(in oklab, var(--aiop-slate) 6%, var(--aiop-paper-2)) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--aiop-sage) 22%, var(--aiop-rule-strong));
+  box-shadow:
+    0 1px 2px rgba(26, 22, 18, 0.04),
+    0 24px 48px -34px rgba(26, 22, 18, 0.20);
+}
+
+.aiop-few__wash {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(4px);
+  opacity: 0.9;
+}
+
+.aiop-few__wash--a {
+  width: 60%;
+  aspect-ratio: 1 / 1;
+  left: -8%;
+  top: -18%;
+  background:
+    radial-gradient(circle, var(--aiop-sage-soft) 0%, transparent 62%);
+}
+
+.aiop-few__wash--b {
+  width: 70%;
+  aspect-ratio: 1 / 1;
+  right: -14%;
+  bottom: -26%;
+  background:
+    radial-gradient(circle, var(--aiop-slate-soft) 0%, transparent 62%);
+}
+
+/* Subtle ambient grid inside the bleed so the slide has the same
+   technical paper feel as the rest of the route. */
+.aiop-few__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26, 22, 18, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 22, 18, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(
+    ellipse 70% 75% at 50% 50%,
+    black 0%,
+    rgba(0, 0, 0, 0.55) 60%,
+    transparent 95%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 75% at 50% 50%,
+    black 0%,
+    rgba(0, 0, 0, 0.55) 60%,
+    transparent 95%
+  );
+  opacity: 0.55;
+}
+
+
+/* ─── 25c · Copy + comparison card layout ────────────────────────── */
+
+.aiop-few__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: clamp(28px, 4vw, 56px);
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+@media (min-width: 860px) {
+  .aiop-few__inner {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: clamp(40px, 6vw, 96px);
+  }
+}
+
+.aiop-few__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 46ch;
+}
+
+.aiop-few__title {
+  margin: 0;
+  max-width: 14ch;
+}
+
+.aiop-few__title-em {
+  font-style: italic;
+  font-weight: 540;
+  /* Salmon/coral nod toward the screenshot reference, biased through
+     the gold lane so it stays inside the route's existing accent
+     family rather than introducing a new hue. */
+  color: color-mix(in oklab, var(--aiop-gold-bright) 62%, #c46a55);
+}
+
+.aiop-few__body {
+  margin: 6px 0 0;
+  font-family: var(--aiop-body);
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-few__body strong {
+  color: var(--aiop-ink);
+  font-weight: 620;
+}
+
+
+/* ─── 25d · Comparison rows ──────────────────────────────────────── */
+
+/* The comparison sits flat on the bleed surface so the copy column
+   and the rows read as one card on the colored background, not a
+   white pop-out floating in front of it. The only visual frame
+   between rows is a subtle hairline. */
+.aiop-few__card {
+  position: relative;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.aiop-few__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+  border-top: 1px solid color-mix(in oklab, var(--aiop-sage) 18%, var(--aiop-rule));
+  border-bottom: 1px solid color-mix(in oklab, var(--aiop-sage) 18%, var(--aiop-rule));
+}
+
+.aiop-few__row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr) auto;
+  align-items: center;
+  gap: clamp(14px, 2vw, 28px);
+  padding: clamp(14px, 1.6vw, 22px) clamp(4px, 0.6vw, 12px);
+  border-bottom: 1px solid color-mix(in oklab, var(--aiop-sage) 14%, var(--aiop-rule));
+  transition: background 220ms ease;
+}
+
+.aiop-few__row:last-child {
+  border-bottom: 0;
+}
+
+.aiop-few__row-label {
+  font-family: var(--aiop-display);
+  font-size: clamp(16px, 1.4vw, 20px);
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  color: var(--aiop-ink);
+}
+
+.aiop-few__row-detail {
+  font-family: var(--aiop-body);
+  font-size: clamp(13px, 1vw, 15px);
+  line-height: 1.5;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-few__row-tag {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  white-space: nowrap;
+}
+
+.aiop-few__row--highlight {
+  position: relative;
+  /* Tint sits on top of the bleed without a separate card edge; the
+     left stripe is what calls the row out. */
+  background:
+    color-mix(in oklab, var(--aiop-sage) 10%, transparent);
+  border-top: 1px solid color-mix(in oklab, var(--aiop-sage) 32%, var(--aiop-rule));
+  border-bottom: 1px solid color-mix(in oklab, var(--aiop-sage) 32%, var(--aiop-rule));
+  padding-left: clamp(14px, 1.4vw, 22px);
+}
+
+.aiop-few__row--highlight::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 10%;
+  bottom: 10%;
+  width: 3px;
+  background: var(--aiop-sage);
+  border-radius: 2px;
+}
+
+.aiop-few__row--highlight .aiop-few__row-label {
+  font-weight: 600;
+}
+
+.aiop-few__row--highlight .aiop-few__row-tag {
+  color: color-mix(in oklab, var(--aiop-gold-bright) 50%, #c46a55);
+}
+
+@media (max-width: 640px) {
+  .aiop-few__row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    padding: 16px 14px;
+  }
+
+  .aiop-few__row-tag {
+    justify-self: start;
+  }
+}
+
+
+/* ─── 25e · Animated mode + reduced motion ───────────────────────── */
+
+/* Animated mode is opt-in: JS only adds `.is-animated` on viewports
+   ≥ 960px without `prefers-reduced-motion: reduce`. The track grows
+   tall, the slide pins for the duration, and the inner layers
+   parallax against `--aiop-few-progress` (0..1). */
+@media (min-width: 960px) {
+  .aiop-few-track.is-animated {
+    /* Interstitial proportions: the track only adds ~40vh of pinned
+       scrolling on top of the slide itself. Enough for a parallax
+       beat without trapping the reader between the two louder
+       chapters above and below. */
+    height: 140vh;
+  }
+
+  .aiop-few-track.is-animated .aiop-few {
+    position: sticky;
+    top: 0;
+    min-height: 86vh;
+    display: flex;
+    align-items: center;
+    padding-block: 0;
+  }
+
+  /* The whole slide reads as one card on the bleed; copy and rows
+     ride together at the same gentle rate while the inner washes
+     drift independently. Travel kept small so nothing detaches from
+     the card during the short pin. */
+  .aiop-few-track.is-animated .aiop-few__bleed {
+    transform: translate3d(
+      0,
+      calc(-18px * var(--aiop-few-progress, 0)),
+      0
+    );
+    transition: transform 60ms linear;
+  }
+
+  .aiop-few-track.is-animated .aiop-few__wash--a {
+    transform: translate3d(
+      calc(-18px * var(--aiop-few-progress, 0)),
+      calc(-30px * var(--aiop-few-progress, 0)),
+      0
+    );
+  }
+
+  .aiop-few-track.is-animated .aiop-few__wash--b {
+    transform: translate3d(
+      calc(20px * var(--aiop-few-progress, 0)),
+      calc(26px * var(--aiop-few-progress, 0)),
+      0
+    );
+  }
+
+  .aiop-few-track.is-animated .aiop-few__inner {
+    transform: translate3d(
+      0,
+      calc(-24px * var(--aiop-few-progress, 0)),
+      0
+    );
+    will-change: transform;
+  }
+}
+
+/* Reduced-motion safety net. JS already withholds `.is-animated`
+   under `prefers-reduced-motion: reduce`, but belt-and-braces here
+   so a media-query change mid-session can never leave the track in
+   a sticky state. */
+@media (prefers-reduced-motion: reduce) {
+  .aiop-few-track,
+  .aiop-few-track.is-animated {
+    height: auto !important;
+  }
+
+  .aiop-few-track .aiop-few,
+  .aiop-few-track.is-animated .aiop-few {
+    position: relative !important;
+    top: auto !important;
+    min-height: 0 !important;
+    padding-block: clamp(40px, 6vw, 88px) !important;
+  }
+
+  .aiop-few-track .aiop-few__bleed,
+  .aiop-few-track.is-animated .aiop-few__bleed,
+  .aiop-few-track .aiop-few__wash,
+  .aiop-few-track.is-animated .aiop-few__wash,
+  .aiop-few-track .aiop-few__inner,
+  .aiop-few-track.is-animated .aiop-few__inner {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+

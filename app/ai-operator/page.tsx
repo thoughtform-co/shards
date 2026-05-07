@@ -13,6 +13,7 @@ import {
 } from "./content";
 import { LoopStripeMorph } from "./loop-stripe-morph";
 import { ScrollReveal } from "./reveal";
+import { SoftwareForFew } from "./software-for-few";
 
 /*
  * AI Operator — public landing page.
@@ -28,11 +29,13 @@ import { ScrollReveal } from "./reveal";
  *   03 Vision           — Centered Navigate/Encode/Build flywheel + one CTA.
  *   04 Approach         — Three motions, each with a Heimdall-style
  *                         "practice in motion" pop-out (client).
- *   05 Cases            — Heimdall-style showcase grid (client).
- *   06 Headless         — Interstitial: architecture, not a dashboard.
- *   07 Selected case    — HarvestFields, where everything lands.
- *   08 CTA              — One ask. Smallest commitment.
- *   09 Footer
+ *   05 Software for few — Sticky parallax interstitial naming the gap
+ *                         the operator works in (client).
+ *   06 Cases            — Heimdall-style showcase grid (client).
+ *   07 Headless         — Interstitial: architecture, not a dashboard.
+ *   08 Selected case    — HarvestFields, where everything lands.
+ *   09 CTA              — One ask. Smallest commitment.
+ *   10 Footer
  */
 
 function Arrow() {
@@ -216,6 +219,9 @@ export default function AiOperatorPage() {
 
       {/* ─── Approach (client component) ──────────────────────────── */}
       <Approach />
+
+      {/* ─── Software for few · sticky parallax interstitial ──────── */}
+      <SoftwareForFew />
 
       {/* ─── Cases (client component) ─────────────────────────────── */}
       <Cases />

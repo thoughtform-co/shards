@@ -614,6 +614,54 @@ export const cases: CaseProject[] = [
 ];
 
 /* ─────────────────────────────────────────────────────────────────────
+ * Software-for-few interstitial — the gap the operator works in
+ *
+ * A near-full-bleed parallax slide that bridges the flywheel breakdown
+ * and the in-production cases. Names the market gap (off-the-shelf
+ * SaaS too generic, dev agencies too expensive) and frames the cases
+ * that follow as software built by the team that uses it. Visually
+ * complementary to the gold-led approach rows: the slide leans into
+ * the sage lane so it reads as a deliberate pause before the cases
+ * pick the gold rhythm back up.
+ * ─────────────────────────────────────────────────────────────────── */
+
+export type SoftwareForFewRow = {
+  id: "saas" | "few" | "agency";
+  label: string;
+  detail: string;
+  tag: string;
+  highlight?: boolean;
+};
+
+export const softwareForFewSection = {
+  title: "Software",
+  titleEm: "for few.",
+  body:
+    "Off-the-shelf SaaS is too generic. A dev agency is too expensive for a team of ten. In that gap, AI lets the team build the tool themselves, in days, not months, by the people who understand the problem best.",
+  rows: [
+    {
+      id: "saas",
+      label: "Off-the-shelf SaaS",
+      detail: "Generic. Built for millions.",
+      tag: "Too broad",
+    },
+    {
+      id: "few",
+      label: "Software for few",
+      detail: "Specific. Built by the team that uses it.",
+      tag: "The gap",
+      highlight: true,
+    },
+    {
+      id: "agency",
+      label: "Dev agency",
+      detail: "Custom, but too expensive for a team of ten.",
+      tag: "Too costly",
+    },
+  ] satisfies SoftwareForFewRow[],
+} as const;
+
+/* ─────────────────────────────────────────────────────────────────────
  * Headless interstitial — architecture, not a dashboard
  *
  * Sets up the selected case. Names the architectural shift behind every
