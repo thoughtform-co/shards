@@ -37,7 +37,7 @@ export function ExperimentCard({ experiment }: ExperimentCardProps) {
         <div className="relative flex h-full flex-col p-5 sm:p-6">
           <div className="flex items-center justify-between gap-3">
             <span className="hud-readout">{experiment.status}</span>
-            <span className="hud-readout text-[var(--gold)]">{experiment.slug}</span>
+            <span className="hud-readout text-[var(--violet-bright)]">{experiment.slug}</span>
           </div>
 
           <div className="mt-14 max-w-[17rem]">

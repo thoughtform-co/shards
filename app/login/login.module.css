@@ -2,7 +2,7 @@
  * Shards login gate.
  *
  * Ported from the Delaware login gate but with two changes:
- *   1. The paper/coral palette is declared at the module root via
+ *   1. The paper/violet palette is declared at the module root via
  *      `.scope` instead of relying on globals.css (shards' globals
  *      ship a dark Sigil palette that would conflict with the
  *      Delaware-style aesthetic).
@@ -19,8 +19,9 @@
   --ink-faint:    #8a7f70;
   --rule:         rgba(26, 22, 18, 0.12);
   --rule-soft:    rgba(26, 22, 18, 0.06);
-  --coral:        #d6573b;
-  --coral-deep:   #b04528;
+  --violet:       #6243b9;
+  --violet-deep:  #4d3399;
+  --alert:        #b8302d;
 
   --f-display: var(--font-display), "Bodoni Moda", Georgia, serif;
   --f-sans:    var(--font-body), "IBM Plex Sans", system-ui, sans-serif;
@@ -46,7 +47,7 @@
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(60% 50% at 18% 12%, rgba(214, 87, 59, 0.18), transparent 65%),
+    radial-gradient(60% 50% at 18% 12%, rgba(98, 67, 185, 0.16), transparent 65%),
     radial-gradient(55% 45% at 85% 18%, rgba(202, 165, 84, 0.18), transparent 65%),
     radial-gradient(70% 60% at 65% 92%, rgba(26, 22, 18, 0.20), transparent 70%),
     radial-gradient(40% 35% at 12% 85%, rgba(91, 122, 78, 0.18), transparent 70%),
@@ -110,8 +111,8 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--coral);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--coral) 22%, transparent);
+  background: var(--violet);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--violet) 22%, transparent);
 }
 
 .markerRight {
@@ -179,7 +180,7 @@
 .eyebrow .bar {
   width: 18px;
   height: 1.5px;
-  background: var(--coral);
+  background: var(--violet);
   display: inline-block;
 }
 
@@ -199,8 +200,13 @@
   line-height: 1;
 }
 
+/* The single place violet and gold co-render — Stripe's gradient
+   register applied to exactly one glyph, mirroring `/`. */
 .brandPeriod {
-  color: var(--coral);
+  background: linear-gradient(120deg, var(--violet) 0%, #caa554 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .headline {
@@ -241,14 +247,17 @@
 }
 
 .field:focus-within {
-  border-color: color-mix(in oklab, var(--coral) 55%, var(--rule));
+  border-color: color-mix(in oklab, var(--violet) 55%, var(--rule));
   background: var(--paper-card);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--coral) 18%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--violet) 18%, transparent);
 }
 
+/* Error keeps its own hue so focus and error never collide visually —
+   borrowed from Stripe's UI pattern where indigo never reads as
+   "problem". */
 .field.error {
-  border-color: color-mix(in oklab, var(--coral) 65%, var(--rule));
-  background: color-mix(in oklab, var(--coral) 5%, var(--paper-card));
+  border-color: color-mix(in oklab, var(--alert) 65%, var(--rule));
+  background: color-mix(in oklab, var(--alert) 5%, var(--paper-card));
 }
 
 .input {
@@ -341,7 +350,7 @@
   gap: 8px;
   font-size: 12.5px;
   line-height: 1.4;
-  color: var(--coral-deep);
+  color: var(--alert);
   font-family: var(--f-mono);
   letter-spacing: 0.04em;
   min-height: 16px;
@@ -359,7 +368,7 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--coral);
+  background: var(--alert);
 }
 
 .foot {
@@ -384,7 +393,7 @@
 @media (prefers-reduced-motion: reduce) {
   .backdrop { animation: none; }
   .card { animation: none; }
-  .card.shake { animation: none; outline: 1px solid var(--coral); }
+  .card.shake { animation: none; outline: 1px solid var(--alert); }
   .submit, .arrow, .field { transition: none; }
 }
 

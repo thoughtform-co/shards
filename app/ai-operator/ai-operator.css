@@ -215,6 +215,17 @@
   background: var(--aiop-ink);
 }
 
+/* Violet variant — opt-in cool eyebrow so the route can mark a section
+   as belonging to the cool signal lane (paired with violet emphasis or
+   `.aiop-cases__mode--invent`-tagged content) without disturbing the
+   default gold eyebrows that sit on most sections. */
+.aiop-eyebrow--violet {
+  color: var(--aiop-violet);
+}
+.aiop-eyebrow--violet::before {
+  background: var(--aiop-violet);
+}
+
 /* Section title — Linear-style product heading: tight sans, smaller scale,
    with restrained emphasis when the copy calls for it. */
 .aiop-section-title {
@@ -6191,10 +6202,9 @@
 .aiop-few__title-em {
   font-style: italic;
   font-weight: 540;
-  /* Salmon/coral nod toward the screenshot reference, biased through
-     the gold lane so it stays inside the route's existing accent
-     family rather than introducing a new hue. */
-  color: color-mix(in oklab, var(--aiop-gold-bright) 62%, #c46a55);
+  /* Promoted to the violet lane so the italic emphasis joins the
+     platform-wide cool signal lane (gold stays for chrome). */
+  color: var(--aiop-violet);
 }
 
 .aiop-few__body {
@@ -6235,9 +6245,11 @@
     color 160ms ease;
 }
 
+/* Hover joins the violet lane so the link rhymes with the
+   `.aiop-few__title-em` italic emphasis sitting just above it. */
 .aiop-few__link:hover {
-  border-color: var(--aiop-gold-bright);
-  color: var(--aiop-gold);
+  border-color: var(--aiop-violet);
+  color: var(--aiop-violet);
 }
 
 
@@ -6339,7 +6351,7 @@
 }
 
 .aiop-few__row--highlight .aiop-few__row-tag {
-  color: color-mix(in oklab, var(--aiop-gold-bright) 50%, #c46a55);
+  color: var(--aiop-violet);
 }
 
 @media (max-width: 640px) {

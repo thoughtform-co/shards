@@ -17,8 +17,8 @@
   --ink-faint:    #8a7f70;
   --rule:         rgba(26, 22, 18, 0.12);
   --rule-soft:    rgba(26, 22, 18, 0.06);
-  --coral:        #d6573b;
-  --coral-deep:   #b04528;
+  --violet:       #6243b9;
+  --violet-deep:  #4d3399;
 
   --f-display: var(--font-display), "Bodoni Moda", Georgia, serif;
   --f-sans:    var(--font-body), "IBM Plex Sans", system-ui, sans-serif;
@@ -41,7 +41,7 @@
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(60% 50% at 18% 12%, rgba(214, 87, 59, 0.18), transparent 65%),
+    radial-gradient(60% 50% at 18% 12%, rgba(98, 67, 185, 0.16), transparent 65%),
     radial-gradient(55% 45% at 85% 18%, rgba(202, 165, 84, 0.18), transparent 65%),
     radial-gradient(70% 60% at 65% 92%, rgba(26, 22, 18, 0.20), transparent 70%),
     radial-gradient(40% 35% at 12% 85%, rgba(91, 122, 78, 0.18), transparent 70%),
@@ -102,8 +102,8 @@
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--coral);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--coral) 22%, transparent);
+  background: var(--violet);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--violet) 22%, transparent);
 }
 
 .markerRight {
@@ -159,7 +159,7 @@
 .eyebrow .bar {
   width: 18px;
   height: 1.5px;
-  background: var(--coral);
+  background: var(--violet);
   display: inline-block;
 }
 
@@ -176,8 +176,14 @@
   line-height: 1;
 }
 
+/* The single place violet and gold co-render — Stripe's gradient
+   register applied to exactly one glyph, so it punctuates without
+   taking over the page. */
 .brandPeriod {
-  color: var(--coral);
+  background: linear-gradient(120deg, var(--violet) 0%, #caa554 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .headline {
@@ -224,19 +230,19 @@
   content: "";
   width: 24px;
   height: 1px;
-  background: var(--coral);
+  background: var(--violet);
   display: inline-block;
   transition: width 0.2s ease, background 0.2s ease;
 }
 
 .link:hover {
-  color: var(--coral-deep);
+  color: var(--violet-deep);
   gap: 14px;
 }
 
 .link:hover::before {
   width: 36px;
-  background: var(--coral-deep);
+  background: var(--violet-deep);
 }
 
 .linkArrow {

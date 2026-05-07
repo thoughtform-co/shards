@@ -58,8 +58,19 @@
   --atreides-light: #5b7a4e;
   --atreides-30: rgba(61, 75, 51, 0.3);
 
+  /* ── Accent (Violet) — Stripe-leaning cool co-primary ── */
+  --violet: #6243b9;
+  --violet-bright: #7d5fcf;
+  --violet-40: rgba(98, 67, 185, 0.4);
+  --violet-30: rgba(98, 67, 185, 0.3);
+  --violet-15: rgba(98, 67, 185, 0.15);
+  --violet-08: rgba(98, 67, 185, 0.08);
+  --violet-05: rgba(98, 67, 185, 0.05);
+
   /* ── Status ── */
-  --alert: #ff6b35;
+  /* Sophisticated red borrowed from Stripe's UI patterns so error
+     stays semantically distinct from the violet/gold accent lanes. */
+  --alert: #b8302d;
 
   /* ── Semantic ── */
   --bg: var(--void);
@@ -110,7 +121,8 @@ html {
 body {
   min-height: 100vh;
   background:
-    radial-gradient(circle at top, rgba(202, 165, 84, 0.08), transparent 34%),
+    radial-gradient(circle at 18% 0%, rgba(202, 165, 84, 0.08), transparent 32%),
+    radial-gradient(circle at 82% 0%, rgba(98, 67, 185, 0.07), transparent 34%),
     linear-gradient(180deg, rgba(15, 14, 12, 0.95), rgba(5, 4, 3, 1) 48%);
   color: var(--text);
   font-family: var(--font-body), sans-serif;
@@ -130,7 +142,7 @@ select {
 }
 
 ::selection {
-  background: var(--gold-15);
+  background: var(--violet-15);
   color: var(--dawn);
 }
 
@@ -208,6 +220,19 @@ select {
 
 .gold-link:hover {
   color: var(--gold-hover);
+}
+
+/* Cool counterpart to .gold-link. Body-link default; gold-link stays
+   reserved for HUD/architectural labels so the two lanes don't blur.
+   On dark surfaces the brighter tint reads cleanly at body sizes; the
+   base violet anchors hover. */
+.violet-link {
+  color: var(--violet-bright);
+  transition: color 120ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.violet-link:hover {
+  color: #9479e0;
 }
 
 /* ── HUD Corners (viewport-level only) ── */

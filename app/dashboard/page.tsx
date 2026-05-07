@@ -122,14 +122,14 @@ export default function DashboardPage() {
                   <div className="flex flex-col gap-3">
                     <Link
                       href="/experiments/image-to-spotify"
-                      className="gold-link inline-flex items-center gap-2 text-sm uppercase tracking-[0.14em]"
+                      className="violet-link inline-flex items-center gap-2 text-sm uppercase tracking-[0.14em]"
                     >
                       V1 flat jukebox
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                     <Link
                       href="/experiments/image-to-spotify-v2"
-                      className="gold-link inline-flex items-center gap-2 text-sm uppercase tracking-[0.14em]"
+                      className="violet-link inline-flex items-center gap-2 text-sm uppercase tracking-[0.14em]"
                     >
                       V2 3D jukebox
                       <ArrowRight className="h-4 w-4" />
