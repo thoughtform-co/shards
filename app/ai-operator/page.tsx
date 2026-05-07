@@ -28,9 +28,12 @@ import { SoftwareForFew } from "./software-for-few";
  *   01 Header / nav     (sticky)
  *   02 Hero             — CV profile: name eyebrow + thesis + bio + portrait.
  *   03 Quote bridge     — Benedict Evans on the asking gap. Three phrases
- *                         morph into Navigate/Encode/Build pills as the
- *                         visitor scrolls toward the orbit (client).
+ *                         morph in place into Navigate/Encode/Build pills
+ *                         (client). Pinned via parallax-reveal pair with
+ *                         the Vision section so the orbit assembles around
+ *                         the morphed pills as the bridge releases.
  *   04 Vision           — Centered Navigate/Encode/Build flywheel + one CTA.
+ *                         Slides up over the frozen bridge during scroll.
  *   05 Approach         — Three motions, each with a Heimdall-style
  *                         "practice in motion" pop-out (client). Pinned
  *                         to viewport bottom so its last viewport stays
@@ -175,61 +178,69 @@ export default function AiOperatorPage() {
         </div>
       </section>
 
-      {/* ─── Quote bridge — Evans on the asking gap ──────────────────── */}
-      <QuoteBridge />
+      {/* ─── Quote bridge + Vision · parallax-reveal pair ─────────────
+       *
+       * The wrapper pins the bridge while the visitor scrolls past it,
+       * so the chip-to-pill morph (driven by `--aiop-bridge-progress`
+       * inside QuoteBridge) has scroll length to play out. Vision sits
+       * below in flow and slides up over the frozen bridge through
+       * natural scroll, revealing the orbit as the bridge releases. */}
+      <div className="aiop-bridge-and-vision">
+        <QuoteBridge />
 
-      {/* ─── Vision — Adoption Automation Flywheel ──────────────────── */}
-      <section className="aiop-section aiop-vision" id="vision">
-        <div className="aiop-wrap aiop-vision__inner aiop-reveal">
-          <div className="aiop-vision__head">
-            <h2 className="aiop-section-title aiop-vision__title">
-              {visionSection.title} <em>{visionSection.titleEm}</em>
-            </h2>
+        {/* ─── Vision — Adoption Automation Flywheel ──────────────── */}
+        <section className="aiop-section aiop-vision" id="vision">
+          <div className="aiop-wrap aiop-vision__inner aiop-reveal">
+            <div className="aiop-vision__head">
+              <h2 className="aiop-section-title aiop-vision__title">
+                {visionSection.title} <em>{visionSection.titleEm}</em>
+              </h2>
 
-            <p className="aiop-vision__caption">{visionSection.caption}</p>
-          </div>
+              <p className="aiop-vision__caption">{visionSection.caption}</p>
+            </div>
 
-          <div
-            className="aiop-orbit aiop-orbit--centered"
-            role="img"
-            aria-label="Navigate, Encode, Build flywheel around a substrate file stack, with a Headless satellite"
-          >
-            <span
-              className="aiop-orbit__ring aiop-orbit__ring--outer"
-              aria-hidden="true"
-            />
-            <span
-              className="aiop-orbit__ring aiop-orbit__ring--inner"
-              aria-hidden="true"
-            />
-
-            {visionSection.orbits.map((orbit) => (
+            <div
+              className="aiop-orbit aiop-orbit--centered"
+              role="img"
+              aria-label="Navigate, Encode, Build flywheel around a substrate file stack, with a Headless satellite"
+            >
               <span
-                key={orbit.id}
-                className={`aiop-orbit__pill aiop-orbit__pill--${orbit.position} aiop-orbit__pill--${orbit.id}`}
-              >
-                <span className="aiop-orbit__dot" aria-hidden="true" />
-                <span>{orbit.label}</span>
-              </span>
-            ))}
+                className="aiop-orbit__ring aiop-orbit__ring--outer"
+                aria-hidden="true"
+              />
+              <span
+                className="aiop-orbit__ring aiop-orbit__ring--inner"
+                aria-hidden="true"
+              />
 
-            <span className="aiop-orbit__core">
-              <strong>{visionSection.centerLabel}</strong>
-              <span className="aiop-orbit__core-files">
-                {visionSection.centerFiles.map((file) => (
-                  <span key={file}>{file}</span>
-                ))}
+              {visionSection.orbits.map((orbit) => (
+                <span
+                  key={orbit.id}
+                  className={`aiop-orbit__pill aiop-orbit__pill--${orbit.position} aiop-orbit__pill--${orbit.id}`}
+                >
+                  <span className="aiop-orbit__dot" aria-hidden="true" />
+                  <span>{orbit.label}</span>
+                </span>
+              ))}
+
+              <span className="aiop-orbit__core">
+                <strong>{visionSection.centerLabel}</strong>
+                <span className="aiop-orbit__core-files">
+                  {visionSection.centerFiles.map((file) => (
+                    <span key={file}>{file}</span>
+                  ))}
+                </span>
               </span>
-            </span>
-            <span className="aiop-orbit__satellite" aria-hidden="true">
-              <span className="aiop-orbit__satellite-dot" />
-              <span className="aiop-orbit__satellite-label">
-                {visionSection.satelliteLabel}
+              <span className="aiop-orbit__satellite" aria-hidden="true">
+                <span className="aiop-orbit__satellite-dot" />
+                <span className="aiop-orbit__satellite-label">
+                  {visionSection.satelliteLabel}
+                </span>
               </span>
-            </span>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* ─── Approach + Software-for-few · parallax-reveal pair ─────
        *

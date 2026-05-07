@@ -112,20 +112,20 @@ export const hero = {
  * Anchors the flywheel to a credible outside diagnosis (Benedict Evans
  * on the asking gap). Lives at full-viewport scale so the Evans
  * sentence has room to breathe; three operative phrases inside the
- * sentence — `the challenge`, `how to ask`, `what you want` — are
- * subtly framed in their lane colours (violet / amber / sage). No
- * eyebrow, no pill labels. The framework vocabulary lands one section
- * later, in the orbit. Here, the colour itself is the foreshadowing.
+ * sentence — `working out`, `how to ask`, `what you want` — are framed
+ * in their lane colours (violet / amber / sage).
  *
- * The sentence is stored as an array of parts so the renderer can mark
- * the three operative phrases without parsing prose at runtime. Plain
- * `text` parts are connective tissue; `mark` parts get the chip
- * treatment.
+ * On desktop the bridge pins for an extra viewport while the visitor
+ * scrolls; during that pin each marked phrase morphs in place into its
+ * Navigate / Encode / Build pill counterpart. The `pill` label is the
+ * destination text the chip cross-fades into; without it the part is
+ * just connective tissue.
  * ─────────────────────────────────────────────────────────────────── */
 
 export type QuoteBridgePart = {
   text: string;
   mark?: "navigate" | "encode" | "build";
+  pill?: "Navigate" | "Encode" | "Build";
 };
 
 export const quoteBridgeSection = {
@@ -133,11 +133,11 @@ export const quoteBridgeSection = {
   attribMeta: "Independent tech analyst",
   quoteParts: [
     { text: "A lot of the challenge is " },
-    { text: "working out", mark: "navigate" },
+    { text: "working out", mark: "navigate", pill: "Navigate" },
     { text: " " },
-    { text: "how to ask", mark: "encode" },
+    { text: "how to ask", mark: "encode", pill: "Encode" },
     { text: " for " },
-    { text: "what you want", mark: "build" },
+    { text: "what you want", mark: "build", pill: "Build" },
     { text: "." },
   ] satisfies QuoteBridgePart[],
 } as const;
