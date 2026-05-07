@@ -29,7 +29,13 @@
  * 01 · Tokens
  * ═══════════════════════════════════════════════════════════════════════ */
 
-.aiop-shell {
+/* Tokens are defined on both `.aiop-shell` (the in-flow page) and
+   `.aiop-modal-overlay` (the modal portal mounted directly under
+   <body> so it can escape transformed ancestors). The overlay is a
+   sibling of `.aiop-shell`, so without this it inherits no tokens
+   and the overlay/card render unstyled. */
+.aiop-shell,
+.aiop-modal-overlay {
   --aiop-paper: #f3ece0;
   --aiop-paper-2: #ebe3d3;
   --aiop-paper-3: #e2d8c2;
@@ -71,7 +77,10 @@
 
   /* Notched button corner cut size (Inversa-inspired chamfer). */
   --aiop-notch: 14px;
+}
 
+/* Page chrome belongs to the in-flow shell only. */
+.aiop-shell {
   background: var(--aiop-paper);
   color: var(--aiop-ink);
   font-family: var(--aiop-body);

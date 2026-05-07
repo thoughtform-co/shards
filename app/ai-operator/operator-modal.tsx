@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 
 /*
  * Shared modal shell for the AI Operator landing.
@@ -9,6 +10,12 @@ import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
  * a fixed-width inset card, escape-key close, body scroll lock while
  * open, and an accent color hook (`--aiop-modal-accent`) that lets the
  * caller tint the close button + accent stripe per item.
+ *
+ * Rendered through a portal into `document.body` so the `position: fixed`
+ * overlay always anchors to the viewport — even when an ancestor (e.g.
+ * the Approach section during the Software-for-few parallax reveal) has
+ * a `transform` applied, which would otherwise establish a containing
+ * block for fixed descendants and clip the modal.
  *
  * Callers typically pass an inline `onClose` (e.g. `() => setOpen(null)`),
  * so we route the latest handler through a ref. The lifecycle effect then
@@ -33,6 +40,13 @@ export function OperatorModal({
     onCloseRef.current = onClose;
   }, [onClose]);
 
+  // Portal target: only available on the client. Track mounted state so
+  // SSR returns `null` and the portal attaches after hydration.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -50,7 +64,7 @@ export function OperatorModal({
     };
   }, [open]);
 
-  if (!open) return null;
+  if (!open || !mounted) return null;
 
   const style: CSSProperties | undefined = accent
     ? ({
@@ -59,7 +73,7 @@ export function OperatorModal({
       } as CSSProperties)
     : undefined;
 
-  return (
+  return createPortal(
     <div
       className="aiop-modal-overlay"
       onClick={onClose}
@@ -89,6 +103,7 @@ export function OperatorModal({
         </button>
         <div className="aiop-modal__scroll">{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
