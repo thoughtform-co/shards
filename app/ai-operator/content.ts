@@ -132,9 +132,9 @@ export const quoteBridgeSection = {
   attribMeta: "Independent tech analyst",
   intro: "Three challenges live inside that one sentence.",
   rows: [
-    { id: "navigate", phrase: "Figuring out the map.", pill: "Navigate" },
-    { id: "encode", phrase: "Figuring out how to ask.", pill: "Encode" },
-    { id: "build", phrase: "Figuring out what you want.", pill: "Build" },
+    { id: "navigate", phrase: "the map", pill: "Navigate" },
+    { id: "encode", phrase: "how to ask", pill: "Encode" },
+    { id: "build", phrase: "what you want", pill: "Build" },
   ] satisfies QuoteBridgeRow[],
 } as const;
 
