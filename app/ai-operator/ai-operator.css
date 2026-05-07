@@ -3302,7 +3302,7 @@
 
 @media (min-width: 720px) {
   .aiop-cases__legend {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 24px 40px;
   }
 }
@@ -3331,7 +3331,6 @@
 .aiop-cases__mode--repair   { background: var(--aiop-slate); }
 .aiop-cases__mode--compress { background: var(--aiop-gold-bright); color: var(--aiop-ink); }
 .aiop-cases__mode--invent   { background: var(--aiop-violet); }
-.aiop-cases__mode--build    { background: var(--aiop-ink); }
 
 .aiop-cases__legend-def {
   margin: 0;

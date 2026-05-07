@@ -396,7 +396,7 @@ export const casesSection = {
   title: "Four engines.",
   titleEm: "Built from the inside, used daily.",
   lede:
-    "At Loop, software for few became practical. Sitting inside the teams meant I could compress existing workflows, repair broken handoffs, invent new ones, and build durable AI-native engines around them.",
+    "At Loop, software for few became practical. Sitting inside the teams meant I could compress existing workflows, repair broken handoffs, and invent new ones from scratch with AI.",
   legend: [
     {
       mode: "Compress" as const,
@@ -410,15 +410,11 @@ export const casesSection = {
       mode: "Invent" as const,
       def: "Build a workflow that didn't exist before.",
     },
-    {
-      mode: "Build" as const,
-      def: "Turn encoded knowledge into a working engine.",
-    },
   ],
 } as const;
 
 export type CaseTone = "gold" | "sage" | "slate" | "violet";
-export type WorkflowMode = "Repair" | "Compress" | "Invent" | "Build";
+export type WorkflowMode = "Repair" | "Compress" | "Invent";
 
 export type ProjectScreenshot = {
   src: string;
@@ -463,7 +459,7 @@ export const cases: CaseProject[] = [
     challenge:
       "Creative Strategy drove the briefings, but each cycle meant manual digging across Reddit, ad dashboards, Meta Ad Library, and past notes, with Loop's proprietary ad data too sensitive to hand to outside tools.",
     tone: "gold",
-    workflowMode: "Build",
+    workflowMode: "Invent",
     workflowBefore:
       "Creative Strategy assembled briefs from memory across Reddit, Meta Ad Library, ad performance spreadsheets, and review notes. Every cycle started from scratch.",
     workflowAfter:
