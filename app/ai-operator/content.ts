@@ -250,7 +250,7 @@ export const approachSteps: ApproachStep[] = [
     tone: "violet",
     headline: "Teach the teams what they are working with",
     body:
-      "AI sits between a tool and a collaborator. Deterministic enough to automate, interpretive enough to think with. The skill is knowing which mode the task needs. That's what navigation teaches.",
+      "AI sits between a tool and a collaborator. Deterministic enough to automate, interpretive enough to think with. It's trained on us, but it's not like us. The foundation of the adoption-automation flywheel is knowing how to navigate this intelligence.",
     signal: { k: "Outcome", v: "AI intuition and a workflow brief per team." },
     visual: {
       kind: "rollout",
