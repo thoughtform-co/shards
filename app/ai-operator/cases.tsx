@@ -684,6 +684,31 @@ function CaseModalBody({ project }: { project: CaseProject }) {
         </dl>
       </header>
 
+      {/* Walkthrough section — sits between the visual hero (still
+          screenshots) and the structured copy below, treating the
+          recording as the second half of the visual proof. Renders
+          only if a walkthrough is wired for the case; controls are
+          enabled but autoplay is intentionally off (the visitor came
+          here to read; the dedicated `WalkthroughModalBody` is where
+          autoplay belongs). */}
+      {project.walkthrough ? (
+        <section className="aiop-modal__section aiop-modal__section--walkthrough">
+          <h3 className="aiop-modal__section-heading">Walkthrough</h3>
+          <div className="aiop-modal__video aiop-modal__video--inline">
+            <video
+              key={project.id}
+              src={project.walkthrough.src}
+              poster={project.walkthrough.poster}
+              controls
+              muted
+              playsInline
+              preload="metadata"
+              aria-label={`${project.name}${project.nameEm ?? ""} walkthrough video`}
+            />
+          </div>
+        </section>
+      ) : null}
+
       <section className="aiop-modal__section">
         <h3 className="aiop-modal__section-heading">What it does</h3>
         <ul className="aiop-modal__caps" role="list">
