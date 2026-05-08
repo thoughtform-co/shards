@@ -102,6 +102,7 @@ export function Cases() {
         open={watch !== null}
         onClose={() => setWatch(null)}
         accent={watch ? toneAccent(watch.tone) : undefined}
+        variant="wide"
         ariaLabel={
           watch
             ? `${watch.name}${watch.nameEm ?? ""} · walkthrough`
@@ -558,11 +559,16 @@ function StripeTeaserSchematic() {
 /*
  * WalkthroughModalBody — short narrated screen recording for a case.
  *
- * Reuses `OperatorModal` for the overlay/portal/focus-trap. The body
- * itself is purposefully tight: a small header (project name + the
- * label "Walkthrough") and a single `<video controls autoplay muted>`
- * element that fills the modal width while preserving its native
- * aspect ratio.
+ * Reuses `OperatorModal` (variant="wide") for the overlay/portal/focus-
+ * trap and a wider frame so the video element gets more horizontal
+ * room without breaking responsiveness. The body itself is
+ * deliberately spare: a single small label that combines the project
+ * name + tagline, and a `<video>` element that fills the available
+ * width while preserving its native aspect ratio. The eyebrow and the
+ * large display title were retired — the trigger button already
+ * carried the "Watch walkthrough" framing, and the case row sitting
+ * behind the modal carries the project's full identity, so a tight
+ * label reads as confirmation rather than restatement.
  *
  * Autoplay starts the video the moment the modal opens (the click on
  * the trigger button is the user gesture browsers require). The
@@ -585,18 +591,19 @@ function WalkthroughModalBody({ project }: { project: CaseProject }) {
 
   return (
     <div className="aiop-modal__body aiop-modal__body--walkthrough">
-      <header className="aiop-modal__hero aiop-modal__hero--walkthrough">
+      <header className="aiop-modal__hero--walkthrough">
         <p
           className={`aiop-eyebrow aiop-eyebrow--ink aiop-eyebrow--${project.tone}`}
         >
-          Walkthrough · {project.num}
+          {fullName}
+          <span
+            className="aiop-modal__hero-divider aiop-modal__hero-divider--walkthrough"
+            aria-hidden="true"
+          >
+            ·
+          </span>
+          {project.tagline}
         </p>
-        <h2 className="aiop-modal__title">
-          {project.name}
-          {project.nameEm ? <em>{project.nameEm}</em> : null}
-          <span className="aiop-case-row__period">.</span>
-        </h2>
-        <p className="aiop-modal__tagline">{project.tagline}</p>
       </header>
 
       <div className="aiop-modal__video">

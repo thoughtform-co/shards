@@ -10083,16 +10083,43 @@
 
 /* ─── 31.2 · Walkthrough modal body + video element ──────────────── */
 
-/* The walkthrough modal trims the standard modal padding so the
-   video gets edge-to-edge framing inside the rounded card. The
-   header still sits inside the inner padding for readability. */
+/* Wide modal variant — used for video-first content that benefits
+   from extra horizontal space. The base `.aiop-modal` keeps its
+   960px ceiling; this variant lifts the cap to 1200px while staying
+   responsive via `min(…, 100%)` and the overlay's gutter padding. */
+.aiop-modal--wide {
+  width: min(1200px, 100%);
+}
+
+/* Walkthrough body — tighter than the case-detail body so the video
+   becomes the primary mass on the card. The single-line header sits
+   in mono caps; the dot-separator inside it is muted so the project
+   name and the tagline read as one continuous label. */
 .aiop-modal__body--walkthrough {
-  gap: 24px;
+  gap: 18px;
 }
 
 .aiop-modal__hero--walkthrough {
-  padding-bottom: 20px;
-  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-bottom: 4px;
+}
+
+.aiop-modal__hero-divider--walkthrough {
+  margin-inline: 8px;
+  color: var(--aiop-muted);
+  font-weight: 400;
+  letter-spacing: normal;
+}
+
+/* Inside a walkthrough modal, the inner scroll padding tightens so
+   the video reaches more of the wider frame on desktop. The `:has`
+   selector keeps this scoped to the walkthrough body — case-detail
+   modals retain their generous editorial padding. */
+.aiop-modal:has(.aiop-modal__body--walkthrough) .aiop-modal__scroll {
+  padding: clamp(20px, 3vw, 32px) clamp(20px, 3vw, 32px)
+    clamp(20px, 3vw, 32px);
 }
 
 /* Video container — clipped to the rounded modal so corners match

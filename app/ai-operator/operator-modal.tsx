@@ -21,18 +21,26 @@ import { createPortal } from "react-dom";
  * so we route the latest handler through a ref. The lifecycle effect then
  * only depends on `open`, keeping the keydown listener and body scroll
  * lock from being torn down and reattached on every parent render.
+ *
+ * The optional `variant` prop lets a caller pick a wider modal frame
+ * for content that benefits from extra horizontal room — currently
+ * the walkthrough video player. Variants stay additive: the base
+ * `.aiop-modal` carries the default sizing, and modifiers like
+ * `.aiop-modal--wide` override only what they need to.
  */
 export function OperatorModal({
   open,
   onClose,
   accent,
   ariaLabel,
+  variant,
   children,
 }: {
   open: boolean;
   onClose: () => void;
   accent?: string;
   ariaLabel: string;
+  variant?: "default" | "wide";
   children: ReactNode;
 }) {
   const onCloseRef = useRef(onClose);
@@ -82,7 +90,7 @@ export function OperatorModal({
       aria-label={ariaLabel}
     >
       <div
-        className="aiop-modal"
+        className={`aiop-modal${variant === "wide" ? " aiop-modal--wide" : ""}`}
         style={style}
         onClick={(e) => e.stopPropagation()}
       >
