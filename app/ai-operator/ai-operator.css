@@ -7683,22 +7683,28 @@
 /* ═══════════════════════════════════════════════════════════════════════
  * 26 · v4 — Quote bridge (Evans on the asking gap)
  *
- * Full-viewport interstitial between the hero and the Vision flywheel.
- * The Evans sentence sits as the editorial centerpiece; three operative
- * phrases inside it — `working out`, `how to ask`, `what you want` —
- * are framed as subtle bordered chips in the trio's lane colours
+ * Interstitial between the diagnosis and the reality-check that
+ * bridges into the Vision flywheel. The Evans sentence sits as the
+ * editorial centerpiece; three operative phrases inside it —
+ * `working out`, `how to ask`, `what you want` — are framed as
+ * subtle bordered chips in the trio's lane colours
  * (violet / amber / sage).
  *
- * On desktop the bridge pins for an extra viewport via a parallax-reveal
- * pair with the Vision section (`.aiop-bridge-and-vision`). During that
- * pin, `quote-bridge.tsx` writes `--aiop-bridge-progress` (0..1) onto
- * the section, and CSS uses it to morph each chip in place into its
- * Navigate / Encode / Build pill counterpart: chip text cross-fades to
- * the pill label, border-radius rounds, padding grows, the dot fades
- * in, and the surrounding quote plain text fades out so only the
- * morphed pills remain. Vision then slides up over the released bridge
- * and the orbit assembles around the now-pill-shaped chips as a second
- * beat.
+ * On desktop the bridge pins for an extra viewport via a parallax-
+ * reveal pair with the Reality-check interstitial
+ * (`.aiop-bridge-and-reality`). During that pin, `quote-bridge.tsx`
+ * writes `--aiop-bridge-progress` (0..1) onto the wrapper, and CSS
+ * uses it to morph each chip in place into its Navigate / Encode /
+ * Build pill counterpart: chip text cross-fades to the pill label,
+ * border-radius rounds, padding grows, the dot fades in, and the
+ * surrounding quote plain text fades out so only the morphed pills
+ * remain. The Reality check then slides up over the released bridge
+ * and explains why the asking gap is structurally hard.
+ *
+ * The previous version of this section also flew the morphed pills
+ * into the Vision orbit via a fixed handoff layer. That cross-section
+ * flight has been removed: the Vision orbit now appears as a calm
+ * next chapter after the Reality check, no fly-in.
  *
  * Below 960px or under `prefers-reduced-motion: reduce` the morph is
  * skipped: the pill layer stays hidden, the chips render exactly as
@@ -8044,27 +8050,28 @@
 
 /* ─── 26e · Parallax-reveal pair + pin + progress-driven morph ──── */
 
-/* Wrapper that pairs Bridge with Vision so the morph has scroll length
-   to play out. Bridge stays at its natural single-viewport size; the
-   scroll handler in `quote-bridge.tsx` writes a `translateY` onto the
-   bridge that compensates for scroll exactly while Vision (the next
-   sibling) slides up over it through natural flow. Same parallax-
-   reveal pattern as `aiop-approach-and-few`.
+/* Wrapper that pairs Bridge with the Reality-check interstitial so
+   the morph has scroll length to play out. Bridge stays at its
+   natural single-viewport size; the scroll handler in
+   `quote-bridge.tsx` writes a `translateY` onto the bridge that
+   compensates for scroll exactly while Reality (the next sibling)
+   slides up over it through natural flow. Same parallax-reveal
+   pattern as `aiop-approach-and-few`.
    No explicit `z-index` — later DOM siblings paint on top, which is
    what we want for the slide-over. */
-.aiop-bridge-and-vision {
+.aiop-bridge-and-reality {
   position: relative;
   width: 100%;
 }
 
-.aiop-bridge-and-vision > .aiop-bridge {
+.aiop-bridge-and-reality > .aiop-bridge {
   position: relative;
   /* `quote-bridge.tsx` writes a transform here during the slide-over
      phase to keep the bridge visually frozen. */
   will-change: transform;
 }
 
-.aiop-bridge-and-vision > .aiop-vision {
+.aiop-bridge-and-reality > .aiop-reality {
   position: relative;
 }
 
@@ -8082,6 +8089,14 @@
    frame and start being occluded once Vision has covered the lower
    half of the viewport. */
 @media (min-width: 960px) {
+  /* The Reality-check interstitial that slides up over the frozen
+     bridge needs at least one viewport of scroll length so the morph
+     plays out fully (progress 0 -> 1). Without a tall sibling there's
+     no scroll length, no freeze, and no morph. */
+  .aiop-bridge-and-reality > .aiop-reality {
+    min-height: 100vh;
+  }
+
   /* Chrome morph helper — held on the mark itself so the per-lane
      background rules can reuse the same factor without recalculating. */
   .aiop-bridge.is-animated .aiop-bridge__mark {
@@ -8181,9 +8196,13 @@
    but belt-and-braces here so a media-query change mid-session can
    never leave the bridge in a partially-morphed state. */
 @media (prefers-reduced-motion: reduce) {
-  .aiop-bridge-and-vision > .aiop-bridge {
+  .aiop-bridge-and-reality > .aiop-bridge {
     transform: none !important;
     will-change: auto !important;
+  }
+
+  .aiop-bridge-and-reality > .aiop-reality {
+    min-height: 0 !important;
   }
 
   .aiop-bridge .aiop-bridge__mark-text,
@@ -8231,127 +8250,282 @@
 }
 
 
-/* ─── 26g · Bridge -> Orbit handoff layer ────────────────────────── */
+/* The Bridge -> Orbit handoff layer was removed when the Reality-
+   check interstitial was inserted between the bridge and the Vision
+   flywheel. The Vision orbit now appears as a calm next chapter
+   after the Reality check, and the chips morph in place inside the
+   bridge frame without flying anywhere. */
 
-/* The handoff layer is a fixed-positioned sibling of the bridge that
-   carries each Navigate / Encode / Build pill from its morphed quote
-   position into the centred orbit position in the Vision section. JS
-   in `quote-bridge.tsx` measures the source bridge mark and the
-   destination orbit pill on every scroll tick and writes the
-   interpolated centre into `--handoff-cx` / `--handoff-cy` on each
-   handoff pill, so the pills physically translate from chip to orbit
-   while the bridge stays frozen and Vision slides up underneath.
 
-   The layer renders only when `quote-bridge.tsx` declares the section
-   `is-animated` (desktop, no reduced-motion). On narrow viewports and
-   under reduced-motion the layer is not in the DOM at all and the
-   static chips + orbit pills remain visible exactly as before. */
+/* ═══════════════════════════════════════════════════════════════════════
+ * 26.5 · v4 — Reality-check interstitial (AI is not normal software)
+ *
+ * Sits inside the `.aiop-bridge-and-reality` parallax-reveal pair as
+ * the next sibling after the Evans bridge. Slides up over the frozen
+ * bridge through natural flow, explaining why the asking gap is
+ * structurally hard before the Vision flywheel arrives as the answer.
+ *
+ * Visual signature: paper background with a calm violet wash on the
+ * left (Navigate lane) and a softer amber wash on the right (Encode
+ * lane) so the section reads as the bridge between the asking gap
+ * and the loop that resolves it. Three-row contrast card on the
+ * right; the middle row (AI systems) carries a gentle amber highlight
+ * to anchor the mental-model shift the visitor needs to internalise.
+ *
+ * Sub-sections:
+ *   26.5a · Section + bleed
+ *   26.5b · Copy + card layout
+ *   26.5c · Contrast rows
+ *   26.5d · Reduced motion
+ * ═══════════════════════════════════════════════════════════════════════ */
 
-.aiop-bridge__handoff {
-  position: fixed;
+
+/* ─── 26.5a · Section + bleed ────────────────────────────────────── */
+
+.aiop-reality {
+  position: relative;
+  padding-block: clamp(40px, 6vw, 88px);
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(
+    180deg,
+    var(--aiop-paper) 0%,
+    var(--aiop-paper-2) 100%
+  );
+  border-block: 1px solid var(--aiop-rule);
+}
+
+@media (min-width: 960px) {
+  .aiop-reality {
+    /* Padding-only height bump on desktop. The actual `min-height:
+       100vh` requirement (so the freeze math in `quote-bridge.tsx`
+       has scroll length to play out the morph) lives on the
+       wrapper-scoped rule above so reduced-motion users can opt out
+       cleanly. */
+    padding-block: clamp(56px, 8vw, 120px);
+    display: flex;
+    align-items: center;
+  }
+}
+
+.aiop-reality__bleed {
+  position: absolute;
   inset: 0;
   pointer-events: none;
-  /* Above the bridge AND vision sections so the pills stay visible as
-     vision slides up over the bridge. The header sits at a higher z so
-     navigation still wins. */
-  z-index: 30;
+  z-index: 0;
 }
 
-.aiop-handoff-pill {
-  /* Default off-screen so an unmeasured pill never flashes at (0, 0)
-     before the first scroll tick has run. */
-  --handoff-cx: -9999px;
-  --handoff-cy: -9999px;
-
+.aiop-reality__wash {
   position: absolute;
-  top: 0;
-  left: 0;
-  display: inline-flex;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(6px);
+  opacity: 0.45;
+}
+
+.aiop-reality__wash--a {
+  width: 36%;
+  aspect-ratio: 1 / 1;
+  left: -8%;
+  top: -10%;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--aiop-violet) 28%, transparent) 0%,
+    transparent 62%
+  );
+}
+
+.aiop-reality__wash--b {
+  width: 30%;
+  aspect-ratio: 1 / 1;
+  right: -6%;
+  bottom: -8%;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--aiop-amber) 22%, transparent) 0%,
+    transparent 62%
+  );
+}
+
+.aiop-reality__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(
+      to right,
+      var(--aiop-rule) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      var(--aiop-rule) 1px,
+      transparent 1px
+    );
+  background-size: 96px 96px;
+  opacity: 0.06;
+  mask-image: radial-gradient(
+    ellipse 80% 60% at 50% 50%,
+    #000 30%,
+    transparent 80%
+  );
+}
+
+
+/* ─── 26.5b · Copy + card layout ─────────────────────────────────── */
+
+.aiop-reality__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: clamp(28px, 4vw, 56px);
+  grid-template-columns: 1fr;
   align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
+}
+
+@media (min-width: 860px) {
+  .aiop-reality__inner {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: clamp(40px, 6vw, 96px);
+  }
+}
+
+.aiop-reality__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 50ch;
+}
+
+.aiop-reality__title {
+  margin: 0;
+}
+
+.aiop-reality__title-em {
+  color: var(--aiop-violet);
+  font-style: italic;
+}
+
+.aiop-reality__body {
+  margin: 0;
+  font-family: var(--aiop-body);
+  font-size: clamp(15px, 1.4vw, 17px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-reality__body--strong {
+  color: var(--aiop-ink);
+  font-weight: 500;
+}
+
+.aiop-reality__actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.aiop-reality__link {
+  font-family: var(--aiop-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--aiop-violet);
+  text-decoration: none;
+  border-bottom: 1px solid
+    color-mix(in oklab, var(--aiop-violet) 30%, transparent);
+  padding-bottom: 2px;
+  transition: color 200ms ease, border-color 200ms ease;
+}
+
+.aiop-reality__link:hover,
+.aiop-reality__link:focus-visible {
+  color: var(--aiop-ink);
+  border-bottom-color: var(--aiop-ink);
+  outline: none;
+}
+
+
+/* ─── 26.5c · Contrast card + rows ───────────────────────────────── */
+
+.aiop-reality__card {
   background: var(--aiop-card);
   border: 1px solid var(--aiop-rule);
-  border-radius: 999px;
-  font-family: var(--aiop-body);
+  border-radius: 14px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: 0 18px 42px rgba(26, 22, 18, 0.05);
+}
+
+.aiop-reality__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.aiop-reality__row {
+  display: grid;
+  gap: 6px 16px;
+  grid-template-columns: 1fr;
+  border: 1px solid var(--aiop-rule);
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: var(--aiop-paper);
+  transition: background 200ms ease, border-color 200ms ease;
+}
+
+@media (min-width: 720px) {
+  .aiop-reality__row {
+    grid-template-columns: 0.7fr 1.3fr;
+    align-items: center;
+  }
+}
+
+.aiop-reality__row-tag {
+  font-family: var(--aiop-mono);
   font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--aiop-ink-soft);
-  box-shadow: 0 4px 14px rgba(26, 22, 18, 0.06);
-  white-space: nowrap;
-
-  /* JS sets the pill's centre on every scroll tick; the trailing
-     `translate(-50%, -50%)` centres the pill on those coords so it
-     reads as anchored to the same point as both endpoints (the wider
-     morphed bridge mark on one end, the smaller orbit pill on the
-     other) without a position jump when sizes differ. */
-  transform:
-    translate3d(var(--handoff-cx), var(--handoff-cy), 0)
-    translate(-50%, -50%);
-
-  /* Crossfade in over the morph end (0.45 -> 0.55). The bridge marks
-     fade out in the same window so the visitor sees a clean takeover
-     at the original quote position before flight begins. */
-  opacity: clamp(
-    0,
-    calc((var(--aiop-bridge-progress, 0) - 0.45) / 0.1),
-    1
-  );
-
-  will-change: transform, opacity;
 }
 
-.aiop-handoff-pill__dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
+.aiop-reality__row-detail {
+  font-family: var(--aiop-body);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--aiop-ink);
 }
 
-.aiop-handoff-pill--navigate .aiop-handoff-pill__dot { background: var(--aiop-violet); }
-.aiop-handoff-pill--encode   .aiop-handoff-pill__dot { background: var(--aiop-amber); }
-.aiop-handoff-pill--build    .aiop-handoff-pill__dot { background: var(--aiop-sage); }
-
-@media (min-width: 960px) and (prefers-reduced-motion: no-preference) {
-  /* Bridge marks fade out as the handoff pills fade in, so the
-     visitor sees a clean takeover at the original quote position. The
-     existing morph chrome rules above still run on the mark; this just
-     gates the mark's final visibility so it doesn't compete with the
-     handoff pill once the flight begins. */
-  .aiop-bridge.is-animated .aiop-bridge__mark {
-    opacity: clamp(
-      0,
-      calc(1 - (var(--aiop-bridge-progress, 0) - 0.45) / 0.1),
-      1
-    );
-  }
-
-  /* Vision orbit pills wait for the handoff to land. They take over at
-     0.85 -> 0.95, by which time each handoff pill has settled at the
-     orbit position and the orbit pill paints in on top with the same
-     chrome. `transition: none` keeps the scroll-driven opacity from
-     fighting the parent reveal's 600ms transition. */
-  .aiop-bridge-and-vision .aiop-orbit__pill {
-    opacity: clamp(
-      0,
-      calc((var(--aiop-bridge-progress, 0) - 0.85) / 0.1),
-      1
-    );
-    transition: none;
-  }
+.aiop-reality__row--highlight {
+  background: color-mix(in oklab, var(--aiop-amber) 8%, var(--aiop-card));
+  border-color: color-mix(in oklab, var(--aiop-amber) 35%, var(--aiop-rule));
 }
 
-/* Reduced-motion safety net. When QuoteBridge withholds `is-animated`
-   it also stops rendering the handoff layer, but if a media-query
-   change happens mid-session we still want the orbit pills and bridge
-   marks to remain visible by default. */
+.aiop-reality__row--highlight .aiop-reality__row-tag {
+  color: var(--aiop-amber);
+}
+
+.aiop-reality__card-foot {
+  margin: 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--aiop-rule);
+  font-family: var(--aiop-body);
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--aiop-ink-soft);
+}
+
+
+/* ─── 26.5d · Reduced motion ─────────────────────────────────────── */
+
 @media (prefers-reduced-motion: reduce) {
-  .aiop-bridge .aiop-bridge__mark {
-    opacity: 1 !important;
-  }
-
-  .aiop-bridge-and-vision .aiop-orbit__pill {
-    opacity: 1 !important;
+  .aiop-reality {
+    min-height: 0 !important;
+    padding-block: clamp(40px, 6vw, 88px) !important;
   }
 }

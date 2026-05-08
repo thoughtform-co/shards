@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import { AiIsNotSoftware } from "./ai-is-not-software";
 import { Approach } from "./approach";
 import { Cases } from "./cases";
 import {
@@ -29,34 +30,40 @@ import { SoftwareForFew } from "./software-for-few";
  * Composition:
  *   01 Header / nav     (sticky)
  *   02 Hero             — CV profile: name eyebrow + thesis + bio + portrait.
- *   03 Diagnosis        — Four faces, one missing piece. Names the hard
- *                         problem (judgment isn't encoded) before the
+ *   03 Diagnosis        — Four organisational patterns, one missing
+ *                         layer. Names the executive-level problem
+ *                         (the adoption layer is missing) before the
  *                         Evans bridge articulates the asking gap.
  *                         Static, server-rendered.
  *   04 Quote bridge     — Benedict Evans on the asking gap. Three phrases
  *                         morph in place into Navigate/Encode/Build pills
  *                         (client). Pinned via parallax-reveal pair with
- *                         the Vision section so the orbit assembles around
- *                         the morphed pills as the bridge releases.
- *   05 Vision           — Centered Navigate/Encode/Build flywheel + one CTA.
- *                         Slides up over the frozen bridge during scroll.
- *   06 Approach         — Three motions, each with a Heimdall-style
+ *                         the Reality-check interstitial below so the
+ *                         in-place morph plays out as Reality slides up
+ *                         over the frozen bridge.
+ *   05 Reality check    — "AI is not normal software." Explains why the
+ *                         asking gap is structurally hard: AI interprets
+ *                         meaning, traditional adoption teaches tools.
+ *                         Slides up over the frozen Evans bridge.
+ *   06 Vision           — Centered Navigate/Encode/Build flywheel + one
+ *                         CTA. Reads as the answer to the reality check.
+ *   07 Approach         — Three motions, each with a Heimdall-style
  *                         "practice in motion" pop-out (client). Pinned
  *                         to viewport bottom so its last viewport stays
  *                         frozen while the next section reveals over it.
- *   07 Software for few — Sage interstitial that slides up over the
+ *   08 Software for few — Sage interstitial that slides up over the
  *                         frozen Approach (parallax-reveal pair, client).
- *   08 Cases            — Heimdall-style showcase grid (client). Pinned
+ *   09 Cases            — Heimdall-style showcase grid (client). Pinned
  *                         to viewport bottom while Headless-shift rises
  *                         over it (parallax-reveal pair).
- *   09 Headless-shift   — Gold interstitial: Salesforce / Stripe / the
+ *   10 Headless-shift   — Gold interstitial: Salesforce / Stripe / the
  *                         shift to headless. Slides up over the frozen
  *                         Cases and previews the Pick-a-surface
  *                         vocabulary the deep section unpacks below.
- *   10 Headless         — Interstitial: architecture, not a dashboard.
- *   11 Selected case    — HarvestFields, where everything lands.
- *   12 CTA              — One ask. Smallest commitment.
- *   13 Footer
+ *   11 Headless         — Interstitial: architecture, not a dashboard.
+ *   12 Selected case    — HarvestFields, where everything lands.
+ *   13 CTA              — One ask. Smallest commitment.
+ *   14 Footer
  */
 
 function Arrow() {
@@ -190,80 +197,88 @@ export default function AiOperatorPage() {
         </div>
       </section>
 
-      {/* ─── Diagnosis — Four faces, one missing piece ──────────────
+      {/* ─── Diagnosis — Four patterns, one missing layer ───────────
        *
        * Static, server-rendered. Sits between the Hero and the Quote
-       * Bridge. Names the hard diagnosis (judgment isn't encoded) so
-       * the Evans bridge can articulate it as the asking gap and the
-       * Vision orbit can answer it as Navigate/Encode/Build. No
-       * morph, no pin, no parallax — just a clean diagnostic surface
-       * the rest of the page resolves. */}
+       * Bridge. Names the executive-level diagnosis (the adoption
+       * layer is missing) so the Evans bridge can articulate it as
+       * the asking gap, the Reality check can explain why that gap is
+       * structurally hard, and the Vision orbit can answer it as
+       * Navigate/Encode/Build. No morph, no pin, no parallax — just a
+       * clean diagnostic surface the rest of the page resolves. */}
       <Diagnosis />
 
-      {/* ─── Quote bridge + Vision · parallax-reveal pair ─────────────
+      {/* ─── Quote bridge + Reality check · parallax-reveal pair ─────
        *
        * The wrapper pins the bridge while the visitor scrolls past it,
        * so the chip-to-pill morph (driven by `--aiop-bridge-progress`
-       * inside QuoteBridge) has scroll length to play out. Vision sits
-       * below in flow and slides up over the frozen bridge through
-       * natural scroll, revealing the orbit as the bridge releases. */}
-      <div className="aiop-bridge-and-vision">
+       * inside QuoteBridge) has scroll length to play out. The Reality
+       * check sits below in flow and slides up over the frozen bridge
+       * through natural scroll, explaining why the asking gap is hard
+       * before the Vision flywheel arrives as the answer.
+       *
+       * Vision lives outside this wrapper so the flywheel reads as a
+       * deliberate next chapter rather than the immediate flight target
+       * of the bridge morph. The cross-section handoff to the orbit is
+       * intentionally dropped on this version of the page. */}
+      <div className="aiop-bridge-and-reality">
         <QuoteBridge />
-
-        {/* ─── Vision — Adoption Automation Flywheel ──────────────── */}
-        <section className="aiop-section aiop-vision" id="vision">
-          <div className="aiop-wrap aiop-vision__inner aiop-reveal">
-            <div className="aiop-vision__head">
-              <h2 className="aiop-section-title aiop-vision__title">
-                {visionSection.title} <em>{visionSection.titleEm}</em>
-              </h2>
-
-              <p className="aiop-vision__caption">{visionSection.caption}</p>
-            </div>
-
-            <div
-              className="aiop-orbit aiop-orbit--centered"
-              role="img"
-              aria-label="Navigate, Encode, Build flywheel around a substrate file stack, with a Headless satellite"
-            >
-              <span
-                className="aiop-orbit__ring aiop-orbit__ring--outer"
-                aria-hidden="true"
-              />
-              <span
-                className="aiop-orbit__ring aiop-orbit__ring--inner"
-                aria-hidden="true"
-              />
-
-              {visionSection.orbits.map((orbit) => (
-                <span
-                  key={orbit.id}
-                  className={`aiop-orbit__pill aiop-orbit__pill--${orbit.position} aiop-orbit__pill--${orbit.id}`}
-                  data-aiop-phase={orbit.id}
-                >
-                  <span className="aiop-orbit__dot" aria-hidden="true" />
-                  <span>{orbit.label}</span>
-                </span>
-              ))}
-
-              <span className="aiop-orbit__core">
-                <strong>{visionSection.centerLabel}</strong>
-                <span className="aiop-orbit__core-files">
-                  {visionSection.centerFiles.map((file) => (
-                    <span key={file}>{file}</span>
-                  ))}
-                </span>
-              </span>
-              <span className="aiop-orbit__satellite" aria-hidden="true">
-                <span className="aiop-orbit__satellite-dot" />
-                <span className="aiop-orbit__satellite-label">
-                  {visionSection.satelliteLabel}
-                </span>
-              </span>
-            </div>
-          </div>
-        </section>
+        <AiIsNotSoftware />
       </div>
+
+      {/* ─── Vision — Adoption & Automation Flywheel ──────────────── */}
+      <section className="aiop-section aiop-vision" id="vision">
+        <div className="aiop-wrap aiop-vision__inner aiop-reveal">
+          <div className="aiop-vision__head">
+            <h2 className="aiop-section-title aiop-vision__title">
+              {visionSection.title} <em>{visionSection.titleEm}</em>
+            </h2>
+
+            <p className="aiop-vision__caption">{visionSection.caption}</p>
+          </div>
+
+          <div
+            className="aiop-orbit aiop-orbit--centered"
+            role="img"
+            aria-label="Navigate, Encode, Build flywheel around a substrate file stack, with a Headless satellite"
+          >
+            <span
+              className="aiop-orbit__ring aiop-orbit__ring--outer"
+              aria-hidden="true"
+            />
+            <span
+              className="aiop-orbit__ring aiop-orbit__ring--inner"
+              aria-hidden="true"
+            />
+
+            {visionSection.orbits.map((orbit) => (
+              <span
+                key={orbit.id}
+                className={`aiop-orbit__pill aiop-orbit__pill--${orbit.position} aiop-orbit__pill--${orbit.id}`}
+                data-aiop-phase={orbit.id}
+              >
+                <span className="aiop-orbit__dot" aria-hidden="true" />
+                <span>{orbit.label}</span>
+              </span>
+            ))}
+
+            <span className="aiop-orbit__core">
+              <strong>{visionSection.centerLabel}</strong>
+              <span className="aiop-orbit__core-files">
+                {visionSection.centerFiles.map((file) => (
+                  <span key={file}>{file}</span>
+                ))}
+              </span>
+            </span>
+            <span className="aiop-orbit__satellite" aria-hidden="true">
+              <span className="aiop-orbit__satellite-dot" />
+              <span className="aiop-orbit__satellite-label">
+                {visionSection.satelliteLabel}
+              </span>
+            </span>
+          </div>
+        </div>
+      </section>
 
       {/* ─── Approach + Software-for-few · parallax-reveal pair ─────
        *

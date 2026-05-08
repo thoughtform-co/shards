@@ -113,26 +113,32 @@ export const hero = {
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
- * Diagnosis — Four faces, one missing piece
+ * Diagnosis — Four patterns, one missing layer
  *
- * Sits between the Hero and the Quote Bridge. Names the hard problem
- * the rest of the page solves: AI work that matters is judgment, not
- * binary output, and judgment isn't encoded. Pattern lifted from the
- * Aether judgment-engine page.
+ * Sits between the Hero and the Quote Bridge. Names the executive-level
+ * problem the rest of the page solves: companies already have AI tools,
+ * data, and leadership belief, but the embedded adoption layer that
+ * helps teams use, encode, and build with AI is missing. The cards
+ * pull from organisational patterns any executive recognises, not from
+ * marketing-specific examples, so the diagnosis lands for a Head of AI
+ * Adoption, a CIO, a CEO, or a marketing/ops sponsor equally.
  *
  * Composition (mirrors the Vision section's title-left + caption-right
  * head pattern so the two read as one rhythm):
  *
  *   1. Header: eyebrow + title on the left, lede paragraph on the right.
- *   2. 2x2 use-case grid where every card shares the same root cause.
- *   3. Shared-gap card that names the root cause: judgment isn't encoded.
+ *   2. 2x2 use-case grid where every card shares the same root cause:
+ *      tool live without shift, mandate without owner, demo without
+ *      traction, data without context.
+ *   3. Shared-gap card that names the root cause: the adoption layer is
+ *      missing.
  *   4. One-line handoff sentence that bridges to Evans. Frames the
- *      bottleneck as "knowing what to ask" so the Evans quote that
- *      follows reads as the formal articulation of the same idea.
+ *      bottleneck as the practical layer that helps people brief, trust,
+ *      improve, and build with AI, so the Evans quote that follows reads
+ *      as the human-facing articulation of the same idea.
  *
- * Stripe-flavoured for this version. Content is the only thing that
- * changes when the page is re-skinned for Delaware, Ml6, or any other
- * client; the structure stays.
+ * Content is the only thing that changes when the page is re-skinned
+ * for Delaware, Ml6, or any other client; the structure stays.
  *
  * The handoff sentence deliberately does not preview Navigate / Encode
  * / Build pill chrome. The Quote Bridge keeps its first-reveal of
@@ -167,49 +173,50 @@ export const diagnosisSection: {
   };
 } = {
   eyebrow: "The diagnosis",
-  title: "It's rarely just",
-  titleEm: "a model problem.",
+  title: "The missing layer is rarely",
+  titleEm: "the model.",
   lede:
-    "The judgment that makes the work good lives in three or four heads, in Friday review threads, in unwritten policy. The brief the model sees almost never has any of it.",
+    "Most companies already have AI tools, data, and executive belief. What they lack is the layer that helps teams use the tools inside real work, encode what good looks like, and turn the useful patterns into capability.",
   useCases: [
     {
       n: "01",
-      tag: "Pricing narrative",
-      title: "What makes pricing hold up lives in account-team heads.",
-      body: "Drafts read fine until the first real negotiation.",
+      tag: "Tool deployed, no shift",
+      title: "The tool is live, but the workflow did not move.",
+      body: "Licenses get used as a faster Google. The work behind the work stays exactly the same.",
       tone: "violet",
     },
     {
       n: "02",
-      tag: "Audience translation",
-      title: "Audience tuning lives with the reviewer's instinct.",
-      body: "Without that read, developers, founders, and CFOs all see the same polite email.",
+      tag: "Mandate without owner",
+      title: "The CEO is convinced, but nobody owns the daily practice.",
+      body: "Budget and belief are there. The role that helps teams make AI part of their week is not.",
       tone: "gold",
     },
     {
       n: "03",
-      tag: "Partner GTM sequencing",
-      title: "Three leads still order every co-marketing brief by hand.",
-      body: "The reasoning that sequences the moves lives in their heads.",
+      tag: "Demo without traction",
+      title: "The prototype works, but the team cannot make it stick.",
+      body: "One builder ships a working agent. Next week, the team is back on the old flow.",
       tone: "sage",
     },
     {
       n: "04",
-      tag: "Brand drift at volume",
-      title: "Refusal patterns live in lead heads, so drift only surfaces at QBR.",
-      body: "Output is 10x what it was, and drift compounds invisibly between reviews.",
+      tag: "Data without context",
+      title: "The data is in place, but the model does not know the business.",
+      body: "Dashboards say one thing, the lived workflow says another. The model only sees the dashboards.",
       tone: "slate",
     },
   ],
   gap: {
     eyebrow: "Shared gap",
-    title: "Judgment is",
-    titleEm: "not encoded.",
-    subline: "Reasoning · Examples · Refusal patterns · Taste",
+    title: "The adoption layer",
+    titleEm: "is missing.",
+    subline: "Use · Context · Judgment · Ownership · Build",
   },
   handoff: {
-    lead: "Most teams haven't figured out",
-    leadEm: "how to brief a model on what they need.",
+    lead: "Most teams aren't blocked by access to AI.",
+    leadEm:
+      "They're blocked by the practical layer that helps them brief it, trust it, improve it, and build with it.",
   },
 };
 
@@ -237,7 +244,7 @@ export type QuoteBridgePart = {
 
 export const quoteBridgeSection = {
   attribName: "Benedict Evans",
-  attribMeta: "On why so many people struggle with AI",
+  attribMeta: "On the hidden work behind useful AI",
   quoteParts: [
     { text: "A lot of the challenge is " },
     { text: "working out", mark: "navigate", pill: "Navigate" },
@@ -247,6 +254,74 @@ export const quoteBridgeSection = {
     { text: "what you want", mark: "build", pill: "Build" },
     { text: "." },
   ] satisfies QuoteBridgePart[],
+} as const;
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Reality check — AI is not normal software
+ *
+ * Sits between the Evans bridge and the Vision flywheel. Names the
+ * structural reason the asking gap is hard: AI is interpretive
+ * technology, not deterministic software. Without that reframing,
+ * traditional adoption rolls out tools, runs trainings, and watches
+ * the workflow stay exactly where it was. The reality check earns the
+ * flywheel that follows — it explains why a different rhythm is even
+ * needed.
+ *
+ * Composition (mirrors the Software-for-few interstitial pattern):
+ *
+ *   1. Left column: eyebrow + title + body + strong line + optional CTA.
+ *   2. Right column: a 3-row card that contrasts normal software with
+ *      AI systems and names the adoption layer as the missing piece.
+ *      The middle row (AI systems) carries the highlight because it is
+ *      the mental-model shift the visitor needs to internalise before
+ *      the flywheel reads as the answer.
+ *   3. Foot line: one-sentence takeaway.
+ *
+ * The section sits inside the `.aiop-bridge-and-reality` wrapper so it
+ * slides up over the frozen Evans bridge while the in-place chip-to-
+ * pill morph plays out. The cross-section flight to the Vision orbit
+ * is intentionally dropped — Vision now appears as a calm next chapter
+ * after this beat, not as the immediate flight target.
+ * ─────────────────────────────────────────────────────────────────── */
+
+export type AiRealityRow = {
+  id: "software" | "ai" | "adoption";
+  tag: string;
+  detail: string;
+  highlight?: boolean;
+};
+
+export const aiRealitySection = {
+  eyebrow: "The reality check",
+  title: "AI is not",
+  titleEm: "normal software.",
+  body:
+    "Normal software waits for exact inputs and follows fixed rules. AI interprets meaning. That's why people struggle to articulate what they want: the real brief isn't the task, it's the context, examples, standards, and judgment around it.",
+  bodyStrong:
+    "Traditional adoption teaches people where the tool is. AI adoption has to teach people how to work with an intelligence until the practice becomes self-sustaining.",
+  rows: [
+    {
+      id: "software",
+      tag: "Normal software",
+      detail: "User clicks. System follows rules. Output is predictable.",
+    },
+    {
+      id: "ai",
+      tag: "AI systems",
+      detail: "User briefs. Model interprets. Human judges. Workflow improves.",
+      highlight: true,
+    },
+    {
+      id: "adoption",
+      tag: "Adoption layer",
+      detail: "The people and substrate that turn this loop into capability.",
+    },
+  ] satisfies AiRealityRow[],
+  foot:
+    "Commanding software is easy to train. Briefing intelligence is learned inside the work.",
+  actions: [
+    { id: "vision", label: "See the flywheel", href: "#vision" },
+  ],
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -273,7 +348,7 @@ export const visionSection = {
     { id: "build", label: "Build", position: "bottom-left" },
   ] as const,
   caption:
-    "That asking, once a team writes it down, becomes the substrate the team learns from and the tools run on. Adoption and automation don't run as two separate programs. They run as one loop, and the substrate compounds with every encoded ask.",
+    "Traditional adoption teaches the tool. The flywheel teaches the practice. Teams navigate AI inside the real work, encode the context that makes it good, and build the surfaces on top. Each pass thickens the substrate, and the next pass starts from there.",
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -290,7 +365,7 @@ export const approachSection = {
   title: "The AI flywheel",
   titleEm: "at Loop",
   caption:
-    "I've been running this loop at Loop Earplugs since 2024. Spent the first year on the AI Team, then moved into Marketing so it could turn from inside the work, across Studio and Performance.",
+    "Road-tested at Loop Earplugs since 2024. First year on the AI Team rolling Claude out across the company, then into Marketing to turn the loop from inside the work, across Studio and Performance. The same motion transfers across teams and across companies.",
   close:
     "The same loop ran on Vesper, Heimdall, Mímir, Babylon, and the company-wide Claude rollout at Loop.",
 } as const;
@@ -415,7 +490,7 @@ export const approachSteps: ApproachStep[] = [
     tone: "gold",
     headline: "Turn how the team works into a layer that outlives the model.",
     body:
-      "The model doesn't know your brand, your standards, or your review process. You have to teach it. At Loop, I encoded 10+ workflows into a portable machine substrate: brand voice, claim gates, creative prompting, marketplace copy. A teammate can read it and an agent can run on it. Models change, but the encoded layer carries forward.",
+      "The model doesn't know your brand, your standards, or your review process. You have to teach it — this is the adoption layer the diagnosis named, written down. At Loop, I encoded 10+ workflows into a portable machine substrate: brand voice, claim gates, creative prompting, marketplace copy. A teammate can read it and an agent can run on it. Models change, but the encoded layer carries forward.",
     signal: { k: "Outcome", v: "A Skill the team owns. Versioned. Headless." },
     visual: {
       kind: "substrate",
