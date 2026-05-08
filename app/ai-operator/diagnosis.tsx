@@ -1,7 +1,7 @@
 import { diagnosisSection } from "./content";
 
 /*
- * Diagnosis — Four faces, one missing piece.
+ * Diagnosis — Four patterns, one missing layer.
  *
  * Sits between the Hero and the Quote Bridge. Static, server-rendered,
  * no interactivity. Composition mirrors the Vision section's
@@ -11,18 +11,17 @@ import { diagnosisSection } from "./content";
  *   1. Header — eyebrow + title on the left, lede paragraph on the
  *      right. Matches `aiop-vision__head` layout so the pages share
  *      a single rhythm.
- *   2. 2x2 use-case grid — four faces, each with a left-rail accent
- *      in one of the four lane colours (violet / gold / sage / slate).
- *      Cards are joined by a 1px hairline-on-rule treatment lifted
- *      from `.aiop-case__pillars` so the quartet reads as one
- *      inspectable diagnostic surface.
+ *   2. 2x2 use-case grid — four organisational patterns, each with a
+ *      left-rail accent in one of the four lane colours
+ *      (violet / gold / sage / slate). Cards are joined by a 1px
+ *      hairline-on-rule treatment lifted from `.aiop-case__pillars`
+ *      so the quartet reads as one inspectable diagnostic surface.
  *   3. Shared-gap card — centred, narrow. Uses the bordered-chip
  *      treatment with diamond markers above and below pointing into
- *      the chevrons. Names the root cause: judgment is not encoded.
- *   4. Handoff sentence — one short bridging line ("The bottleneck
- *      isn't technical. It's knowing what to ask.") that hands into
- *      the Evans bridge below. The italic em on the second clause
- *      visually rhymes with the title's italic em.
+ *      the chevrons. Names the articulation gap: briefing AI on what
+ *      teams need. Hands directly into the Evans bridge below — the
+ *      page voice names the gap, the credible outside voice
+ *      elaborates it.
  *
  * Re-skinning for Delaware / Ml6 / other clients only touches
  * `diagnosisSection` in `content.ts`. No new components, no morph
@@ -30,15 +29,13 @@ import { diagnosisSection } from "./content";
  * Navigate / Encode / Build via the chip-to-pill morph.
  */
 export function Diagnosis() {
-  const { eyebrow, title, titleEm, lede, useCases, gap, handoff } =
-    diagnosisSection;
+  const { title, titleEm, lede, useCases, gap } = diagnosisSection;
 
   return (
     <section className="aiop-section aiop-diagnosis" id="diagnosis">
       <div className="aiop-wrap">
         <header className="aiop-diagnosis__head aiop-reveal">
           <div className="aiop-diagnosis__head-title">
-            <p className="aiop-eyebrow">{eyebrow}</p>
             <h2 className="aiop-section-title aiop-diagnosis__title">
               {title} <em>{titleEm}</em>
             </h2>
@@ -78,18 +75,12 @@ export function Diagnosis() {
 
         <aside
           className="aiop-diagnosis__gap aiop-reveal"
-          aria-label="Shared root cause across the four faces"
+          aria-label="Shared root cause across the four patterns"
         >
-          <span className="aiop-diagnosis__gap-eyebrow">{gap.eyebrow}</span>
           <p className="aiop-diagnosis__gap-title">
             {gap.title} <em>{gap.titleEm}</em>
           </p>
-          <p className="aiop-diagnosis__gap-subline">{gap.subline}</p>
         </aside>
-
-        <p className="aiop-diagnosis__handoff aiop-reveal">
-          {handoff.lead} <em>{handoff.leadEm}</em>
-        </p>
       </div>
     </section>
   );

@@ -8258,7 +8258,7 @@
 
 
 /* ═══════════════════════════════════════════════════════════════════════
- * 26.5 · v4 — Reality-check interstitial (AI is not normal software)
+ * 26.5 · v4 — Reality-check interstitial (Why traditional adoption fails)
  *
  * Sits inside the `.aiop-bridge-and-reality` parallax-reveal pair as
  * the next sibling after the Evans bridge. Slides up over the frozen
@@ -8268,14 +8268,20 @@
  * Visual signature: paper background with a calm violet wash on the
  * left (Navigate lane) and a softer amber wash on the right (Encode
  * lane) so the section reads as the bridge between the asking gap
- * and the loop that resolves it. Three-row contrast card on the
- * right; the middle row (AI systems) carries a gentle amber highlight
- * to anchor the mental-model shift the visitor needs to internalise.
+ * and the loop that resolves it.
+ *
+ * Header mirrors `.aiop-diagnosis__head` (title-left + lede-right).
+ * Below the header sits a full-width Continuum Spectrum slider lifted
+ * from the Thoughtform v3 cockpit: a horizontal rail with three
+ * diamond markers (Tool / AI lives here / Collaborator) and a
+ * 3-column grid below carrying label / title / desc per stop. The
+ * middle column carries a soft amber highlight because that's the
+ * mental-model shift the visitor needs to internalise.
  *
  * Sub-sections:
  *   26.5a · Section + bleed
- *   26.5b · Copy + card layout
- *   26.5c · Contrast rows
+ *   26.5b · Header + lede grid
+ *   26.5c · Continuum spectrum (rail + diamonds + columns)
  *   26.5d · Reduced motion
  * ═══════════════════════════════════════════════════════════════════════ */
 
@@ -8371,33 +8377,39 @@
 }
 
 
-/* ─── 26.5b · Copy + card layout ─────────────────────────────────── */
+/* ─── 26.5b · Header + lede grid ──────────────────────────────────── */
 
 .aiop-reality__inner {
   position: relative;
   z-index: 1;
-  display: grid;
-  gap: clamp(28px, 4vw, 56px);
-  grid-template-columns: 1fr;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(36px, 5vw, 72px);
 }
 
-@media (min-width: 860px) {
-  .aiop-reality__inner {
-    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-    gap: clamp(40px, 6vw, 96px);
+.aiop-reality__head {
+  display: grid;
+  gap: 24px;
+  align-items: end;
+}
+
+@media (min-width: 800px) {
+  .aiop-reality__head {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: clamp(32px, 4vw, 56px);
   }
 }
 
-.aiop-reality__copy {
+.aiop-reality__head-title {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  max-width: 50ch;
+  gap: 14px;
+  min-width: 0;
 }
 
 .aiop-reality__title {
   margin: 0;
+  max-width: 22ch;
 }
 
 .aiop-reality__title-em {
@@ -8405,24 +8417,25 @@
   font-style: italic;
 }
 
-.aiop-reality__body {
-  margin: 0;
-  font-family: var(--aiop-body);
-  font-size: clamp(15px, 1.4vw, 17px);
-  line-height: 1.55;
-  color: var(--aiop-ink-soft);
+.aiop-reality__head-lede {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 50ch;
 }
 
-.aiop-reality__body--strong {
-  color: var(--aiop-ink);
-  font-weight: 500;
+.aiop-reality__lede {
+  margin: 0;
+  font-family: var(--aiop-body);
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
 }
 
 .aiop-reality__actions {
   display: flex;
   gap: 16px;
   flex-wrap: wrap;
-  margin-top: 4px;
 }
 
 .aiop-reality__link {
@@ -8445,79 +8458,142 @@
 }
 
 
-/* ─── 26.5c · Contrast card + rows ───────────────────────────────── */
+/* ─── 26.5c · Continuum spectrum (rail + diamonds + columns) ──────── */
 
-.aiop-reality__card {
-  background: var(--aiop-card);
-  border: 1px solid var(--aiop-rule);
-  border-radius: 14px;
-  padding: 24px;
+/* Adapted from the Thoughtform v3 Continuum Spectrum (see
+   `01_thoughtform/legacy/landing-v3/cockpit/continuum-spectrum.css`).
+   On the AI-operator paper palette the rail uses the amber lane
+   (Encode) so the slider reads as the mental-model anchor for the
+   asking gap that Evans just named. */
+.aiop-reality__spectrum {
+  position: relative;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  box-shadow: 0 18px 42px rgba(26, 22, 18, 0.05);
+  gap: clamp(20px, 3vw, 36px);
+  padding-top: 8px;
 }
 
-.aiop-reality__rows {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.aiop-reality__rail {
+  position: relative;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(
+    to right,
+    color-mix(in oklab, var(--aiop-amber) 30%, transparent) 0%,
+    var(--aiop-amber) 50%,
+    color-mix(in oklab, var(--aiop-amber) 30%, transparent) 100%
+  );
 }
 
-.aiop-reality__row {
+.aiop-reality__diamond {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  background: var(--aiop-amber);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.aiop-reality__diamond--l {
+  left: 0;
+}
+
+.aiop-reality__diamond--r {
+  left: 100%;
+}
+
+.aiop-reality__diamond--c {
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  box-shadow: 0 0 0 6px color-mix(in oklab, var(--aiop-amber) 18%, transparent);
+}
+
+.aiop-reality__cols {
   display: grid;
-  gap: 6px 16px;
   grid-template-columns: 1fr;
-  border: 1px solid var(--aiop-rule);
-  border-radius: 10px;
-  padding: 14px 16px;
-  background: var(--aiop-paper);
-  transition: background 200ms ease, border-color 200ms ease;
+  gap: 24px;
 }
 
 @media (min-width: 720px) {
-  .aiop-reality__row {
-    grid-template-columns: 0.7fr 1.3fr;
-    align-items: center;
+  .aiop-reality__cols {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: clamp(20px, 3vw, 48px);
   }
 }
 
-.aiop-reality__row-tag {
+.aiop-reality__col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 32ch;
+}
+
+.aiop-reality__col--center {
+  margin: 0 auto;
+}
+
+.aiop-reality__col--right {
+  margin-left: auto;
+}
+
+@media (min-width: 720px) {
+  .aiop-reality__col--center {
+    text-align: center;
+  }
+
+  .aiop-reality__col--right {
+    text-align: right;
+  }
+}
+
+.aiop-reality__col-label {
   font-family: var(--aiop-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
+  font-size: 10px;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--aiop-ink-soft);
 }
 
-.aiop-reality__row-detail {
-  font-family: var(--aiop-body);
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--aiop-ink);
-}
-
-.aiop-reality__row--highlight {
-  background: color-mix(in oklab, var(--aiop-amber) 8%, var(--aiop-card));
-  border-color: color-mix(in oklab, var(--aiop-amber) 35%, var(--aiop-rule));
-}
-
-.aiop-reality__row--highlight .aiop-reality__row-tag {
+.aiop-reality__col--highlight .aiop-reality__col-label {
   color: var(--aiop-amber);
 }
 
-.aiop-reality__card-foot {
-  margin: 0;
-  padding-top: 14px;
-  border-top: 1px solid var(--aiop-rule);
+.aiop-reality__col-title {
   font-family: var(--aiop-body);
-  font-size: 13px;
-  font-style: italic;
-  line-height: 1.5;
+  font-weight: 500;
+  font-size: clamp(14px, 1.15vw, 17px);
+  line-height: 1.25;
+  letter-spacing: -0.005em;
+  color: var(--aiop-ink);
+}
+
+.aiop-reality__col--highlight .aiop-reality__col-title {
+  color: var(--aiop-ink);
+  font-weight: 600;
+}
+
+.aiop-reality__col-desc {
+  font-family: var(--aiop-body);
+  font-size: clamp(12px, 0.95vw, 14px);
+  line-height: 1.55;
   color: var(--aiop-ink-soft);
+}
+
+/* Mobile fallback: drop the rail, stack the columns left-aligned. */
+@media (max-width: 719px) {
+  .aiop-reality__rail {
+    display: none;
+  }
+
+  .aiop-reality__col,
+  .aiop-reality__col--center,
+  .aiop-reality__col--right {
+    text-align: left;
+    margin: 0;
+    max-width: 100%;
+  }
 }
 
 

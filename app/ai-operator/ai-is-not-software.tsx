@@ -1,22 +1,28 @@
 import { aiRealitySection } from "./content";
 
 /*
- * AiIsNotSoftware — reality-check interstitial.
+ * AiIsNotSoftware — "Why traditional adoption doesn't work."
  *
  * Sits between the Evans bridge and the Vision flywheel inside the
  * `.aiop-bridge-and-reality` parallax-reveal wrapper. Names the
- * structural reason the asking gap is hard: AI is interpretive
- * technology, not deterministic software, so traditional rollout
- * habits fail. The flywheel that follows reads as the answer.
+ * structural reason the asking gap is hard: AI is neither a tool nor
+ * a collaborator, so the playbooks built for either fail.
  *
- * Composition (mirrors the Software-for-few interstitial pattern):
+ * Composition mirrors the diagnosis title-left + lede-right header
+ * pattern (`.aiop-diagnosis__head`) so the two sections read as one
+ * rhythm:
  *
- *   1. Left copy column with eyebrow, title, body, strong line, and a
- *      single calm CTA into the flywheel.
- *   2. Right card with three contrast rows (Normal software, AI
- *      systems, Adoption layer). The middle row carries the highlight
- *      because it names the mental-model shift.
- *   3. Foot line — one-sentence takeaway.
+ *   1. Header — eyebrow + title on the left, lede paragraph + CTA on
+ *      the right.
+ *   2. Continuum spectrum — a full-width horizontal rail with three
+ *      diamond markers (Tool / AI lives here / Collaborator) and a
+ *      3-column grid below carrying label / title / desc per stop.
+ *      The middle column is highlighted because it names the
+ *      mental-model shift the visitor needs to internalise.
+ *
+ * The spectrum is lifted from the Thoughtform Continuum Spectrum
+ * (see `01_thoughtform/legacy/landing-v3/cockpit/continuum-spectrum.css`)
+ * and adapted to the paper palette.
  *
  * Choreography lives in `quote-bridge.tsx`, which holds the bridge
  * frozen via `translateY` while this component, as the next sibling
@@ -28,8 +34,7 @@ import { aiRealitySection } from "./content";
  * section reads as a calm static beat below the Evans quote.
  */
 export function AiIsNotSoftware() {
-  const { eyebrow, title, titleEm, body, bodyStrong, rows, foot, actions } =
-    aiRealitySection;
+  const { title, titleEm, lede, actions, spectrum } = aiRealitySection;
 
   return (
     <section
@@ -44,53 +49,60 @@ export function AiIsNotSoftware() {
       </div>
 
       <div className="aiop-wrap aiop-reality__inner">
-        <div className="aiop-reality__copy aiop-reveal">
-          <p className="aiop-eyebrow">{eyebrow}</p>
-          <h2
-            className="aiop-section-title aiop-reality__title"
-            id="aiop-reality-title"
-          >
-            {title} <em className="aiop-reality__title-em">{titleEm}</em>
-          </h2>
-          <p className="aiop-reality__body">{body}</p>
-          <p className="aiop-reality__body aiop-reality__body--strong">
-            {bodyStrong}
-          </p>
-          <div
-            className="aiop-reality__actions"
-            aria-label="Reality check links"
-          >
-            {actions.map((action) => (
-              <a
-                key={action.id}
-                className="aiop-reality__link"
-                href={action.href}
+        <header className="aiop-reality__head aiop-reveal">
+          <div className="aiop-reality__head-title">
+            <h2
+              className="aiop-section-title aiop-reality__title"
+              id="aiop-reality-title"
+            >
+              {title} <em className="aiop-reality__title-em">{titleEm}</em>
+            </h2>
+          </div>
+          <div className="aiop-reality__head-lede">
+            <p className="aiop-reality__lede">{lede}</p>
+            <div
+              className="aiop-reality__actions"
+              aria-label="Reality check links"
+            >
+              {actions.map((action) => (
+                <a
+                  key={action.id}
+                  className="aiop-reality__link"
+                  href={action.href}
+                >
+                  {action.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        </header>
+
+        <div
+          className="aiop-reality__spectrum aiop-reveal"
+          role="img"
+          aria-label={spectrum.railLabel}
+        >
+          <div className="aiop-reality__rail" aria-hidden="true">
+            <span className="aiop-reality__diamond aiop-reality__diamond--l" />
+            <span className="aiop-reality__diamond aiop-reality__diamond--c" />
+            <span className="aiop-reality__diamond aiop-reality__diamond--r" />
+          </div>
+
+          <div className="aiop-reality__cols">
+            {spectrum.columns.map((column) => (
+              <div
+                key={column.id}
+                className={`aiop-reality__col aiop-reality__col--${column.align}${
+                  column.highlight ? " aiop-reality__col--highlight" : ""
+                }`}
               >
-                {action.label}
-              </a>
+                <span className="aiop-reality__col-label">{column.label}</span>
+                <span className="aiop-reality__col-title">{column.title}</span>
+                <span className="aiop-reality__col-desc">{column.desc}</span>
+              </div>
             ))}
           </div>
         </div>
-
-        <aside
-          className="aiop-reality__card aiop-reveal"
-          aria-label="Software vs AI vs adoption layer"
-        >
-          <ul className="aiop-reality__rows" role="list">
-            {rows.map((row) => (
-              <li
-                key={row.id}
-                className={`aiop-reality__row aiop-reality__row--${row.id}${
-                  row.highlight ? " aiop-reality__row--highlight" : ""
-                }`}
-              >
-                <span className="aiop-reality__row-tag">{row.tag}</span>
-                <span className="aiop-reality__row-detail">{row.detail}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="aiop-reality__card-foot">{foot}</p>
-        </aside>
       </div>
     </section>
   );

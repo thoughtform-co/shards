@@ -130,19 +130,17 @@ export const hero = {
  *   2. 2x2 use-case grid where every card shares the same root cause:
  *      tool live without shift, mandate without owner, demo without
  *      traction, data without context.
- *   3. Shared-gap card that names the root cause: the adoption layer is
- *      missing.
- *   4. One-line handoff sentence that bridges to Evans. Frames the
- *      bottleneck as the practical layer that helps people brief, trust,
- *      improve, and build with AI, so the Evans quote that follows reads
- *      as the human-facing articulation of the same idea.
+ *   3. Shared-gap card that names the articulation gap: briefing AI on
+ *      what teams need. The card hands directly into the Evans quote,
+ *      which elaborates the same idea in a credible outside voice
+ *      ("the challenge is working out how to ask for what you want").
  *
  * Content is the only thing that changes when the page is re-skinned
  * for Delaware, Ml6, or any other client; the structure stays.
  *
- * The handoff sentence deliberately does not preview Navigate / Encode
- * / Build pill chrome. The Quote Bridge keeps its first-reveal of
- * those pills via the chip-to-pill morph.
+ * The gap card deliberately does not preview Navigate / Encode / Build
+ * pill chrome. The Quote Bridge keeps its first-reveal of those pills
+ * via the chip-to-pill morph.
  * ─────────────────────────────────────────────────────────────────── */
 
 export type DiagnosisTone = "violet" | "gold" | "sage" | "slate";
@@ -156,23 +154,15 @@ export type DiagnosisUseCase = {
 };
 
 export const diagnosisSection: {
-  eyebrow: string;
   title: string;
   titleEm: string;
   lede: string;
   useCases: DiagnosisUseCase[];
   gap: {
-    eyebrow: string;
     title: string;
     titleEm: string;
-    subline: string;
-  };
-  handoff: {
-    lead: string;
-    leadEm: string;
   };
 } = {
-  eyebrow: "The diagnosis",
   title: "The missing layer is rarely",
   titleEm: "the model.",
   lede:
@@ -208,15 +198,8 @@ export const diagnosisSection: {
     },
   ],
   gap: {
-    eyebrow: "Shared gap",
-    title: "The adoption layer",
-    titleEm: "is missing.",
-    subline: "Use · Context · Judgment · Ownership · Build",
-  },
-  handoff: {
-    lead: "Most teams aren't blocked by access to AI.",
-    leadEm:
-      "They're blocked by the practical layer that helps them brief it, trust it, improve it, and build with it.",
+    title: "The hard part is",
+    titleEm: "asking AI for what you really need.",
   },
 };
 
@@ -257,25 +240,31 @@ export const quoteBridgeSection = {
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
- * Reality check — AI is not normal software
+ * Reality check — Why traditional adoption doesn't work
  *
  * Sits between the Evans bridge and the Vision flywheel. Names the
- * structural reason the asking gap is hard: AI is interpretive
- * technology, not deterministic software. Without that reframing,
- * traditional adoption rolls out tools, runs trainings, and watches
- * the workflow stay exactly where it was. The reality check earns the
- * flywheel that follows — it explains why a different rhythm is even
- * needed.
+ * structural reason the asking gap is hard: AI is neither a tool nor
+ * a collaborator, so the playbooks built for either fail. Tool
+ * rollouts teach buttons. Change programs teach behaviours. AI lives
+ * between them, and adoption that works has to live inside the work.
  *
- * Composition (mirrors the Software-for-few interstitial pattern):
+ * Composition (mirrors the diagnosis title-left + lede-right header
+ * pattern so the two read as one rhythm):
  *
- *   1. Left column: eyebrow + title + body + strong line + optional CTA.
- *   2. Right column: a 3-row card that contrasts normal software with
- *      AI systems and names the adoption layer as the missing piece.
- *      The middle row (AI systems) carries the highlight because it is
- *      the mental-model shift the visitor needs to internalise before
+ *   1. Header — eyebrow + title on the left, lede paragraph on the
+ *      right. Same grid as `.aiop-diagnosis__head`.
+ *   2. Continuum spectrum — full-width horizontal slider with three
+ *      diamond markers on a rail (Tool / AI lives here / Collaborator)
+ *      and a 3-column grid below carrying label / title / desc per
+ *      stop. The middle column is highlighted because that's the
+ *      mental-model shift the visitor needs to internalise before
  *      the flywheel reads as the answer.
- *   3. Foot line: one-sentence takeaway.
+ *   3. CTA — one calm link into the flywheel.
+ *
+ * The slider is lifted from the Thoughtform Continuum Spectrum
+ * (see `01_thoughtform/legacy/landing-v3/cockpit/continuum-spectrum.css`)
+ * and adapted to the AI-operator paper palette: amber rail and
+ * diamonds on the light card surface.
  *
  * The section sits inside the `.aiop-bridge-and-reality` wrapper so it
  * slides up over the frozen Evans bridge while the in-place chip-to-
@@ -284,44 +273,50 @@ export const quoteBridgeSection = {
  * after this beat, not as the immediate flight target.
  * ─────────────────────────────────────────────────────────────────── */
 
-export type AiRealityRow = {
-  id: "software" | "ai" | "adoption";
-  tag: string;
-  detail: string;
+export type AiRealityColumn = {
+  id: "tool" | "middle" | "collab";
+  label: string;
+  title: string;
+  desc: string;
+  align: "left" | "center" | "right";
   highlight?: boolean;
 };
 
 export const aiRealitySection = {
-  eyebrow: "The reality check",
-  title: "AI is not",
-  titleEm: "normal software.",
-  body:
-    "Normal software waits for exact inputs and follows fixed rules. AI interprets meaning. That's why people struggle to articulate what they want: the real brief isn't the task, it's the context, examples, standards, and judgment around it.",
-  bodyStrong:
-    "Traditional adoption teaches people where the tool is. AI adoption has to teach people how to work with an intelligence until the practice becomes self-sustaining.",
-  rows: [
-    {
-      id: "software",
-      tag: "Normal software",
-      detail: "User clicks. System follows rules. Output is predictable.",
-    },
-    {
-      id: "ai",
-      tag: "AI systems",
-      detail: "User briefs. Model interprets. Human judges. Workflow improves.",
-      highlight: true,
-    },
-    {
-      id: "adoption",
-      tag: "Adoption layer",
-      detail: "The people and substrate that turn this loop into capability.",
-    },
-  ] satisfies AiRealityRow[],
-  foot:
-    "Commanding software is easy to train. Briefing intelligence is learned inside the work.",
+  title: "Why traditional adoption",
+  titleEm: "doesn't work.",
+  lede:
+    "Tool rollouts assume people just need to learn the buttons. People-change programs assume people just need to adopt new behaviours. AI is neither, and the practice that makes it useful has to be navigated alongside the team that uses it.",
   actions: [
     { id: "vision", label: "See the flywheel", href: "#vision" },
   ],
+  spectrum: {
+    railLabel: "Tool to collaborator continuum",
+    columns: [
+      {
+        id: "tool",
+        label: "Tool",
+        title: "Executes commands",
+        desc: "You provide the thinking. The output is predictable, because you already know what you wanted.",
+        align: "left",
+      },
+      {
+        id: "middle",
+        label: "AI lives here",
+        title: "Neither pure tool nor true collaborator",
+        desc: "Always both. Every prompt relocates the dot along the rail. Learning where to stand is the skill.",
+        align: "center",
+        highlight: true,
+      },
+      {
+        id: "collab",
+        label: "Collaborator",
+        title: "Interprets intent",
+        desc: "You provide direction and judgment. The output surprises you — in useful ways, when you've learned to navigate.",
+        align: "right",
+      },
+    ] satisfies AiRealityColumn[],
+  },
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -333,8 +328,8 @@ export const aiRealitySection = {
  * ─────────────────────────────────────────────────────────────────── */
 
 export const visionSection = {
-  title: "Adoption & Automation",
-  titleEm: "are the same flywheel.",
+  title: "Adoption that works",
+  titleEm: "is automation.",
   centerLabel: "SUBSTRATE",
   centerFiles: [
     "how-teams-work.md",
@@ -348,7 +343,7 @@ export const visionSection = {
     { id: "build", label: "Build", position: "bottom-left" },
   ] as const,
   caption:
-    "Traditional adoption teaches the tool. The flywheel teaches the practice. Teams navigate AI inside the real work, encode the context that makes it good, and build the surfaces on top. Each pass thickens the substrate, and the next pass starts from there.",
+    "Teams navigate AI inside the real work, encode the context that makes it good, and build the surfaces on top. Each pass thickens the substrate. The next pass starts from there.",
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
