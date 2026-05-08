@@ -8390,7 +8390,7 @@
 .aiop-reality__head {
   display: grid;
   gap: 24px;
-  align-items: end;
+  align-items: start;
 }
 
 @media (min-width: 800px) {

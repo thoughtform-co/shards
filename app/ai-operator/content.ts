@@ -198,8 +198,8 @@ export const diagnosisSection: {
     },
   ],
   gap: {
-    title: "The hard part is",
-    titleEm: "asking AI for what you really need.",
+    title: "The biggest challenge with AI",
+    titleEm: "isn't technical.",
   },
 };
 
