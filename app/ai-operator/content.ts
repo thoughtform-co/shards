@@ -686,17 +686,23 @@ export const softwareForFewSection = {
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
- * Headless-shift interstitial — Salesforce / Stripe / marketing
+ * Headless-shift interstitial — Salesforce / Stripe / Loop → Stripe
  *
  * Second colored-bleed transition slide of the route, mirroring the
- * Software-for-few pattern (left copy + right card). Sits between the
- * cases and the architecture deep-dive: names the headless shift
- * happening across the stack (Salesforce Headless 360, Stripe Sessions
- * 2026 / Link CLI / Agentic Commerce Suite), then pivots the same
- * pattern onto marketing — encoded judgment running headless across
- * Claude, Cursor, Slack, dashboards, and agents. The right side is a
- * compact "Pick a surface" preview that previews the substrate-and-
- * surfaces vocabulary the deep section unpacks below.
+ * Software-for-few pattern (left copy + right card). Sits between
+ * the cases and the architecture deep-dive: names the headless shift
+ * with two fast proof points (Salesforce Headless 360, Stripe's Link
+ * CLI), then lands the personal angle — same posture brought to
+ * Mímir / Vesper / Heimdall / Babylon at Loop, intent to bring the
+ * same to Stripe.
+ *
+ * The right-side card is a mini Encode → Build flywheel preview:
+ * the encode block carries a compact substrate stack; the build
+ * block carries the headless interface (MCP/API/CLI tabs, snippet,
+ * surfaces grid). The two blocks are joined by an "exposed
+ * headlessly" connector that names the transition between them so
+ * the encode-pill → build-pill rhyme reads at a glance and primes
+ * the substrate-and-surfaces vocabulary the deep section unpacks.
  * ─────────────────────────────────────────────────────────────────── */
 
 export type HeadlessShiftSurface = {
@@ -712,13 +718,18 @@ export type HeadlessShiftTab = {
   active?: boolean;
 };
 
+export type HeadlessShiftLayer = {
+  tag: string;
+  name: string;
+};
+
 export const headlessShiftSection = {
   title: "Software is going",
   titleEm: "headless.",
   body:
-    "Salesforce shipped Headless 360 — the platform exposed as APIs, MCP tools, and CLI commands. APIs are the UI. Stripe shipped 288 features at Sessions 2026, including a Link CLI you drive from your terminal and an Agentic Commerce Suite that lets agents transact directly. The dashboard is no longer where the value lives.",
+    "Salesforce shipped Headless 360. Stripe shipped a Link CLI you drive from your terminal. The pattern is the same in every case: the interface gets demoted, the substrate gets promoted.",
   bodyStrong:
-    "Marketing teams hit the same wall. Encode the judgment once, expose it headlessly, and the same engine answers Claude, Cursor, Slack, dashboards, and scheduled agents — without rebuilding the brand for each surface.",
+    "I brought Mímir, Vesper, Heimdall, and Babylon headless at Loop — same substrate, every surface. I want to bring that posture inside Stripe.",
   actions: [
     { id: "headless", label: "See the architecture", href: "#headless" },
     { id: "harvestfields", label: "Selected case", href: "#harvestfields" },
@@ -726,22 +737,36 @@ export const headlessShiftSection = {
   preview: {
     eyebrow: "Mímir headless",
     badge: "Source → Surface",
-    tabs: [
-      { id: "mcp", label: "MCP", note: "Default", active: true },
-      { id: "api", label: "API" },
-      { id: "cli", label: "CLI" },
-    ] satisfies HeadlessShiftTab[],
-    snippetLabel: "Add as MCP server",
-    snippetUrl: "https://<mimir>/api/mcp",
-    surfacesLabel: "All surfaces",
-    surfaces: [
-      { id: "cursor", icon: "C", name: "Cursor" },
-      { id: "claude", icon: "Cl", name: "Claude" },
-      { id: "web", icon: "◐", name: "Web app" },
-      { id: "rest", icon: "{ }", name: "REST" },
-      { id: "slack", icon: "#", name: "Slack" },
-      { id: "agents", icon: "A", name: "Agents" },
-    ] satisfies HeadlessShiftSurface[],
+    substrate: {
+      pill: "Encode",
+      title: "Encoded substrate",
+      layers: [
+        { tag: "Rules", name: "How the team decides" },
+        { tag: "Examples", name: "What good looks like" },
+        { tag: "Sources", name: "Data it can read" },
+      ] satisfies HeadlessShiftLayer[],
+    },
+    connector: "Exposed headlessly",
+    interface: {
+      pill: "Build",
+      title: "Headless interface",
+      tabs: [
+        { id: "mcp", label: "MCP", note: "Default", active: true },
+        { id: "api", label: "API" },
+        { id: "cli", label: "CLI" },
+      ] satisfies HeadlessShiftTab[],
+      snippetLabel: "Add as MCP server",
+      snippetUrl: "https://<mimir>/api/mcp",
+      surfacesLabel: "All surfaces",
+      surfaces: [
+        { id: "cursor", icon: "C", name: "Cursor" },
+        { id: "claude", icon: "Cl", name: "Claude" },
+        { id: "web", icon: "◐", name: "Web app" },
+        { id: "rest", icon: "{ }", name: "REST" },
+        { id: "slack", icon: "#", name: "Slack" },
+        { id: "agents", icon: "A", name: "Agents" },
+      ] satisfies HeadlessShiftSurface[],
+    },
     foot: "One token. Six surfaces. Same engine.",
   },
 } as const;

@@ -110,7 +110,8 @@ export function HeadlessShift() {
     };
   }, [animated]);
 
-  const preview = headlessShiftSection.preview;
+  const { eyebrow, badge, substrate, connector, interface: iface, foot } =
+    headlessShiftSection.preview;
 
   return (
     <section
@@ -159,64 +160,109 @@ export function HeadlessShift() {
           <header className="aiop-shift__card-head">
             <span className="aiop-shift__card-eyebrow">
               <span className="aiop-shift__card-dot" aria-hidden="true" />
-              {preview.eyebrow}
+              {eyebrow}
             </span>
-            <span className="aiop-shift__card-badge">{preview.badge}</span>
+            <span className="aiop-shift__card-badge">{badge}</span>
           </header>
 
-          <div
-            className="aiop-shift__tabs"
-            role="tablist"
-            aria-label="Available headless surfaces"
+          {/* Encode block — the substrate the interface inherits */}
+          <section
+            className="aiop-shift__sub aiop-shift__sub--encode"
+            aria-label={substrate.title}
           >
-            {preview.tabs.map((tab) => (
-              <span
-                key={tab.id}
-                className={`aiop-shift__tab${
-                  tab.active ? " aiop-shift__tab--active" : ""
-                }`}
-                role="tab"
-                aria-selected={tab.active ? "true" : "false"}
-              >
-                <span className="aiop-shift__tab-label">{tab.label}</span>
-                {tab.note ? (
-                  <span className="aiop-shift__tab-note">{tab.note}</span>
-                ) : null}
+            <header className="aiop-shift__sub-head">
+              <span className="aiop-shift__pill aiop-shift__pill--encode">
+                <span className="aiop-shift__pill-dot" aria-hidden="true" />
+                {substrate.pill}
               </span>
-            ))}
-          </div>
-
-          <div className="aiop-shift__snippet" aria-label={preview.snippetLabel}>
-            <span className="aiop-shift__snippet-label">
-              {preview.snippetLabel}
-            </span>
-            <code className="aiop-shift__snippet-code">
-              {preview.snippetUrl}
-            </code>
-          </div>
-
-          <div className="aiop-shift__surfaces-block">
-            <span className="aiop-shift__surfaces-label">
-              {preview.surfacesLabel}
-            </span>
-            <ul className="aiop-shift__surfaces" role="list">
-              {preview.surfaces.map((surface) => (
-                <li key={surface.id} className="aiop-shift__surface">
-                  <span
-                    className="aiop-shift__surface-icon"
-                    aria-hidden="true"
-                  >
-                    {surface.icon}
-                  </span>
-                  <span className="aiop-shift__surface-name">
-                    {surface.name}
+              <span className="aiop-shift__sub-title">{substrate.title}</span>
+            </header>
+            <ul className="aiop-shift__substrate" role="list">
+              {substrate.layers.map((layer) => (
+                <li key={layer.tag} className="aiop-shift__substrate-row">
+                  <span className="aiop-shift__substrate-tag">{layer.tag}</span>
+                  <span className="aiop-shift__substrate-name">
+                    {layer.name}
                   </span>
                 </li>
               ))}
             </ul>
+          </section>
+
+          {/* Connector — names the encode → build transition */}
+          <div className="aiop-shift__connector" aria-hidden="true">
+            <span className="aiop-shift__connector-line" />
+            <span className="aiop-shift__connector-label">{connector}</span>
+            <span className="aiop-shift__connector-line" />
           </div>
 
-          <p className="aiop-shift__card-foot">{preview.foot}</p>
+          {/* Build block — the headless interface every surface inherits */}
+          <section
+            className="aiop-shift__sub aiop-shift__sub--build"
+            aria-label={iface.title}
+          >
+            <header className="aiop-shift__sub-head">
+              <span className="aiop-shift__pill aiop-shift__pill--build">
+                <span className="aiop-shift__pill-dot" aria-hidden="true" />
+                {iface.pill}
+              </span>
+              <span className="aiop-shift__sub-title">{iface.title}</span>
+            </header>
+
+            <div
+              className="aiop-shift__tabs"
+              role="tablist"
+              aria-label="Available headless surfaces"
+            >
+              {iface.tabs.map((tab) => (
+                <span
+                  key={tab.id}
+                  className={`aiop-shift__tab${
+                    tab.active ? " aiop-shift__tab--active" : ""
+                  }`}
+                  role="tab"
+                  aria-selected={tab.active ? "true" : "false"}
+                >
+                  <span className="aiop-shift__tab-label">{tab.label}</span>
+                  {tab.note ? (
+                    <span className="aiop-shift__tab-note">{tab.note}</span>
+                  ) : null}
+                </span>
+              ))}
+            </div>
+
+            <div className="aiop-shift__snippet" aria-label={iface.snippetLabel}>
+              <span className="aiop-shift__snippet-label">
+                {iface.snippetLabel}
+              </span>
+              <code className="aiop-shift__snippet-code">
+                {iface.snippetUrl}
+              </code>
+            </div>
+
+            <div className="aiop-shift__surfaces-block">
+              <span className="aiop-shift__surfaces-label">
+                {iface.surfacesLabel}
+              </span>
+              <ul className="aiop-shift__surfaces" role="list">
+                {iface.surfaces.map((surface) => (
+                  <li key={surface.id} className="aiop-shift__surface">
+                    <span
+                      className="aiop-shift__surface-icon"
+                      aria-hidden="true"
+                    >
+                      {surface.icon}
+                    </span>
+                    <span className="aiop-shift__surface-name">
+                      {surface.name}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          <p className="aiop-shift__card-foot">{foot}</p>
         </aside>
       </div>
     </section>
