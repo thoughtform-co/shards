@@ -686,6 +686,67 @@ export const softwareForFewSection = {
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
+ * Headless-shift interstitial — Salesforce / Stripe / marketing
+ *
+ * Second colored-bleed transition slide of the route, mirroring the
+ * Software-for-few pattern (left copy + right card). Sits between the
+ * cases and the architecture deep-dive: names the headless shift
+ * happening across the stack (Salesforce Headless 360, Stripe Sessions
+ * 2026 / Link CLI / Agentic Commerce Suite), then pivots the same
+ * pattern onto marketing — encoded judgment running headless across
+ * Claude, Cursor, Slack, dashboards, and agents. The right side is a
+ * compact "Pick a surface" preview that previews the substrate-and-
+ * surfaces vocabulary the deep section unpacks below.
+ * ─────────────────────────────────────────────────────────────────── */
+
+export type HeadlessShiftSurface = {
+  id: string;
+  icon: string;
+  name: string;
+};
+
+export type HeadlessShiftTab = {
+  id: "mcp" | "api" | "cli";
+  label: string;
+  note?: string;
+  active?: boolean;
+};
+
+export const headlessShiftSection = {
+  title: "Software is going",
+  titleEm: "headless.",
+  body:
+    "Salesforce shipped Headless 360 — the platform exposed as APIs, MCP tools, and CLI commands. APIs are the UI. Stripe shipped 288 features at Sessions 2026, including a Link CLI you drive from your terminal and an Agentic Commerce Suite that lets agents transact directly. The dashboard is no longer where the value lives.",
+  bodyStrong:
+    "Marketing teams hit the same wall. Encode the judgment once, expose it headlessly, and the same engine answers Claude, Cursor, Slack, dashboards, and scheduled agents — without rebuilding the brand for each surface.",
+  actions: [
+    { id: "headless", label: "See the architecture", href: "#headless" },
+    { id: "harvestfields", label: "Selected case", href: "#harvestfields" },
+  ],
+  preview: {
+    eyebrow: "Mímir headless",
+    badge: "Source → Surface",
+    tabs: [
+      { id: "mcp", label: "MCP", note: "Default", active: true },
+      { id: "api", label: "API" },
+      { id: "cli", label: "CLI" },
+    ] satisfies HeadlessShiftTab[],
+    snippetLabel: "Add as MCP server",
+    snippetUrl: "https://<mimir>/api/mcp",
+    surfacesLabel: "All surfaces",
+    surfaces: [
+      { id: "cursor", icon: "C", name: "Cursor" },
+      { id: "claude", icon: "Cl", name: "Claude" },
+      { id: "web", icon: "◐", name: "Web app" },
+      { id: "rest", icon: "{ }", name: "REST" },
+      { id: "slack", icon: "#", name: "Slack" },
+      { id: "agents", icon: "A", name: "Agents" },
+    ] satisfies HeadlessShiftSurface[],
+    foot: "One token. Six surfaces. Same engine.",
+  },
+} as const;
+
+/* ─────────────────────────────────────────────────────────────────────
  * Headless interstitial — architecture, not a dashboard
  *
  * Sets up the selected case. Names the architectural shift behind every

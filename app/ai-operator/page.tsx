@@ -11,6 +11,7 @@ import {
   selectedCaseSection,
   visionSection,
 } from "./content";
+import { HeadlessShift } from "./headless-shift";
 import { LoopStripeMorph } from "./loop-stripe-morph";
 import { QuoteBridge } from "./quote-bridge";
 import { ScrollReveal } from "./reveal";
@@ -38,13 +39,19 @@ import { SoftwareForFew } from "./software-for-few";
  *                         "practice in motion" pop-out (client). Pinned
  *                         to viewport bottom so its last viewport stays
  *                         frozen while the next section reveals over it.
- *   06 Software for few — Interstitial that slides up over the frozen
- *                         Approach (parallax-reveal pair, client).
- *   07 Cases            — Heimdall-style showcase grid (client).
- *   08 Headless         — Interstitial: architecture, not a dashboard.
- *   09 Selected case    — HarvestFields, where everything lands.
- *   10 CTA              — One ask. Smallest commitment.
- *   11 Footer
+ *   06 Software for few — Sage interstitial that slides up over the
+ *                         frozen Approach (parallax-reveal pair, client).
+ *   07 Cases            — Heimdall-style showcase grid (client). Pinned
+ *                         to viewport bottom while Headless-shift rises
+ *                         over it (parallax-reveal pair).
+ *   08 Headless-shift   — Gold interstitial: Salesforce / Stripe / the
+ *                         shift to headless. Slides up over the frozen
+ *                         Cases and previews the Pick-a-surface
+ *                         vocabulary the deep section unpacks below.
+ *   09 Headless         — Interstitial: architecture, not a dashboard.
+ *   10 Selected case    — HarvestFields, where everything lands.
+ *   11 CTA              — One ask. Smallest commitment.
+ *   12 Footer
  */
 
 function Arrow() {
@@ -253,8 +260,20 @@ export default function AiOperatorPage() {
         <SoftwareForFew />
       </div>
 
-      {/* ─── Cases (client component) ─────────────────────────────── */}
-      <Cases />
+      {/* ─── Cases + Headless-shift · parallax-reveal pair ──────────
+       *
+       * The wrapper sticky-pins Cases to viewport bottom so its last
+       * viewport stays frozen while HeadlessShift, sitting below it
+       * in flow, slides up over it through natural scroll. Mirrors
+       * the Approach + SoftwareForFew pair above.
+       *
+       * Modal portal: case-detail modals mount via createPortal into
+       * `document.body` (see `operator-modal.tsx`), so applying a
+       * transform to `.aiop-cases` here doesn't clip the modal. */}
+      <div className="aiop-cases-and-shift">
+        <Cases />
+        <HeadlessShift />
+      </div>
 
       {/* ─── Headless interstitial ────────────────────────────────── */}
       <section className="aiop-section aiop-headless" id="headless">

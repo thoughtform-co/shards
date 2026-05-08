@@ -6492,6 +6492,506 @@
 
 
 /* ═══════════════════════════════════════════════════════════════════════
+ * 25.5 · v4 — Headless-shift interstitial
+ *
+ * Second colored-bleed transition slide of the route, mirroring the
+ * `.aiop-few` pattern but in the amber/violet tone. Sits between
+ * Cases and the deep Headless section, paired with Cases via the
+ * `.aiop-cases-and-shift` parallax-reveal wrapper.
+ *
+ * Visual signature:
+ *   - amber-tinted bleed gradient (warm, decisive, architectural)
+ *   - amber radial wash top-left, violet radial wash bottom-right
+ *   - title em stays violet (cool signal lane, same as `.aiop-few`)
+ *   - right-side `Pick a surface` card with active MCP tab + snippet
+ *     + 3×2 surface chip grid + foot line
+ *
+ * The choreography is JS-driven (`headless-shift.tsx` writes the
+ * freeze transform on `.aiop-cases` and `--aiop-shift-progress` on
+ * the section). CSS just makes both children of the wrapper
+ * positioned so the later DOM sibling paints over the earlier one.
+ *
+ * Sub-sections:
+ *   25.5a · Parallax-reveal wrapper
+ *   25.5b · Section + bleed (the colored card)
+ *   25.5c · Atmospheric washes
+ *   25.5d · Copy + preview layout
+ *   25.5e · Pick-a-surface card
+ *   25.5f · Inner parallax + reduced motion
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+
+/* ─── 25.5a · Parallax-reveal wrapper ────────────────────────────── */
+
+.aiop-cases-and-shift {
+  position: relative;
+  width: 100%;
+}
+
+.aiop-cases-and-shift > .aiop-cases {
+  position: relative;
+  /* `headless-shift.tsx` writes a transform here during the
+     slide-over to keep this section visually frozen. */
+  will-change: transform;
+}
+
+.aiop-cases-and-shift > .aiop-shift {
+  position: relative;
+}
+
+
+/* ─── 25.5b · Section + bleed (the colored card) ─────────────────── */
+
+.aiop-shift {
+  position: relative;
+  padding-block: clamp(40px, 6vw, 88px);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+@media (min-width: 960px) {
+  .aiop-shift.is-animated {
+    min-height: 100vh;
+    padding-block: clamp(56px, 8vw, 120px);
+    display: flex;
+    align-items: center;
+  }
+}
+
+.aiop-shift__bleed {
+  position: absolute;
+  inset: clamp(16px, 2.5vw, 36px) clamp(12px, 2vw, 32px);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-amber) 18%, var(--aiop-card-2)) 0%,
+      color-mix(in oklab, var(--aiop-amber) 11%, var(--aiop-paper)) 55%,
+      color-mix(in oklab, var(--aiop-violet) 14%, var(--aiop-paper-2)) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--aiop-amber) 34%, var(--aiop-rule-strong));
+  box-shadow:
+    0 1px 2px rgba(26, 22, 18, 0.06),
+    0 32px 64px -38px rgba(26, 22, 18, 0.30);
+}
+
+
+/* ─── 25.5c · Atmospheric washes ─────────────────────────────────── */
+
+.aiop-shift__wash {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(4px);
+  opacity: 1;
+}
+
+.aiop-shift__wash--a {
+  width: 64%;
+  aspect-ratio: 1 / 1;
+  left: -12%;
+  top: -22%;
+  background:
+    radial-gradient(
+      circle,
+      color-mix(in oklab, var(--aiop-amber) 58%, transparent) 0%,
+      transparent 62%
+    );
+}
+
+.aiop-shift__wash--b {
+  width: 70%;
+  aspect-ratio: 1 / 1;
+  right: -18%;
+  bottom: -30%;
+  background:
+    radial-gradient(
+      circle,
+      color-mix(in oklab, var(--aiop-violet) 50%, transparent) 0%,
+      transparent 62%
+    );
+}
+
+.aiop-shift__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26, 22, 18, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 22, 18, 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(
+    ellipse 70% 75% at 50% 50%,
+    black 0%,
+    rgba(0, 0, 0, 0.55) 60%,
+    transparent 95%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 75% at 50% 50%,
+    black 0%,
+    rgba(0, 0, 0, 0.55) 60%,
+    transparent 95%
+  );
+  opacity: 0.5;
+}
+
+
+/* ─── 25.5d · Copy + preview layout ──────────────────────────────── */
+
+.aiop-shift__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: clamp(28px, 4vw, 56px);
+  grid-template-columns: 1fr;
+  align-items: center;
+}
+
+@media (min-width: 860px) {
+  .aiop-shift__inner {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: clamp(40px, 6vw, 96px);
+  }
+}
+
+.aiop-shift__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 46ch;
+}
+
+.aiop-shift__title {
+  margin: 0;
+  max-width: 14ch;
+}
+
+.aiop-shift__title-em {
+  font-style: italic;
+  font-weight: 540;
+  /* Same cool signal lane as `.aiop-few__title-em` so the two
+     interstitials read as a pair. */
+  color: var(--aiop-violet);
+}
+
+.aiop-shift__body {
+  margin: 4px 0 0;
+  font-family: var(--aiop-body);
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-shift__body--strong {
+  color: var(--aiop-ink);
+  font-weight: 540;
+}
+
+.aiop-shift__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin-top: 4px;
+}
+
+.aiop-shift__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0 7px;
+  border-bottom: 1px solid color-mix(in oklab, var(--aiop-amber) 46%, var(--aiop-rule-strong));
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
+  text-decoration: none;
+  transition:
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.aiop-shift__link:hover {
+  border-color: var(--aiop-violet);
+  color: var(--aiop-violet);
+}
+
+
+/* ─── 25.5e · Pick-a-surface card ────────────────────────────────── */
+
+.aiop-shift__card {
+  position: relative;
+  display: grid;
+  gap: clamp(14px, 1.5vw, 18px);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-card-2) 50%, transparent) 0%,
+      color-mix(in oklab, var(--aiop-paper) 28%, transparent) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--aiop-amber) 26%, var(--aiop-rule));
+  border-radius: 10px;
+  padding: clamp(16px, 1.6vw, 22px) clamp(16px, 1.8vw, 24px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.30),
+    0 18px 44px -34px rgba(26, 22, 18, 0.35);
+}
+
+.aiop-shift__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: clamp(10px, 1.2vw, 14px);
+  border-bottom: 1px solid color-mix(in oklab, var(--aiop-amber) 18%, var(--aiop-rule));
+}
+
+.aiop-shift__card-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
+  font-weight: 600;
+}
+
+.aiop-shift__card-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--aiop-amber);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--aiop-amber) 24%, transparent);
+}
+
+.aiop-shift__card-badge {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-violet);
+  background: color-mix(in oklab, var(--aiop-violet) 10%, transparent);
+  border: 1px solid color-mix(in oklab, var(--aiop-violet) 28%, var(--aiop-rule));
+  border-radius: 999px;
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+/* Tab strip */
+.aiop-shift__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.aiop-shift__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid color-mix(in oklab, var(--aiop-amber) 14%, var(--aiop-rule));
+  border-radius: 7px;
+  background: color-mix(in oklab, var(--aiop-card) 55%, transparent);
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--aiop-ink-soft);
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.aiop-shift__tab--active {
+  background: color-mix(in oklab, var(--aiop-amber) 16%, var(--aiop-card));
+  border-color: color-mix(in oklab, var(--aiop-amber) 38%, var(--aiop-rule-strong));
+  color: var(--aiop-ink);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.36),
+    0 6px 16px -12px rgba(26, 22, 18, 0.30);
+}
+
+.aiop-shift__tab-label {
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.aiop-shift__tab-note {
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--aiop-amber);
+  background: color-mix(in oklab, var(--aiop-amber) 14%, transparent);
+  border: 1px solid color-mix(in oklab, var(--aiop-amber) 32%, var(--aiop-rule));
+  border-radius: 999px;
+  padding: 2px 7px;
+}
+
+/* Snippet row */
+.aiop-shift__snippet {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  background: var(--aiop-ink);
+  border: 1px solid color-mix(in oklab, var(--aiop-amber) 26%, rgba(243, 236, 224, 0.10));
+  border-radius: 7px;
+}
+
+.aiop-shift__snippet-label {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(243, 236, 224, 0.55);
+}
+
+.aiop-shift__snippet-code {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: var(--aiop-amber);
+  word-break: break-all;
+}
+
+/* Surfaces grid */
+.aiop-shift__surfaces-block {
+  display: grid;
+  gap: 8px;
+}
+
+.aiop-shift__surfaces-label {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-shift__surfaces {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.aiop-shift__surface {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: color-mix(in oklab, var(--aiop-card) 60%, transparent);
+  border: 1px solid color-mix(in oklab, var(--aiop-amber) 14%, var(--aiop-rule));
+  border-radius: 6px;
+  min-width: 0;
+}
+
+.aiop-shift__surface-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--aiop-amber) 16%, var(--aiop-card-2));
+  border: 1px solid color-mix(in oklab, var(--aiop-amber) 30%, var(--aiop-rule));
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--aiop-amber);
+  flex-shrink: 0;
+}
+
+.aiop-shift__surface-name {
+  font-family: var(--aiop-display);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: var(--aiop-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.aiop-shift__card-foot {
+  margin: 0;
+  padding-top: clamp(8px, 1vw, 12px);
+  border-top: 1px solid color-mix(in oklab, var(--aiop-amber) 14%, var(--aiop-rule));
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+@media (max-width: 640px) {
+  .aiop-shift__surfaces {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .aiop-shift__card-head {
+    flex-wrap: wrap;
+  }
+}
+
+
+/* ─── 25.5f · Inner parallax + reduced motion ────────────────────── */
+
+@media (min-width: 960px) {
+  .aiop-shift.is-animated .aiop-shift__wash--a {
+    transform: translate3d(
+      calc(-22px * var(--aiop-shift-progress, 0)),
+      calc(-36px * var(--aiop-shift-progress, 0)),
+      0
+    );
+  }
+
+  .aiop-shift.is-animated .aiop-shift__wash--b {
+    transform: translate3d(
+      calc(24px * var(--aiop-shift-progress, 0)),
+      calc(30px * var(--aiop-shift-progress, 0)),
+      0
+    );
+  }
+
+  .aiop-shift.is-animated .aiop-shift__grid {
+    transform: translate3d(
+      0,
+      calc(-12px * var(--aiop-shift-progress, 0)),
+      0
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiop-cases-and-shift > .aiop-cases {
+    transform: none !important;
+    will-change: auto !important;
+  }
+
+  .aiop-shift,
+  .aiop-shift.is-animated {
+    min-height: 0 !important;
+    padding-block: clamp(40px, 6vw, 88px) !important;
+  }
+
+  .aiop-shift .aiop-shift__wash,
+  .aiop-shift.is-animated .aiop-shift__wash,
+  .aiop-shift .aiop-shift__grid,
+  .aiop-shift.is-animated .aiop-shift__grid {
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
  * 26 · v4 — Quote bridge (Evans on the asking gap)
  *
  * Full-viewport interstitial between the hero and the Vision flywheel.
