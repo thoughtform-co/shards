@@ -172,14 +172,14 @@ export const diagnosisSection: {
       n: "01",
       tag: "Brand voice at scale",
       title: "Brand voice slips faster than reviewers catch it.",
-      body: "AI doubled the output. The voice rules still live in three senior heads, and drift only surfaces at QBR.",
+      body: "AI doubled the output. The voice rules still live in three senior heads, and drift only surfaces at retro meetings.",
       tone: "violet",
     },
     {
       n: "02",
       tag: "Localization at scale",
-      title: "Every market still waits on a senior reviewer, even when the words ship in minutes.",
-      body: "AI handles the translation. Register, claims, and cultural fit still wait on a senior reviewer in every market, and that's where the launch calendar slips.",
+      title: "AI translates at scale, but cultural nuances never reach the system.",
+      body: "AI handles the translation. The nuance stays in reviewer comments, claim checks, and local market calls, so the next launch starts from zero again.",
       tone: "gold",
     },
     {
@@ -290,7 +290,7 @@ export const aiRealitySection = {
   title: "Why traditional adoption",
   titleEm: "doesn't work.",
   lede:
-    "Most adoption playbooks treat AI like a new tool to roll out or a new behaviour to coach into people. But AI sits somewhere in between, and the practice that makes it actually useful only gets learned inside the real work.",
+    "Adoption starts with understanding what AI actually is. Not normal software, not quite a colleague, but something in between. IT can roll out access. People can coach behaviour. Neither can carry this alone, because the hard part is translating the intelligence into the work, and the work back to the stakeholders who need to trust it.",
   actions: [
     { id: "vision", label: "See the flywheel", href: "#vision" },
   ],
