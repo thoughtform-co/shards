@@ -10008,11 +10008,23 @@
   padding-top: 12px;
 }
 
+/* Locked workflow text — same teaser blur on the rail's workflow
+   shift body so it pairs with the locked capability tiles on the
+   right column. The `Invent` (or Repair / Compress) mode pill stays
+   clear so the workflow classification still reads at a glance. */
+.aiop-case-row__workflow-text--locked {
+  filter: blur(7px);
+  opacity: 0.78;
+  user-select: none;
+  pointer-events: none;
+}
+
 /* If a visitor explicitly opts out of motion / decorative effects,
    keep the blur but soften it so the card doesn't feel hostile to
    accessibility settings. */
 @media (prefers-reduced-motion: reduce) {
-  .aiop-case-row__caps--locked .aiop-case-row__cap {
+  .aiop-case-row__caps--locked .aiop-case-row__cap,
+  .aiop-case-row__workflow-text--locked {
     filter: blur(4px);
     opacity: 0.85;
   }

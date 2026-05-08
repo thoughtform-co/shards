@@ -379,7 +379,14 @@ function StripeTeaserCard() {
                 >
                   {stripeTeaser.workflowMode}
                 </span>
-                <p className="aiop-case-row__workflow-text">
+                {/* Workflow text blurred behind the same teaser lock as
+                    the capability tiles. The mode pill stays clear so
+                    the visitor still sees the workflow classification
+                    (Compress / Repair / Invent) at a glance. */}
+                <p
+                  className="aiop-case-row__workflow-text aiop-case-row__workflow-text--locked"
+                  aria-hidden="true"
+                >
                   {stripeTeaser.workflowAfter}
                 </p>
               </div>
