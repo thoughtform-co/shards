@@ -167,10 +167,10 @@ export const diagnosisSection: {
   };
 } = {
   eyebrow: "The diagnosis",
-  title: "Four faces.",
-  titleEm: "One missing piece.",
+  title: "It's almost never",
+  titleEm: "a model problem.",
   lede:
-    "These don't look like the same problem. Read each one closely and the same wall shows up in all four. The work isn't binary right or wrong — it's nuance, context, and taste the model never inherits from the brief.",
+    "None of these is a model problem. The model is plenty capable; it just doesn't get what it needs to be useful on real work. The judgment that decides whether an output is good lives in three or four people's heads, in Friday review threads the team rebuilds every Monday, in unwritten policy the lead applies on the fly. None of it ever reaches the brief the model sees.",
   useCases: [
     {
       n: "01",
@@ -208,8 +208,8 @@ export const diagnosisSection: {
     subline: "Reasoning · Examples · Refusal patterns · Taste",
   },
   handoff: {
-    lead: "The bottleneck isn't technical.",
-    leadEm: "It's knowing what to ask.",
+    lead: "Most teams haven't figured out",
+    leadEm: "how to brief a model on what they need.",
   },
 };
 
@@ -273,7 +273,7 @@ export const visionSection = {
     { id: "build", label: "Build", position: "bottom-left" },
   ] as const,
   caption:
-    "Asking is what gets encoded. Most companies still run adoption and automation as two tracks. AI makes them one loop — what the team learns to ask becomes the substrate every tool runs on.",
+    "That asking, once a team writes it down, becomes the substrate the team learns from and the tools run on. Adoption and automation don't run as two separate programs. They run as one loop, and the substrate compounds with every encoded ask.",
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -290,7 +290,7 @@ export const approachSection = {
   title: "The AI flywheel",
   titleEm: "at Loop",
   caption:
-    "Running AI Adoption at Loop since 2024. Moved from AI Team to Marketing to transform everything from Studio work to Performance from within.",
+    "I've been running this loop at Loop Earplugs since 2024. Spent the first year on the AI Team, then moved into Marketing so it could turn from inside the work, across Studio and Performance.",
   close:
     "The same loop ran on Vesper, Heimdall, Mímir, Babylon, and the company-wide Claude rollout at Loop.",
 } as const;
