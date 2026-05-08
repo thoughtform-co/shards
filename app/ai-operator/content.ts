@@ -758,7 +758,7 @@ export const cases: CaseProject[] = [
     surfaces: ["Web app", "MCP server", "REST", "Claude / Cursor"],
     stack: ["Next.js", "TanStack Query", "Supabase", "Prisma", "Anthropic", "Gemini", "Replicate", "Kling"],
     companyLeverage:
-      "Any team generating visual content (Product, E-commerce, CRM) can use Vesper without depending on Studio. Cost transparency gives leadership real spend-per-asset data.",
+      "Vesper is expanding into Product Design next. CMF Studio is the first new pipeline: a workbook of colorways resolves through reference renders into a packet PDF, so industrial designers spec materials and finishes without booking Studio time for every revision.",
     image: "/cases/assets/vesper.png",
     screenshots: [
       { src: "/cases/screenshots/vesper/Vesper-Home.png", alt: "Vesper: home dashboard" },
