@@ -6999,18 +6999,92 @@
   word-break: break-all;
 }
 
-/* Surfaces grid */
-.aiop-shift__surfaces-block {
-  display: grid;
-  gap: 8px;
+/* Build frame — wraps the two children of Build (the headless
+   interface and the surfaces) so they read as one grouped concept.
+   The Build pill notches into the top edge of the border like a
+   fieldset legend; the soft sage halo emphasises that everything
+   inside is part of the build lane without competing with the
+   amber-toned bleed and the encode block above. */
+.aiop-shift__sub--build {
+  /* Frame controls the inner spacing — no extra section-level gap. */
+  gap: 0;
 }
 
-.aiop-shift__surfaces-label {
+.aiop-shift__build-frame {
+  position: relative;
+  display: grid;
+  gap: clamp(12px, 1.4vw, 16px);
+  margin-top: clamp(12px, 1.5vw, 18px);
+  padding:
+    clamp(22px, 2.4vw, 30px)
+    clamp(14px, 1.6vw, 18px)
+    clamp(14px, 1.5vw, 18px);
+  /* Lifted background so the frame visibly separates from the
+     bleed wash behind it; the sage tint pulls the lane signal in. */
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-sage) 8%, var(--aiop-card-2)) 0%,
+      color-mix(in oklab, var(--aiop-sage) 5%, var(--aiop-card)) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--aiop-sage) 38%, var(--aiop-rule-strong));
+  border-radius: 10px;
+  /* Soft glow: an outer sage halo + a deeper drop shadow, anchored
+     by an inset top-edge highlight that gives the frame the same
+     lifted feel as the encode block's substrate panel. */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    0 0 0 1px color-mix(in oklab, var(--aiop-sage) 14%, transparent),
+    0 0 22px -4px color-mix(in oklab, var(--aiop-sage) 22%, transparent),
+    0 18px 36px -20px color-mix(in oklab, var(--aiop-sage) 32%, rgba(26, 22, 18, 0.28));
+}
+
+/* Pill notched into the top edge of the build frame. Solid pill
+   background occludes the frame border line where the pill sits, so
+   the visual reads as the frame's outline starting at the pill. */
+.aiop-shift__pill--frame {
+  position: absolute;
+  top: 0;
+  left: clamp(14px, 1.6vw, 20px);
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.aiop-shift__pill--build.aiop-shift__pill--frame {
+  border-color: color-mix(in oklab, var(--aiop-sage) 50%, var(--aiop-rule-strong));
+  /* Layered shadow: keeps the base lift, adds a sage halo that
+     rhymes with the frame's own glow ring so pill + frame read as
+     one piece. */
+  box-shadow:
+    0 4px 14px rgba(26, 22, 18, 0.06),
+    0 0 0 3px color-mix(in oklab, var(--aiop-sage) 14%, transparent),
+    0 0 16px -4px color-mix(in oklab, var(--aiop-sage) 28%, transparent);
+}
+
+/* Equal sibling blocks inside the frame. Both use the same label +
+   content scaffolding so the two read as components of the same
+   concept (Build). */
+.aiop-shift__build-block {
+  display: grid;
+  gap: clamp(8px, 1vw, 12px);
+}
+
+.aiop-shift__build-block-label {
   font-family: var(--aiop-mono);
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--aiop-muted);
+}
+
+.aiop-shift__build-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in oklab, var(--aiop-sage) 22%, var(--aiop-rule)) 50%,
+    transparent 100%
+  );
 }
 
 .aiop-shift__surfaces {
