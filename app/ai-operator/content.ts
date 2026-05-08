@@ -729,7 +729,7 @@ export const cases: CaseProject[] = [
     surfaces: ["Web app", "MCP server", "Claude", "Cursor", "Slack", "ChatGPT"],
     stack: ["Next.js", "Supabase", "Gemini", "Claude Skills", "MCP", "Slack"],
     companyLeverage:
-      "Started with Creative Strategy, then expanded to Insights and Product Marketing. The key move was encoding how Loop reads customer voice, paid performance, competitors, and prior strategy into a substrate any surface can inherit.",
+      "Started with Creative Strategy, now expanding to Insights and Product Marketing. The aim is one source of truth on customer voice, business priorities, and channel performance — open to anyone in the company, from whatever surface they already work in.",
     image: "/cases/assets/mimir.png",
     screenshots: [
       { src: "/cases/screenshots/mimir/Mimir-Feed.png", alt: "Mímir: intelligence feed" },
