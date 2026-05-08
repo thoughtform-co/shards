@@ -9,6 +9,8 @@ import {
   headlessSection,
   hero,
   meta,
+  substrateMapSection,
+  surfacePickSection,
   visionSection,
 } from "./content";
 import { Diagnosis } from "./diagnosis";
@@ -231,19 +233,29 @@ export default function AiOperatorPage() {
         <div className="aiop-wrap aiop-vision__inner aiop-reveal">
           <div className="aiop-vision__head">
             <h2 className="aiop-section-title aiop-vision__title">
-              {visionSection.title} <em>{visionSection.titleEm}</em>
+              {visionSection.title} <em>{visionSection.titleEm}</em>{" "}
+              {visionSection.titleAfter}
             </h2>
 
             <p className="aiop-vision__caption">{visionSection.caption}</p>
           </div>
 
+          {/* Nested orbit: each phase sits on its own concentric ring
+              with Headless at the centre. Three dashed/solid rings
+              communicate the layered architecture; per-phase pill
+              positions are placed in CSS so the phase id alone drives
+              the location (no positional metadata in the data). */}
           <div
-            className="aiop-orbit aiop-orbit--centered"
+            className="aiop-orbit aiop-orbit--centered aiop-orbit--nested"
             role="img"
-            aria-label="Navigate, Encode, Build flywheel around a substrate file stack, with a Headless satellite"
+            aria-label="Navigate, Encode, Build pills nested on concentric orbits, with Headless at the centre"
           >
             <span
               className="aiop-orbit__ring aiop-orbit__ring--outer"
+              aria-hidden="true"
+            />
+            <span
+              className="aiop-orbit__ring aiop-orbit__ring--middle"
               aria-hidden="true"
             />
             <span
@@ -254,7 +266,7 @@ export default function AiOperatorPage() {
             {visionSection.orbits.map((orbit) => (
               <span
                 key={orbit.id}
-                className={`aiop-orbit__pill aiop-orbit__pill--${orbit.position} aiop-orbit__pill--${orbit.id}`}
+                className={`aiop-orbit__pill aiop-orbit__pill--${orbit.id} aiop-orbit__pill--ring-${orbit.ring}`}
                 data-aiop-phase={orbit.id}
               >
                 <span className="aiop-orbit__dot" aria-hidden="true" />
@@ -268,12 +280,6 @@ export default function AiOperatorPage() {
                 {visionSection.centerFiles.map((file) => (
                   <span key={file}>{file}</span>
                 ))}
-              </span>
-            </span>
-            <span className="aiop-orbit__satellite" aria-hidden="true">
-              <span className="aiop-orbit__satellite-dot" />
-              <span className="aiop-orbit__satellite-label">
-                {visionSection.satelliteLabel}
               </span>
             </span>
           </div>
@@ -308,14 +314,15 @@ export default function AiOperatorPage() {
       {/* ─── Headless overview — what we mean by "headless" ──────── */}
       <section className="aiop-section aiop-headless" id="headless">
         <div className="aiop-wrap">
-          <div className="aiop-headless__head aiop-reveal">
-            <p className="aiop-eyebrow">{headlessSection.eyebrow}</p>
-            <h2 className="aiop-section-title">
+          <header className="aiop-headless__head aiop-reveal">
+            <h2 className="aiop-section-title aiop-headless__title">
               {headlessSection.title}{" "}
               <em>{headlessSection.titleEm}</em>
             </h2>
-            <p className="aiop-section-lede">{headlessSection.body}</p>
-          </div>
+            <p className="aiop-section-lede aiop-headless__lede">
+              {headlessSection.body}
+            </p>
+          </header>
 
           <div className="aiop-headless__diagram aiop-reveal">
             <aside
@@ -355,6 +362,241 @@ export default function AiOperatorPage() {
                 </article>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Substrate map — sources, substrate, surfaces as one ────
+       *
+       * First tail section after the headless overview. Single
+       * inspectable map card: sources on the left, encoded substrate
+       * in the middle, headless surfaces on the right, with two
+       * narrow connector cells naming the read/expose direction. The
+       * footer strip names the three-state transition in the same
+       * mono caps grammar as the rest of the route.
+       *
+       * Header mirrors `aiop-diagnosis__head` (title-left + lede-right)
+       * so the tail of the page reads as one rhythm. */}
+      <section className="aiop-section aiop-substrate-map" id="substrate-map">
+        <div className="aiop-wrap">
+          <header className="aiop-substrate-map__head aiop-reveal">
+            <h2 className="aiop-section-title aiop-substrate-map__title">
+              {substrateMapSection.title}{" "}
+              <em>{substrateMapSection.titleEm}</em>
+            </h2>
+            <p className="aiop-substrate-map__lede">
+              {substrateMapSection.body}
+            </p>
+          </header>
+
+          <div className="aiop-substrate-map__card aiop-reveal">
+            <header className="aiop-substrate-map__card-head">
+              <span className="aiop-substrate-map__card-label">
+                <span
+                  className="aiop-substrate-map__card-dot"
+                  aria-hidden="true"
+                />
+                {substrateMapSection.cardLabel}
+              </span>
+              <span className="aiop-substrate-map__card-flow">
+                {substrateMapSection.flow}
+              </span>
+            </header>
+
+            <div className="aiop-substrate-map__grid">
+              <article className="aiop-substrate-map__col aiop-substrate-map__col--sources">
+                <header className="aiop-substrate-map__col-head">
+                  <span className="aiop-substrate-map__col-n">
+                    {substrateMapSection.columns.sources.n} ·{" "}
+                    {substrateMapSection.columns.sources.kicker}
+                  </span>
+                </header>
+                <h3 className="aiop-substrate-map__col-title">
+                  {substrateMapSection.columns.sources.title}
+                </h3>
+                <ul className="aiop-substrate-map__sources" role="list">
+                  {substrateMapSection.columns.sources.items.map((item) => (
+                    <li key={item} className="aiop-substrate-map__source">
+                      <span
+                        className="aiop-substrate-map__source-dot"
+                        aria-hidden="true"
+                      />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+
+              <div
+                className="aiop-substrate-map__connector"
+                aria-hidden="true"
+              >
+                <span className="aiop-substrate-map__connector-line" />
+                <span className="aiop-substrate-map__connector-label">
+                  {substrateMapSection.connectors.left}
+                </span>
+                <span className="aiop-substrate-map__connector-arrow">→</span>
+              </div>
+
+              <article className="aiop-substrate-map__col aiop-substrate-map__col--substrate">
+                <header className="aiop-substrate-map__col-head">
+                  <span className="aiop-substrate-map__col-n">
+                    {substrateMapSection.columns.substrate.n} ·{" "}
+                    {substrateMapSection.columns.substrate.kicker}
+                  </span>
+                  <span className="aiop-substrate-map__col-badge">
+                    {substrateMapSection.columns.substrate.badge}
+                  </span>
+                </header>
+                <h3 className="aiop-substrate-map__col-title">
+                  {substrateMapSection.columns.substrate.title}
+                </h3>
+                <ul className="aiop-substrate-map__rows" role="list">
+                  {substrateMapSection.columns.substrate.items.map((item) => (
+                    <li key={item.tag} className="aiop-substrate-map__row">
+                      <span className="aiop-substrate-map__row-tag">
+                        {item.tag}
+                      </span>
+                      <span className="aiop-substrate-map__row-name">
+                        {item.name}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                <ul className="aiop-substrate-map__chips" role="list">
+                  {substrateMapSection.columns.substrate.tags.map((t) => (
+                    <li key={t} className="aiop-substrate-map__chip">
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+
+              <div
+                className="aiop-substrate-map__connector"
+                aria-hidden="true"
+              >
+                <span className="aiop-substrate-map__connector-line" />
+                <span className="aiop-substrate-map__connector-label">
+                  {substrateMapSection.connectors.right}
+                </span>
+                <span className="aiop-substrate-map__connector-arrow">→</span>
+              </div>
+
+              <article className="aiop-substrate-map__col aiop-substrate-map__col--surfaces">
+                <header className="aiop-substrate-map__col-head">
+                  <span className="aiop-substrate-map__col-n">
+                    {substrateMapSection.columns.surfaces.n} ·{" "}
+                    {substrateMapSection.columns.surfaces.kicker}
+                  </span>
+                  <span className="aiop-substrate-map__col-badge">
+                    {substrateMapSection.columns.surfaces.badge}
+                  </span>
+                </header>
+                <h3 className="aiop-substrate-map__col-title">
+                  {substrateMapSection.columns.surfaces.title}
+                </h3>
+                <ul className="aiop-substrate-map__surfaces" role="list">
+                  {substrateMapSection.columns.surfaces.items.map((s) => (
+                    <li key={s.name} className="aiop-substrate-map__surface">
+                      <span
+                        className="aiop-substrate-map__surface-icon"
+                        aria-hidden="true"
+                      >
+                        {s.icon}
+                      </span>
+                      <span className="aiop-substrate-map__surface-name">
+                        {s.name}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            </div>
+
+            <footer className="aiop-substrate-map__card-foot">
+              {substrateMapSection.closing}
+            </footer>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Surface pick — same engine, surface fits the marketer ──
+       *
+       * Second tail section. Three "surface families" (Power / Team /
+       * System) instead of three install paths so the section reads
+       * as a cohort scaling story: the substrate underneath every
+       * tool stays the same, but the surface a marketer reaches it
+       * through adapts to where they already work. */}
+      <section className="aiop-section aiop-surface-pick" id="surface-pick">
+        <div className="aiop-wrap">
+          <header className="aiop-surface-pick__head aiop-reveal">
+            <h2 className="aiop-section-title aiop-surface-pick__title">
+              {surfacePickSection.title}{" "}
+              <em>{surfacePickSection.titleEm}</em>
+            </h2>
+            <p className="aiop-surface-pick__lede">
+              {surfacePickSection.body}
+            </p>
+          </header>
+
+          <div className="aiop-surface-pick__card aiop-reveal">
+            <header className="aiop-surface-pick__card-head">
+              <span className="aiop-surface-pick__card-label">
+                <span
+                  className="aiop-surface-pick__card-dot"
+                  aria-hidden="true"
+                />
+                {surfacePickSection.cardLabel}
+              </span>
+              <span className="aiop-surface-pick__card-flow">
+                {surfacePickSection.flow}
+              </span>
+            </header>
+
+            <ol className="aiop-surface-pick__grid" role="list">
+              {surfacePickSection.families.map((family) => (
+                <li
+                  key={family.id}
+                  className={`aiop-surface-pick__family aiop-surface-pick__family--${family.id}`}
+                >
+                  <header className="aiop-surface-pick__family-head">
+                    <span className="aiop-surface-pick__family-label">
+                      {family.label}
+                    </span>
+                    <p className="aiop-surface-pick__family-detail">
+                      {family.detail}
+                    </p>
+                  </header>
+                  <ul
+                    className="aiop-surface-pick__family-surfaces"
+                    role="list"
+                  >
+                    {family.surfaces.map((s) => (
+                      <li
+                        key={s.name}
+                        className="aiop-surface-pick__family-surface"
+                      >
+                        <span
+                          className="aiop-surface-pick__family-icon"
+                          aria-hidden="true"
+                        >
+                          {s.icon}
+                        </span>
+                        <span className="aiop-surface-pick__family-name">
+                          {s.name}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="aiop-surface-pick__family-use">{family.use}</p>
+                </li>
+              ))}
+            </ol>
+
+            <footer className="aiop-surface-pick__card-foot">
+              {surfacePickSection.closing}
+            </footer>
           </div>
         </div>
       </section>

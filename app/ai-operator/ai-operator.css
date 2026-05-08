@@ -2512,6 +2512,161 @@
 
 
 /* ═══════════════════════════════════════════════════════════════════════
+ * 14a.1 · Nested orbit modifier — phase per ring
+ *
+ * `.aiop-orbit--nested` is the Vision-section variant where each
+ * phase pill sits on its own concentric ring instead of all three
+ * sharing one perimeter. The modifier composes with `--centered`:
+ *
+ *   - Outer ring   (dashed, ~46% radius) carries the Navigate pill
+ *     at 12 o'clock.
+ *   - Middle ring  (hairline, ~32% radius) carries the Encode pill
+ *     at ~4 o'clock.
+ *   - Inner ring   (dashed, ~18% radius) carries the Build pill
+ *     at ~8 o'clock.
+ *   - Centre core  shrinks to ~30% diameter and is labelled
+ *     "Headless"; the substrate file names sit inside it because
+ *     the substrate is what the headless layer exposes.
+ *
+ * Pill positions are placed by phase id (one selector per phase),
+ * not by a generic position class, so the data layer can stay
+ * declarative (`{ id: "navigate", ring: "outer" }`) without leaking
+ * pixel coordinates into TSX.
+ *
+ * Coordinate system: each ring at inset I has radius (50% - I) from
+ * the container's centre. To place a pill at clock angle θ° (0° =
+ * top, clockwise) on that ring, use:
+ *
+ *   top  = 50% + (50% - I) * (-cos θ)
+ *   left = 50% + (50% - I) * (+sin θ)
+ *   transform: translate(-50%, -50%);
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-orbit--nested .aiop-orbit__ring--outer {
+  inset: 4%;
+  border: 1px dashed
+    color-mix(in oklab, var(--aiop-violet) 38%, transparent);
+}
+
+.aiop-orbit--nested .aiop-orbit__ring--middle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  inset: 18%;
+  border: 1px solid
+    color-mix(in oklab, var(--aiop-amber) 32%, var(--aiop-rule-strong));
+}
+
+.aiop-orbit--nested .aiop-orbit__ring--inner {
+  inset: 32%;
+  border: 1px dashed
+    color-mix(in oklab, var(--aiop-sage) 38%, transparent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Counter-rotate the middle ring at a different speed than outer
+     and inner so the three rings drift independently. The motion
+     stays slow enough to read as ambient depth rather than spin. */
+  .aiop-orbit--nested .aiop-orbit__ring--middle {
+    animation: aiop-orbit-spin 200s linear infinite;
+    transform-origin: 50% 50%;
+  }
+}
+
+/* Pills — phase id drives both the ring radius and the clock
+   position. The 12 / 4 / 8 o'clock spread keeps the three pills at
+   roughly 120° from each other so the orbit reads as a triangle of
+   nested phases instead of a stack. */
+.aiop-orbit--nested .aiop-orbit__pill--navigate {
+  /* Outer ring (radius 46% from centre), 12 o'clock */
+  top: 4%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+}
+
+.aiop-orbit--nested .aiop-orbit__pill--encode {
+  /* Middle ring (radius 32% from centre), 4 o'clock (≈ 120°)
+     top  = 50 + 32 * (-cos 120°) = 50 + 16 = 66
+     left = 50 + 32 * ( sin 120°) = 50 + 27.7 ≈ 78 */
+  top: 66%;
+  left: 78%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+}
+
+.aiop-orbit--nested .aiop-orbit__pill--build {
+  /* Inner ring (radius 18% from centre), 8 o'clock (≈ 240°)
+     top  = 50 + 18 * (-cos 240°) = 50 + 9 = 59
+     left = 50 + 18 * ( sin 240°) = 50 - 15.6 ≈ 34 */
+  top: 59%;
+  left: 34%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+}
+
+/* Compact centre core for the nested orbit. The default core width
+   (46%) overlaps the inner ring at inset 32%, so we shrink the core
+   to ~30% diameter and tighten its padding so it reads as the
+   "Headless" focal point sitting at the orbit's heart. */
+.aiop-orbit--nested .aiop-orbit__core {
+  width: 32%;
+  padding: 10px 12px;
+  border: 1px solid var(--aiop-rule-strong);
+  background: linear-gradient(
+    160deg,
+    var(--aiop-card-2) 0%,
+    var(--aiop-card-soft) 100%
+  );
+  box-shadow: 0 8px 24px rgba(26, 22, 18, 0.10);
+}
+
+.aiop-orbit--nested .aiop-orbit__core strong {
+  font-size: clamp(10.5px, 1.1vw, 12.5px);
+  letter-spacing: 0.18em;
+}
+
+.aiop-orbit--nested .aiop-orbit__core-files {
+  margin-top: 6px;
+  gap: 1px;
+  font-size: clamp(7.5px, 0.85vw, 9px);
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+}
+
+@media (max-width: 600px) {
+  /* Narrow viewports: pills get a small bit of extra clearance from
+     the orbit edge so they don't clip on either side. Core stays
+     centred via inherited rules. */
+  .aiop-orbit--nested .aiop-orbit__pill {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .aiop-orbit--nested .aiop-orbit__pill--encode {
+    left: 76%;
+  }
+
+  .aiop-orbit--nested .aiop-orbit__pill--build {
+    left: 36%;
+  }
+
+  .aiop-orbit--nested .aiop-orbit__core-files {
+    /* Files become unreadable below ~9px; hide on the smallest
+       viewports so the core reads cleanly as just "Headless". */
+    display: none;
+  }
+
+  .aiop-orbit--nested .aiop-orbit__core {
+    width: 36%;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
  * 14b · v4 — Vision section · The Adoption Automation Flywheel
  *
  * One viewport. A Linear-inspired title/copy pair introduces the
@@ -8622,6 +8777,33 @@
   font-weight: 600;
 }
 
+/* Sub line — short fragment that fleshes out the column title with
+   conversational specificity ("a bit of both", "trained on us, but
+   not like us"). Sits below the title on its own line, sized down
+   from the title and ink-soft so the title still leads. */
+.aiop-reality__col-sub {
+  margin-top: 4px;
+  font-family: var(--aiop-body);
+  font-size: clamp(12.5px, 0.95vw, 14px);
+  line-height: 1.45;
+  color: var(--aiop-ink-soft);
+  max-width: 32ch;
+}
+
+.aiop-reality__col--center .aiop-reality__col-sub {
+  margin-inline: auto;
+}
+
+.aiop-reality__col--right .aiop-reality__col-sub {
+  margin-left: auto;
+}
+
+@media (max-width: 719px) {
+  .aiop-reality__col-sub {
+    margin-inline: 0;
+  }
+}
+
 /* Mobile fallback: drop the rail, stack the columns left-aligned. */
 @media (max-width: 719px) {
   .aiop-reality__rail {
@@ -8644,5 +8826,674 @@
   .aiop-reality {
     min-height: 0 !important;
     padding-block: clamp(40px, 6vw, 88px) !important;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 27 · Headless tail — substrate map + surface pick
+ *
+ * Two short tail sections that follow the headless overview. Both
+ * adopt the title-left + lede-right header rhythm shared by
+ * Diagnosis / Vision / Approach so the tail of the page reads as
+ * one argument. Both wrap their diagram in a single inspectable
+ * card with a mono caps head (label + flow badge) and a mono caps
+ * foot (state-transition closing strip), so the two cards feel like
+ * variants of the same instrument.
+ *
+ * Design intent:
+ *   1. Substrate map (`aiop-substrate-map`) — 3 columns connected by
+ *      labelled arrows. Sources on the left, encoded substrate in
+ *      the middle, headless surfaces on the right. Names the system
+ *      grammar (source → authority → surface).
+ *   2. Surface pick (`aiop-surface-pick`) — 3 surface families. Names
+ *      the cohort scaling motion (build once, reach each marketer
+ *      through the surface that fits their workflow).
+ *
+ * Tokens: reuses `--aiop-card` / `--aiop-paper` / `--aiop-paper-2` /
+ * `--aiop-rule` / `--aiop-rule-strong` / `--aiop-gold-bright` /
+ * ink tones. Typography reuses `--aiop-display` / `--aiop-body` /
+ * `--aiop-mono`. No new color or font tokens.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+/* ─── 27.1 · Headless overview header alignment ─────────────────────
+ *
+ * The eyebrow used to sit above the title in the `#headless` head
+ * grid, which placed three children into a 2-column grid and put
+ * the eyebrow in the left cell. The eyebrow is gone in v5, so the
+ * head now has exactly two children — title and lede — that flow
+ * naturally into the two grid cells. These two overrides reset the
+ * `.aiop-section-title` / `.aiop-section-lede` margins (which assumed
+ * an eyebrow above) so title and lede share a clean baseline.
+ * ─────────────────────────────────────────────────────────────────── */
+
+.aiop-headless__title {
+  margin: 0;
+  max-width: 22ch;
+}
+
+.aiop-headless__lede {
+  margin: 0;
+  /* Nudge the lede up so its bottom baseline aligns with the bottom
+     line of the title on desktop, matching the diagnosis head. */
+  padding-bottom: 6px;
+}
+
+@media (max-width: 799px) {
+  .aiop-headless__lede {
+    padding-bottom: 0;
+  }
+}
+
+
+/* ─── 27.2 · Substrate map — head ─────────────────────────────────── */
+
+.aiop-substrate-map {
+  padding-block: clamp(72px, 8vw, 128px);
+}
+
+.aiop-substrate-map__head {
+  display: grid;
+  gap: 24px;
+  align-items: end;
+  margin-bottom: clamp(36px, 4.5vw, 56px);
+}
+
+@media (min-width: 800px) {
+  .aiop-substrate-map__head {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: clamp(32px, 4vw, 56px);
+  }
+}
+
+.aiop-substrate-map__title {
+  margin: 0;
+  max-width: 22ch;
+}
+
+.aiop-substrate-map__lede {
+  font-family: var(--aiop-body);
+  font-size: clamp(15px, 1.1vw, 17px);
+  line-height: 1.6;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+  max-width: 56ch;
+  padding-bottom: 6px;
+}
+
+@media (max-width: 799px) {
+  .aiop-substrate-map__lede {
+    padding-bottom: 0;
+  }
+}
+
+
+/* ─── 27.3 · Substrate map — card chrome ──────────────────────────── */
+
+.aiop-substrate-map__card {
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-strong);
+  padding:
+    clamp(20px, 2.4vw, 32px)
+    clamp(20px, 2.4vw, 32px)
+    clamp(16px, 2vw, 24px);
+  display: grid;
+  gap: clamp(20px, 2.4vw, 32px);
+  position: relative;
+}
+
+.aiop-substrate-map__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: clamp(14px, 1.6vw, 20px);
+  border-bottom: 1px solid var(--aiop-rule);
+  flex-wrap: wrap;
+}
+
+.aiop-substrate-map__card-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
+  font-weight: 500;
+}
+
+.aiop-substrate-map__card-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--aiop-gold-bright);
+  border-radius: 50%;
+}
+
+.aiop-substrate-map__card-flow {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-gold-bright);
+  border: 1px solid var(--aiop-rule-strong);
+  padding: 5px 10px;
+}
+
+
+/* ─── 27.4 · Substrate map — three-column grid + connectors ───────── */
+
+.aiop-substrate-map__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+@media (min-width: 960px) {
+  .aiop-substrate-map__grid {
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto
+      minmax(0, 1.4fr)
+      auto
+      minmax(0, 1fr);
+    gap: clamp(20px, 2.2vw, 32px);
+    align-items: stretch;
+  }
+}
+
+.aiop-substrate-map__col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.aiop-substrate-map__col-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.aiop-substrate-map__col-n {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-gold-bright);
+  font-weight: 600;
+}
+
+.aiop-substrate-map__col-badge {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  border: 1px solid var(--aiop-rule-strong);
+  padding: 4px 9px;
+}
+
+.aiop-substrate-map__col-title {
+  font-family: var(--aiop-display);
+  font-weight: 500;
+  font-size: clamp(17px, 1.5vw, 21px);
+  line-height: 1.25;
+  letter-spacing: -0.012em;
+  margin: 0;
+  color: var(--aiop-ink);
+  max-width: 22ch;
+}
+
+/* Connectors — horizontal on mobile, vertical on desktop. The line
+   gives a visual rail between columns, the label names the flow,
+   and the arrow marks direction. Writing-mode flips the label
+   vertical at desktop without changing the markup order. */
+.aiop-substrate-map__connector {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+.aiop-substrate-map__connector-line {
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--aiop-rule-strong);
+}
+
+.aiop-substrate-map__connector-label {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  white-space: nowrap;
+}
+
+.aiop-substrate-map__connector-arrow {
+  font-family: var(--aiop-mono);
+  font-size: 14px;
+  color: var(--aiop-gold-bright);
+  transform: rotate(90deg);
+  display: inline-block;
+}
+
+@media (min-width: 960px) {
+  .aiop-substrate-map__connector {
+    flex-direction: column;
+    padding: 0;
+    gap: 10px;
+    align-self: stretch;
+    justify-content: center;
+  }
+
+  .aiop-substrate-map__connector-line {
+    width: 1px;
+    height: 32px;
+  }
+
+  .aiop-substrate-map__connector-label {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  .aiop-substrate-map__connector-arrow {
+    transform: none;
+  }
+}
+
+
+/* ─── 27.5 · Substrate map — column 1 (Trusted sources) ──────────── */
+
+.aiop-substrate-map__sources {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--aiop-rule);
+  border: 1px solid var(--aiop-rule-strong);
+}
+
+.aiop-substrate-map__source {
+  background: var(--aiop-paper);
+  padding: 11px 14px;
+  font-family: var(--aiop-body);
+  font-size: 13.5px;
+  color: var(--aiop-ink);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.aiop-substrate-map__source-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--aiop-gold-bright);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+
+/* ─── 27.6 · Substrate map — column 2 (Encoded substrate) ────────── */
+
+.aiop-substrate-map__col--substrate {
+  background: linear-gradient(
+    180deg,
+    var(--aiop-paper-2) 0%,
+    var(--aiop-paper) 100%
+  );
+  border: 1px solid var(--aiop-rule-strong);
+  padding: clamp(16px, 1.8vw, 22px) clamp(14px, 1.6vw, 20px);
+  gap: 14px;
+}
+
+.aiop-substrate-map__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--aiop-rule);
+  border: 1px solid var(--aiop-rule-strong);
+}
+
+.aiop-substrate-map__row {
+  background: var(--aiop-card);
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 12px;
+  align-items: baseline;
+  font-family: var(--aiop-body);
+  font-size: 13px;
+}
+
+.aiop-substrate-map__row-tag {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-gold-bright);
+  font-weight: 600;
+}
+
+.aiop-substrate-map__row-name {
+  color: var(--aiop-ink-soft);
+}
+
+@media (max-width: 480px) {
+  .aiop-substrate-map__row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+.aiop-substrate-map__chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.aiop-substrate-map__chip {
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  border: 1px solid var(--aiop-rule-strong);
+  padding: 4px 9px;
+  background: var(--aiop-paper);
+}
+
+
+/* ─── 27.7 · Substrate map — column 3 (Headless surfaces) ────────── */
+
+.aiop-substrate-map__surfaces {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.aiop-substrate-map__surface {
+  background: var(--aiop-paper);
+  border: 1px solid var(--aiop-rule-strong);
+  padding: 11px 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.aiop-substrate-map__surface-icon {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--aiop-gold-bright);
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--aiop-rule-strong);
+  flex-shrink: 0;
+  background: var(--aiop-card);
+}
+
+.aiop-substrate-map__surface-name {
+  font-family: var(--aiop-body);
+  font-size: 13px;
+  color: var(--aiop-ink);
+  font-weight: 500;
+}
+
+
+/* ─── 27.8 · Substrate map — closing strip ──────────────────────── */
+
+.aiop-substrate-map__card-foot {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  text-align: center;
+  padding-top: clamp(14px, 1.6vw, 20px);
+  border-top: 1px solid var(--aiop-rule);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 28 · Surface pick — three families, one substrate underneath
+ *
+ * Second tail section. Sits on a slight paper-2 wash so the section
+ * change reads at a glance without staging an opinionated pause
+ * (Software-for-Few already carries the dramatic interstitial role
+ * earlier in the page). Three family cards sit inside a single card
+ * with shared chrome that matches the substrate map.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-surface-pick {
+  padding-block: clamp(60px, 7vw, 110px);
+  background: var(--aiop-paper-2);
+  border-block: 1px solid var(--aiop-rule);
+}
+
+.aiop-surface-pick__head {
+  display: grid;
+  gap: 24px;
+  align-items: end;
+  margin-bottom: clamp(36px, 4.5vw, 56px);
+}
+
+@media (min-width: 800px) {
+  .aiop-surface-pick__head {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: clamp(32px, 4vw, 56px);
+  }
+}
+
+.aiop-surface-pick__title {
+  margin: 0;
+  max-width: 20ch;
+}
+
+.aiop-surface-pick__lede {
+  font-family: var(--aiop-body);
+  font-size: clamp(15px, 1.1vw, 17px);
+  line-height: 1.6;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+  max-width: 60ch;
+  padding-bottom: 6px;
+}
+
+@media (max-width: 799px) {
+  .aiop-surface-pick__lede {
+    padding-bottom: 0;
+  }
+}
+
+.aiop-surface-pick__card {
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-strong);
+  padding:
+    clamp(20px, 2.4vw, 32px)
+    clamp(20px, 2.4vw, 32px)
+    clamp(16px, 2vw, 24px);
+  display: grid;
+  gap: clamp(20px, 2.4vw, 32px);
+}
+
+.aiop-surface-pick__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: clamp(14px, 1.6vw, 20px);
+  border-bottom: 1px solid var(--aiop-rule);
+  flex-wrap: wrap;
+}
+
+.aiop-surface-pick__card-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
+  font-weight: 500;
+}
+
+.aiop-surface-pick__card-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--aiop-gold-bright);
+  border-radius: 50%;
+}
+
+.aiop-surface-pick__card-flow {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-gold-bright);
+  border: 1px solid var(--aiop-rule-strong);
+  padding: 5px 10px;
+}
+
+
+/* ─── 28.1 · Surface pick — three family cards ────────────────────── */
+
+.aiop-surface-pick__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--aiop-rule);
+  border: 1px solid var(--aiop-rule-strong);
+}
+
+@media (min-width: 800px) {
+  .aiop-surface-pick__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.aiop-surface-pick__family {
+  background: var(--aiop-paper);
+  padding: clamp(20px, 2.4vw, 28px) clamp(18px, 2vw, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.aiop-surface-pick__family-head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.aiop-surface-pick__family-label {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-gold-bright);
+  font-weight: 600;
+}
+
+.aiop-surface-pick__family-detail {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-weight: 500;
+  font-size: clamp(17px, 1.4vw, 20px);
+  line-height: 1.3;
+  letter-spacing: -0.012em;
+  color: var(--aiop-ink);
+  max-width: 24ch;
+}
+
+.aiop-surface-pick__family-surfaces {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.aiop-surface-pick__family-surface {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--aiop-rule-strong);
+  padding: 7px 11px;
+  background: var(--aiop-card);
+}
+
+.aiop-surface-pick__family-icon {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--aiop-gold-bright);
+  line-height: 1;
+}
+
+.aiop-surface-pick__family-name {
+  font-family: var(--aiop-body);
+  font-size: 13px;
+  color: var(--aiop-ink);
+  font-weight: 500;
+}
+
+.aiop-surface-pick__family-use {
+  margin: 0;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--aiop-rule);
+  font-family: var(--aiop-body);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
+
+/* ─── 28.2 · Surface pick — closing strip ────────────────────────── */
+
+.aiop-surface-pick__card-foot {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  text-align: center;
+  padding-top: clamp(14px, 1.6vw, 20px);
+  border-top: 1px solid var(--aiop-rule);
+}
+
+
+/* ─── 28.3 · Headless tail — reduced motion ──────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .aiop-substrate-map,
+  .aiop-surface-pick {
+    padding-block: clamp(40px, 6vw, 80px) !important;
   }
 }

@@ -178,8 +178,8 @@ export const diagnosisSection: {
     {
       n: "02",
       tag: "Localization at scale",
-      title: "The words ship fast. Cultural review still stalls the launch.",
-      body: "AI moves the translation in minutes. Brand register, claims, and market voice each wait on a senior reviewer per market.",
+      title: "Every market still waits on a senior reviewer, even when the words ship in minutes.",
+      body: "AI handles the translation. Register, claims, and cultural fit still wait on a senior reviewer in every market, and that's where the launch calendar slips.",
       tone: "gold",
     },
     {
@@ -198,8 +198,8 @@ export const diagnosisSection: {
     },
   ],
   gap: {
-    title: "The biggest challenge with AI",
-    titleEm: "isn't technical.",
+    title: "The fix isn't more AI.",
+    titleEm: "It's learning how to brief an AI.",
   },
 };
 
@@ -277,6 +277,11 @@ export type AiRealityColumn = {
   id: "tool" | "middle" | "collab";
   label: string;
   title: string;
+  /* Short fragment that fleshes out the column title. The voice is
+     deliberately conversational — short clauses separated by periods
+     or commas — so the spectrum reads as three crystallised takes,
+     not three bullet-point summaries. */
+  sub: string;
   align: "left" | "center" | "right";
   highlight?: boolean;
 };
@@ -296,12 +301,14 @@ export const aiRealitySection = {
         id: "tool",
         label: "Tool",
         title: "Executes commands",
+        sub: "Predictable software that does what we ask, or gives clear errors when it fails.",
         align: "left",
       },
       {
         id: "middle",
         label: "AI lives here",
         title: "Neither pure tool nor true collaborator",
+        sub: "A bit of both. Trained on us, but not like us. A new paradigm no LinkedIn bro teaches you how to navigate.",
         align: "center",
         highlight: true,
       },
@@ -309,6 +316,7 @@ export const aiRealitySection = {
         id: "collab",
         label: "Collaborator",
         title: "Interprets intent",
+        sub: "Opinionated. Brainstorms with you, challenges your ideas, just listens when you vent.",
         align: "right",
       },
     ] satisfies AiRealityColumn[],
@@ -324,19 +332,32 @@ export const aiRealitySection = {
  * ─────────────────────────────────────────────────────────────────── */
 
 export const visionSection = {
+  /* Title splits across an italicised pivot. The em wraps the verb
+     `is` so the heading lands as "Adoption that works _is_
+     automation." — a short declarative whose pivot reads at a glance.
+     Rendering interleaves: title + <em>{titleEm}</em> + titleAfter. */
   title: "Adoption that works",
-  titleEm: "is automation.",
-  centerLabel: "SUBSTRATE",
+  titleEm: "is",
+  titleAfter: "automation.",
+  /* Centre of the orbit: the headless layer is the deepest position
+     in the architecture; the substrate file names live inside it
+     because the substrate is what gets exposed headlessly. */
+  centerLabel: "HEADLESS",
   centerFiles: [
     "how-teams-work.md",
     "stripe-mkt-strategy.skill",
     "weekly-standup-transcript.txt",
   ],
-  satelliteLabel: "Headless",
+  /* Each phase sits on its own concentric ring at a different clock
+     position so the orbit reads as a nested architecture: Navigate
+     on the outer ring, Encode on the middle ring, Build on the
+     innermost ring, and Headless at the centre. Positioning is
+     driven entirely by the phase id in CSS — no per-row position
+     metadata is needed. */
   orbits: [
-    { id: "navigate", label: "Navigate", position: "top" },
-    { id: "encode", label: "Encode", position: "bottom-right" },
-    { id: "build", label: "Build", position: "bottom-left" },
+    { id: "navigate", label: "Navigate", ring: "outer" },
+    { id: "encode", label: "Encode", ring: "middle" },
+    { id: "build", label: "Build", ring: "inner" },
   ] as const,
   caption:
     "Once you figure out how to navigate AI, you learn how to encode the way you work into a layer you can build any agent on.",
@@ -358,7 +379,7 @@ export const approachSection = {
   caption:
     "I've led the AI adoption at Loop Earplugs since 2024, first across the whole company, then embedded inside marketing, helping teams turn the way they actually work into reusable skills they can build their own automations on.",
   close:
-    "On my teams, the hardest AI critics ended up product managing the tools I vibe-coded for them, and that's the spirit I want to bring to Stripe.",
+    "The hardest AI critics ended up product managing the tools I vibe-coded for them, and that's the spirit I want to bring to Stripe.",
 } as const;
 
 export type ApproachTone = "violet" | "gold" | "sage";
@@ -900,14 +921,14 @@ export const headlessShiftSection = {
   title: "Software is going",
   titleEm: "headless.",
   body:
-    "Salesforce shipped Headless 360, Stripe shipped a CLI for the terminal — both shipped the engine first and let the interface follow.",
+    "Salesforce shipped Headless 360, Stripe shipped a CLI for the terminal — both bet on the same idea: the orchestration matters more than the surface that exposes it.",
   bodyStrong:
-    "Every internal tool I built at Loop ran headless, so the same substrate served every surface, and I'd bring that same approach inside Stripe.",
+    "My Loop tools are partly there; the rest is what I'm working on. It's also the discipline I teach in workshops — design the orchestration first, because the surface is the cheapest layer to swap later.",
   actions: [
     { id: "headless", label: "See the overview", href: "#headless" },
   ],
   preview: {
-    eyebrow: "Mímir headless",
+    eyebrow: "Briefing agents",
     badge: "Source → Surface",
     substrate: {
       pill: "Encode",
@@ -971,6 +992,150 @@ export const headlessSection = {
     { id: "agent", icon: "◐", name: "Agent", verb: "Scheduled · autonomous" },
     { id: "tool", icon: "⤴", name: "In-tool", verb: "Slack · Figma · Monday" },
   ],
+} as const;
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Substrate map — sources, substrate, surfaces as one system
+ *
+ * First of two tail sections that follow the headless overview.
+ * Translates the abstract "engine and the interface are separate"
+ * line into a single inspectable map card: trusted sources on the
+ * left (where marketer work already lives), the encoded substrate
+ * in the middle (the authority layer the FDA builds with each
+ * marketer), and the headless surfaces on the right (where the
+ * cohort actually calls the engine). Two narrow connector cells
+ * label the read/expose direction so the system grammar is
+ * explicit, and a closing strip names the three-state transition
+ * in the same mono caps grammar as the rest of the route.
+ *
+ * Mirrors the title-left + lede-right header rhythm shared by
+ * Diagnosis, Vision, and Approach so the tail of the page reads as
+ * one argument. Re-skinning for a different team only touches the
+ * row arrays here.
+ * ─────────────────────────────────────────────────────────────────── */
+
+export const substrateMapSection = {
+  title: "Three layers,",
+  titleEm: "one operating model.",
+  body:
+    "The substrate doesn't add a new database. It encodes the reasoning on top of the systems marketers already use — what matters, how to decide, what to check before something ships — so every surface inherits the same judgment, even when the model underneath changes.",
+  cardLabel: "Substrate map",
+  flow: "Source → Authority → Surface",
+  columns: {
+    sources: {
+      n: "01",
+      kicker: "Trusted sources",
+      title: "Where the work already lives.",
+      items: [
+        "Brand framework",
+        "Past campaigns",
+        "Customer research",
+        "Performance data",
+        "Style guidelines",
+        "Reviewer notes",
+      ],
+    },
+    substrate: {
+      n: "02",
+      kicker: "Encoded substrate",
+      badge: "Authority layer",
+      title: "What matters, how to decide, what to check.",
+      items: [
+        { tag: "Voice", name: "How the brand speaks" },
+        { tag: "Examples", name: "What good looks like" },
+        { tag: "Sources", name: "What data it can read" },
+        { tag: "Review", name: "Who confirms what" },
+      ],
+      tags: ["Owned by marketing", "Versioned", "Model-portable"],
+    },
+    surfaces: {
+      n: "03",
+      kicker: "Headless surfaces",
+      badge: "Headless wrapper",
+      title: "Where the cohort calls the engine.",
+      items: [
+        { icon: "C", name: "Cursor" },
+        { icon: "Cl", name: "Claude" },
+        { icon: "◐", name: "Web app" },
+        { icon: "#", name: "Slack" },
+        { icon: "A", name: "Agents" },
+        { icon: "{ }", name: "API" },
+      ],
+    },
+  },
+  connectors: { left: "Reads from", right: "Exposed as" },
+  closing:
+    "Work stays in place → substrate adds judgment → surfaces inherit it",
+} as const;
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Surface pick — same engine, surface fits the marketer
+ *
+ * Second tail section. Where the substrate map names the
+ * architecture, this names the FDA pattern that makes it
+ * cohort-scalable: the substrate underneath every tool stays the
+ * same, but the surface a marketer reaches it through adapts to
+ * where they already work. A tool built for one marketer becomes a
+ * way in for another, which is how a single FDA serves a group of
+ * ~20 marketers without each tool staying single-use.
+ *
+ * Three "surface families" instead of three install paths so the
+ * section reads as a cohort scaling story, not a developer-onboarding
+ * story (which is what the standalone Mímir Pick-a-Surface card is).
+ * ─────────────────────────────────────────────────────────────────── */
+
+export type SurfacePickFamily = {
+  id: "power" | "team" | "system";
+  label: string;
+  detail: string;
+  surfaces: { icon: string; name: string }[];
+  use: string;
+};
+
+export const surfacePickSection = {
+  title: "Pick the surface",
+  titleEm: "that fits the workflow.",
+  body:
+    "A tool built for one marketer becomes a way in for another. The substrate underneath stays the same; the surface adapts to where the work already happens — Cursor or Claude for power users, a Slack command for quick checks, a dashboard for the whole team, an API for the systems that need to call it from elsewhere.",
+  cardLabel: "Surface families",
+  flow: "Source → Surface",
+  families: [
+    {
+      id: "power",
+      label: "Power",
+      detail: "For marketers driving the engine directly.",
+      surfaces: [
+        { icon: "C", name: "Cursor" },
+        { icon: "Cl", name: "Claude" },
+        { icon: "◇", name: "MCP" },
+      ],
+      use: "Best for the deep, exploratory work.",
+    },
+    {
+      id: "team",
+      label: "Team",
+      detail: "For everyday checks across the cohort.",
+      surfaces: [
+        { icon: "#", name: "Slack" },
+        { icon: "◐", name: "Web app" },
+        { icon: "⤴", name: "Plugins" },
+      ],
+      use: "Best for the work everyone touches.",
+    },
+    {
+      id: "system",
+      label: "System",
+      detail: "For other systems calling the engine.",
+      surfaces: [
+        { icon: "{ }", name: "API" },
+        { icon: "⇄", name: "Webhooks" },
+        { icon: "$_", name: "CLI" },
+      ],
+      use: "Best for the runs that don't need a human.",
+    },
+  ] satisfies SurfacePickFamily[],
+  closing:
+    "Build once → scale through surfaces → cohort inherits the capability",
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
