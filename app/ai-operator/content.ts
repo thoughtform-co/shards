@@ -270,7 +270,7 @@ export const approachSteps: ApproachStep[] = [
       title: "What navigation looks like",
       titleEm: "across an actual cohort.",
       lede:
-        "AI is trained on us but is not like us. AI intuition is learning how to Navigate this strange new intelligence and working out how to ask for what you want. Once teams understand they're working with a smart, albeit alien, colleague that just needs context, you can start to Encode their expertise into substrates you can Build agents on.",
+        "Navigation is taught one cohort at a time. Each team answers a single question — \"what would a smart new colleague need to know?\" — and turns the answer into a working Claude Skill inside a 45-minute session. The operator leaves with a brief on how the team actually decides; AI Stewards inside the team carry the practice forward.",
       meta: [
         { k: "DURATION", v: "Continuous · 1–2 weeks per team" },
         { k: "ARTIFACT", v: "Workflow brief · maturity model" },
@@ -388,7 +388,7 @@ export const approachSteps: ApproachStep[] = [
       title: "What building looks like",
       titleEm: "from prototype to production.",
       lede:
-        "Vibe-coded prototypes within days. Hardened to production over weeks by an engineer paired with the operator. Live next to the work in Slack, Figma, Monday, custom UIs. Same engine exposed via REST, MCP, scheduled agents, in-tool buttons. The interface is one face of many.",
+        "Vibe-coded prototypes within days. Hardened to production over the following weeks. Live next to the work in Slack, Figma, Monday, custom UIs. Same engine exposed via REST, MCP, scheduled agents, in-tool buttons. The interface is one face of many.",
       meta: [
         { k: "TEMPO", v: "Days to demo · weeks to harden" },
         { k: "SHAPE", v: "Engine + surfaces · headless first" },
@@ -398,8 +398,8 @@ export const approachSteps: ApproachStep[] = [
         {
           heading: "How it ships",
           bullets: [
-            "Day-one prototype on the team's actual deliverable. No deck-first detours.",
-            "Engineer hardens what the operator vibe-codes; loop keeps turning while it ships.",
+            "Day-one prototype on the team's actual work. No deck-first detours.",
+            "Operator vibe-codes and hardens in the same loop. No handoff between prototype and production.",
             "Headless API + MCP server from day one so the engine isn't tied to one UI.",
             "Token allowlists, scopes, audit log, durable rate buckets — policy lives in one verifier.",
           ],
