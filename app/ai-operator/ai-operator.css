@@ -9497,3 +9497,72 @@
     padding-block: clamp(40px, 6vw, 80px) !important;
   }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 29 · Cases close + Software-for-few phase pill
+ *
+ * Two small additions that anchor the route's mid-page rhythm:
+ *
+ *   29.1 · `.aiop-cases__close`  — single editorial callout that lands
+ *          the cases section the way `aiop-approach__close` lands the
+ *          flywheel. Same chrome (violet hairline border, paper-soft
+ *          gradient, centred text) so the two callouts read as one
+ *          family. Sits inside an `.aiop-wrap` after the case list so
+ *          the gradient terminates with the rest of the section's
+ *          horizontal rhythm.
+ *
+ *   29.2 · `.aiop-few__phase`     — small block holding the Build
+ *          term-pill at the top of the Software-for-few copy column.
+ *          Names the flywheel phase this section continues without
+ *          repeating any of the Approach copy.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-cases__close {
+  margin-top: clamp(48px, 6vw, 72px);
+  margin-inline: auto;
+  padding: clamp(28px, 3.5vw, 44px) clamp(32px, 4vw, 56px);
+  border: 1px solid
+    color-mix(in oklab, var(--aiop-violet) 22%, var(--aiop-rule));
+  border-radius: 18px;
+  font-family: var(--aiop-body);
+  font-style: normal;
+  font-weight: 500;
+  font-size: clamp(18px, 1.7vw, 22px);
+  line-height: 1.5;
+  color: var(--aiop-ink);
+  text-align: center;
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--aiop-violet) 8%, var(--aiop-card)) 0%,
+    var(--aiop-card) 50%,
+    color-mix(in oklab, var(--aiop-sage) 7%, var(--aiop-card)) 100%
+  );
+  box-shadow: 0 18px 42px rgba(26, 22, 18, 0.06);
+  max-width: 78ch;
+}
+
+/* Phase pill block — small wrapper above the Software-for-few title
+   that holds a single Build term-pill. The pill itself uses the
+   shared `.aiop-term-pill` chrome; the wrapper just controls
+   vertical spacing so the pill reads as a deliberate eyebrow rather
+   than a stray inline element. */
+.aiop-few__phase {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 8px;
+  /* The shared term-pill carries its own padding, border, and dot.
+     The wrapper sits at the start of the flex copy column so the
+     pill bottom aligns with the title baseline cleanly. */
+}
+
+.aiop-few__phase .aiop-term-pill {
+  /* The Build pill sits as an eyebrow, so size it down slightly
+     from the inline-in-prose default and tighten the chrome so the
+     pill reads as anchor metadata, not a chip in flowing copy. */
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 5px 11px;
+}

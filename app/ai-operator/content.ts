@@ -41,7 +41,7 @@ export const meta = {
     { id: "vision", label: "Vision", href: "#vision" },
     { id: "approach", label: "Approach", href: "#approach" },
     { id: "cases", label: "Cases", href: "#cases" },
-    { id: "headless", label: "Headless", href: "#headless" },
+    { id: "headless", label: "Headless", href: "#substrate-map" },
   ],
   cta: { label: "Get in touch", href: "#cta" },
 } as const;
@@ -642,6 +642,14 @@ export const casesSection = {
       def: "Build a workflow that didn't exist before.",
     },
   ],
+  /* Closing callout — a single editorial line that lands the cases
+     section the way `approachSection.close` lands the flywheel. The
+     point isn't to celebrate vibe-coding, it's to set up the
+     headless thesis the page hands into next: the surface is the
+     cheapest layer to swap, the orchestration underneath is what
+     keeps mattering. */
+  close:
+    "Vibe coding has been a huge unlock, but the interface is the least interesting layer of any of these.",
 } as const;
 
 export type CaseTone = "gold" | "sage" | "slate" | "violet";
@@ -684,7 +692,7 @@ export const cases: CaseProject[] = [
     nameEm: "mir",
     tagline: "Brand Intelligence",
     subline: "Loop's own knowledge, structured.",
-    team: "Creative Strategy · Marketing",
+    team: "Performance · Creative Strategy",
     status: "Production",
     year: "2025",
     challenge:
@@ -723,7 +731,7 @@ export const cases: CaseProject[] = [
     nameEm: "per",
     tagline: "AI Image & Video Generation",
     subline: "Replaced Krea. Built in-house.",
-    team: "Studio · Creative",
+    team: "Studio · Design | Product Design",
     status: "Production",
     year: "2025",
     challenge:
@@ -760,7 +768,7 @@ export const cases: CaseProject[] = [
     nameEm: "lon",
     tagline: "UGC Localization",
     subline: "Top-performing UGC, dubbed at scale.",
-    team: "Marketing · Localization",
+    team: "Performance · Localization & Expansion",
     status: "Production",
     year: "2025",
     challenge:
@@ -795,7 +803,7 @@ export const cases: CaseProject[] = [
     nameEm: "dall",
     tagline: "Workflow Orchestration",
     subline: "Everything around the creative work, in one tool.",
-    team: "Studio · Marketing Ops",
+    team: "Studio · Project Management",
     status: "Production",
     year: "2025",
     challenge:

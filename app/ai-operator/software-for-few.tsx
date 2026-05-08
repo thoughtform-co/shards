@@ -136,6 +136,17 @@ export function SoftwareForFew() {
 
       <div className="aiop-wrap aiop-few__inner">
         <div className="aiop-few__copy aiop-reveal">
+          {/* Phase pill — names the flywheel phase this section belongs
+              to. Software-for-few is what Build looks like in practice
+              once the substrate is in place, so the pill establishes
+              the connection back to the Approach flywheel without
+              repeating its language. Sage matches the Build lane. */}
+          <span className="aiop-few__phase" aria-label="Flywheel phase">
+            <span className="aiop-term-pill aiop-term-pill--build">
+              <span className="aiop-term-pill__dot" aria-hidden="true" />
+              Build
+            </span>
+          </span>
           <h2
             className="aiop-section-title aiop-few__title"
             id="aiop-few-title"

@@ -6,7 +6,6 @@ import { Cases } from "./cases";
 import {
   ctaSection,
   footer,
-  headlessSection,
   hero,
   meta,
   substrateMapSection,
@@ -57,15 +56,20 @@ import { SoftwareForFew } from "./software-for-few";
  *   09 Cases            — Heimdall-style showcase grid (client). Pinned
  *                         to viewport bottom while Headless-shift rises
  *                         over it (parallax-reveal pair).
- *   10 Headless-shift   — Gold interstitial: Salesforce / Stripe / the
- *                         shift to headless. Slides up over the frozen
- *                         Cases and previews the Pick-a-surface
- *                         vocabulary the overview unpacks below.
- *   11 Headless         — Concise plain-English overview of what
- *                         "headless" means: build the engine once,
- *                         every surface inherits.
- *   12 CTA              — One ask. Smallest commitment.
- *   13 Footer
+ *   10 Headless-shift   — Violet interstitial: Salesforce / Stripe /
+ *                         the shift to headless. Slides up over the
+ *                         frozen Cases and primes the substrate-map
+ *                         vocabulary unpacked below.
+ *   11 Substrate map    — "Three layers, one operating model." Single
+ *                         inspectable card (sources -> substrate ->
+ *                         surfaces) that absorbs the headless nav
+ *                         anchor and replaces the older "Build the
+ *                         engine once" overview.
+ *   12 Surface pick     — "Pick the surface that fits the workflow."
+ *                         Three surface families framing cohort
+ *                         scaling instead of developer onboarding.
+ *   13 CTA              — One ask. Smallest commitment.
+ *   14 Footer
  */
 
 function Arrow() {
@@ -310,61 +314,6 @@ export default function AiOperatorPage() {
         <Cases />
         <HeadlessShift />
       </div>
-
-      {/* ─── Headless overview — what we mean by "headless" ──────── */}
-      <section className="aiop-section aiop-headless" id="headless">
-        <div className="aiop-wrap">
-          <header className="aiop-headless__head aiop-reveal">
-            <h2 className="aiop-section-title aiop-headless__title">
-              {headlessSection.title}{" "}
-              <em>{headlessSection.titleEm}</em>
-            </h2>
-            <p className="aiop-section-lede aiop-headless__lede">
-              {headlessSection.body}
-            </p>
-          </header>
-
-          <div className="aiop-headless__diagram aiop-reveal">
-            <aside
-              className="aiop-headless__substrate"
-              aria-label="Substrate layers"
-            >
-              <header className="aiop-headless__substrate-head">
-                <span className="aiop-headless__substrate-title">
-                  Encoded substrate
-                </span>
-                <span className="aiop-headless__substrate-badge">Engine</span>
-              </header>
-              <ul className="aiop-headless__layers" role="list">
-                {headlessSection.layers.map((l) => (
-                  <li key={l.tag} className="aiop-headless__layer">
-                    <span className="aiop-headless__layer-tag">{l.tag}</span>
-                    <span className="aiop-headless__layer-name">{l.name}</span>
-                  </li>
-                ))}
-              </ul>
-            </aside>
-
-            <div
-              className="aiop-headless__surfaces"
-              aria-label="Surfaces inheriting the substrate"
-            >
-              {headlessSection.surfaces.map((s) => (
-                <article key={s.id} className="aiop-headless__surface">
-                  <span
-                    className="aiop-headless__surface-icon"
-                    aria-hidden="true"
-                  >
-                    {s.icon}
-                  </span>
-                  <span className="aiop-headless__surface-name">{s.name}</span>
-                  <span className="aiop-headless__surface-verb">{s.verb}</span>
-                </article>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* ─── Substrate map — sources, substrate, surfaces as one ────
        *

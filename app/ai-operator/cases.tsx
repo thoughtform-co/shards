@@ -60,6 +60,15 @@ export function Cases() {
         ))}
       </div>
 
+      {/* Closing callout — single editorial line that lands the cases
+          section the way `aiop-approach__close` lands the flywheel.
+          Hands directly into the headless thesis below: the surface
+          is the cheapest layer to swap, the orchestration underneath
+          is what keeps mattering. */}
+      <div className="aiop-wrap">
+        <p className="aiop-cases__close aiop-reveal">{casesSection.close}</p>
+      </div>
+
       <OperatorModal
         open={open !== null}
         onClose={() => setOpen(null)}
