@@ -165,28 +165,39 @@ export function HeadlessShift() {
             <span className="aiop-shift__card-badge">{badge}</span>
           </header>
 
-          {/* Encode block — the substrate the interface inherits */}
+          {/* Encode lane — frame wraps the substrate stack so the
+              encode card reads as one grouped concept, mirroring the
+              build lane's frame for visual symmetry across the two
+              lanes. Encode pill is notched into the top edge of the
+              frame border (fieldset/legend pattern). */}
           <section
             className="aiop-shift__sub aiop-shift__sub--encode"
             aria-label={substrate.title}
           >
-            <header className="aiop-shift__sub-head">
-              <span className="aiop-shift__pill aiop-shift__pill--encode">
+            <div className="aiop-shift__lane">
+              <span className="aiop-shift__pill aiop-shift__pill--encode aiop-shift__pill--frame">
                 <span className="aiop-shift__pill-dot" aria-hidden="true" />
                 {substrate.pill}
               </span>
-              <span className="aiop-shift__sub-title">{substrate.title}</span>
-            </header>
-            <ul className="aiop-shift__substrate" role="list">
-              {substrate.layers.map((layer) => (
-                <li key={layer.tag} className="aiop-shift__substrate-row">
-                  <span className="aiop-shift__substrate-tag">{layer.tag}</span>
-                  <span className="aiop-shift__substrate-name">
-                    {layer.name}
-                  </span>
-                </li>
-              ))}
-            </ul>
+
+              <div className="aiop-shift__lane-block">
+                <span className="aiop-shift__lane-label">
+                  {substrate.title}
+                </span>
+                <ul className="aiop-shift__substrate" role="list">
+                  {substrate.layers.map((layer) => (
+                    <li key={layer.tag} className="aiop-shift__substrate-row">
+                      <span className="aiop-shift__substrate-tag">
+                        {layer.tag}
+                      </span>
+                      <span className="aiop-shift__substrate-name">
+                        {layer.name}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </section>
 
           {/* Connector — names the encode → build transition */}
@@ -196,27 +207,23 @@ export function HeadlessShift() {
             <span className="aiop-shift__connector-line" />
           </div>
 
-          {/* Build block — frame wraps the two children of Build (the
-              headless interface and the surfaces) with a soft glow so
-              it reads as one grouped concept. The Build pill is
-              notched into the top edge of the frame's border like a
-              fieldset legend, anchoring both blocks to the build
-              lane. */}
+          {/* Build lane — frame wraps the headless interface and the
+              surfaces (two equal sibling blocks separated by a sage
+              divider). Build pill notched into the top edge of the
+              frame border, mirroring the encode lane above. */}
           <section
             className="aiop-shift__sub aiop-shift__sub--build"
             aria-label={iface.title}
           >
-            <div className="aiop-shift__build-frame">
+            <div className="aiop-shift__lane">
               <span className="aiop-shift__pill aiop-shift__pill--build aiop-shift__pill--frame">
                 <span className="aiop-shift__pill-dot" aria-hidden="true" />
                 {iface.pill}
               </span>
 
               {/* Headless interface — tabs + snippet */}
-              <div className="aiop-shift__build-block">
-                <span className="aiop-shift__build-block-label">
-                  {iface.title}
-                </span>
+              <div className="aiop-shift__lane-block">
+                <span className="aiop-shift__lane-label">{iface.title}</span>
                 <div
                   className="aiop-shift__tabs"
                   role="tablist"
@@ -253,11 +260,11 @@ export function HeadlessShift() {
                 </div>
               </div>
 
-              <div className="aiop-shift__build-divider" aria-hidden="true" />
+              <div className="aiop-shift__lane-divider" aria-hidden="true" />
 
               {/* Surfaces — equal sibling block under Build */}
-              <div className="aiop-shift__build-block">
-                <span className="aiop-shift__build-block-label">
+              <div className="aiop-shift__lane-block">
+                <span className="aiop-shift__lane-label">
                   {iface.surfacesLabel}
                 </span>
                 <ul className="aiop-shift__surfaces" role="list">

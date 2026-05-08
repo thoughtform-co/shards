@@ -6803,28 +6803,38 @@
   white-space: nowrap;
 }
 
-/* Encode / Build sub-blocks. The card now reads as a tiny
-   Encode → Build flywheel: the encode block carries the substrate;
-   the build block carries the headless interface; a connector names
-   the transition between them. */
+/* Encode / Build sub-blocks. The card reads as a tiny Encode →
+   Build flywheel: the encode lane carries the substrate; the build
+   lane carries the headless interface and the surfaces; a connector
+   names the transition between them. Both lanes use the same
+   `.aiop-shift__lane` scaffolding (frame + pill + label + content)
+   so the two read as siblings; lane-specific tints come from the
+   `.aiop-shift__sub--encode` / `.aiop-shift__sub--build` modifiers
+   on the parent section. */
 .aiop-shift__sub {
+  /* Lane frame controls all inner spacing — no extra section gap. */
+  display: block;
+}
+
+/* Equal-sibling content cell inside a lane frame. Both encode and
+   build use this scaffolding so the labels + content shape stay
+   consistent across the two lanes. */
+.aiop-shift__lane-block {
   display: grid;
-  gap: clamp(10px, 1.1vw, 14px);
+  gap: clamp(8px, 1vw, 12px);
 }
 
-.aiop-shift__sub-head {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+.aiop-shift__lane-label {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-ink-soft);
 }
 
-.aiop-shift__sub-title {
-  font-family: var(--aiop-display);
-  font-size: clamp(15px, 1.2vw, 17px);
-  font-weight: 540;
-  letter-spacing: -0.012em;
-  color: var(--aiop-ink);
+.aiop-shift__lane-divider {
+  height: 1px;
 }
 
 /* Lane pill — mirrors `.aiop-hero__lede-pill` so the encode/build
@@ -7020,18 +7030,13 @@
   word-break: break-all;
 }
 
-/* Build frame — wraps the two children of Build (the headless
-   interface and the surfaces) so they read as one grouped concept.
-   The Build pill notches into the top edge of the border like a
-   fieldset legend; the soft sage halo emphasises that everything
-   inside is part of the build lane without competing with the
-   amber-toned bleed and the encode block above. */
-.aiop-shift__sub--build {
-  /* Frame controls the inner spacing — no extra section-level gap. */
-  gap: 0;
-}
-
-.aiop-shift__build-frame {
+/* Lane frame — shared scaffolding for the encode and build lanes.
+   Both wrap their inner content in a softly-glowed sub-card with
+   a pill notched into the top edge of the border (fieldset/legend
+   pattern). Lane-specific tints come from the parent section's
+   `--encode` / `--build` modifier so the same scaffolding reads in
+   amber for encode and in sage for build. */
+.aiop-shift__lane {
   position: relative;
   display: grid;
   gap: clamp(12px, 1.4vw, 16px);
@@ -7040,8 +7045,31 @@
     clamp(22px, 2.4vw, 30px)
     clamp(14px, 1.6vw, 18px)
     clamp(14px, 1.5vw, 18px);
-  /* Lifted background so the frame visibly separates from the
-     bleed wash behind it; the sage tint pulls the lane signal in. */
+  border-radius: 10px;
+}
+
+/* Encode lane: amber-toned halo. The frame lives over the section's
+   amber bleed so the lift here biases toward white-card rather than
+   card-2 (more contrast against the warm bleed) and the border is
+   pushed a touch stronger than the build frame's sage border to
+   compensate for the amber-on-amber lower base contrast. */
+.aiop-shift__sub--encode .aiop-shift__lane {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-amber) 5%, #ffffff) 0%,
+      color-mix(in oklab, var(--aiop-amber) 4%, var(--aiop-card)) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--aiop-amber) 56%, var(--aiop-rule-strong));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.50),
+    0 0 0 1px color-mix(in oklab, var(--aiop-amber) 20%, transparent),
+    0 0 22px -4px color-mix(in oklab, var(--aiop-amber) 28%, transparent),
+    0 18px 36px -20px color-mix(in oklab, var(--aiop-amber) 36%, rgba(26, 22, 18, 0.28));
+}
+
+/* Build lane: sage-toned halo. */
+.aiop-shift__sub--build .aiop-shift__lane {
   background:
     linear-gradient(
       180deg,
@@ -7049,10 +7077,6 @@
       color-mix(in oklab, var(--aiop-sage) 5%, var(--aiop-card)) 100%
     );
   border: 1px solid color-mix(in oklab, var(--aiop-sage) 38%, var(--aiop-rule-strong));
-  border-radius: 10px;
-  /* Soft glow: an outer sage halo + a deeper drop shadow, anchored
-     by an inset top-edge highlight that gives the frame the same
-     lifted feel as the encode block's substrate panel. */
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.42),
     0 0 0 1px color-mix(in oklab, var(--aiop-sage) 14%, transparent),
@@ -7060,7 +7084,7 @@
     0 18px 36px -20px color-mix(in oklab, var(--aiop-sage) 32%, rgba(26, 22, 18, 0.28));
 }
 
-/* Pill notched into the top edge of the build frame. Solid pill
+/* Pill notched into the top edge of the lane frame. Solid pill
    background occludes the frame border line where the pill sits, so
    the visual reads as the frame's outline starting at the pill. */
 .aiop-shift__pill--frame {
@@ -7071,35 +7095,37 @@
   z-index: 1;
 }
 
+/* Per-lane pill halo: amber for encode, sage for build. The halo
+   rhymes with the frame's own glow ring so pill + frame read as
+   one piece per lane. */
+.aiop-shift__pill--encode.aiop-shift__pill--frame {
+  border-color: color-mix(in oklab, var(--aiop-amber) 52%, var(--aiop-rule-strong));
+  box-shadow:
+    0 4px 14px rgba(26, 22, 18, 0.06),
+    0 0 0 3px color-mix(in oklab, var(--aiop-amber) 16%, transparent),
+    0 0 16px -4px color-mix(in oklab, var(--aiop-amber) 30%, transparent);
+}
+
 .aiop-shift__pill--build.aiop-shift__pill--frame {
   border-color: color-mix(in oklab, var(--aiop-sage) 50%, var(--aiop-rule-strong));
-  /* Layered shadow: keeps the base lift, adds a sage halo that
-     rhymes with the frame's own glow ring so pill + frame read as
-     one piece. */
   box-shadow:
     0 4px 14px rgba(26, 22, 18, 0.06),
     0 0 0 3px color-mix(in oklab, var(--aiop-sage) 14%, transparent),
     0 0 16px -4px color-mix(in oklab, var(--aiop-sage) 28%, transparent);
 }
 
-/* Equal sibling blocks inside the frame. Both use the same label +
-   content scaffolding so the two read as components of the same
-   concept (Build). */
-.aiop-shift__build-block {
-  display: grid;
-  gap: clamp(8px, 1vw, 12px);
+/* Per-lane divider: only used between siblings inside a multi-block
+   lane (currently the build lane has Headless interface + Surfaces). */
+.aiop-shift__sub--encode .aiop-shift__lane-divider {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in oklab, var(--aiop-amber) 24%, var(--aiop-rule)) 50%,
+    transparent 100%
+  );
 }
 
-.aiop-shift__build-block-label {
-  font-family: var(--aiop-mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--aiop-muted);
-}
-
-.aiop-shift__build-divider {
-  height: 1px;
+.aiop-shift__sub--build .aiop-shift__lane-divider {
   background: linear-gradient(
     90deg,
     transparent 0%,
