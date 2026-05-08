@@ -270,7 +270,7 @@ export const approachSteps: ApproachStep[] = [
       title: "What navigation looks like",
       titleEm: "across an actual cohort.",
       lede:
-        "Navigation is taught one cohort at a time. Each team answers a single question — \"what would a smart new colleague need to know?\" — and turns the answer into a working Claude Skill inside a 45-minute session. The operator leaves with a brief on how the team actually decides; AI Stewards inside the team carry the practice forward.",
+        "Navigation teaches teams how to work and think with AI inside their real work. One 45-minute session per team is the ignition: people leave briefing AI like a colleague who is smart but missing context, and start using it inside the workflow the same week. AI Stewards inside the team carry the practice forward, and the first candidate Skill from each session becomes the seed Encode turns into substrate.",
       meta: [
         { k: "DURATION", v: "Continuous · 1–2 weeks per team" },
         { k: "ARTIFACT", v: "Workflow brief · maturity model" },
