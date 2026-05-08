@@ -9,7 +9,6 @@ import {
   headlessSection,
   hero,
   meta,
-  selectedCaseSection,
   visionSection,
 } from "./content";
 import { Diagnosis } from "./diagnosis";
@@ -59,11 +58,12 @@ import { SoftwareForFew } from "./software-for-few";
  *   10 Headless-shift   — Gold interstitial: Salesforce / Stripe / the
  *                         shift to headless. Slides up over the frozen
  *                         Cases and previews the Pick-a-surface
- *                         vocabulary the deep section unpacks below.
- *   11 Headless         — Interstitial: architecture, not a dashboard.
- *   12 Selected case    — HarvestFields, where everything lands.
- *   13 CTA              — One ask. Smallest commitment.
- *   14 Footer
+ *                         vocabulary the overview unpacks below.
+ *   11 Headless         — Concise plain-English overview of what
+ *                         "headless" means: build the engine once,
+ *                         every surface inherits.
+ *   12 CTA              — One ask. Smallest commitment.
+ *   13 Footer
  */
 
 function Arrow() {
@@ -305,7 +305,7 @@ export default function AiOperatorPage() {
         <HeadlessShift />
       </div>
 
-      {/* ─── Headless interstitial ────────────────────────────────── */}
+      {/* ─── Headless overview — what we mean by "headless" ──────── */}
       <section className="aiop-section aiop-headless" id="headless">
         <div className="aiop-wrap">
           <div className="aiop-headless__head aiop-reveal">
@@ -314,7 +314,7 @@ export default function AiOperatorPage() {
               {headlessSection.title}{" "}
               <em>{headlessSection.titleEm}</em>
             </h2>
-            <p className="aiop-section-lede">{headlessSection.lede}</p>
+            <p className="aiop-section-lede">{headlessSection.body}</p>
           </div>
 
           <div className="aiop-headless__diagram aiop-reveal">
@@ -326,20 +326,16 @@ export default function AiOperatorPage() {
                 <span className="aiop-headless__substrate-title">
                   Encoded substrate
                 </span>
-                <span className="aiop-headless__substrate-badge">Headless</span>
+                <span className="aiop-headless__substrate-badge">Engine</span>
               </header>
               <ul className="aiop-headless__layers" role="list">
                 {headlessSection.layers.map((l) => (
                   <li key={l.tag} className="aiop-headless__layer">
                     <span className="aiop-headless__layer-tag">{l.tag}</span>
                     <span className="aiop-headless__layer-name">{l.name}</span>
-                    <span className="aiop-headless__layer-meta">{l.meta}</span>
                   </li>
                 ))}
               </ul>
-              <p className="aiop-headless__substrate-foot">
-                Versioned. Owned by the team. Outlives the model underneath.
-              </p>
             </aside>
 
             <div
@@ -359,92 +355,6 @@ export default function AiOperatorPage() {
                 </article>
               ))}
             </div>
-          </div>
-
-          <ul className="aiop-headless__foot" role="list">
-            {headlessSection.foot.map((p) => (
-              <li
-                key={p.id}
-                className="aiop-headless__foot-point aiop-reveal"
-              >
-                <h3>{p.title}</h3>
-                <p>{p.body}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      {/* ─── Selected case · HarvestFields ────────────────────────── */}
-      <section className="aiop-section aiop-case" id="harvestfields">
-        <div className="aiop-wrap">
-          <div className="aiop-case__head aiop-reveal">
-            <p className="aiop-eyebrow">{selectedCaseSection.eyebrow}</p>
-            <h2 className="aiop-section-title">
-              {selectedCaseSection.title}{" "}
-              <em>{selectedCaseSection.titleEm}</em>
-            </h2>
-            <p className="aiop-section-lede">{selectedCaseSection.lede}</p>
-          </div>
-
-          <div className="aiop-case__body">
-            <div className="aiop-case__pillars aiop-reveal">
-              {selectedCaseSection.pillars.map((p) => (
-                <article key={p.n} className="aiop-case__pillar">
-                  <span className="aiop-case__pillar-n">{p.n}</span>
-                  <div>
-                    <h3 className="aiop-case__pillar-title">{p.title}</h3>
-                    <p className="aiop-case__pillar-body">{p.body}</p>
-                  </div>
-                </article>
-              ))}
-            </div>
-
-            <aside
-              className="aiop-case__panel aiop-reveal"
-              aria-label="HarvestFields engine snapshot"
-            >
-              <header className="aiop-case__panel-head">
-                <strong>HarvestFields</strong>
-                <span>Brand engine · v2.0</span>
-              </header>
-              <div className="aiop-case__metrics" role="list">
-                {selectedCaseSection.metrics.map((m) => (
-                  <div
-                    key={m.k}
-                    className="aiop-case__metric"
-                    role="listitem"
-                  >
-                    <span className="aiop-case__metric-v">{m.v}</span>
-                    <span className="aiop-case__metric-k">{m.k}</span>
-                  </div>
-                ))}
-              </div>
-              <ul className="aiop-case__endpoints" role="list">
-                {selectedCaseSection.endpoints.map((e) => (
-                  <li key={e.path} className="aiop-case__endpoint">
-                    <span className="aiop-case__endpoint-method">
-                      {e.method}
-                    </span>
-                    <span className="aiop-case__endpoint-path">{e.path}</span>
-                    <span className="aiop-case__endpoint-state">{e.state}</span>
-                  </li>
-                ))}
-              </ul>
-            </aside>
-          </div>
-
-          <div className="aiop-case__cta aiop-reveal">
-            <a
-              className="aiop-button aiop-button--gold"
-              href={selectedCaseSection.cta.href}
-            >
-              {selectedCaseSection.cta.label}
-              <Arrow />
-            </a>
-            <p className="aiop-case__cta-fine">
-              Synthetic data · real architecture · prototype
-            </p>
           </div>
         </div>
       </section>

@@ -8622,13 +8622,6 @@
   font-weight: 600;
 }
 
-.aiop-reality__col-desc {
-  font-family: var(--aiop-body);
-  font-size: clamp(12px, 0.95vw, 14px);
-  line-height: 1.55;
-  color: var(--aiop-ink-soft);
-}
-
 /* Mobile fallback: drop the rail, stack the columns left-aligned. */
 @media (max-width: 719px) {
   .aiop-reality__rail {

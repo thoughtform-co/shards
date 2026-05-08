@@ -42,7 +42,6 @@ export const meta = {
     { id: "approach", label: "Approach", href: "#approach" },
     { id: "cases", label: "Cases", href: "#cases" },
     { id: "headless", label: "Headless", href: "#headless" },
-    { id: "harvestfields", label: "Selected case", href: "#harvestfields" },
   ],
   cta: { label: "Get in touch", href: "#cta" },
 } as const;
@@ -167,7 +166,7 @@ export const diagnosisSection: {
   title: "The missing layer is rarely",
   titleEm: "the model.",
   lede:
-    "Most companies already have AI tools, data, and executive belief. What they lack is the layer that helps teams use the tools inside real work, encode what good looks like, and turn the useful patterns into capability.",
+    "Most companies already have AI tools, data, and founders who want to move fast. What they lack is the layer that helps teams use the tools inside real work, encode what good looks like, and turn the useful patterns into capability.",
   useCases: [
     {
       n: "01",
@@ -278,7 +277,6 @@ export type AiRealityColumn = {
   id: "tool" | "middle" | "collab";
   label: string;
   title: string;
-  desc: string;
   align: "left" | "center" | "right";
   highlight?: boolean;
 };
@@ -298,14 +296,12 @@ export const aiRealitySection = {
         id: "tool",
         label: "Tool",
         title: "Executes commands",
-        desc: "You provide the thinking. The output is predictable, because you already know what you wanted.",
         align: "left",
       },
       {
         id: "middle",
         label: "AI lives here",
         title: "Neither pure tool nor true collaborator",
-        desc: "Always both. Every prompt relocates the dot along the rail. Learning where to stand is the skill.",
         align: "center",
         highlight: true,
       },
@@ -313,7 +309,6 @@ export const aiRealitySection = {
         id: "collab",
         label: "Collaborator",
         title: "Interprets intent",
-        desc: "You provide direction and judgment. The output surprises you — in useful ways, when you've learned to navigate.",
         align: "right",
       },
     ] satisfies AiRealityColumn[],
@@ -344,7 +339,7 @@ export const visionSection = {
     { id: "build", label: "Build", position: "bottom-left" },
   ] as const,
   caption:
-    "Each loop adds to the substrate the next loop runs on, until adoption itself ends up doing the automation work for you.",
+    "Once you figure out how to navigate AI, you learn how to encode the way you work into a layer you can build any agent on.",
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -608,8 +603,8 @@ export const approachSteps: ApproachStep[] = [
 
 export const casesSection = {
   eyebrow: "Cases · in production",
-  title: "Four engines.",
-  titleEm: "Removing workflow bottlenecks, one tool at a time.",
+  title: "Removing workflow bottlenecks,",
+  titleEm: "one tool at a time.",
   lede:
     "At Loop, software for few became practical. Sitting inside the teams meant I could compress existing workflows, repair broken handoffs, and invent new ones from scratch with AI.",
   legend: [
@@ -835,7 +830,7 @@ export const softwareForFewSection = {
   title: "Software",
   titleEm: "for few.",
   body:
-    "The late-2025 leap in AI models opened a new category: people with a clear read on their users and workflows can now build software for few. The deeper shift is headless: the interface stays temporary while the engine underneath compounds across surfaces.",
+    "At the end of 2025, AI models finally became good enough that anyone with ideas could just build anything, and the bottlenecks I'd been collecting for months could finally turn into tailor-made tools and interfaces.",
   actions: [
     { id: "cases", label: "Explore cases", href: "#cases" },
     { id: "headless", label: "Headless vision", href: "#headless" },
@@ -909,8 +904,7 @@ export const headlessShiftSection = {
   bodyStrong:
     "Every internal tool I built at Loop ran headless, so the same substrate served every surface, and I'd bring that same approach inside Stripe.",
   actions: [
-    { id: "headless", label: "See the architecture", href: "#headless" },
-    { id: "harvestfields", label: "Selected case", href: "#harvestfields" },
+    { id: "headless", label: "See the overview", href: "#headless" },
   ],
   preview: {
     eyebrow: "Mímir headless",
@@ -950,50 +944,32 @@ export const headlessShiftSection = {
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
- * Headless interstitial — architecture, not a dashboard
+ * Headless overview — what we mean by "headless"
  *
- * Sets up the selected case. Names the architectural shift behind every
- * production system above. Same engine, many surfaces. Build the engine,
- * not the dashboard. The substrate is the asset.
+ * Concise plain-English explanation of headless. Replaces the older
+ * heavy diagram + foot points + HarvestFields case, so the page tail
+ * stays tight after the cases. The engine layers and surfaces grid
+ * still appear, but the verbose meta strings and the three foot
+ * cards are gone.
  * ─────────────────────────────────────────────────────────────────── */
 
 export const headlessSection = {
-  eyebrow: "Engine architecture",
-  title: "The engine is",
-  titleEm: "what every future surface inherits.",
-  lede:
-    "Salesforce shipped Headless 360. Stripe shipped agentic infrastructure. Same pattern across both: the substrate is what compounds, while the interface stays a temporary face on top of it. Mímir and Vesper both moved that way at Loop.",
+  eyebrow: "Headless explained",
+  title: "Build the engine once,",
+  titleEm: "every surface inherits.",
+  body:
+    "Headless just means the engine and the interface are separate. You build the substrate once — rules, examples, sources, review loops — and every surface inherits from it, even as the model underneath keeps changing.",
   layers: [
-    { tag: "RULES", name: "How the team decides", meta: "Versioned. Reviewable." },
-    { tag: "EXAMPLES", name: "What good looks like", meta: "Past work, encoded." },
-    { tag: "SOURCES", name: "Datasources it can read", meta: "Permissioned. Audited." },
-    { tag: "LOOPS", name: "Who confirms what", meta: "Governance gates." },
+    { tag: "RULES", name: "How the team decides" },
+    { tag: "EXAMPLES", name: "What good looks like" },
+    { tag: "SOURCES", name: "Datasources it can read" },
+    { tag: "LOOPS", name: "Who confirms what" },
   ],
   surfaces: [
-    { id: "chat", icon: "⌘", name: "Chat", verb: "Claude, ChatGPT, Cursor" },
-    { id: "api", icon: "{ }", name: "API", verb: "MCP · REST · internal apps" },
+    { id: "chat", icon: "⌘", name: "Chat", verb: "Claude · ChatGPT · Cursor" },
+    { id: "api", icon: "{ }", name: "API", verb: "MCP · REST" },
     { id: "agent", icon: "◐", name: "Agent", verb: "Scheduled · autonomous" },
     { id: "tool", icon: "⤴", name: "In-tool", verb: "Slack · Figma · Monday" },
-  ],
-  foot: [
-    {
-      id: "compounds",
-      title: "Substrate compounds.",
-      body:
-        "Every workflow encoded adds to the same layer. Models change underneath, and the substrate keeps carrying forward.",
-    },
-    {
-      id: "policy",
-      title: "Policy lives in one verifier.",
-      body:
-        "Tokens hashed at rest. Per-tool, per-scope allowlists. Durable rate buckets. Audit log per call.",
-    },
-    {
-      id: "engine",
-      title: "Software for few.",
-      body:
-        "Built by the team that uses it, for the ten people who ship every day.",
-    },
   ],
 } as const;
 

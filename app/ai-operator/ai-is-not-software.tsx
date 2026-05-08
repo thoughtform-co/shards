@@ -98,7 +98,6 @@ export function AiIsNotSoftware() {
               >
                 <span className="aiop-reality__col-label">{column.label}</span>
                 <span className="aiop-reality__col-title">{column.title}</span>
-                <span className="aiop-reality__col-desc">{column.desc}</span>
               </div>
             ))}
           </div>
