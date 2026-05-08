@@ -2673,10 +2673,17 @@
 }
 
 .aiop-orbit--nested .aiop-orbit__satellite::before {
-  /* Longer than the base 22px so the line visibly crosses from the
-     corner back into the dashed outer ring of the sphere. */
-  width: clamp(60px, 8vw, 96px);
-  left: calc(-1 * clamp(60px, 8vw, 96px));
+  /* Longer than the base 22px so the line has reach, then rotated
+     diagonally so it visibly points at the substrate at the centre
+     instead of extending horizontally into empty space. The
+     transform-origin pins the rotation pivot at the satellite-side
+     end of the line, so the far end swings down-left toward the
+     substrate; the ~50° rotation matches the natural angle from a
+     top-right satellite position to the centre of a square orbit. */
+  width: clamp(120px, 15vw, 180px);
+  left: calc(-1 * clamp(120px, 15vw, 180px));
+  transform: translateY(-50%) rotate(50deg);
+  transform-origin: right center;
 }
 
 @media (max-width: 600px) {
@@ -2713,8 +2720,12 @@
   }
 
   .aiop-orbit--nested .aiop-orbit__satellite::before {
-    width: 36px;
-    left: -36px;
+    /* Shorter line on narrow viewports — the rotation + origin
+       inherit from the base nested rule so the line still aims at
+       the substrate, just with a tighter reach that fits inside the
+       smaller orbit container without poking past the inner pills. */
+    width: 70px;
+    left: -70px;
   }
 }
 
