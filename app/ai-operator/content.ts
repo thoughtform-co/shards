@@ -664,6 +664,19 @@ export type CaseWalkthrough = {
   poster?: string;
 };
 
+/* Per-capability status — the project-level `status` field above
+   covers the system as a whole, but individual capabilities can be
+   at a different maturity (e.g. a system shipped to production with
+   one capability still on the way). When set, the case row + modal
+   render a small amber pill next to the capability title. */
+export type CaseCapabilityStatus = "WIP" | "Production";
+
+export type CaseCapability = {
+  k: string;
+  v: string;
+  status?: CaseCapabilityStatus;
+};
+
 export type CaseProject = {
   id: string;
   num: string;
@@ -679,7 +692,7 @@ export type CaseProject = {
   workflowMode: WorkflowMode;
   workflowBefore: string;
   workflowAfter: string;
-  capabilities: { k: string; v: string }[];
+  capabilities: CaseCapability[];
   surfaces: string[];
   stack: string[];
   companyLeverage: string;
@@ -753,7 +766,11 @@ export const cases: CaseProject[] = [
       { k: "Prompt enhancement", v: "Claude refines visual prompts using the Loop product catalogue." },
       { k: "Multi-model generation", v: "Gemini Flash Image, Veo 3.1, Seedream, Kling under one tab." },
       { k: "Image-to-video", v: "Animate-still without leaving the canvas. Small fix, big flow." },
-      { k: "Headless REST + MCP", v: "Same Skill behind Claude.ai and the in-product enhance button." },
+      {
+        k: "Headless REST + MCP",
+        v: "Same Skill behind Claude.ai and the in-product enhance button.",
+        status: "WIP",
+      },
     ],
     surfaces: ["Web app", "MCP server", "REST", "Claude / Cursor"],
     stack: ["Next.js", "TanStack Query", "Supabase", "Prisma", "Anthropic", "Gemini", "Replicate", "Kling"],

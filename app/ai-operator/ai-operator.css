@@ -3977,6 +3977,41 @@
   color: var(--aiop-ink-soft);
 }
 
+/* Per-capability status pill — sits inline at the end of the cap-k
+   title, signalling a single capability that's still in progress
+   even when the project as a whole has shipped. The amber tone is
+   reserved across the route for "in-progress / partial" signal so
+   it never collides with the case accent (violet / sage / slate /
+   gold-as-violet) on the row chrome around it. Reused inside the
+   case-detail modal for the same `<p>` slot, so the status reads
+   consistently between the showcase tile and the deep read. */
+.aiop-case-row__cap-status {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  vertical-align: 2px;
+  white-space: nowrap;
+}
+
+.aiop-case-row__cap-status--wip {
+  background: var(--aiop-amber-soft);
+  border: 1px solid var(--aiop-amber-edge);
+  color: var(--aiop-amber);
+}
+
+.aiop-case-row__cap-status--production {
+  background: var(--aiop-sage-soft);
+  border: 1px solid var(--aiop-sage-edge);
+  color: var(--aiop-sage);
+}
+
 /* Pill CTA — now lives inline in the meta strip at the top of the
    card, replacing the old "Production" tag. Tightened to fit the
    strip's mono cadence (smaller padding + font, slightly looser

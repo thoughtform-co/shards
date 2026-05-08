@@ -273,7 +273,17 @@ function CaseRow({
             <ul className="aiop-case-row__caps" role="list">
               {project.capabilities.slice(0, 4).map((cap) => (
                 <li key={cap.k} className="aiop-case-row__cap">
-                  <p className="aiop-case-row__cap-k">{cap.k}</p>
+                  <p className="aiop-case-row__cap-k">
+                    {cap.k}
+                    {cap.status ? (
+                      <span
+                        className={`aiop-case-row__cap-status aiop-case-row__cap-status--${cap.status.toLowerCase()}`}
+                        aria-label={`${cap.status} status`}
+                      >
+                        {cap.status}
+                      </span>
+                    ) : null}
+                  </p>
                   <p className="aiop-case-row__cap-v">{cap.v}</p>
                 </li>
               ))}
@@ -716,7 +726,17 @@ function CaseModalBody({ project }: { project: CaseProject }) {
             <li key={cap.k} className="aiop-modal__cap">
               <span className="aiop-modal__cap-n">0{idx + 1}</span>
               <div>
-                <p className="aiop-modal__cap-k">{cap.k}</p>
+                <p className="aiop-modal__cap-k">
+                  {cap.k}
+                  {cap.status ? (
+                    <span
+                      className={`aiop-case-row__cap-status aiop-case-row__cap-status--${cap.status.toLowerCase()}`}
+                      aria-label={`${cap.status} status`}
+                    >
+                      {cap.status}
+                    </span>
+                  ) : null}
+                </p>
                 <p className="aiop-modal__cap-v">{cap.v}</p>
               </div>
             </li>
