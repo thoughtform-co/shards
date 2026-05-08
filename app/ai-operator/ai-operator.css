@@ -2542,6 +2542,18 @@
  *   transform: translate(-50%, -50%);
  * ═══════════════════════════════════════════════════════════════════════ */
 
+/* Ring radii — values chosen so each ring sits ~10% apart and the
+   innermost ring is far enough from the centre that an inner-ring
+   pill clears the headless core with breathing room. Concretely:
+
+     core      width  26% → radius 13% from container centre
+     inner     inset  24% → radius 26%
+     middle    inset  14% → radius 36%
+     outer     inset   4% → radius 46%
+
+   That gives a 13% gap between the core surface and the inner ring,
+   and a clean 10% rhythm between rings. */
+
 .aiop-orbit--nested .aiop-orbit__ring--outer {
   inset: 4%;
   border: 1px dashed
@@ -2552,13 +2564,13 @@
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
-  inset: 18%;
+  inset: 14%;
   border: 1px solid
     color-mix(in oklab, var(--aiop-amber) 32%, var(--aiop-rule-strong));
 }
 
 .aiop-orbit--nested .aiop-orbit__ring--inner {
-  inset: 32%;
+  inset: 24%;
   border: 1px dashed
     color-mix(in oklab, var(--aiop-sage) 38%, transparent);
 }
@@ -2574,9 +2586,10 @@
 }
 
 /* Pills — phase id drives both the ring radius and the clock
-   position. The 12 / 4 / 8 o'clock spread keeps the three pills at
-   roughly 120° from each other so the orbit reads as a triangle of
-   nested phases instead of a stack. */
+   position. The 12 / 4 / 8 o'clock triangle keeps the three pills
+   at 120° from each other and pushes the inner-ring pill far enough
+   south of the core that "Build" never collides with the headless
+   circle even on narrow viewports. */
 .aiop-orbit--nested .aiop-orbit__pill--navigate {
   /* Outer ring (radius 46% from centre), 12 o'clock */
   top: 4%;
@@ -2587,33 +2600,38 @@
 }
 
 .aiop-orbit--nested .aiop-orbit__pill--encode {
-  /* Middle ring (radius 32% from centre), 4 o'clock (≈ 120°)
-     top  = 50 + 32 * (-cos 120°) = 50 + 16 = 66
-     left = 50 + 32 * ( sin 120°) = 50 + 27.7 ≈ 78 */
-  top: 66%;
-  left: 78%;
+  /* Middle ring (radius 36% from centre), 4 o'clock (≈ 120°)
+     top  = 50 + 36 * (-cos 120°) = 50 + 18 = 68
+     left = 50 + 36 * ( sin 120°) = 50 + 31.2 ≈ 81 */
+  top: 68%;
+  left: 81%;
   right: auto;
   bottom: auto;
   transform: translate(-50%, -50%);
 }
 
 .aiop-orbit--nested .aiop-orbit__pill--build {
-  /* Inner ring (radius 18% from centre), 8 o'clock (≈ 240°)
-     top  = 50 + 18 * (-cos 240°) = 50 + 9 = 59
-     left = 50 + 18 * ( sin 240°) = 50 - 15.6 ≈ 34 */
-  top: 59%;
-  left: 34%;
+  /* Inner ring (radius 26% from centre), 8 o'clock (≈ 240°)
+     top  = 50 + 26 * (-cos 240°) = 50 + 13 = 63
+     left = 50 + 26 * ( sin 240°) = 50 - 22.5 ≈ 27.5
+     At y = 63% the pill sits below the core's vertical extent
+     (core max y = 63%), and its right edge lands ≈ 9% clear of
+     the core's circular boundary. */
+  top: 63%;
+  left: 27.5%;
   right: auto;
   bottom: auto;
   transform: translate(-50%, -50%);
 }
 
-/* Compact centre core for the nested orbit. The default core width
-   (46%) overlaps the inner ring at inset 32%, so we shrink the core
-   to ~30% diameter and tighten its padding so it reads as the
-   "Headless" focal point sitting at the orbit's heart. */
+/* Compact centre core for the nested orbit. Sized so its surface
+   (radius 13%) sits a clear 13% inside the inner ring (radius 26%),
+   leaving room for the Build pill to live on the inner-ring
+   perimeter without crashing into the headless circle. The
+   substrate file names still fit at the smaller core diameter
+   thanks to the tighter mono font in `__core-files`. */
 .aiop-orbit--nested .aiop-orbit__core {
-  width: 32%;
+  width: 26%;
   padding: 10px 12px;
   border: 1px solid var(--aiop-rule-strong);
   background: linear-gradient(
@@ -2638,20 +2656,16 @@
 }
 
 @media (max-width: 600px) {
-  /* Narrow viewports: pills get a small bit of extra clearance from
-     the orbit edge so they don't clip on either side. Core stays
-     centred via inherited rules. */
+  /* Narrow viewports: shrink the pill chrome and let the inner-ring
+     pill sit slightly closer to the centre since the absolute pill
+     width grows in container-percent terms when the orbit gets
+     smaller. The core also shrinks so the substrate file names —
+     hidden at this size — don't dictate width. The desktop pill
+     positions still work because they're container-percent based;
+     these overrides are tweaks, not full repositioning. */
   .aiop-orbit--nested .aiop-orbit__pill {
     padding: 6px 10px;
     font-size: 12px;
-  }
-
-  .aiop-orbit--nested .aiop-orbit__pill--encode {
-    left: 76%;
-  }
-
-  .aiop-orbit--nested .aiop-orbit__pill--build {
-    left: 36%;
   }
 
   .aiop-orbit--nested .aiop-orbit__core-files {
@@ -2661,7 +2675,9 @@
   }
 
   .aiop-orbit--nested .aiop-orbit__core {
-    width: 36%;
+    /* Slightly smaller without files to display, but still big
+       enough that "HEADLESS" reads at 12.5px mono. */
+    width: 22%;
   }
 }
 
