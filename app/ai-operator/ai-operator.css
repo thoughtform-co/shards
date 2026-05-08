@@ -3226,9 +3226,30 @@
   color: var(--aiop-muted);
 }
 
+/* Inner frame that visually groups the dark Engine bar and the
+   surfaces grid as one piece — engine produces, surfaces inherit.
+   The soft sage halo rhymes with the headless-shift interstitial's
+   build frame so the "one engine, many surfaces" idea reads in the
+   same lane vocabulary, without copying the pill-on-the-edge
+   treatment. The card's title, footer, and CTA stay outside the
+   frame so the card's outer scaffolding is unchanged. */
 .aiop-engine__diagram {
   display: grid;
-  gap: 14px;
+  gap: clamp(10px, 1.2vw, 14px);
+  padding: clamp(12px, 1.4vw, 16px);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-sage) 7%, var(--aiop-card-soft)) 0%,
+      color-mix(in oklab, var(--aiop-sage) 4%, var(--aiop-card)) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--aiop-sage) 30%, var(--aiop-rule-strong));
+  border-radius: 4px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.40),
+    0 0 0 1px color-mix(in oklab, var(--aiop-sage) 10%, transparent),
+    0 0 20px -6px color-mix(in oklab, var(--aiop-sage) 22%, transparent),
+    0 12px 28px -22px color-mix(in oklab, var(--aiop-sage) 30%, rgba(26, 22, 18, 0.22));
 }
 
 .aiop-engine__core {
