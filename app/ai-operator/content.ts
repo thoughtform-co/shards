@@ -128,12 +128,13 @@ export const hero = {
  *
  *   1. Header: eyebrow + title on the left, lede paragraph on the right.
  *   2. 2x2 use-case grid where every card shares the same root cause:
- *      tool live without shift, mandate without owner, demo without
- *      traction, data without context.
- *   3. Shared-gap card that names the articulation gap: briefing AI on
- *      what teams need. The card hands directly into the Evans quote,
- *      which elaborates the same idea in a credible outside voice
- *      ("the challenge is working out how to ask for what you want").
+ *      brand voice at scale, localization at scale, brief handoff
+ *      between product marketing and studio, and briefing synthesis
+ *      across scattered inputs.
+ *   3. Shared-gap card that names the asking gap. The card hands
+ *      directly into the Evans quote, which elaborates the same idea
+ *      in a credible outside voice ("the challenge is working out how
+ *      to ask for what you want").
  *
  * Content is the only thing that changes when the page is re-skinned
  * for Delaware, Ml6, or any other client; the structure stays.
@@ -170,30 +171,30 @@ export const diagnosisSection: {
   useCases: [
     {
       n: "01",
-      tag: "Tool deployed, no shift",
-      title: "The tool is live, but the workflow did not move.",
-      body: "Licenses get used as a faster Google. The work behind the work stays exactly the same.",
+      tag: "Brand voice at scale",
+      title: "Brand voice slips faster than reviewers catch it.",
+      body: "AI doubled the output. The voice rules still live in three senior heads, and drift only surfaces at QBR.",
       tone: "violet",
     },
     {
       n: "02",
-      tag: "Mandate without owner",
-      title: "The CEO is convinced, but nobody owns the daily practice.",
-      body: "Budget and belief are there. The role that helps teams make AI part of their week is not.",
+      tag: "Localization at scale",
+      title: "The words ship fast. Cultural review still stalls the launch.",
+      body: "AI moves the translation in minutes. Brand register, claims, and market voice each wait on a senior reviewer per market.",
       tone: "gold",
     },
     {
       n: "03",
-      tag: "Demo without traction",
-      title: "The prototype works, but the team cannot make it stick.",
-      body: "One builder ships a working agent. Next week, the team is back on the old flow.",
+      tag: "Brief handoff",
+      title: "The studio team making the ads has no clear briefing to fall back on.",
+      body: "Product marketing has an ultra-clear view on how a new product should sell, but by the time the brief reaches the studio team downstream, the angle that mattered is gone.",
       tone: "sage",
     },
     {
       n: "04",
-      tag: "Data without context",
-      title: "The data is in place, but the model does not know the business.",
-      body: "Dashboards say one thing, the lived workflow says another. The model only sees the dashboards.",
+      tag: "Briefing synthesis",
+      title: "All the data for a great briefing is there, but AI simply doesn't know how to interpret it.",
+      body: "Customer reviews, social listening, competitor ads, paid performance, brand framework — all present, all in different tools, with no layer that turns them into a creative angle.",
       tone: "slate",
     },
   ],
@@ -286,7 +287,7 @@ export const aiRealitySection = {
   title: "Why traditional adoption",
   titleEm: "doesn't work.",
   lede:
-    "Tool rollouts assume people just need to learn the buttons. People-change programs assume people just need to adopt new behaviours. AI is neither, and the practice that makes it useful has to be navigated alongside the team that uses it.",
+    "Most adoption playbooks treat AI like a new tool to roll out or a new behaviour to coach into people. But AI sits somewhere in between, and the practice that makes it actually useful only gets learned inside the real work.",
   actions: [
     { id: "vision", label: "See the flywheel", href: "#vision" },
   ],
@@ -343,7 +344,7 @@ export const visionSection = {
     { id: "build", label: "Build", position: "bottom-left" },
   ] as const,
   caption:
-    "Teams navigate AI inside the real work, encode the context that makes it good, and build the surfaces on top. Each pass thickens the substrate. The next pass starts from there.",
+    "Each loop adds to the substrate the next loop runs on, until adoption itself ends up doing the automation work for you.",
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -360,9 +361,9 @@ export const approachSection = {
   title: "The AI flywheel",
   titleEm: "at Loop",
   caption:
-    "Road-tested at Loop Earplugs since 2024. First year on the AI Team rolling Claude out across the company, then into Marketing to turn the loop from inside the work, across Studio and Performance. The same motion transfers across teams and across companies.",
+    "I've led the AI adoption at Loop Earplugs since 2024, first across the whole company, then embedded inside marketing, helping teams turn the way they actually work into reusable skills they can build their own automations on.",
   close:
-    "The same loop ran on Vesper, Heimdall, Mímir, Babylon, and the company-wide Claude rollout at Loop.",
+    "On my teams, the hardest AI critics ended up product managing the tools I vibe-coded for them, and that's the spirit I want to bring to Stripe.",
 } as const;
 
 export type ApproachTone = "violet" | "gold" | "sage";
@@ -608,7 +609,7 @@ export const approachSteps: ApproachStep[] = [
 export const casesSection = {
   eyebrow: "Cases · in production",
   title: "Four engines.",
-  titleEm: "Built from the inside, used daily.",
+  titleEm: "Removing workflow bottlenecks, one tool at a time.",
   lede:
     "At Loop, software for few became practical. Sitting inside the teams meant I could compress existing workflows, repair broken handoffs, and invent new ones from scratch with AI.",
   legend: [
@@ -742,7 +743,7 @@ export const cases: CaseProject[] = [
     name: "Baby",
     nameEm: "lon",
     tagline: "UGC Localization",
-    subline: "30+ markets, one review step.",
+    subline: "Top-performing UGC, dubbed at scale.",
     team: "Marketing · Localization",
     status: "Production",
     year: "2025",
@@ -777,23 +778,23 @@ export const cases: CaseProject[] = [
     name: "Heim",
     nameEm: "dall",
     tagline: "Workflow Orchestration",
-    subline: "Where strategy turns into pixels.",
+    subline: "Everything around the creative work, in one tool.",
     team: "Studio · Marketing Ops",
     status: "Production",
     year: "2025",
     challenge:
-      "Briefs, design work, assets, and feedback lived in different tools. Every handoff lost structure, added copy-paste, and made pixels hard to trace back to strategy.",
+      "Built for the project managers around the creative team, collapsing the manual workflow that lives around the design work itself: briefings flow from Monday into Figma, copy gets extracted for proofreaders, and assets sync back through Frontify.",
     tone: "sage",
     workflowMode: "Repair",
     workflowBefore:
-      "Briefings lived in Monday. Designers worked in Figma. Assets shipped through Frontify. Each handoff was manual copy-paste. Pixels didn't trace back to briefs.",
+      "Briefings lived in Monday. Designers worked in Figma. Assets shipped through Frontify. Each handoff was manual copy-paste, and the proofreaders waited on whoever could pull the latest copy out by hand.",
     workflowAfter:
-      "One webhook chain moves briefings from Monday through Claude into Figma without a single manual copy-paste.",
+      "One webhook chain moves briefings from Monday into Figma, pulls copy out for proofreading, and routes the finished assets back through Frontify, without a single manual copy-paste.",
     capabilities: [
       { k: "Monday → Figma sync", v: "Structured briefings, GraphQL pipeline, instant Figma plugin update." },
-      { k: "Iterator plugin", v: "Variants, format derivation, copy planning inside Figma." },
       { k: "Frontify integration", v: "Asset intake, naming conventions, brand surface alignment." },
-      { k: "Showcase routes", v: "Client-facing project pages built from the same data." },
+      { k: "Iterator plugin", v: "A prototype that quickly spins up variants from the best-performing ads." },
+      { k: "Briefing split orchestrator", v: "Turns the revenue projections and use-case splits behind every cycle into clear briefing assignments for the creative team." },
     ],
     surfaces: ["Web app", "Figma plugin", "Iterator plugin", "GPT Actions API"],
     stack: ["Next.js", "Supabase", "Vercel KV", "Monday", "Figma", "Frontify", "Meta", "Anthropic"],
@@ -904,9 +905,9 @@ export const headlessShiftSection = {
   title: "Software is going",
   titleEm: "headless.",
   body:
-    "Salesforce shipped Headless 360. Stripe shipped a Link CLI you drive from your terminal. Both shipped the engine and let the interface follow.",
+    "Salesforce shipped Headless 360, Stripe shipped a CLI for the terminal — both shipped the engine first and let the interface follow.",
   bodyStrong:
-    "I brought Mímir, Vesper, Heimdall, and Babylon headless at Loop, where the same substrate served every surface. I want to bring that posture inside Stripe.",
+    "Every internal tool I built at Loop ran headless, so the same substrate served every surface, and I'd bring that same approach inside Stripe.",
   actions: [
     { id: "headless", label: "See the architecture", href: "#headless" },
     { id: "harvestfields", label: "Selected case", href: "#harvestfields" },

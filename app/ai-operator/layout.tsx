@@ -27,6 +27,7 @@ const body = IBM_Plex_Sans({
   variable: "--aiop-body",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 

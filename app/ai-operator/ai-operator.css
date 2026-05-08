@@ -253,7 +253,7 @@
 }
 
 .aiop-section-title em {
-  font-style: italic;
+  font-style: normal;
   font-weight: 560;
   color: var(--aiop-ink-2);
 }
@@ -551,7 +551,7 @@
 }
 
 .aiop-hero__title-line em {
-  font-style: italic;
+  font-style: normal;
   font-weight: 500;
   color: var(--aiop-ink-2);
 }
@@ -2061,7 +2061,7 @@
 }
 
 .aiop-cta__title em {
-  font-style: italic;
+  font-style: normal;
   font-weight: 560;
   color: var(--aiop-ink-2);
 }
@@ -2283,6 +2283,35 @@
   border: 1px solid var(--aiop-rule);
 }
 
+/* Subtle orbit motion. The dashed outer ring spins slowly so the
+   dashes appear to chase each other around the perimeter, and the
+   inner ring counter-rotates more slowly for a layered feel. The
+   motion is soft enough not to compete with the pills (which stay
+   readable). Uses the modern `rotate` individual transform property
+   so it composes with the reveal's `transform: translateY` instead
+   of overwriting it. Reduced-motion users see static rings. */
+@keyframes aiop-orbit-spin {
+  from { rotate: 0deg; }
+  to   { rotate: 360deg; }
+}
+
+@keyframes aiop-orbit-spin-reverse {
+  from { rotate: 0deg; }
+  to   { rotate: -360deg; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .aiop-orbit__ring--outer {
+    animation: aiop-orbit-spin 80s linear infinite;
+    transform-origin: 50% 50%;
+  }
+
+  .aiop-orbit__ring--inner {
+    animation: aiop-orbit-spin-reverse 140s linear infinite;
+    transform-origin: 50% 50%;
+  }
+}
+
 /* Pills are floated on the orbit perimeter. The shared chrome carries
    a hairline border and a small drop shadow; per-pill positioning sets
    the location, per-id rules colour the dot. */
@@ -2454,12 +2483,30 @@
    carries an entire viewport on its own. */
 .aiop-orbit--centered {
   margin: 0 auto;
-  max-width: 460px;
+  max-width: 580px;
+}
+
+.aiop-orbit--centered .aiop-orbit__pill {
+  padding: 8px 14px;
+  font-size: 13px;
+}
+
+.aiop-orbit--centered .aiop-orbit__core strong {
+  font-size: clamp(12px, 1.4vw, 14px);
+}
+
+.aiop-orbit--centered .aiop-orbit__core-files {
+  font-size: clamp(10px, 1.2vw, 12px);
+  margin-top: 12px;
+}
+
+.aiop-orbit--centered .aiop-orbit__satellite {
+  font-size: 10px;
 }
 
 @media (max-width: 600px) {
   .aiop-orbit--centered {
-    max-width: min(360px, 84vw);
+    max-width: min(440px, 88vw);
   }
 }
 
@@ -3638,10 +3685,10 @@
 
 .aiop-case-row__subline {
   margin: 0;
-  font-family: var(--aiop-display);
-  font-style: italic;
-  font-size: 17px;
-  line-height: 1.4;
+  font-family: var(--aiop-body);
+  font-style: normal;
+  font-size: 16px;
+  line-height: 1.45;
   color: var(--aiop-ink-soft);
   font-weight: 500;
 }
@@ -3745,10 +3792,10 @@
 
 .aiop-case-row__cap-k {
   margin: 0;
-  font-family: var(--aiop-display);
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  font-family: var(--aiop-body);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
   color: var(--aiop-ink);
 }
 
@@ -4004,7 +4051,7 @@
 }
 
 .aiop-modal__title em {
-  font-style: italic;
+  font-style: normal;
   color: var(--aiop-modal-accent);
   font-weight: 500;
 }
@@ -4524,28 +4571,29 @@
 .aiop-approach__close {
   margin-top: clamp(48px, 6vw, 72px);
   margin-inline: auto;
-  padding: 0;
-  border: 0;
-  font-family: var(--aiop-display);
-  font-style: italic;
-  font-size: clamp(17px, 1.6vw, 21px);
-  line-height: 1.45;
-  color: var(--aiop-ink-soft);
+  padding: clamp(28px, 3.5vw, 44px) clamp(32px, 4vw, 56px);
+  border: 1px solid color-mix(in oklab, var(--aiop-violet) 22%, var(--aiop-rule));
+  border-radius: 18px;
+  font-family: var(--aiop-body);
+  font-style: normal;
+  font-weight: 500;
+  font-size: clamp(18px, 1.7vw, 22px);
+  line-height: 1.5;
+  color: var(--aiop-ink);
   text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-  max-width: 86ch;
+  background: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--aiop-violet) 8%, var(--aiop-card)) 0%,
+    var(--aiop-card) 50%,
+    color-mix(in oklab, var(--aiop-amber) 7%, var(--aiop-card)) 100%
+  );
+  box-shadow: 0 18px 42px rgba(26, 22, 18, 0.06);
+  max-width: 78ch;
 }
 
 .aiop-approach__close::before,
 .aiop-approach__close::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--aiop-rule);
-  max-width: 88px;
+  content: none;
 }
 
 
@@ -5212,7 +5260,7 @@
 }
 
 .aiop-v2-side__title em {
-  font-style: italic;
+  font-style: normal;
 }
 
 .aiop-v2-side__meta {
@@ -6285,10 +6333,10 @@
 }
 
 .aiop-few__title-em {
-  font-style: italic;
+  font-style: normal;
   font-weight: 540;
-  /* Promoted to the violet lane so the italic emphasis joins the
-     platform-wide cool signal lane (gold stays for chrome). */
+  /* Promoted to the violet lane so the emphasis joins the platform-
+     wide cool signal lane (gold stays for chrome). */
   color: var(--aiop-violet);
 }
 
@@ -6690,7 +6738,7 @@
 }
 
 .aiop-shift__title-em {
-  font-style: italic;
+  font-style: normal;
   font-weight: 540;
   /* Same cool signal lane as `.aiop-few__title-em` so the two
      interstitials read as a pair. */
@@ -7617,7 +7665,7 @@
 }
 
 .aiop-diagnosis__gap-title em {
-  font-style: italic;
+  font-style: normal;
   font-weight: 480;
   color: var(--aiop-violet);
 }
@@ -8414,7 +8462,7 @@
 
 .aiop-reality__title-em {
   color: var(--aiop-violet);
-  font-style: italic;
+  font-style: normal;
 }
 
 .aiop-reality__head-lede {
