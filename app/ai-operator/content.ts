@@ -167,37 +167,37 @@ export const diagnosisSection: {
   };
 } = {
   eyebrow: "The diagnosis",
-  title: "It's almost never",
+  title: "It's rarely just",
   titleEm: "a model problem.",
   lede:
-    "None of these is a model problem. The model is plenty capable; it just doesn't get what it needs to be useful on real work. The judgment that decides whether an output is good lives in three or four people's heads, in Friday review threads the team rebuilds every Monday, in unwritten policy the lead applies on the fly. None of it ever reaches the brief the model sees.",
+    "The judgment that makes the work good lives in three or four heads, in Friday review threads, in unwritten policy. The brief the model sees almost never has any of it.",
   useCases: [
     {
       n: "01",
       tag: "Pricing narrative",
-      title: "Drafts come back plausible.",
-      body: "Whether they hold under negotiation depends on judgment that lives in account-team heads.",
+      title: "Drafts that don't survive a real negotiation.",
+      body: "What makes pricing hold up under negotiation lives in account-team heads.",
       tone: "violet",
     },
     {
       n: "02",
       tag: "Audience translation",
-      title: "Three voices, one polite middle.",
-      body: "Developer, founder, and CFO read in the same week. Generic models flatten the differences that earn their attention.",
+      title: "The same polite email for developers, founders, and CFOs.",
+      body: "Each audience earns attention differently. Generic briefs flatten the differences.",
       tone: "gold",
     },
     {
       n: "03",
       tag: "Partner GTM sequencing",
-      title: "Sign-off waits on a few leads.",
-      body: "Co-marketing decisions need market-specific judgment. The reasoning that orders the moves only lives in their heads.",
+      title: "Every co-marketing brief waits on three leads to order the moves.",
+      body: "The reasoning that orders the moves lives in three or four heads.",
       tone: "sage",
     },
     {
       n: "04",
       tag: "Brand drift at volume",
-      title: "10x the creative, drift surfaces too late.",
-      body: "Every campaign generates an order of magnitude more output. Without encoded refusal patterns, drift only shows up in QBR.",
+      title: "Drift only surfaces in QBR, months after the campaign shipped.",
+      body: "Refusal patterns live in lead heads. Drift compounds before anyone catches it.",
       tone: "slate",
     },
   ],
