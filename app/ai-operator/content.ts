@@ -406,7 +406,7 @@ export const approachSteps: ApproachStep[] = [
           note: "None of this is Claude-specific — the fluency transfers to any generative AI tool.",
         },
       ],
-      signal: "Adoption isn't a campaign. It's a cohort journey with infrastructure behind every step.",
+      signal: "Adoption runs as a cohort with shared infrastructure under every step.",
     },
   },
   {
@@ -434,7 +434,7 @@ export const approachSteps: ApproachStep[] = [
         { initial: "R", tone: "gold", label: "Regs & policy" },
         { initial: "F", tone: "slate", label: "Review feedback" },
       ],
-      foot: "Connects to your data — doesn't replace it.",
+      foot: "Connects to your data without replacing it.",
     },
     modal: {
       eyebrow: "02 · Encode",
@@ -480,15 +480,15 @@ export const approachSteps: ApproachStep[] = [
     signal: { k: "Outcome", v: "A thin running surface the team uses daily." },
     visual: {
       kind: "engine",
-      title: "Same engine. Many surfaces.",
-      sub: "Build the engine, not the dashboard.",
+      title: "Every surface inherits the engine.",
+      sub: "Headless first.",
       surfaces: [
         { icon: "⌘", name: "Chat", verb: "Claude · Cursor" },
         { icon: "{ }", name: "API", verb: "MCP · REST" },
         { icon: "◐", name: "Agent", verb: "Scheduled · autonomous" },
         { icon: "⤴", name: "In-tool", verb: "Slack · Figma · Monday" },
       ],
-      meta: { k: "Posture", v: "Engine first · interface last" },
+      meta: { k: "Posture", v: "Headless architecture" },
     },
     modal: {
       eyebrow: "03 · Build",
@@ -521,7 +521,7 @@ export const approachSteps: ApproachStep[] = [
           ],
         },
       ],
-      signal: "The dashboard is one face of many. The engine underneath is the asset.",
+      signal: "The engine underneath is the asset every interface inherits.",
     },
   },
 ];
@@ -764,7 +764,7 @@ export const softwareForFewSection = {
   title: "Software",
   titleEm: "for few.",
   body:
-    "The late-2025 leap in AI models opened a new category: people with a clear read on their users and workflows can now build software for few. The deeper shift is headless. The interface becomes temporary. The engine underneath is what compounds.",
+    "The late-2025 leap in AI models opened a new category: people with a clear read on their users and workflows can now build software for few. The deeper shift is headless: the interface stays temporary while the engine underneath compounds across surfaces.",
   actions: [
     { id: "cases", label: "Explore cases", href: "#cases" },
     { id: "headless", label: "Headless vision", href: "#headless" },
@@ -834,9 +834,9 @@ export const headlessShiftSection = {
   title: "Software is going",
   titleEm: "headless.",
   body:
-    "Salesforce shipped Headless 360. Stripe shipped a Link CLI you drive from your terminal. The pattern is the same in every case: the interface gets demoted, the substrate gets promoted.",
+    "Salesforce shipped Headless 360. Stripe shipped a Link CLI you drive from your terminal. Both shipped the engine and let the interface follow.",
   bodyStrong:
-    "I brought Mímir, Vesper, Heimdall, and Babylon headless at Loop — same substrate, every surface. I want to bring that posture inside Stripe.",
+    "I brought Mímir, Vesper, Heimdall, and Babylon headless at Loop, where the same substrate served every surface. I want to bring that posture inside Stripe.",
   actions: [
     { id: "headless", label: "See the architecture", href: "#headless" },
     { id: "harvestfields", label: "Selected case", href: "#harvestfields" },
@@ -887,11 +887,11 @@ export const headlessShiftSection = {
  * ─────────────────────────────────────────────────────────────────── */
 
 export const headlessSection = {
-  eyebrow: "Architecture, not a dashboard",
-  title: "Build the engine.",
-  titleEm: "Not the dashboard.",
+  eyebrow: "Engine architecture",
+  title: "The engine is",
+  titleEm: "what every future surface inherits.",
   lede:
-    "Salesforce shipped Headless 360. Stripe shipped agentic infrastructure. The pattern is the same in every case: the interface gets demoted, the substrate gets promoted. Mímir and Vesper both moved that way at Loop. The dashboard becomes one face of many. The engine underneath is the asset every future surface inherits.",
+    "Salesforce shipped Headless 360. Stripe shipped agentic infrastructure. Same pattern across both: the substrate is what compounds, while the interface stays a temporary face on top of it. Mímir and Vesper both moved that way at Loop.",
   layers: [
     { tag: "RULES", name: "How the team decides", meta: "Versioned. Reviewable." },
     { tag: "EXAMPLES", name: "What good looks like", meta: "Past work, encoded." },
@@ -909,7 +909,7 @@ export const headlessSection = {
       id: "compounds",
       title: "Substrate compounds.",
       body:
-        "Every workflow encoded adds to the same layer. Models change. Substrate carries forward.",
+        "Every workflow encoded adds to the same layer. Models change underneath, and the substrate keeps carrying forward.",
     },
     {
       id: "policy",
@@ -921,7 +921,7 @@ export const headlessSection = {
       id: "engine",
       title: "Software for few.",
       body:
-        "Built by the team that uses it. Specific. Not built for millions, built for the team of ten that ships every day.",
+        "Built by the team that uses it, for the ten people who ship every day.",
     },
   ],
 } as const;
@@ -939,7 +939,7 @@ export const selectedCaseSection = {
   title: "HarvestFields.",
   titleEm: "Brand speed and brand safety as one engine.",
   lede:
-    "Where Navigate, Encode, and Build come together on a brand the size of Vandemoortele. Two workflows that look like two problems — localisation needs speed, brand review needs control — share the same root cause: brand memory is unencoded. Encode it once, both problems shrink.",
+    "Where Navigate, Encode, and Build come together on a brand the size of Vandemoortele. Localisation needs speed and brand review needs control. Both run into the same wall: brand memory lives in lead heads, never in the brief. Encoding the brand memory once shrinks both problems.",
   pillars: [
     {
       n: "01",
