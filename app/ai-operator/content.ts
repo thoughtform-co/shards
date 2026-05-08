@@ -9,15 +9,20 @@
  *
  * Page arc:
  *   01 Hero          — CV profile: name, thesis, bio, portrait, contact.
- *   02 Vision        — Centered flywheel + one CTA into Approach.
- *   03 Approach      — Navigate / Encode / Build, each with an exec-level
+ *   02 Diagnosis     — Four faces, one missing piece. Names the hard
+ *                      problem (judgment isn't encoded) before the
+ *                      Evans bridge articulates the asking gap.
+ *   03 Quote bridge  — Evans on the asking gap. Chip-to-pill morph
+ *                      hands the trio's words into the Vision orbit.
+ *   04 Vision        — Centered flywheel + one CTA into Approach.
+ *   05 Approach      — Navigate / Encode / Build, each with an exec-level
  *                      visual and a Heimdall-style pop-out for detail.
- *   04 Cases         — Showcase grid of four production systems, each
+ *   06 Cases         — Showcase grid of four production systems, each
  *                      with a modal walk-through.
- *   05 Headless      — Architecture, not a dashboard. The interstitial
+ *   07 Headless      — Architecture, not a dashboard. The interstitial
  *                      that sets up the selected case.
- *   06 Selected case — HarvestFields, where everything comes together.
- *   07 CTA           — One ask. Smallest commitment that starts work.
+ *   08 Selected case — HarvestFields, where everything comes together.
+ *   09 CTA           — One ask. Smallest commitment that starts work.
  *
  * Voice: direct, punchy, warm. Strategy and building stay in the same
  * hands. One thought per line when the thought matters.
@@ -32,6 +37,7 @@ export const meta = {
   brandSub: "AI Operator · Forward-Deployed · Antwerp",
   status: "Embedded engagements available",
   links: [
+    { id: "diagnosis", label: "Diagnosis", href: "#diagnosis" },
     { id: "vision", label: "Vision", href: "#vision" },
     { id: "approach", label: "Approach", href: "#approach" },
     { id: "cases", label: "Cases", href: "#cases" },
@@ -107,6 +113,107 @@ export const hero = {
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
+ * Diagnosis — Four faces, one missing piece
+ *
+ * Sits between the Hero and the Quote Bridge. Names the hard problem
+ * the rest of the page solves: AI work that matters is judgment, not
+ * binary output, and judgment isn't encoded. Pattern lifted from the
+ * Aether judgment-engine page.
+ *
+ * Composition (mirrors the Vision section's title-left + caption-right
+ * head pattern so the two read as one rhythm):
+ *
+ *   1. Header: eyebrow + title on the left, lede paragraph on the right.
+ *   2. 2x2 use-case grid where every card shares the same root cause.
+ *   3. Shared-gap card that names the root cause: judgment isn't encoded.
+ *   4. One-line handoff sentence that bridges to Evans. Frames the
+ *      bottleneck as "knowing what to ask" so the Evans quote that
+ *      follows reads as the formal articulation of the same idea.
+ *
+ * Stripe-flavoured for this version. Content is the only thing that
+ * changes when the page is re-skinned for Delaware, Ml6, or any other
+ * client; the structure stays.
+ *
+ * The handoff sentence deliberately does not preview Navigate / Encode
+ * / Build pill chrome. The Quote Bridge keeps its first-reveal of
+ * those pills via the chip-to-pill morph.
+ * ─────────────────────────────────────────────────────────────────── */
+
+export type DiagnosisTone = "violet" | "gold" | "sage" | "slate";
+
+export type DiagnosisUseCase = {
+  n: string;
+  tag: string;
+  title: string;
+  body: string;
+  tone: DiagnosisTone;
+};
+
+export const diagnosisSection: {
+  eyebrow: string;
+  title: string;
+  titleEm: string;
+  lede: string;
+  useCases: DiagnosisUseCase[];
+  gap: {
+    eyebrow: string;
+    title: string;
+    titleEm: string;
+    subline: string;
+  };
+  handoff: {
+    lead: string;
+    leadEm: string;
+  };
+} = {
+  eyebrow: "The diagnosis",
+  title: "Four faces.",
+  titleEm: "One missing piece.",
+  lede:
+    "These don't look like the same problem. Read each one closely and the same wall shows up in all four. The work isn't binary right or wrong — it's nuance, context, and taste the model never inherits from the brief.",
+  useCases: [
+    {
+      n: "01",
+      tag: "Pricing narrative",
+      title: "Drafts come back plausible.",
+      body: "Whether they hold under negotiation depends on judgment that lives in account-team heads.",
+      tone: "violet",
+    },
+    {
+      n: "02",
+      tag: "Audience translation",
+      title: "Three voices, one polite middle.",
+      body: "Developer, founder, and CFO read in the same week. Generic models flatten the differences that earn their attention.",
+      tone: "gold",
+    },
+    {
+      n: "03",
+      tag: "Partner GTM sequencing",
+      title: "Sign-off waits on a few leads.",
+      body: "Co-marketing decisions need market-specific judgment. The reasoning that orders the moves only lives in their heads.",
+      tone: "sage",
+    },
+    {
+      n: "04",
+      tag: "Brand drift at volume",
+      title: "10x the creative, drift surfaces too late.",
+      body: "Every campaign generates an order of magnitude more output. Without encoded refusal patterns, drift only shows up in QBR.",
+      tone: "slate",
+    },
+  ],
+  gap: {
+    eyebrow: "Shared gap",
+    title: "Judgment is",
+    titleEm: "not encoded.",
+    subline: "Reasoning · Examples · Refusal patterns · Taste",
+  },
+  handoff: {
+    lead: "The bottleneck isn't technical.",
+    leadEm: "It's knowing what to ask.",
+  },
+};
+
+/* ─────────────────────────────────────────────────────────────────────
  * Quote bridge — interstitial between hero and Vision
  *
  * Anchors the flywheel to a credible outside diagnosis (Benedict Evans
@@ -166,7 +273,7 @@ export const visionSection = {
     { id: "build", label: "Build", position: "bottom-left" },
   ] as const,
   caption:
-    "Most companies run adoption and automation as two tracks. One teaches people, the other builds tools. AI makes them one loop. The teaching produces the substrate the tools run on.",
+    "Asking is what gets encoded. Most companies still run adoption and automation as two tracks. AI makes them one loop — what the team learns to ask becomes the substrate every tool runs on.",
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────

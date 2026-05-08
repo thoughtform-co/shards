@@ -11,6 +11,7 @@ import {
   selectedCaseSection,
   visionSection,
 } from "./content";
+import { Diagnosis } from "./diagnosis";
 import { HeadlessShift } from "./headless-shift";
 import { LoopStripeMorph } from "./loop-stripe-morph";
 import { QuoteBridge } from "./quote-bridge";
@@ -28,30 +29,34 @@ import { SoftwareForFew } from "./software-for-few";
  * Composition:
  *   01 Header / nav     (sticky)
  *   02 Hero             — CV profile: name eyebrow + thesis + bio + portrait.
- *   03 Quote bridge     — Benedict Evans on the asking gap. Three phrases
+ *   03 Diagnosis        — Four faces, one missing piece. Names the hard
+ *                         problem (judgment isn't encoded) before the
+ *                         Evans bridge articulates the asking gap.
+ *                         Static, server-rendered.
+ *   04 Quote bridge     — Benedict Evans on the asking gap. Three phrases
  *                         morph in place into Navigate/Encode/Build pills
  *                         (client). Pinned via parallax-reveal pair with
  *                         the Vision section so the orbit assembles around
  *                         the morphed pills as the bridge releases.
- *   04 Vision           — Centered Navigate/Encode/Build flywheel + one CTA.
+ *   05 Vision           — Centered Navigate/Encode/Build flywheel + one CTA.
  *                         Slides up over the frozen bridge during scroll.
- *   05 Approach         — Three motions, each with a Heimdall-style
+ *   06 Approach         — Three motions, each with a Heimdall-style
  *                         "practice in motion" pop-out (client). Pinned
  *                         to viewport bottom so its last viewport stays
  *                         frozen while the next section reveals over it.
- *   06 Software for few — Sage interstitial that slides up over the
+ *   07 Software for few — Sage interstitial that slides up over the
  *                         frozen Approach (parallax-reveal pair, client).
- *   07 Cases            — Heimdall-style showcase grid (client). Pinned
+ *   08 Cases            — Heimdall-style showcase grid (client). Pinned
  *                         to viewport bottom while Headless-shift rises
  *                         over it (parallax-reveal pair).
- *   08 Headless-shift   — Gold interstitial: Salesforce / Stripe / the
+ *   09 Headless-shift   — Gold interstitial: Salesforce / Stripe / the
  *                         shift to headless. Slides up over the frozen
  *                         Cases and previews the Pick-a-surface
  *                         vocabulary the deep section unpacks below.
- *   09 Headless         — Interstitial: architecture, not a dashboard.
- *   10 Selected case    — HarvestFields, where everything lands.
- *   11 CTA              — One ask. Smallest commitment.
- *   12 Footer
+ *   10 Headless         — Interstitial: architecture, not a dashboard.
+ *   11 Selected case    — HarvestFields, where everything lands.
+ *   12 CTA              — One ask. Smallest commitment.
+ *   13 Footer
  */
 
 function Arrow() {
@@ -184,6 +189,16 @@ export default function AiOperatorPage() {
           </div>
         </div>
       </section>
+
+      {/* ─── Diagnosis — Four faces, one missing piece ──────────────
+       *
+       * Static, server-rendered. Sits between the Hero and the Quote
+       * Bridge. Names the hard diagnosis (judgment isn't encoded) so
+       * the Evans bridge can articulate it as the asking gap and the
+       * Vision orbit can answer it as Navigate/Encode/Build. No
+       * morph, no pin, no parallax — just a clean diagnostic surface
+       * the rest of the page resolves. */}
+      <Diagnosis />
 
       {/* ─── Quote bridge + Vision · parallax-reveal pair ─────────────
        *

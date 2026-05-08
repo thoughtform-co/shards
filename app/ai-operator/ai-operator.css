@@ -7254,6 +7254,433 @@
 
 
 /* ═══════════════════════════════════════════════════════════════════════
+ * 25.6 · Diagnosis — Four faces, one missing piece
+ *
+ * Sits between the Hero and the Quote Bridge. Names the hard problem
+ * the rest of the page solves: AI work that matters is judgment, not
+ * binary output, and judgment isn't encoded. Pattern lifted from the
+ * Aether judgment-engine page.
+ *
+ * Composition mirrors the Vision section's title-left + caption-right
+ * head pattern so the two read as one rhythm: eyebrow + title on the
+ * left, lede on the right. Below the head sits the 2x2 use-case grid,
+ * a single chevron, the shared-gap card, and one short handoff
+ * sentence that bridges into the Evans quote.
+ *
+ * Static section. No pin, no parallax, no morph. Cards lift the
+ * `.aiop-case__pillars` hairline-on-rule treatment so the quartet
+ * reads as one diagnostic surface; lane colours land on the left
+ * rail of each card. The shared-gap card sits centred with a full
+ * border in the route's primary accent so it reads as the answer
+ * the four cards converge on. The handoff sentence is one short
+ * line; pill chrome stays out of the section so the bridge keeps
+ * its first-reveal of Navigate / Encode / Build.
+ *
+ * Sub-sections:
+ *   25.6a · Section + header (title-left + lede-right)
+ *   25.6b · Use-case grid
+ *   25.6c · Bridge chevron
+ *   25.6d · Shared-gap card
+ *   25.6e · Handoff sentence
+ *   25.6f · Responsive
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+
+/* ─── 25.6a · Section + header ───────────────────────────────────── */
+
+.aiop-diagnosis {
+  position: relative;
+  isolation: isolate;
+  background: linear-gradient(
+    180deg,
+    var(--aiop-paper) 0%,
+    var(--aiop-paper-2) 100%
+  );
+  border-block: 1px solid var(--aiop-rule);
+  overflow: hidden;
+}
+
+.aiop-diagnosis::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      ellipse 36% 50% at 8% 18%,
+      color-mix(in oklab, var(--aiop-violet) 14%, transparent) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 30% 45% at 92% 12%,
+      color-mix(in oklab, var(--aiop-amber) 12%, transparent) 0%,
+      transparent 65%
+    ),
+    radial-gradient(
+      ellipse 40% 50% at 50% 100%,
+      color-mix(in oklab, var(--aiop-sage) 12%, transparent) 0%,
+      transparent 60%
+    );
+  z-index: 0;
+}
+
+.aiop-diagnosis > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Title-left + lede-right grid. Mirrors `.aiop-case__head` so the
+   diagnosis and the Vision orbit share the same head rhythm. The
+   title block keeps its own vertical flex so the eyebrow sits
+   directly above the heading without a gap that would push the lede
+   off its baseline. */
+.aiop-diagnosis__head {
+  display: grid;
+  gap: 24px;
+  margin-bottom: clamp(36px, 4.5vw, 56px);
+  align-items: end;
+}
+
+@media (min-width: 800px) {
+  .aiop-diagnosis__head {
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: clamp(32px, 4vw, 56px);
+  }
+}
+
+.aiop-diagnosis__head-title {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.aiop-diagnosis__title {
+  margin: 0;
+  max-width: 22ch;
+}
+
+.aiop-diagnosis__lede {
+  font-family: var(--aiop-body);
+  font-size: clamp(15px, 1.1vw, 17px);
+  line-height: 1.6;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+  max-width: 52ch;
+  /* Nudge the lede up so its bottom baseline reads with the bottom of
+     the H2 on the left when the header is in 2-column grid; on stacked
+     widths the `align-items: end` falls away naturally. */
+  padding-bottom: 6px;
+}
+
+@media (max-width: 799px) {
+  .aiop-diagnosis__lede {
+    padding-bottom: 0;
+  }
+}
+
+
+/* ─── 25.6b · Use-case grid ──────────────────────────────────────── */
+
+.aiop-diagnosis__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--aiop-rule);
+  border: 1px solid var(--aiop-rule-strong);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 720px) {
+  .aiop-diagnosis__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.aiop-diagnosis__card {
+  position: relative;
+  background: var(--aiop-card);
+  padding: 24px 24px 26px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* Lane rail — 3px left border in the lane colour. Stamp via
+   ::before so the card's own border can stay rule-coloured for the
+   hairline-on-rule treatment with its neighbours. */
+.aiop-diagnosis__card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--aiop-rule-strong);
+}
+
+.aiop-diagnosis__card--violet::before {
+  background: var(--aiop-violet);
+}
+
+.aiop-diagnosis__card--gold::before {
+  background: var(--aiop-amber);
+}
+
+.aiop-diagnosis__card--sage::before {
+  background: var(--aiop-sage);
+}
+
+.aiop-diagnosis__card--slate::before {
+  background: var(--aiop-slate);
+}
+
+.aiop-diagnosis__card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  flex-wrap: wrap;
+}
+
+.aiop-diagnosis__card-n {
+  font-weight: 600;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-diagnosis__card--violet .aiop-diagnosis__card-n {
+  color: var(--aiop-violet);
+}
+
+.aiop-diagnosis__card--gold .aiop-diagnosis__card-n {
+  color: var(--aiop-amber);
+}
+
+.aiop-diagnosis__card--sage .aiop-diagnosis__card-n {
+  color: var(--aiop-sage);
+}
+
+.aiop-diagnosis__card--slate .aiop-diagnosis__card-n {
+  color: var(--aiop-slate);
+}
+
+.aiop-diagnosis__card-rule {
+  width: 18px;
+  height: 1px;
+  background: var(--aiop-rule-strong);
+  flex-shrink: 0;
+}
+
+.aiop-diagnosis__card-tag {
+  color: var(--aiop-muted);
+  font-weight: 500;
+}
+
+.aiop-diagnosis__card-title {
+  font-family: var(--aiop-display);
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  line-height: 1.2;
+  color: var(--aiop-ink);
+  margin: 4px 0 0;
+}
+
+.aiop-diagnosis__card-body {
+  font-family: var(--aiop-body);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+  max-width: 50ch;
+}
+
+
+/* ─── 25.6c · Bridge chevrons (between beats) ────────────────────── */
+
+/* Thin vertical hairline plus a small downward chevron, centred
+   between the grid and the gap card and between the gap card and
+   the reframe sentence. Decorative; hidden on narrow widths so the
+   beats stack tightly without orphaned arrows. */
+.aiop-diagnosis__bridge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: clamp(20px, 3vw, 32px) 0;
+  height: 36px;
+  position: relative;
+}
+
+.aiop-diagnosis__bridge::before {
+  content: "";
+  width: 1px;
+  height: 24px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--aiop-rule-strong) 100%
+  );
+}
+
+.aiop-diagnosis__chevron {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  border-right: 1px solid var(--aiop-muted);
+  border-bottom: 1px solid var(--aiop-muted);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+
+/* ─── 25.6d · Shared-gap card ────────────────────────────────────── */
+
+.aiop-diagnosis__gap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 28px 32px 30px;
+  background: var(--aiop-card-soft);
+  border: 1px solid color-mix(
+    in oklab,
+    var(--aiop-violet) 28%,
+    var(--aiop-rule-strong)
+  );
+  box-shadow: 0 12px 32px -16px color-mix(
+    in oklab,
+    var(--aiop-violet) 40%,
+    transparent
+  );
+}
+
+.aiop-diagnosis__gap::before,
+.aiop-diagnosis__gap::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: var(--aiop-card-soft);
+  border: 1px solid color-mix(
+    in oklab,
+    var(--aiop-violet) 28%,
+    var(--aiop-rule-strong)
+  );
+  transform: rotate(45deg);
+}
+
+.aiop-diagnosis__gap::before {
+  top: -8px;
+  left: 50%;
+  margin-left: -7px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.aiop-diagnosis__gap::after {
+  bottom: -8px;
+  left: 50%;
+  margin-left: -7px;
+  border-left: 0;
+  border-top: 0;
+}
+
+.aiop-diagnosis__gap-eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-violet);
+  font-weight: 600;
+}
+
+.aiop-diagnosis__gap-title {
+  font-family: var(--aiop-display);
+  font-size: clamp(24px, 2.4vw, 32px);
+  font-weight: 500;
+  letter-spacing: -0.018em;
+  line-height: 1.2;
+  color: var(--aiop-ink);
+  margin: 4px 0 0;
+}
+
+.aiop-diagnosis__gap-title em {
+  font-style: italic;
+  font-weight: 480;
+  color: var(--aiop-violet);
+}
+
+.aiop-diagnosis__gap-subline {
+  font-family: var(--aiop-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  margin: 6px 0 0;
+}
+
+
+/* ─── 25.6e · Handoff sentence ───────────────────────────────────── */
+
+/* One short bridging line that hands into the Evans quote below.
+   The italic em on the second clause visually rhymes with the title's
+   em ("Four faces. *One missing piece.*") so the section opens and
+   closes on the same typographic gesture. */
+.aiop-diagnosis__handoff {
+  text-align: center;
+  font-family: var(--aiop-body);
+  font-size: clamp(18px, 1.5vw, 24px);
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--aiop-ink);
+  max-width: 640px;
+  margin: clamp(32px, 4vw, 48px) auto 0;
+}
+
+.aiop-diagnosis__handoff em {
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-weight: 480;
+  color: var(--aiop-violet);
+}
+
+
+/* ─── 25.6f · Responsive ─────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .aiop-diagnosis__bridge {
+    margin: 16px 0;
+    height: 24px;
+  }
+
+  .aiop-diagnosis__bridge::before {
+    height: 16px;
+  }
+
+  .aiop-diagnosis__gap {
+    padding: 22px 22px 24px;
+  }
+
+  .aiop-diagnosis__handoff {
+    margin-top: 28px;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
  * 26 · v4 — Quote bridge (Evans on the asking gap)
  *
  * Full-viewport interstitial between the hero and the Vision flywheel.
