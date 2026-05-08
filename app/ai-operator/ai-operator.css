@@ -3865,7 +3865,13 @@
 .aiop-case-row__name {
   margin: 4px 0 0;
   font-family: var(--aiop-display);
-  font-size: clamp(40px, 5vw, 72px);
+  /* One step down from the previous clamp(40px, 5vw, 72px) so multi-
+     word descriptive names (UGC Dubber, AI Image & Video Suite,
+     Studio PM Orchestrator) stop dominating the row when they wrap
+     to two lines. Sized to stay visibly larger than the cases
+     section title (clamp(30px, 3.6vw, 48px)) so the case row still
+     reads as its own headline inside the section. */
+  font-size: clamp(36px, 4.5vw, 64px);
   font-weight: 500;
   line-height: 0.92;
   letter-spacing: -0.035em;
