@@ -211,6 +211,18 @@ function CaseRow({
                 {project.nameEm ? <em>{project.nameEm}</em> : null}
                 <span className="aiop-case-row__period">.</span>
               </h3>
+              {project.codename ? (
+                <p
+                  className="aiop-case-row__codename"
+                  aria-label={`Codename ${project.codename}${project.codenameEm ?? ""}`}
+                >
+                  {project.codename}
+                  {project.codenameEm ? (
+                    <em>{project.codenameEm}</em>
+                  ) : null}
+                  <span className="aiop-case-row__period">.</span>
+                </p>
+              ) : null}
               <p className="aiop-case-row__tagline">{project.tagline}</p>
               {project.subline ? (
                 <p className="aiop-case-row__subline">{project.subline}</p>
@@ -656,6 +668,16 @@ function CaseModalBody({ project }: { project: CaseProject }) {
           {project.nameEm ? <em>{project.nameEm}</em> : null}
           <span className="aiop-case-row__period">.</span>
         </h2>
+        {project.codename ? (
+          <p
+            className="aiop-modal__codename"
+            aria-label={`Codename ${project.codename}${project.codenameEm ?? ""}`}
+          >
+            {project.codename}
+            {project.codenameEm ? <em>{project.codenameEm}</em> : null}
+            <span className="aiop-case-row__period">.</span>
+          </p>
+        ) : null}
         <p className="aiop-modal__tagline">{project.tagline}</p>
         <p className="aiop-modal__lede">{project.challenge}</p>
 

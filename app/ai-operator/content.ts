@@ -680,8 +680,22 @@ export type CaseCapability = {
 export type CaseProject = {
   id: string;
   num: string;
+  /* Primary descriptive name shown as the rail h3 and the modal
+     title. Multi-word names live in `name` with a trailing space so
+     the italic emphasis sits on the trailing noun (e.g. `name:
+     "Briefing "`, `nameEm: "Agent"` → "Briefing Agent" with "Agent"
+     italic in the case accent). */
   name: string;
   nameEm?: string;
+  /* Optional internal codename (e.g. Mímir, Vesper). When present,
+     a smaller second line renders directly under the descriptive
+     name in the same display font + italic-accent treatment, so the
+     team's named identity stays visible without competing with the
+     descriptive label that scans for outside readers. Single-word
+     codenames split mid-word for the italic accent (`codename: "Mí",
+     codenameEm: "mir"`); they don't need a trailing space. */
+  codename?: string;
+  codenameEm?: string;
   tagline: string;
   subline?: string;
   team: string;
@@ -705,8 +719,10 @@ export const cases: CaseProject[] = [
   {
     id: "mimir",
     num: "01",
-    name: "Mí",
-    nameEm: "mir",
+    name: "Briefing ",
+    nameEm: "Agent",
+    codename: "Mí",
+    codenameEm: "mir",
     tagline: "Brand Intelligence",
     subline: "Loop's own knowledge, structured.",
     team: "Performance · Creative Strategy",
@@ -747,8 +763,10 @@ export const cases: CaseProject[] = [
   {
     id: "vesper",
     num: "02",
-    name: "Ves",
-    nameEm: "per",
+    name: "AI Image & Video ",
+    nameEm: "Suite",
+    codename: "Ves",
+    codenameEm: "per",
     tagline: "AI Image & Video Generation",
     subline: "Replaced Krea. Built in-house.",
     team: "Studio · Design | Product Design",
@@ -791,8 +809,10 @@ export const cases: CaseProject[] = [
   {
     id: "babylon",
     num: "03",
-    name: "Baby",
-    nameEm: "lon",
+    name: "UGC ",
+    nameEm: "Dubber",
+    codename: "Baby",
+    codenameEm: "lon",
     tagline: "UGC Localization",
     subline: "Top-performing UGC, dubbed at scale.",
     team: "Performance · Localization & Expansion",
@@ -829,8 +849,10 @@ export const cases: CaseProject[] = [
   {
     id: "heimdall",
     num: "04",
-    name: "Heim",
-    nameEm: "dall",
+    name: "Studio PM ",
+    nameEm: "Orchestrator",
+    codename: "Heim",
+    codenameEm: "dall",
     tagline: "Workflow Orchestration",
     subline: "Everything around the creative work, in one tool.",
     team: "Studio · Project Management",

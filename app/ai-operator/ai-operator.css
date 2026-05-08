@@ -3845,6 +3845,29 @@
   color: var(--aiop-case-accent);
 }
 
+/* Codename — smaller secondary identifier rendered directly under
+   the descriptive h3. Same display font + italic accent + period
+   treatment as the h3 so the codename keeps its visual identity,
+   just one tier down in the hierarchy. Muted ink colour signals
+   "secondary"; the italic em + period inherit the case accent so
+   the codename still reads as a name, not a continuation of the
+   title above. */
+.aiop-case-row__codename {
+  margin: 8px 0 0;
+  font-family: var(--aiop-display);
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.012em;
+  color: var(--aiop-muted);
+}
+
+.aiop-case-row__codename em {
+  font-style: italic;
+  color: var(--aiop-case-accent);
+  font-weight: 500;
+}
+
 .aiop-case-row__tagline {
   margin: 4px 0 0;
   font-family: var(--aiop-mono);
@@ -4258,6 +4281,26 @@
 
 .aiop-modal__title em {
   font-style: normal;
+  color: var(--aiop-modal-accent);
+  font-weight: 500;
+}
+
+/* Codename inside the case-detail modal — same role as
+   `.aiop-case-row__codename` but scaled to sit comfortably under
+   the larger modal title. Italic em + period inherit the modal
+   accent so the codename keeps its identity at this larger size. */
+.aiop-modal__codename {
+  margin: 6px 0 0;
+  font-family: var(--aiop-display);
+  font-size: clamp(20px, 2vw, 28px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.018em;
+  color: var(--aiop-muted);
+}
+
+.aiop-modal__codename em {
+  font-style: italic;
   color: var(--aiop-modal-accent);
   font-weight: 500;
 }
