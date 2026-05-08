@@ -2655,6 +2655,30 @@
   line-height: 1.3;
 }
 
+/* Headless satellite — repositioned for the nested variant so it
+   sits OUTSIDE the dashed outer ring, in the top-right negative
+   space between the inscribed circle and the square container.
+   The base satellite chrome (dot + label) stays the same; only the
+   placement and the connector length change. The connector extends
+   far enough leftward to bridge from the satellite back into the
+   sphere, which makes the relationship read as "exposes the
+   substrate" rather than "floats next to the diagram". */
+.aiop-orbit--nested .aiop-orbit__satellite {
+  top: 6%;
+  right: 0;
+  left: auto;
+  transform: translate(0, 0);
+  font-size: clamp(9px, 1vw, 11px);
+  z-index: 4;
+}
+
+.aiop-orbit--nested .aiop-orbit__satellite::before {
+  /* Longer than the base 22px so the line visibly crosses from the
+     corner back into the dashed outer ring of the sphere. */
+  width: clamp(60px, 8vw, 96px);
+  left: calc(-1 * clamp(60px, 8vw, 96px));
+}
+
 @media (max-width: 600px) {
   /* Narrow viewports: shrink the pill chrome and let the inner-ring
      pill sit slightly closer to the centre since the absolute pill
@@ -2670,14 +2694,27 @@
 
   .aiop-orbit--nested .aiop-orbit__core-files {
     /* Files become unreadable below ~9px; hide on the smallest
-       viewports so the core reads cleanly as just "Headless". */
+       viewports so the core reads cleanly as just "Substrate". */
     display: none;
   }
 
   .aiop-orbit--nested .aiop-orbit__core {
     /* Slightly smaller without files to display, but still big
-       enough that "HEADLESS" reads at 12.5px mono. */
+       enough that "SUBSTRATE" reads at 12.5px mono. */
     width: 22%;
+  }
+
+  /* Pull the satellite slightly inward and tighten the connector
+     so the dot stays inside the smaller container without the label
+     overflowing (label hides via the base narrow-viewport rule). */
+  .aiop-orbit--nested .aiop-orbit__satellite {
+    top: 4%;
+    right: 2%;
+  }
+
+  .aiop-orbit--nested .aiop-orbit__satellite::before {
+    width: 36px;
+    left: -36px;
   }
 }
 

@@ -339,10 +339,12 @@ export const visionSection = {
   title: "Adoption that works",
   titleEm: "is",
   titleAfter: "automation.",
-  /* Centre of the orbit: the headless layer is the deepest position
-     in the architecture; the substrate file names live inside it
-     because the substrate is what gets exposed headlessly. */
-  centerLabel: "HEADLESS",
+  /* Centre of the orbit: the substrate is the deepest position in the
+     architecture — the encoded layer everything else sits on. The
+     file names below the label are the canonical examples (a brain
+     dump of how the team works, a Skill that encodes GTM strategy,
+     a meeting transcript that gets ingested next). */
+  centerLabel: "SUBSTRATE",
   centerFiles: [
     "how-teams-work.md",
     "stripe-mkt-strategy.skill",
@@ -351,14 +353,21 @@ export const visionSection = {
   /* Each phase sits on its own concentric ring at a different clock
      position so the orbit reads as a nested architecture: Navigate
      on the outer ring, Encode on the middle ring, Build on the
-     innermost ring, and Headless at the centre. Positioning is
-     driven entirely by the phase id in CSS — no per-row position
-     metadata is needed. */
+     innermost ring, with the substrate at the centre. Positioning
+     is driven entirely by the phase id in CSS — no per-row
+     position metadata is needed. */
   orbits: [
     { id: "navigate", label: "Navigate", ring: "outer" },
     { id: "encode", label: "Encode", ring: "middle" },
     { id: "build", label: "Build", ring: "inner" },
   ] as const,
+  /* Headless sits outside the sphere — it isn't part of the
+     Navigate/Encode/Build flywheel and it isn't the substrate
+     either. It's the separate idea that takes the substrate at the
+     centre and exposes it to every surface the cohort already uses.
+     Renders as a satellite anchored to the orbit's outer edge by a
+     short connector line. */
+  satellite: { id: "headless", label: "Headless" },
   caption:
     "Once you figure out how to navigate AI, you learn how to encode the way you work into a layer you can build any agent on.",
 } as const;

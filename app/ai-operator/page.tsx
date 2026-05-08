@@ -244,15 +244,17 @@ export default function AiOperatorPage() {
             <p className="aiop-vision__caption">{visionSection.caption}</p>
           </div>
 
-          {/* Nested orbit: each phase sits on its own concentric ring
-              with Headless at the centre. Three dashed/solid rings
-              communicate the layered architecture; per-phase pill
-              positions are placed in CSS so the phase id alone drives
-              the location (no positional metadata in the data). */}
+          {/* Nested orbit: Navigate / Encode / Build phase pills sit on
+              their own concentric rings around the substrate at the
+              centre. Headless renders as a satellite outside the
+              outer ring — it's the separate idea that exposes the
+              substrate to every surface, not part of the flywheel
+              itself. Per-phase pill positions live in CSS so the
+              phase id alone drives the location. */}
           <div
             className="aiop-orbit aiop-orbit--centered aiop-orbit--nested"
             role="img"
-            aria-label="Navigate, Encode, Build pills nested on concentric orbits, with Headless at the centre"
+            aria-label="Navigate, Encode, Build pills nested on concentric orbits around a substrate core, with Headless as a satellite outside the outer ring"
           >
             <span
               className="aiop-orbit__ring aiop-orbit__ring--outer"
@@ -286,6 +288,21 @@ export default function AiOperatorPage() {
                 ))}
               </span>
             </span>
+
+            {visionSection.satellite ? (
+              <span
+                className={`aiop-orbit__satellite aiop-orbit__satellite--${visionSection.satellite.id}`}
+                data-aiop-satellite={visionSection.satellite.id}
+              >
+                <span
+                  className="aiop-orbit__satellite-dot"
+                  aria-hidden="true"
+                />
+                <span className="aiop-orbit__satellite-label">
+                  {visionSection.satellite.label}
+                </span>
+              </span>
+            ) : null}
           </div>
         </div>
       </section>
