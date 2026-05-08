@@ -1314,71 +1314,86 @@ export const substrateMapSection = {
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
- * Surface pick — same engine, surface fits the marketer
+ * Surface pick — same engine, three ways in, lands everywhere
  *
- * Second tail section. Where the substrate map names the
- * architecture, this names the FDA pattern that makes it
- * cohort-scalable: the substrate underneath every tool stays the
- * same, but the surface a marketer reaches it through adapts to
- * where they already work. A tool built for one marketer becomes a
- * way in for another, which is how a single FDA serves a group of
- * ~20 marketers without each tool staying single-use.
+ * Second tail section. Where the substrate map names the architecture,
+ * this names the FDA pattern that makes it cohort-scalable: the
+ * substrate underneath every tool stays the same, but a marketer
+ * reaches it through whatever interface fits the moment. A tool
+ * built for one marketer becomes a way in for another, which is how
+ * one FDA serves ~20 marketers without each tool staying single-use.
  *
- * Three "surface families" instead of three install paths so the
- * section reads as a cohort scaling story, not a developer-onboarding
- * story (which is what the standalone Mímir Pick-a-Surface card is).
+ * Mirrors the headless framing the Mimir repo ships at
+ * `/briefing-assistant/headless`: three install paths (MCP / API /
+ * CLI) on the left as the actual ways to talk to the engine, with
+ * an "All surfaces" grid on the right naming where the engine shows
+ * up. The previous "Power / Team / System" framing was retired
+ * because it conflated transport (MCP, API, CLI — three protocols)
+ * with destination (Cursor, Claude, Slack — concrete surfaces).
+ * Cursor and Claude both ride MCP; an internal tool rides the REST
+ * API; the old grouping made the architecture look split when it is
+ * actually one engine, three callers, every surface inherits.
  * ─────────────────────────────────────────────────────────────────── */
 
-export type SurfacePickFamily = {
-  id: "power" | "team" | "system";
+export type SurfacePickInterface = {
+  id: "mcp" | "api" | "cli";
   label: string;
+  sublabel: string;
+  icon: string;
+  /** Marks the canonical way in for internal use; renders a small
+   *  "Default" badge next to the label. */
+  recommended?: boolean;
   detail: string;
-  surfaces: { icon: string; name: string }[];
-  use: string;
+};
+
+export type SurfacePickSurface = {
+  icon: string;
+  name: string;
 };
 
 export const surfacePickSection = {
   title: "Pick the surface",
   titleEm: "that fits the workflow.",
   body:
-    "A tool built for one marketer becomes a way in for another. The substrate underneath stays the same; the surface adapts to where the work already happens — Cursor or Claude for power users, a Slack command for quick checks, a dashboard for the whole team, an API for the systems that need to call it from elsewhere.",
-  cardLabel: "Surface families",
+    "A tool built for one marketer becomes a way in for another. The substrate underneath stays the same; the way to reach it adapts to where the work already happens — an AI-native protocol for tools like Cursor and Claude, a REST API for systems and automations, a CLI for quick scripts.",
+  cardLabel: "Three ways in",
   flow: "Source → Surface",
-  families: [
+  interfaces: [
     {
-      id: "power",
-      label: "Power",
-      detail: "For marketers driving the engine directly.",
-      surfaces: [
-        { icon: "C", name: "Cursor" },
-        { icon: "Cl", name: "Claude" },
-        { icon: "◇", name: "MCP" },
-      ],
-      use: "Best for the deep, exploratory work.",
+      id: "mcp",
+      label: "MCP",
+      sublabel: "Cursor / Claude",
+      icon: "◇",
+      recommended: true,
+      detail:
+        "The AI-native protocol. Drop the engine into any MCP-aware tool and the prompt context comes with it — Cursor, Claude, the cohort's own copilots.",
     },
     {
-      id: "team",
-      label: "Team",
-      detail: "For everyday checks across the cohort.",
-      surfaces: [
-        { icon: "#", name: "Slack" },
-        { icon: "◐", name: "Web app" },
-        { icon: "⤴", name: "Plugins" },
-      ],
-      use: "Best for the work everyone touches.",
+      id: "api",
+      label: "API",
+      sublabel: "REST · server-to-server",
+      icon: "{ }",
+      detail:
+        "Same engine, called from a script, an internal tool, or any automation. No LLM in the loop required.",
     },
     {
-      id: "system",
-      label: "System",
-      detail: "For other systems calling the engine.",
-      surfaces: [
-        { icon: "{ }", name: "API" },
-        { icon: "⇄", name: "Webhooks" },
-        { icon: "$_", name: "CLI" },
-      ],
-      use: "Best for the runs that don't need a human.",
+      id: "cli",
+      label: "CLI",
+      sublabel: "curl from your terminal",
+      icon: "$_",
+      detail:
+        "One-liner from the shell. Batch runs, quick checks, cron jobs that need to ask the engine without a UI.",
     },
-  ] satisfies SurfacePickFamily[],
+  ] satisfies SurfacePickInterface[],
+  surfacesLabel: "Where it lands",
+  surfaces: [
+    { icon: "C", name: "Cursor" },
+    { icon: "Cl", name: "Claude" },
+    { icon: "◐", name: "Web app" },
+    { icon: "#", name: "Slack" },
+    { icon: "A", name: "Agents" },
+    { icon: "⤴", name: "Internal tools" },
+  ] satisfies SurfacePickSurface[],
   closing:
     "Build once → scale through surfaces → cohort inherits the capability",
 } as const;

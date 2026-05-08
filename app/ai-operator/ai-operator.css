@@ -9473,23 +9473,154 @@
 
 /* ─── 28.1 · Surface pick — three family cards ────────────────────── */
 
-.aiop-surface-pick__grid {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+/* Two-column card layout: interfaces (left) + destinations (right).
+   On wide viewports the interfaces stack vertically and the
+   destinations grid sits beside them; on narrow viewports both
+   collapse into a single column with the interfaces first. */
+.aiop-surface-pick__layout {
   display: grid;
-  gap: 1px;
+  gap: clamp(20px, 2.4vw, 32px);
   background: var(--aiop-rule);
   border: 1px solid var(--aiop-rule-strong);
+  padding: 1px;
 }
 
-@media (min-width: 800px) {
-  .aiop-surface-pick__grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+@media (min-width: 880px) {
+  .aiop-surface-pick__layout {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: 1px;
+    padding: 0;
   }
 }
 
-.aiop-surface-pick__family {
+/* Interfaces column — three install paths (MCP / API / CLI) stacked
+   vertically. Each interface row mirrors the Mimir headless card
+   layout: a leading glyph tile, a label + sublabel pair, and a
+   short paragraph that explains when to reach for it. The hairline
+   separators between rows reuse the parent's 1px gap so the column
+   reads as one continuous list, not three loose blocks. */
+.aiop-surface-pick__interfaces {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--aiop-paper);
+  display: grid;
+  gap: 1px;
+  background: var(--aiop-rule);
+}
+
+.aiop-surface-pick__interface {
+  background: var(--aiop-paper);
+  padding: clamp(20px, 2.2vw, 26px) clamp(18px, 2vw, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  position: relative;
+}
+
+/* Recommended interface gets a 3px accent stripe on its left edge
+   so the default path reads as a clear visual anchor without
+   needing extra copy. Sage signals the "live, default" lane the
+   way it does on the Production status pulse. */
+.aiop-surface-pick__interface--recommended {
+  background:
+    color-mix(in oklab, var(--aiop-sage) 5%, var(--aiop-paper));
+  border-left: 3px solid var(--aiop-sage);
+  padding-left: calc(clamp(18px, 2vw, 24px) - 3px);
+}
+
+.aiop-surface-pick__interface-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* Glyph tile sits left of the label/sublabel block. Same square
+   chrome as the destinations tile so the two columns rhyme. */
+.aiop-surface-pick__interface-icon {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--aiop-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--aiop-gold-bright);
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-strong);
+  line-height: 1;
+}
+
+.aiop-surface-pick__interface--recommended .aiop-surface-pick__interface-icon {
+  color: var(--aiop-sage);
+  border-color: color-mix(in oklab, var(--aiop-sage) 32%, var(--aiop-rule-strong));
+  background: color-mix(in oklab, var(--aiop-sage) 8%, var(--aiop-card));
+}
+
+.aiop-surface-pick__interface-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.aiop-surface-pick__interface-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--aiop-display);
+  font-weight: 500;
+  font-size: clamp(20px, 1.6vw, 24px);
+  letter-spacing: -0.012em;
+  color: var(--aiop-ink);
+  line-height: 1;
+}
+
+/* "Default" badge — only renders for the recommended interface.
+   Small mono caps in the sage lane to match the recommended
+   stripe, with a soft tinted background so the badge reads as a
+   secondary cue, not a primary tag. */
+.aiop-surface-pick__interface-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-sage);
+  background: var(--aiop-sage-soft);
+  border: 1px solid var(--aiop-sage-edge);
+}
+
+.aiop-surface-pick__interface-sublabel {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  line-height: 1.3;
+}
+
+.aiop-surface-pick__interface-detail {
+  margin: 0;
+  font-family: var(--aiop-body);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  max-width: 56ch;
+}
+
+/* Destinations column — small icon-tile grid that names where the
+   engine shows up regardless of which interface called it. Reads as
+   the "Where it lands" answer to the three "ways in" on the left. */
+.aiop-surface-pick__destinations {
   background: var(--aiop-paper);
   padding: clamp(20px, 2.4vw, 28px) clamp(18px, 2vw, 24px);
   display: flex;
@@ -9498,13 +9629,8 @@
   min-width: 0;
 }
 
-.aiop-surface-pick__family-head {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.aiop-surface-pick__family-label {
+.aiop-surface-pick__destinations-label {
+  margin: 0;
   font-family: var(--aiop-mono);
   font-size: 11px;
   letter-spacing: 0.18em;
@@ -9513,36 +9639,34 @@
   font-weight: 600;
 }
 
-.aiop-surface-pick__family-detail {
-  margin: 0;
-  font-family: var(--aiop-display);
-  font-weight: 500;
-  font-size: clamp(17px, 1.4vw, 20px);
-  line-height: 1.3;
-  letter-spacing: -0.012em;
-  color: var(--aiop-ink);
-  max-width: 24ch;
-}
-
-.aiop-surface-pick__family-surfaces {
+.aiop-surface-pick__destinations-grid {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
+  flex: 1;
+  align-content: start;
 }
 
-.aiop-surface-pick__family-surface {
+.aiop-surface-pick__destination {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   border: 1px solid var(--aiop-rule-strong);
-  padding: 7px 11px;
+  padding: 10px 12px;
   background: var(--aiop-card);
+  min-width: 0;
 }
 
-.aiop-surface-pick__family-icon {
+.aiop-surface-pick__destination-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--aiop-mono);
   font-size: 12px;
   font-weight: 500;
@@ -9550,22 +9674,14 @@
   line-height: 1;
 }
 
-.aiop-surface-pick__family-name {
+.aiop-surface-pick__destination-name {
   font-family: var(--aiop-body);
   font-size: 13px;
   color: var(--aiop-ink);
   font-weight: 500;
-}
-
-.aiop-surface-pick__family-use {
-  margin: 0;
-  margin-top: auto;
-  padding-top: 12px;
-  border-top: 1px solid var(--aiop-rule);
-  font-family: var(--aiop-body);
-  font-size: 13.5px;
-  line-height: 1.55;
-  color: var(--aiop-ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 

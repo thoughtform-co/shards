@@ -503,45 +503,83 @@ export default function AiOperatorPage() {
               </span>
             </header>
 
-            <ol className="aiop-surface-pick__grid" role="list">
-              {surfacePickSection.families.map((family) => (
-                <li
-                  key={family.id}
-                  className={`aiop-surface-pick__family aiop-surface-pick__family--${family.id}`}
-                >
-                  <header className="aiop-surface-pick__family-head">
-                    <span className="aiop-surface-pick__family-label">
-                      {family.label}
-                    </span>
-                    <p className="aiop-surface-pick__family-detail">
-                      {family.detail}
-                    </p>
-                  </header>
-                  <ul
-                    className="aiop-surface-pick__family-surfaces"
-                    role="list"
+            {/* Two-column layout: three install paths (MCP / API / CLI)
+                on the left as the actual ways to talk to the engine,
+                with the destinations grid on the right. Mirrors the
+                Mimir headless onboarding card so the architecture
+                reads honestly — Cursor and Claude both ride MCP, an
+                internal tool rides the REST API, a cron job rides the
+                CLI; the surfaces panel just names where the engine
+                shows up regardless of which transport called it. */}
+            <div className="aiop-surface-pick__layout">
+              <ol className="aiop-surface-pick__interfaces" role="list">
+                {surfacePickSection.interfaces.map((iface) => (
+                  <li
+                    key={iface.id}
+                    className={`aiop-surface-pick__interface aiop-surface-pick__interface--${iface.id}${
+                      iface.recommended
+                        ? " aiop-surface-pick__interface--recommended"
+                        : ""
+                    }`}
                   >
-                    {family.surfaces.map((s) => (
-                      <li
-                        key={s.name}
-                        className="aiop-surface-pick__family-surface"
+                    <header className="aiop-surface-pick__interface-head">
+                      <span
+                        className="aiop-surface-pick__interface-icon"
+                        aria-hidden="true"
                       >
-                        <span
-                          className="aiop-surface-pick__family-icon"
-                          aria-hidden="true"
-                        >
-                          {s.icon}
+                        {iface.icon}
+                      </span>
+                      <div className="aiop-surface-pick__interface-text">
+                        <span className="aiop-surface-pick__interface-label">
+                          {iface.label}
+                          {iface.recommended ? (
+                            <span className="aiop-surface-pick__interface-badge">
+                              Default
+                            </span>
+                          ) : null}
                         </span>
-                        <span className="aiop-surface-pick__family-name">
-                          {s.name}
+                        <span className="aiop-surface-pick__interface-sublabel">
+                          {iface.sublabel}
                         </span>
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="aiop-surface-pick__family-use">{family.use}</p>
-                </li>
-              ))}
-            </ol>
+                      </div>
+                    </header>
+                    <p className="aiop-surface-pick__interface-detail">
+                      {iface.detail}
+                    </p>
+                  </li>
+                ))}
+              </ol>
+
+              <aside
+                className="aiop-surface-pick__destinations"
+                aria-label={surfacePickSection.surfacesLabel}
+              >
+                <p className="aiop-surface-pick__destinations-label">
+                  {surfacePickSection.surfacesLabel}
+                </p>
+                <ul
+                  className="aiop-surface-pick__destinations-grid"
+                  role="list"
+                >
+                  {surfacePickSection.surfaces.map((s) => (
+                    <li
+                      key={s.name}
+                      className="aiop-surface-pick__destination"
+                    >
+                      <span
+                        className="aiop-surface-pick__destination-icon"
+                        aria-hidden="true"
+                      >
+                        {s.icon}
+                      </span>
+                      <span className="aiop-surface-pick__destination-name">
+                        {s.name}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </aside>
+            </div>
 
             <footer className="aiop-surface-pick__card-foot">
               {surfacePickSection.closing}
