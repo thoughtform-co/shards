@@ -610,10 +610,10 @@ export const approachSteps: ApproachStep[] = [
         {
           heading: "What it produced at Loop",
           bullets: [
-            "Four production systems shipped: Mímir, Heimdall, Vesper, Babylon.",
-            "Two of them, Mímir and Vesper, now expose their substrate headlessly via MCP.",
-            "Same engines answer Claude, Cursor, Slack, dashboards, and in-tool buttons.",
-            "Each system started inside a single team's bottleneck. Each one survived adoption.",
+            "AI Image & Video Suite (Vesper) replaced Krea outright. Studio now runs every campaign through it.",
+            "Studio PM Orchestrator (Heimdall) moves briefings from Monday into Figma every week.",
+            "Briefing Agent (Mímir) is reshaping how Creative Strategy plans every campaign cycle.",
+            "UGC Dubber (Babylon) is in pilot for the Japanese market and expanding into ATL content dubbing.",
           ],
         },
       ],
