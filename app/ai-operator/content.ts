@@ -642,14 +642,6 @@ export const casesSection = {
       def: "Build a workflow that didn't exist before.",
     },
   ],
-  /* Closing callout — a single editorial line that lands the cases
-     section the way `approachSection.close` lands the flywheel. The
-     point isn't to celebrate vibe-coding, it's to set up the
-     headless thesis the page hands into next: the surface is the
-     cheapest layer to swap, the orchestration underneath is what
-     keeps mattering. */
-  close:
-    "Vibe coding has been a huge unlock, but the interface is the least interesting layer of any of these.",
 } as const;
 
 export type CaseTone = "gold" | "sage" | "slate" | "violet";
@@ -659,6 +651,17 @@ export type ProjectScreenshot = {
   src: string;
   alt: string;
   caption?: string;
+};
+
+/* Optional walkthrough video — short narrated screen recording of
+   the production system. When present, the case-row meta strip
+   surfaces a "Walkthrough" button that opens a modal video player
+   left of the existing "View case detail" CTA. Path resolves under
+   `/public`; videos are H.264 MP4 with `faststart` so they begin
+   streaming before the file finishes downloading. */
+export type CaseWalkthrough = {
+  src: string;
+  poster?: string;
 };
 
 export type CaseProject = {
@@ -682,6 +685,7 @@ export type CaseProject = {
   companyLeverage: string;
   image: string;
   screenshots: ProjectScreenshot[];
+  walkthrough?: CaseWalkthrough;
 };
 
 export const cases: CaseProject[] = [
@@ -723,6 +727,9 @@ export const cases: CaseProject[] = [
       { src: "/cases/screenshots/mimir/MImir-Customer Review.png", alt: "Mímir: customer review insights" },
       { src: "/cases/screenshots/mimir/Mimir-Personas.png", alt: "Mímir: audience personas" },
     ],
+    walkthrough: {
+      src: "/cases/videos/mimir.mp4",
+    },
   },
   {
     id: "vesper",
@@ -760,6 +767,9 @@ export const cases: CaseProject[] = [
       { src: "/cases/screenshots/vesper/Vesper-Video.png", alt: "Vesper: video generation" },
       { src: "/cases/screenshots/vesper/Vesper-Img-2-Video.png", alt: "Vesper: image-to-video" },
     ],
+    walkthrough: {
+      src: "/cases/videos/vesper.mp4",
+    },
   },
   {
     id: "babylon",
@@ -795,6 +805,9 @@ export const cases: CaseProject[] = [
       { src: "/cases/screenshots/babylon/Babylon-Dubbing Example.png", alt: "Babylon: dubbing example" },
       { src: "/cases/screenshots/babylon/Babylon-Analytics.png", alt: "Babylon: analytics dashboard" },
     ],
+    walkthrough: {
+      src: "/cases/videos/babylon.mp4",
+    },
   },
   {
     id: "heimdall",
@@ -832,8 +845,193 @@ export const cases: CaseProject[] = [
       { src: "/cases/screenshots/heimdall/Heimdall-Figma Template.png", alt: "Heimdall: Figma template" },
       { src: "/cases/screenshots/heimdall/Heimdall-Feedback Summarizer.png", alt: "Heimdall: feedback summarizer" },
     ],
+    walkthrough: {
+      src: "/cases/videos/heimdall.mp4",
+    },
   },
 ];
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Stripe teaser — post-Heimdall card · the next move
+ *
+ * Sits inside the cases section after the four production rows and
+ * before the closing callout. Intentionally NOT a fifth `CaseProject`
+ * — the four-case "in production" count stays clean. This is a
+ * separate content object the cases renderer reaches for explicitly.
+ *
+ * Carries the pattern from HarvestFields (encode brand judgment once,
+ * inherit it across two workflows) into the Stripe Forward Deployed
+ * AI Accelerator (Marketing) shape: encode the GTM substrate once,
+ * let every cohort marketer's work inherit it.
+ *
+ * The CTA does not open a modal. It points at a placeholder booking
+ * href — the meeting itself is the unlock. Replace `ctaHref` with a
+ * real calendar link when one exists.
+ *
+ * Visuals: the schematic block fills the same `aiop-shot-frame` slot
+ * a real screenshot would. If actual prototype snapshots get added
+ * later under `/public/cases/screenshots/stripe-teaser/`, extend the
+ * teaser data with a `screenshots` array and update the renderer to
+ * swap in `ScreenshotGallery` ahead of the schematic.
+ * ─────────────────────────────────────────────────────────────────── */
+
+export type StripeTeaserCapability = { k: string; v: string };
+export type StripeTeaserSubstrateLayer = { tag: string; name: string };
+export type StripeTeaserSurface = { icon: string; name: string };
+
+export const stripeTeaser: {
+  metaLabel: string;
+  metaTag: string;
+  team: string;
+  ctaLabel: string;
+  ctaHref: string;
+  railEyebrow: string;
+  name: string;
+  tagline: string;
+  subline: string;
+  challenge: string;
+  workflowMode: WorkflowMode;
+  workflowAfter: string;
+  capabilities: StripeTeaserCapability[];
+  stack: string[];
+  /* Captured snapshots from the HarvestFields prototype at
+     `/ai-operator/harvestfields`. Render through `ScreenshotGallery`
+     in the same `aiop-shot-frame` slot the production case rows use,
+     so the teaser shows the actual tool I want to walk Stripe
+     through. Empty array falls back to the inline `schematic`. */
+  screenshots: ProjectScreenshot[];
+  schematic: {
+    eyebrow: string;
+    sourcesLabel: string;
+    sources: string[];
+    substrateLabel: string;
+    substrateLayers: StripeTeaserSubstrateLayer[];
+    surfacesLabel: string;
+    surfaces: StripeTeaserSurface[];
+  };
+} = {
+  /* Meta strip — TAG instead of NUM / TOTAL so the card never reads
+     as a fifth production system. */
+  metaLabel: "Teaser",
+  metaTag: "Next move",
+  team: "Stripe · Marketing FDA cohort",
+  ctaLabel: "Book a meeting to unlock",
+  ctaHref: "#booking-placeholder",
+
+  /* Card head — same display chrome as the case rows. The italic em
+     treatment is dropped on this card so the teaser doesn't try to
+     fake a product name; the name is the company. */
+  railEyebrow: "For Stripe",
+  name: "Stripe",
+  tagline: "Encoded GTM Substrate",
+  subline:
+    "Brand truth and policy as the foundation under every marketer's tools.",
+
+  /* Honest framing the visitor reads in the rail. Mirrors the
+     `CaseProject.challenge` slot. Stays Stripe-shaped without naming
+     the synthetic-brand prototype the snapshots come from — Stripe
+     readers don't need to learn that vocabulary to land the offer. */
+  challenge:
+    "A working pattern I want to walk you through. A template for how navigation, encoding, and building come together in one scalable program.",
+
+  /* Workflow shift — uses the existing legend vocabulary so the
+     teaser reads inside the same Compress / Repair / Invent grammar
+     without changing the four-case count. */
+  workflowMode: "Invent" as const,
+  workflowAfter:
+    "Embed with ~20 marketers, encode each one's tacit GTM judgment into Skills and tools, and coach the cohort until starting work with AI is the default.",
+
+  /* What I'd build, mirroring the case-row capability tile grid. Four
+     entries so the 2x2 layout stays balanced. */
+  capabilities: [
+    {
+      k: "GTM substrate Skill",
+      v: "Voice, claim registry, policy boundaries, and audience register, encoded as one governed contract.",
+    },
+    {
+      k: "Marketer-owned tools",
+      v: "One agent or tool built inside each marketer's actual workflow until it sticks.",
+    },
+    {
+      k: "Cohort playbooks",
+      v: "Workflow transformations templated so a win for one marketer becomes a pattern for twenty.",
+    },
+    {
+      k: "Self-sufficiency loop",
+      v: "Awareness, first win, AI as default, building their own tools — coached through the maturity model.",
+    },
+  ] satisfies StripeTeaserCapability[],
+
+  /* Stack hints — kept tight. Mirrors the chip strip on case rows so
+     the teaser reads as buildable, not abstract. */
+  stack: [
+    "Claude Skills",
+    "MCP",
+    "Custom agents",
+    "Workflow automation",
+    "Eval rail",
+  ],
+
+  /* Snapshots from the HarvestFields prototype at
+     `/ai-operator/harvestfields`. Rotated by `ScreenshotGallery`
+     inside the teaser's `aiop-shot-frame` so the visitor sees the
+     actual tool. Captured manually from the running prototype; to
+     refresh, re-capture the same scroll positions and overwrite the
+     PNGs in place. */
+  screenshots: [
+    {
+      src: "/cases/screenshots/stripe-teaser/01-engine-hero.png",
+      alt: "HarvestFields prototype: engine v2.0 panel with substrate metrics and ready endpoints.",
+      caption: "Engine v2.0 · ready endpoints",
+    },
+    {
+      src: "/cases/screenshots/stripe-teaser/02-architecture.png",
+      alt: "HarvestFields prototype: engine, protocol, surfaces — three architecture layers.",
+      caption: "Engine · protocol · surfaces",
+    },
+    {
+      src: "/cases/screenshots/stripe-teaser/03-harness.png",
+      alt: "HarvestFields prototype: seven harness stages from trap to connect.",
+      caption: "Harness · trap to connect",
+    },
+    {
+      src: "/cases/screenshots/stripe-teaser/04-validation.png",
+      alt: "HarvestFields prototype: Navigate, Encode, Build validation loop owned by the brand team.",
+      caption: "Validation loop · team-owned",
+    },
+  ] satisfies ProjectScreenshot[],
+
+  /* Architecture-preview schematic — the documented fallback when
+     `screenshots` is empty. Reads the substrate flow (sources →
+     encoded substrate → inherited surfaces) inside the same shot
+     frame the gallery would otherwise fill. */
+  schematic: {
+    eyebrow: "GTM substrate · architecture preview",
+    sourcesLabel: "Brand + policy memory today",
+    sources: [
+      "Brand book",
+      "Legal + policy",
+      "Past campaigns",
+      "Marketer judgment",
+    ],
+    substrateLabel: "Encoded once",
+    substrateLayers: [
+      { tag: "Voice", name: "How Stripe talks" },
+      { tag: "Claims", name: "What's safe to say" },
+      { tag: "Audience", name: "Devs · founders · finance" },
+      { tag: "Examples", name: "What good looks like" },
+    ] satisfies StripeTeaserSubstrateLayer[],
+    surfacesLabel: "Inherited everywhere",
+    surfaces: [
+      { icon: "✎", name: "Brief drafts" },
+      { icon: "C", name: "Claude" },
+      { icon: "{ }", name: "Internal tools" },
+      { icon: "A", name: "Agents" },
+      { icon: "#", name: "Slack" },
+      { icon: "✓", name: "Review gate" },
+    ] satisfies StripeTeaserSurface[],
+  },
+} as const;
 
 /* ─────────────────────────────────────────────────────────────────────
  * Software-for-few interstitial — the gap the operator works in

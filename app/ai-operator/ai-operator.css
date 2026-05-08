@@ -9582,3 +9582,557 @@
   font-weight: 600;
   padding: 5px 11px;
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 30 · Stripe teaser card · post-Heimdall row
+ *
+ * The teaser card lives at the end of `.aiop-cases__list`, after the
+ * four production case rows and before `.aiop-cases__close`. It reuses
+ * the case-row chrome (meta strip, sticky rail, shot frame, capability
+ * grid) and pushes a few signals louder so the card reads as a
+ * deliberate next-move teaser rather than a fifth production system:
+ *
+ *   - `.aiop-case-row--teaser` bumps the inner card's accent mix and
+ *     left-edge stripe so the violet treatment dials up a notch.
+ *   - `.aiop-case-row__teaser-tag` replaces the NUM / TOTAL pair with
+ *     a TEASER · NEXT MOVE tag that includes a small pulse dot.
+ *   - `.aiop-case-row__cta--unlock` swaps the dark pill for the
+ *     accent-on-paper variant, persistently on (so the booking CTA
+ *     reads like the row's hover state at rest).
+ *   - `.aiop-shot-frame--teaser` swaps the dark image bg for a
+ *     violet-tinted gradient that lets the inline schematic breathe.
+ *   - `.aiop-teaser-vis` is the three-column architecture preview
+ *     (sources → encoded substrate → inherited surfaces) that fills
+ *     the shot frame slot in place of a screenshot.
+ *   - `.aiop-case-row__teaser-foot` lands the closing one-line ask
+ *     under the capability tiles.
+ *
+ * Sub-sections:
+ *   30.1 · Card chrome modifier (.aiop-case-row--teaser)
+ *   30.2 · Meta strip teaser tag + unlock CTA
+ *   30.3 · Shot frame · teaser variant
+ *   30.4 · Inline schematic visual (.aiop-teaser-vis)
+ *   30.5 · Foot line + responsive
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+
+/* ─── 30.1 · Card chrome modifier ────────────────────────────────── */
+
+/* Push the inner card's violet treatment one notch hotter than the
+   production rows. The base `.aiop-case-row__inner` already mixes the
+   accent into the bg, border, and left stripe; here the mix percentages
+   step up so the teaser reads as the loudest card in the list without
+   leaving the cream + violet palette. */
+.aiop-case-row--teaser .aiop-case-row__inner--teaser {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--aiop-violet) 12%, var(--aiop-card)) 0%,
+      var(--aiop-card) 55%,
+      color-mix(in oklab, var(--aiop-violet) 8%, var(--aiop-card)) 100%
+    );
+  border: 1px solid
+    color-mix(in oklab, var(--aiop-violet) 38%, var(--aiop-rule-strong));
+  border-left: 5px solid var(--aiop-violet);
+  box-shadow:
+    0 1px 2px rgba(26, 22, 18, 0.05),
+    0 28px 56px -32px rgba(98, 67, 185, 0.28),
+    inset 0 1px 0 color-mix(in oklab, var(--aiop-violet) 10%, transparent);
+  position: relative;
+}
+
+/* Subtle violet hairline at the very top of the card so the teaser
+   sits visually like a chapter break after the four production rows. */
+.aiop-case-row--teaser .aiop-case-row__inner--teaser::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 5px;
+  right: 0;
+  height: 1px;
+  background: color-mix(in oklab, var(--aiop-violet) 32%, transparent);
+  pointer-events: none;
+}
+
+
+/* ─── 30.2 · Meta strip teaser tag + unlock CTA ──────────────────── */
+
+/* Tag block replaces the NUM / TOTAL pair. Reads as mono caps in the
+   accent colour with a small live dot so the card signals "active
+   ask" rather than "new chapter". */
+.aiop-case-row__teaser-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 8px;
+  background: color-mix(in oklab, var(--aiop-violet) 14%, transparent);
+  border: 1px solid color-mix(in oklab, var(--aiop-violet) 38%, transparent);
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-violet);
+}
+
+.aiop-case-row__teaser-tag-divider {
+  margin-inline: 2px;
+  opacity: 0.55;
+  font-weight: 400;
+}
+
+.aiop-case-row__teaser-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--aiop-violet);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--aiop-violet) 22%, transparent);
+  flex-shrink: 0;
+  animation: aiopTeaserPulse 2400ms ease-in-out infinite;
+}
+
+@keyframes aiopTeaserPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--aiop-violet) 22%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 6px color-mix(in oklab, var(--aiop-violet) 12%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiop-case-row__teaser-dot {
+    animation: none;
+  }
+}
+
+/* Unlock CTA — the booking link. Built on `.aiop-case-row__cta` but
+   inverted to violet-on-paper (essentially the production card's
+   hover state, persistent) so the teaser's primary ask reads as the
+   loudest action in the meta strip. Hover steps to ink so the
+   feedback still moves on click. */
+.aiop-case-row__cta--unlock {
+  background: var(--aiop-violet);
+  border-color: var(--aiop-violet);
+  color: var(--aiop-paper);
+}
+
+.aiop-case-row__cta--unlock:hover {
+  background: var(--aiop-ink);
+  border-color: var(--aiop-ink);
+  color: var(--aiop-paper);
+  gap: 12px;
+}
+
+
+/* ─── 30.3 · Shot frame · teaser variant ─────────────────────────── */
+
+/* The teaser frame swaps the production rows' near-black image bg for
+   a violet-tinted gradient so the inline schematic content reads
+   light-on-tinted instead of light-on-dark. The violet ring on the
+   outside (8px box-shadow) keeps the frame visually consistent with
+   the production case shots above. */
+.aiop-shot-frame--teaser {
+  background:
+    radial-gradient(
+      circle at 22% 14%,
+      color-mix(in oklab, var(--aiop-violet) 22%, var(--aiop-ink)) 0%,
+      transparent 58%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-violet) 18%, var(--aiop-ink)) 0%,
+      color-mix(in oklab, var(--aiop-violet) 8%, var(--aiop-ink-2)) 100%
+    );
+}
+
+
+/* ─── 30.4 · Inline schematic visual ─────────────────────────────── */
+
+/* Three-column flow: sources → encoded substrate → inherited
+   surfaces. Reads inside the dark frame as a small architecture
+   diagram rather than a screenshot. On wide viewports the columns
+   sit side-by-side with arrow connectors between them; on narrow
+   viewports the columns stack and the connectors hide. */
+.aiop-teaser-vis {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: clamp(20px, 2.4vw, 32px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 1.8vw, 24px);
+  color: color-mix(in oklab, var(--aiop-paper) 92%, transparent);
+}
+
+.aiop-teaser-vis__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid color-mix(in oklab, var(--aiop-paper) 14%, transparent);
+}
+
+.aiop-teaser-vis__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--aiop-paper) 82%, transparent);
+}
+
+.aiop-teaser-vis__eyebrow-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--aiop-violet);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--aiop-violet) 24%, transparent);
+}
+
+/* Three-column flow. `align-items: stretch` so each column grows to
+   the same height and the connector arrows sit centred between them. */
+.aiop-teaser-vis__flow {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto
+    minmax(0, 1.3fr)
+    auto
+    minmax(0, 1.1fr);
+  gap: clamp(10px, 1.4vw, 18px);
+  align-items: stretch;
+  flex: 1;
+  min-height: 0;
+}
+
+@media (max-width: 720px) {
+  .aiop-teaser-vis__flow {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .aiop-teaser-vis__connector {
+    display: none;
+  }
+}
+
+.aiop-teaser-vis__col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  padding: clamp(12px, 1.2vw, 16px);
+  background: color-mix(in oklab, var(--aiop-ink) 50%, transparent);
+  border: 1px solid color-mix(in oklab, var(--aiop-paper) 12%, transparent);
+}
+
+.aiop-teaser-vis__col--substrate {
+  background: color-mix(in oklab, var(--aiop-violet) 14%, color-mix(in oklab, var(--aiop-ink) 60%, transparent));
+  border-color: color-mix(in oklab, var(--aiop-violet) 36%, transparent);
+}
+
+.aiop-teaser-vis__col-label {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--aiop-paper) 64%, transparent);
+}
+
+.aiop-teaser-vis__col--substrate .aiop-teaser-vis__col-label {
+  color: color-mix(in oklab, var(--aiop-violet) 60%, var(--aiop-paper));
+}
+
+.aiop-teaser-vis__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+}
+
+.aiop-teaser-vis__source {
+  font-family: var(--aiop-body);
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: color-mix(in oklab, var(--aiop-paper) 86%, transparent);
+  padding: 6px 8px;
+  background: color-mix(in oklab, var(--aiop-paper) 4%, transparent);
+  border-left: 2px solid color-mix(in oklab, var(--aiop-paper) 22%, transparent);
+}
+
+.aiop-teaser-vis__substrate {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: baseline;
+  gap: 8px 12px;
+  padding: 6px 8px;
+  background: color-mix(in oklab, var(--aiop-paper) 6%, transparent);
+  border-left: 2px solid var(--aiop-violet);
+}
+
+.aiop-teaser-vis__substrate-tag {
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: color-mix(in oklab, var(--aiop-violet) 50%, var(--aiop-paper));
+}
+
+.aiop-teaser-vis__substrate-name {
+  font-family: var(--aiop-body);
+  font-size: 12.5px;
+  line-height: 1.3;
+  color: color-mix(in oklab, var(--aiop-paper) 92%, transparent);
+}
+
+/* Surfaces — 2-column grid of icon + name chips so six surfaces fit
+   without overflowing the column on standard widths. */
+.aiop-teaser-vis__list--surfaces {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 8px;
+}
+
+.aiop-teaser-vis__surface {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  background: color-mix(in oklab, var(--aiop-paper) 4%, transparent);
+  border: 1px solid color-mix(in oklab, var(--aiop-paper) 12%, transparent);
+  min-width: 0;
+}
+
+.aiop-teaser-vis__surface-icon {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  font-weight: 500;
+  color: color-mix(in oklab, var(--aiop-violet) 50%, var(--aiop-paper));
+  flex-shrink: 0;
+}
+
+.aiop-teaser-vis__surface-name {
+  font-family: var(--aiop-body);
+  font-size: 11.5px;
+  line-height: 1.25;
+  color: color-mix(in oklab, var(--aiop-paper) 88%, transparent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Connector — short hairline + arrow glyph. Centred vertically inside
+   the grid cell so it sits halfway between the column tops. Hidden on
+   narrow viewports where columns stack. */
+.aiop-teaser-vis__connector {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  align-self: center;
+  color: color-mix(in oklab, var(--aiop-violet) 40%, var(--aiop-paper));
+  font-family: var(--aiop-mono);
+  font-size: 14px;
+}
+
+.aiop-teaser-vis__connector-line {
+  width: 6px;
+  height: 1px;
+  background: color-mix(in oklab, var(--aiop-violet) 40%, var(--aiop-paper));
+}
+
+.aiop-teaser-vis__connector-arrow {
+  line-height: 1;
+}
+
+
+/* ─── 30.5 · Foot line + responsive ──────────────────────────────── */
+
+/* Foot sits below the capability tiles, outside the dark schematic
+   frame. Reads as a single short ask in the cream palette so the
+   booking CTA remains the visually loudest action on the card.
+
+   Currently unused — the teaser foot copy was retired; the booking
+   CTA in the meta strip carries the ask alone. Class kept in case
+   the editorial line returns. */
+.aiop-case-row__teaser-foot {
+  margin: 0;
+  padding-top: 18px;
+  border-top: 1px dashed color-mix(in oklab, var(--aiop-violet) 30%, var(--aiop-rule));
+  font-family: var(--aiop-body);
+  font-size: 14px;
+  line-height: 1.55;
+  font-style: italic;
+  color: var(--aiop-ink-soft);
+}
+
+/* Locked capability tiles — applied to the teaser's `.aiop-case-row__caps`
+   so the structure reads (four buckets, two columns) while the copy
+   stays behind the booking CTA. Blur is the visual teaser; the
+   `<li>` items are also `aria-hidden` so the AT layer doesn't
+   announce content the visual layer is intentionally obscuring.
+
+   The dashed top rule and small "locked" lock-up below the tiles
+   land the unlock metaphor without needing a separate overlay. */
+.aiop-case-row__caps--locked {
+  position: relative;
+  user-select: none;
+  pointer-events: none;
+}
+
+.aiop-case-row__caps--locked .aiop-case-row__cap {
+  filter: blur(7px);
+  opacity: 0.78;
+}
+
+.aiop-case-row__caps--locked::after {
+  content: "Locked · book a meeting to unlock";
+  position: absolute;
+  inset: auto 0 0 0;
+  bottom: -8px;
+  transform: translateY(100%);
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-violet);
+  text-align: right;
+  padding-top: 12px;
+}
+
+/* If a visitor explicitly opts out of motion / decorative effects,
+   keep the blur but soften it so the card doesn't feel hostile to
+   accessibility settings. */
+@media (prefers-reduced-motion: reduce) {
+  .aiop-case-row__caps--locked .aiop-case-row__cap {
+    filter: blur(4px);
+    opacity: 0.85;
+  }
+}
+
+/* On narrow viewports the schematic shrinks below the 16:11 frame's
+   aspect ratio. Allow the frame to grow vertically so the stacked
+   columns get their breathing room without overflowing. */
+@media (max-width: 720px) {
+  .aiop-shot-frame--teaser {
+    aspect-ratio: auto;
+    min-height: 420px;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 31 · Case walkthrough button + modal video
+ *
+ * Each production case row carries an optional `walkthrough` field
+ * with a short narrated screen recording. When present, the meta
+ * strip surfaces a "Watch walkthrough" button left of the existing
+ * "View case detail" CTA. Clicking it opens an `OperatorModal`
+ * containing a `<video>` element scoped to the case's accent token.
+ *
+ * Sub-sections:
+ *   31.1 · Watch CTA modifier (.aiop-case-row__cta--watch)
+ *   31.2 · Walkthrough modal body + video element
+ *   31.3 · Responsive
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+
+/* ─── 31.1 · Watch CTA modifier ──────────────────────────────────── */
+
+/* The walkthrough button uses the same pill geometry as the
+   `.aiop-case-row__cta` "View case detail" button, then inverts the
+   palette so the two CTAs read as a pair without competing. The
+   default state is a hairline pill in the case accent — visible but
+   secondary. Hover fills with the accent so it matches the muscle
+   memory of the primary CTA's hover state. */
+.aiop-case-row__cta--watch {
+  background: transparent;
+  border-color: var(--aiop-case-accent);
+  color: var(--aiop-case-accent);
+  margin-left: auto;
+}
+
+/* When the watch CTA sits directly before the primary detail CTA we
+   collapse the auto-margin on the detail button so the two pills
+   nest together at the right edge with a small fixed gap. */
+.aiop-case-row__cta--watch + .aiop-case-row__cta {
+  margin-left: 8px;
+}
+
+.aiop-case-row__cta--watch:hover {
+  background: var(--aiop-case-accent);
+  border-color: var(--aiop-case-accent);
+  color: var(--aiop-paper);
+  gap: 12px;
+}
+
+/* Play-glyph SVG sits just left of the label. Slight optical nudge
+   so the triangle's centre of mass aligns with the cap height. */
+.aiop-case-row__cta--watch svg {
+  transform: translateX(-1px);
+}
+
+
+/* ─── 31.2 · Walkthrough modal body + video element ──────────────── */
+
+/* The walkthrough modal trims the standard modal padding so the
+   video gets edge-to-edge framing inside the rounded card. The
+   header still sits inside the inner padding for readability. */
+.aiop-modal__body--walkthrough {
+  gap: 24px;
+}
+
+.aiop-modal__hero--walkthrough {
+  padding-bottom: 20px;
+  gap: 10px;
+}
+
+/* Video container — clipped to the rounded modal so corners match
+   the card. Dark backdrop in case the video letterboxes slightly
+   off its 16:9 native aspect ratio inside the available space.
+   `aspect-ratio` keeps reserved space even before metadata loads,
+   preventing layout shift when the video element initializes. */
+.aiop-modal__video {
+  position: relative;
+  background: #050403;
+  border: 1px solid var(--aiop-rule-strong);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  box-shadow:
+    0 1px 3px rgba(26, 22, 18, 0.06),
+    0 24px 60px -24px rgba(26, 22, 18, 0.28),
+    0 0 0 8px color-mix(in oklab, var(--aiop-modal-accent) 12%, transparent);
+}
+
+.aiop-modal__video video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: #050403;
+}
+
+
+/* ─── 31.3 · Responsive ──────────────────────────────────────────── */
+
+/* On narrow viewports the meta strip reflows. Drop the auto-margin
+   on the walkthrough button so it sits flush with the team label
+   when both wrap onto a new line, and let the two CTAs share the
+   row evenly. */
+@media (max-width: 640px) {
+  .aiop-case-row__cta--watch {
+    margin-left: 0;
+  }
+
+  .aiop-case-row__cta--watch + .aiop-case-row__cta {
+    margin-left: auto;
+  }
+}
