@@ -35,12 +35,14 @@ import { SoftwareForFew } from "./software-for-few";
  *                         (the adoption layer is missing) before the
  *                         Evans bridge articulates the asking gap.
  *                         Static, server-rendered.
- *   04 Quote bridge     — Benedict Evans on the asking gap. Three phrases
- *                         morph in place into Navigate/Encode/Build pills
- *                         (client). Pinned via parallax-reveal pair with
- *                         the Reality-check interstitial below so the
- *                         in-place morph plays out as Reality slides up
- *                         over the frozen bridge.
+ *   04 Quote bridge     — Benedict Evans on the asking gap. The quote
+ *                         and its three lane chips recede on scroll
+ *                         while a delayed parenthetical
+ *                         "(because AI isn't software)" reveals below
+ *                         the attribution (client). Pinned via parallax-
+ *                         reveal pair with the Reality-check interstitial
+ *                         below so the fade and reveal play out as
+ *                         Reality slides up over the frozen bridge.
  *   05 Reality check    — "AI is not normal software." Explains why the
  *                         asking gap is structurally hard: AI interprets
  *                         meaning, traditional adoption teaches tools.
@@ -217,16 +219,19 @@ export default function AiOperatorPage() {
       {/* ─── Quote bridge + Reality check · parallax-reveal pair ─────
        *
        * The wrapper pins the bridge while the visitor scrolls past it,
-       * so the chip-to-pill morph (driven by `--aiop-bridge-progress`
-       * inside QuoteBridge) has scroll length to play out. The Reality
-       * check sits below in flow and slides up over the frozen bridge
-       * through natural scroll, explaining why the asking gap is hard
-       * before the Vision flywheel arrives as the answer.
+       * so the gentle fade of the quote/chips/attribution and the
+       * delayed reveal of the parenthetical note (both driven by
+       * `--aiop-bridge-progress` inside QuoteBridge) have scroll
+       * length to play out. The Reality check sits below in flow and
+       * slides up over the frozen bridge through natural scroll,
+       * explaining why the asking gap is hard before the Vision
+       * flywheel arrives as the answer.
        *
        * Vision lives outside this wrapper so the flywheel reads as a
        * deliberate next chapter rather than the immediate flight target
-       * of the bridge morph. The cross-section handoff to the orbit is
-       * intentionally dropped on this version of the page. */}
+       * of the bridge. The cross-section handoff to the orbit (and the
+       * earlier chip-to-pill morph) are intentionally dropped on this
+       * version of the page. */}
       <div className="aiop-bridge-and-reality">
         <QuoteBridge />
         <AiIsNotSoftware />

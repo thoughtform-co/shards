@@ -12,8 +12,10 @@
  *   02 Diagnosis     — Four faces, one missing piece. Names the hard
  *                      problem (judgment isn't encoded) before the
  *                      Evans bridge articulates the asking gap.
- *   03 Quote bridge  — Evans on the asking gap. Chip-to-pill morph
- *                      hands the trio's words into the Vision orbit.
+ *   03 Quote bridge  — Evans on the asking gap. Quote and chips fade
+ *                      gently on scroll while a delayed parenthetical
+ *                      "(because AI isn't software)" reveals below the
+ *                      attribution.
  *   04 Vision        — Centered flywheel + one CTA into Approach.
  *   05 Approach      — Navigate / Encode / Build, each with an exec-level
  *                      visual and a Heimdall-style pop-out for detail.
@@ -139,8 +141,9 @@ export const hero = {
  * for Delaware, Ml6, or any other client; the structure stays.
  *
  * The gap card deliberately does not preview Navigate / Encode / Build
- * pill chrome. The Quote Bridge keeps its first-reveal of those pills
- * via the chip-to-pill morph.
+ * pill chrome. The Quote Bridge frames the trio as bordered editorial
+ * chips inside the Evans sentence; the Vision orbit is the first place
+ * the visitor sees the lane pills proper.
  * ─────────────────────────────────────────────────────────────────── */
 
 export type DiagnosisTone = "violet" | "gold" | "sage" | "slate";
@@ -210,13 +213,17 @@ export const diagnosisSection: {
  * on the asking gap). Lives at full-viewport scale so the Evans
  * sentence has room to breathe; three operative phrases inside the
  * sentence — `working out`, `how to ask`, `what you want` — are framed
- * in their lane colours (violet / amber / sage).
+ * in their lane colours (violet / amber / sage). A delayed
+ * parenthetical (`scrollNote`) sits below the attribution and arrives
+ * as the visitor begins to scroll past the bridge.
  *
  * On desktop the bridge pins for an extra viewport while the visitor
- * scrolls; during that pin each marked phrase morphs in place into its
- * Navigate / Encode / Build pill counterpart. The `pill` label is the
- * destination text the chip cross-fades into; without it the part is
- * just connective tissue.
+ * scrolls; during that pin the quote, chips, and attribution recede
+ * to a softer opacity and the parenthetical reveals a beat later.
+ * The chips themselves no longer morph into pills, but the optional
+ * `pill` label is preserved on each marked part: it still renders as
+ * a hidden secondary layer in the chip DOM, ready to be brought back
+ * if a future iteration wants the morph again.
  * ─────────────────────────────────────────────────────────────────── */
 
 export type QuoteBridgePart = {
@@ -237,6 +244,12 @@ export const quoteBridgeSection = {
     { text: "what you want", mark: "build", pill: "Build" },
     { text: "." },
   ] satisfies QuoteBridgePart[],
+  /* Delayed parenthetical that appears below the attribution as the
+     visitor begins to scroll past the bridge. Driven from CSS via
+     `--aiop-bridge-progress`; renders silently until the progress
+     window opens, so the Evans line lands first and the editorial
+     punchline arrives a beat later. */
+  scrollNote: "because AI isn't software",
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -267,10 +280,11 @@ export const quoteBridgeSection = {
  * diamonds on the light card surface.
  *
  * The section sits inside the `.aiop-bridge-and-reality` wrapper so it
- * slides up over the frozen Evans bridge while the in-place chip-to-
- * pill morph plays out. The cross-section flight to the Vision orbit
- * is intentionally dropped — Vision now appears as a calm next chapter
- * after this beat, not as the immediate flight target.
+ * slides up over the frozen Evans bridge while the bridge's scroll-
+ * coupled fade and parenthetical reveal play out. The cross-section
+ * flight to the Vision orbit is intentionally dropped — Vision now
+ * appears as a calm next chapter after this beat, not as the immediate
+ * flight target.
  * ─────────────────────────────────────────────────────────────────── */
 
 export type AiRealityColumn = {
@@ -836,10 +850,12 @@ export const cases: CaseProject[] = [
     workflowAfter:
       "Transcribe, translate, dub, and Gemini-verify in one pipeline so reviewers only judge the rows where culture matters.",
     capabilities: [
+      { k: "Proofreader integration", v: "Integrates proofreading in the loop without giving access to the full system." },
+      { k: "Broader localization roadmap", v: "Expanding to other use-cases such as exporting PDP copy from Figma in bulk." },
+      { k: "Custom review module", v: "Cultural judgment surfaced where it actually matters." },
+      { k: "Single proofread surface", v: "Share-link review, no Figma seat needed." },
       { k: "30+ markets", v: "Linear scale-out across languages, not reviewers." },
       { k: "Auto-verification", v: "Gemini cross-check against on-screen captions." },
-      { k: "Single proofread surface", v: "Share-link review, no Figma seat needed." },
-      { k: "Custom review module", v: "Cultural judgment surfaced where it actually matters." },
     ],
     surfaces: ["Web app", "Share-link review"],
     stack: ["Next.js", "Supabase", "Anthropic", "Gemini"],

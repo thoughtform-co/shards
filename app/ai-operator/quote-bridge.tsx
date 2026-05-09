@@ -12,35 +12,53 @@ import { quoteBridgeSection } from "./content";
  * the asking gap). The Evans sentence renders as the editorial
  * centerpiece; three operative phrases inside it — `working out`,
  * `how to ask`, `what you want` — are framed as subtle bordered chips
- * in their lane colour (violet / amber / sage).
+ * in their lane colour (violet / amber / sage). A delayed parenthetical
+ * `(because AI isn't software)` sits below the attribution and arrives
+ * as the visitor begins to scroll past the bridge.
  *
  * On desktop the section is paired with the Reality-check
  * interstitial via the `.aiop-bridge-and-reality` parallax-reveal
  * wrapper. The bridge is held visually frozen by a `translateY` that
  * compensates for scroll exactly while the next sibling (Reality
- * check) slides up over it through natural flow. During that pinned
- * phase the scroll handler writes `--aiop-bridge-progress` (0..1)
- * onto the wrapper, and CSS uses that variable to play out the
- * in-place chip-to-pill morph:
+ * check) slides up over it through natural flow. The slide-up itself
+ * is split into two phases via a second CSS variable
+ * `--aiop-reality-hold` that the same scroll handler writes onto the
+ * wrapper:
  *
- *   - Cross-fade each chip's quote text into its pill label
- *     ("working out" -> "Navigate", etc.)
- *   - Round the chip's border-radius and grow its padding into the
- *     pill chrome
- *   - Fade the chip dot in
- *   - Fade the surrounding quote plain text out so only the morphed
- *     pills remain visible as the bridge releases
+ *   - Phase 1 (first ~35% of the freeze): mirror the bridge's
+ *     translation onto Reality so it stays visually stationary at its
+ *     initial below-viewport position. This gives the parenthetical
+ *     scroll length to be read before the parallax begins.
+ *   - Phase 2 (remaining ~65%): the hold linearly releases back to 0
+ *     so Reality slides up over the frozen bridge AND returns to its
+ *     natural document position by the time the freeze caps. The
+ *     release is necessary because the next section (Vision) lives
+ *     outside the wrapper and isn't translated; without the release
+ *     Reality's visual box would extend past its natural bottom and
+ *     Vision would paint over the lower portion of Reality (clipping
+ *     the spectrum sub-text).
  *
- * The previous version of this component also flew the morphed pills
+ * During the freeze the handler also writes `--aiop-bridge-progress`
+ * (0..1) onto the wrapper, and CSS uses that variable to:
+ *
+ *   - softly recede the quote, its three lane chips, and the
+ *     attribution to a quieter opacity (they never disappear, and
+ *     the chips do NOT morph into pills);
+ *   - reveal the parenthetical "(because AI isn't software)" a beat
+ *     later so it lands after the quote starts to fade.
+ *
+ * Earlier iterations morphed each chip in place into its Navigate /
+ * Encode / Build pill counterpart and even flew the morphed pills
  * from the bridge into the Vision orbit via a fixed-position handoff
- * layer. That cross-section flight has been removed: the Reality
- * check now sits between the bridge and the flywheel, so the orbit is
- * no longer the immediate flight target. The Vision orbit appears as
- * a calm next chapter after the Reality check.
+ * layer. Both have been intentionally removed: the chips remain as
+ * bordered editorial marks throughout the scroll, and the Vision
+ * orbit now appears as a calm next chapter after the Reality check.
  *
- * Below 960px or under `prefers-reduced-motion: reduce` the morph is
- * skipped: the chips render exactly as today and the section keeps
- * its single-viewport flex centering.
+ * Below 960px or under `prefers-reduced-motion: reduce` the scroll-
+ * coupled fade and reveal are skipped: the chips render exactly as
+ * today, the parenthetical note renders as a normal static line below
+ * the attribution, and the section keeps its single-viewport flex
+ * centering.
  *
  * Choreography mirrors `software-for-few.tsx`: same media-query gates,
  * same rAF-batched scroll handler, same reset-on-cleanup pattern.
@@ -75,7 +93,10 @@ export function QuoteBridge() {
     const wrapper = node.closest<HTMLElement>(".aiop-bridge-and-reality");
 
     const reset = () => {
-      if (wrapper) wrapper.style.removeProperty("--aiop-bridge-progress");
+      if (wrapper) {
+        wrapper.style.removeProperty("--aiop-bridge-progress");
+        wrapper.style.removeProperty("--aiop-reality-hold");
+      }
       node.style.transform = "";
     };
 
@@ -108,11 +129,41 @@ export function QuoteBridge() {
         node.style.transform =
           freeze > 0 ? `translate3d(0, ${freeze}px, 0)` : "";
 
-        // Morph progress = freeze ratio. 0 = bridge has just begun to
-        // freeze (chips fully visible); 1 = Reality check has fully
-        // covered the bridge (chips fully resolved as pills behind it).
+        // Progress = freeze ratio. 0 = bridge has just begun to freeze
+        // (quote and chips at full opacity, parenthetical hidden);
+        // 1 = wrapper bottom has reached viewport bottom (quote softly
+        // recessed, parenthetical fully revealed, Reality fully covering).
         const p = maxFreeze > 0 ? freeze / maxFreeze : 0;
         wrapper.style.setProperty("--aiop-bridge-progress", p.toFixed(4));
+
+        // Phase 1 hold for the Reality interstitial:
+        //   - Phase 1 (freeze 0 -> 35% of maxFreeze): the hold mirrors
+        //     the bridge's translation, keeping Reality visually
+        //     stationary at its initial below-viewport position so the
+        //     parenthetical "(because AI isn't software)" has scroll
+        //     length to be read.
+        //   - Phase 2 (35% -> 100% of maxFreeze): the hold linearly
+        //     releases back to 0 so Reality returns to its natural
+        //     document position by the time the freeze caps. Without
+        //     this release, Reality's visual box would stay translated
+        //     down past its natural bottom and the next section
+        //     (Vision) would paint over the lower portion of Reality
+        //     (clipping the spectrum sub-text).
+        const realityHoldMax = 0.35 * maxFreeze;
+        let realityHold = 0;
+        if (freeze > 0 && maxFreeze > 0) {
+          if (freeze <= realityHoldMax) {
+            realityHold = freeze;
+          } else if (maxFreeze > realityHoldMax) {
+            const phase2Span = maxFreeze - realityHoldMax;
+            const phase2Progress = (freeze - realityHoldMax) / phase2Span;
+            realityHold = realityHoldMax * (1 - phase2Progress);
+          }
+        }
+        wrapper.style.setProperty(
+          "--aiop-reality-hold",
+          `${realityHold.toFixed(2)}px`,
+        );
       });
     };
 
@@ -177,15 +228,43 @@ export function QuoteBridge() {
               )}
             </blockquote>
 
-            <figcaption className="aiop-bridge__attrib">
-              <span className="aiop-bridge__attrib-rule" aria-hidden="true" />
-              <span className="aiop-bridge__attrib-name">
-                {quoteBridgeSection.attribName}
-              </span>
-              <span className="aiop-bridge__attrib-meta">
-                {quoteBridgeSection.attribMeta}
-              </span>
-            </figcaption>
+            {/* Attribution + delayed parenthetical sit in a tight sub-
+                block so the note snuggles below the attribution rather
+                than picking up the figure's larger inter-row gap. */}
+            <div className="aiop-bridge__attrib-block">
+              <figcaption className="aiop-bridge__attrib">
+                <span className="aiop-bridge__attrib-rule" aria-hidden="true" />
+                <span className="aiop-bridge__attrib-name">
+                  {quoteBridgeSection.attribName}
+                </span>
+                <span className="aiop-bridge__attrib-meta">
+                  {quoteBridgeSection.attribMeta}
+                </span>
+              </figcaption>
+
+              {/* Delayed parenthetical punchline. On desktop its opacity
+                  is driven from `--aiop-bridge-progress` in CSS so it
+                  stays hidden on first view and arrives a beat after
+                  the quote + attribution have settled. Under reduced
+                  motion / narrow viewports it renders as a static line
+                  directly below the attribution. The brackets are
+                  presentational so the source string stays clean. */}
+              <p className="aiop-bridge__scroll-note">
+                <span
+                  className="aiop-bridge__scroll-note-bracket"
+                  aria-hidden="true"
+                >
+                  (
+                </span>
+                {quoteBridgeSection.scrollNote}
+                <span
+                  className="aiop-bridge__scroll-note-bracket"
+                  aria-hidden="true"
+                >
+                  )
+                </span>
+              </p>
+            </div>
           </figure>
         </div>
       </section>

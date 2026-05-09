@@ -25,8 +25,9 @@ import { diagnosisSection } from "./content";
  *
  * Re-skinning for Delaware / Ml6 / other clients only touches
  * `diagnosisSection` in `content.ts`. No new components, no morph
- * logic, no pill chrome — the bridge keeps its first-reveal of
- * Navigate / Encode / Build via the chip-to-pill morph.
+ * logic, no pill chrome — the bridge frames the trio as bordered
+ * editorial chips inside the Evans sentence, and the Vision orbit is
+ * the first place the visitor sees the lane pills proper.
  */
 export function Diagnosis() {
   const { title, titleEm, lede, useCases, gap } = diagnosisSection;

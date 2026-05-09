@@ -25,9 +25,15 @@ import { aiRealitySection } from "./content";
  * and adapted to the paper palette.
  *
  * Choreography lives in `quote-bridge.tsx`, which holds the bridge
- * frozen via `translateY` while this component, as the next sibling
- * inside the wrapper, slides up over it through natural flow. This
- * component does not need its own scroll handler.
+ * frozen via `translateY` and also writes `--aiop-reality-hold` onto
+ * the wrapper. For the first ~35% of the freeze (Phase 1) that hold
+ * mirrors the bridge's translation onto this section so it stays
+ * visually stationary while the parenthetical note is read. During
+ * the remaining ~65% (Phase 2) the hold linearly releases back to 0
+ * so this section slides up over the frozen bridge AND lands at its
+ * natural document position by the time the freeze caps — otherwise
+ * the next section (Vision) would paint over the spectrum's
+ * sub-text. This component does not need its own scroll handler.
  *
  * On narrow viewports and under `prefers-reduced-motion: reduce` the
  * pin and slide-over are disabled at the wrapper level, so the

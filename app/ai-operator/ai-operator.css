@@ -8039,35 +8039,42 @@
  * editorial centerpiece; three operative phrases inside it —
  * `working out`, `how to ask`, `what you want` — are framed as
  * subtle bordered chips in the trio's lane colours
- * (violet / amber / sage).
+ * (violet / amber / sage). A delayed parenthetical
+ * `(because AI isn't software)` sits below the attribution and arrives
+ * as the visitor begins to scroll past the bridge.
  *
  * On desktop the bridge pins for an extra viewport via a parallax-
  * reveal pair with the Reality-check interstitial
  * (`.aiop-bridge-and-reality`). During that pin, `quote-bridge.tsx`
  * writes `--aiop-bridge-progress` (0..1) onto the wrapper, and CSS
- * uses it to morph each chip in place into its Navigate / Encode /
- * Build pill counterpart: chip text cross-fades to the pill label,
- * border-radius rounds, padding grows, the dot fades in, and the
- * surrounding quote plain text fades out so only the morphed pills
- * remain. The Reality check then slides up over the released bridge
- * and explains why the asking gap is structurally hard.
+ * uses it to:
+ *   - softly recede the quote, its three lane chips, and the
+ *     attribution to a quieter opacity (they never disappear);
+ *   - reveal the parenthetical punchline a beat later so it lands
+ *     after the quote settles, not alongside it.
+ * The Reality check then slides up over the released bridge and
+ * explains why the asking gap is structurally hard.
  *
- * The previous version of this section also flew the morphed pills
- * into the Vision orbit via a fixed handoff layer. That cross-section
- * flight has been removed: the Vision orbit now appears as a calm
- * next chapter after the Reality check, no fly-in.
+ * Earlier iterations of this section morphed each chip in place into
+ * its Navigate/Encode/Build pill (chip text cross-fades, border-radius
+ * rounds, padding grows, dot fades in) and even flew the morphed pills
+ * into the Vision orbit via a fixed handoff layer. Both have been
+ * intentionally removed: the chips remain as bordered editorial marks
+ * throughout the scroll, and the Vision orbit now appears as a calm
+ * next chapter after the Reality check.
  *
- * Below 960px or under `prefers-reduced-motion: reduce` the morph is
- * skipped: the pill layer stays hidden, the chips render exactly as
- * the static design, and the section keeps its single-viewport flex
- * centering.
+ * Below 960px or under `prefers-reduced-motion: reduce` the scroll-
+ * coupled fade and reveal are skipped: the pill layer stays hidden,
+ * the chips render exactly as the static design, the parenthetical
+ * note renders as a normal static line below the attribution, and the
+ * section keeps its single-viewport flex centering.
  *
  * Sub-sections:
  *   26a · Section + atmosphere
  *   26b · Quote + inline mark chips (with overlapped pill layer)
- *   26c · Attribution
+ *   26c · Attribution + delayed parenthetical note
  *   26d · Responsive (static fallback)
- *   26e · Parallax-reveal pair + pin + progress-driven morph
+ *   26e · Parallax-reveal pair + pin + progress-driven fade and reveal
  * ═══════════════════════════════════════════════════════════════════════ */
 
 
@@ -8265,8 +8272,10 @@
 }
 
 /* The pill layer overlaying the text. Mono-style label + lane dot,
-   matching the `.aiop-orbit__pill` chrome the chip morphs into. Hidden
-   by default; the animated state below fades it in via progress. */
+   matching the `.aiop-orbit__pill` chrome an earlier iteration morphed
+   the chip into. Kept in DOM as a hidden secondary layer so a future
+   iteration can reintroduce the morph without restructuring; the
+   current design leaves it permanently invisible. */
 .aiop-bridge__mark-pill {
   display: inline-flex;
   align-items: center;
@@ -8341,15 +8350,16 @@
 }
 
 /* Plain (non-marked) parts of the quote — the connective tissue around
-   the chips. A no-op span by default; gets the fade-out treatment under
-   the animated branch so only the morphed pills remain visible as the
-   bridge releases. */
+   the chips. A no-op span by default; recedes to a softer opacity
+   alongside the chip text and attribution under the animated branch
+   so the parenthetical punchline below can take focus as the visitor
+   begins to scroll past the bridge. */
 .aiop-bridge__plain {
   display: inline;
 }
 
 
-/* ─── 26c · Attribution ──────────────────────────────────────────── */
+/* ─── 26c · Attribution + delayed parenthetical note ─────────────── */
 
 .aiop-bridge__attrib {
   display: inline-flex;
@@ -8379,6 +8389,45 @@
   color: var(--aiop-muted);
 }
 
+/* Attribution + delayed parenthetical wrapper. The figure's row gap is
+   intentionally generous (clamp 36-56px) so the quote breathes; pulling
+   the sub-block into its own column with a tighter internal gap lets
+   the note read as an immediate aside under the attribution rather
+   than as a third equal-weight beat. */
+.aiop-bridge__attrib-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 1vw, 16px);
+}
+
+/* Delayed parenthetical punchline. Italic editorial body so it rhymes
+   with the Evans quote it is annotating; sized below the quote but
+   above the attribution so the hierarchy reads quote -> note ->
+   attribution by visual weight (the note is the editorial follow-on,
+   the attribution is the source line). Default opacity is 1 so
+   reduced-motion / narrow viewports show it statically; the desktop
+   animated branch overrides this and reveals it from progress. */
+.aiop-bridge__scroll-note {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-weight: 440;
+  font-size: clamp(15px, 1.4vw, 19px);
+  line-height: 1.4;
+  letter-spacing: -0.008em;
+  color: var(--aiop-muted);
+  text-align: center;
+}
+
+.aiop-bridge__scroll-note-bracket {
+  display: inline-block;
+  color: var(--aiop-ink-soft);
+  font-style: normal;
+  opacity: 0.55;
+  margin: 0 1px;
+}
+
 
 /* ─── 26d · Responsive (static fallback) ─────────────────────────── */
 
@@ -8399,15 +8448,26 @@
 }
 
 
-/* ─── 26e · Parallax-reveal pair + pin + progress-driven morph ──── */
+/* ─── 26e · Parallax-reveal pair + pin + progress-driven fade and reveal ── */
 
 /* Wrapper that pairs Bridge with the Reality-check interstitial so
-   the morph has scroll length to play out. Bridge stays at its
-   natural single-viewport size; the scroll handler in
-   `quote-bridge.tsx` writes a `translateY` onto the bridge that
-   compensates for scroll exactly while Reality (the next sibling)
-   slides up over it through natural flow. Same parallax-reveal
-   pattern as `aiop-approach-and-few`.
+   the scroll-coupled fade and note reveal have scroll length to play
+   out. Bridge stays at its natural single-viewport size; the scroll
+   handler in `quote-bridge.tsx` writes a `translateY` onto the bridge
+   that compensates for scroll exactly so the bridge is visually frozen.
+   The same handler also writes `--aiop-reality-hold` onto the wrapper
+   to drive a two-phase translation on Reality:
+     - Phase 1 (first ~35% of the freeze): the hold mirrors the
+       bridge's translation, keeping Reality visually stationary at
+       its initial below-viewport position so the parenthetical note
+       has scroll length to be read.
+     - Phase 2 (remaining ~65%): the hold linearly releases back to 0
+       so Reality slides up over the frozen bridge AND returns to its
+       natural document position by the time the freeze caps. The
+       release is required because the next section (Vision) lives
+       outside this wrapper and isn't translated — without it,
+       Reality's visual box would extend past its natural bottom and
+       Vision would paint over the lower portion of Reality.
    No explicit `z-index` — later DOM siblings paint on top, which is
    what we want for the slide-over. */
 .aiop-bridge-and-reality {
@@ -8424,6 +8484,15 @@
 
 .aiop-bridge-and-reality > .aiop-reality {
   position: relative;
+  /* `quote-bridge.tsx` writes `--aiop-reality-hold` here during the
+     freeze. During Phase 1 (first ~35% of the freeze) the value
+     equals the bridge's freeze translation, keeping Reality visually
+     stationary. During Phase 2 the value linearly releases back to 0
+     so Reality slides up AND returns to its natural document position
+     by the time the freeze caps — this prevents the next section
+     (Vision) from painting over Reality's lower content. */
+  transform: translate3d(0, var(--aiop-reality-hold, 0px), 0);
+  will-change: transform;
 }
 
 /* Animated mode is opt-in: `is-animated` is only added by
@@ -8431,121 +8500,70 @@
    `prefers-reduced-motion: reduce`. Inside the animated branch the
    bridge stays at its natural one-viewport size; JS writes a
    `translateY` to keep it visually frozen while the next sibling
-   (Vision) slides up over it through natural flow. The freeze ratio
-   becomes `--aiop-bridge-progress` and drives the in-place
-   chip-to-pill morph below.
-   The morph windows are deliberately squeezed into the first half of
-   progress (0 -> 0.5) so the morph completes BEFORE Vision's slide-up
-   covers the chips, which sit at the vertical centre of the bridge
-   frame and start being occluded once Vision has covered the lower
-   half of the viewport. */
+   (Reality check) slides up over it through natural flow. The freeze
+   ratio becomes `--aiop-bridge-progress` and drives a gentle reveal
+   instead of a chip-to-pill morph:
+     - The Evans quote, its three lane chips, and the attribution all
+       drift down to a softer opacity as the visitor begins to scroll
+       (progress 0.05 -> 0.25). They never disappear; they recede so
+       the punchline below can take focus.
+     - The parenthetical "(because AI isn't software)" reveals from
+       opacity 0 across a slightly delayed window (progress 0.18 ->
+       0.45) so it lands a beat after the quote starts to fade.
+   The chip pill layer + dot stay hidden in animated mode — the
+   chip-to-pill morph from the previous version is intentionally
+   removed; the chips remain as their original bordered editorial
+   marks throughout the scroll. */
 @media (min-width: 960px) {
   /* The Reality-check interstitial that slides up over the frozen
-     bridge needs at least one viewport of scroll length so the morph
+     bridge needs at least one viewport of scroll length so the reveal
      plays out fully (progress 0 -> 1). Without a tall sibling there's
-     no scroll length, no freeze, and no morph. */
+     no scroll length, no freeze, and no reveal. */
   .aiop-bridge-and-reality > .aiop-reality {
     min-height: 100vh;
   }
 
-  /* Chrome morph helper — held on the mark itself so the per-lane
-     background rules can reuse the same factor without recalculating. */
-  .aiop-bridge.is-animated .aiop-bridge__mark {
-    --t-chrome: clamp(
+  /* Quote chrome fade helper — a single eased factor, reused below so
+     the chip text, plain connective tissue, and attribution all recede
+     together as one cohesive frame rather than three separate beats.
+     0 = full opacity (visitor has just landed on the bridge); 1 = the
+     softer recessed state (~0.55 opacity in CSS below).
+     The windows are squeezed into the first ~25% of progress so the
+     fade and the parenthetical reveal both complete BEFORE the
+     Reality-check interstitial slides up far enough to occlude the
+     note (which sits in the lower portion of the figure). */
+  .aiop-bridge.is-animated {
+    --aiop-bridge-fade: clamp(
       0,
-      calc((var(--aiop-bridge-progress, 0) - 0.15) / 0.25),
+      calc((var(--aiop-bridge-progress, 0) - 0.02) / 0.16),
       1
     );
-    border-radius: calc(4px + 996px * var(--t-chrome));
-    padding: calc(1px + 5px * var(--t-chrome))
-             calc(10px + 4px * var(--t-chrome));
-    box-shadow:
-      0 calc(4px * var(--t-chrome))
-        calc(14px * var(--t-chrome))
-        rgba(26, 22, 18, calc(0.06 * var(--t-chrome)));
-  }
-
-  /* Per-lane background morph: lane tint at progress 0, card at end of
-     chrome window. Color-mix lerps between the two via `--t-chrome`. */
-  .aiop-bridge.is-animated .aiop-bridge__mark--navigate {
-    background: color-mix(
-      in oklab,
-      var(--aiop-card) calc(100% * var(--t-chrome, 0)),
-      color-mix(in oklab, var(--aiop-violet) 7%, transparent)
-    );
-  }
-
-  .aiop-bridge.is-animated .aiop-bridge__mark--encode {
-    background: color-mix(
-      in oklab,
-      var(--aiop-card) calc(100% * var(--t-chrome, 0)),
-      color-mix(in oklab, var(--aiop-amber) 9%, transparent)
-    );
-  }
-
-  .aiop-bridge.is-animated .aiop-bridge__mark--build {
-    background: color-mix(
-      in oklab,
-      var(--aiop-card) calc(100% * var(--t-chrome, 0)),
-      color-mix(in oklab, var(--aiop-sage) 8%, transparent)
-    );
-  }
-
-  /* Chip text fades out first (progress 0 -> 0.2) so the cross-fade
-     begins before the chrome starts changing. */
-  .aiop-bridge.is-animated .aiop-bridge__mark-text {
-    opacity: clamp(
+    --aiop-bridge-note: clamp(
       0,
-      calc(1 - var(--aiop-bridge-progress, 0) / 0.2),
+      calc((var(--aiop-bridge-progress, 0) - 0.06) / 0.16),
       1
     );
   }
 
-  /* Pill layer fades in next (progress 0.2 -> 0.45); the dot scales in
-     slightly behind for a small staged reveal. */
-  .aiop-bridge.is-animated .aiop-bridge__mark-pill {
-    opacity: clamp(
-      0,
-      calc((var(--aiop-bridge-progress, 0) - 0.2) / 0.25),
-      1
-    );
-  }
-
-  .aiop-bridge.is-animated .aiop-bridge__mark-dot {
-    transform: scale(
-      clamp(
-        0,
-        calc((var(--aiop-bridge-progress, 0) - 0.25) / 0.2),
-        1
-      )
-    );
-  }
-
-  /* Surrounding quote text fades out near the end of the morph window
-     so by progress ~0.5 only the pill-shaped chips remain visible. */
-  .aiop-bridge.is-animated .aiop-bridge__plain {
-    opacity: clamp(
-      0,
-      calc(1 - (var(--aiop-bridge-progress, 0) - 0.25) / 0.25),
-      1
-    );
-  }
-
-  /* Attribution fades with the plain text so the whole frame around
-     the chips dissolves cohesively into "just the pills". */
+  .aiop-bridge.is-animated .aiop-bridge__mark-text,
+  .aiop-bridge.is-animated .aiop-bridge__plain,
   .aiop-bridge.is-animated .aiop-bridge__attrib {
-    opacity: clamp(
-      0,
-      calc(1 - (var(--aiop-bridge-progress, 0) - 0.25) / 0.25),
-      1
-    );
+    opacity: calc(1 - 0.45 * var(--aiop-bridge-fade, 0));
+  }
+
+  /* Note reveal — fades up from invisible to fully readable as the
+     visitor scrolls. Default state (progress 0) is opacity 0 so first
+     view shows the quote alone, exactly as the static composition. */
+  .aiop-bridge.is-animated .aiop-bridge__scroll-note {
+    opacity: var(--aiop-bridge-note, 0);
   }
 }
 
 /* Reduced-motion safety net. JS already withholds `is-animated` and
    resets the freeze transform under `prefers-reduced-motion: reduce`,
    but belt-and-braces here so a media-query change mid-session can
-   never leave the bridge in a partially-morphed state. */
+   never leave the bridge in a partially-faded state. The note renders
+   statically here as part of the composition. */
 @media (prefers-reduced-motion: reduce) {
   .aiop-bridge-and-reality > .aiop-bridge {
     transform: none !important;
@@ -8554,11 +8572,14 @@
 
   .aiop-bridge-and-reality > .aiop-reality {
     min-height: 0 !important;
+    transform: none !important;
+    will-change: auto !important;
   }
 
   .aiop-bridge .aiop-bridge__mark-text,
   .aiop-bridge .aiop-bridge__plain,
-  .aiop-bridge .aiop-bridge__attrib {
+  .aiop-bridge .aiop-bridge__attrib,
+  .aiop-bridge .aiop-bridge__scroll-note {
     opacity: 1 !important;
   }
 
@@ -8573,13 +8594,14 @@
 
 /* ─── 26f · Vision orbit stagger (assembles around the pills) ───── */
 
-/* The pills are the visual continuation of the morphed chips, so they
-   should appear first as the Vision section reveals; the rings, core,
+/* The pills carry the same lane colours as the bridge chips, so they
+   read as the visual continuation of the framework; they should
+   appear first as the Vision section reveals while the rings, core,
    substrate files, and satellite assemble around them as a second
-   beat. We delay the non-pill orbit children's reveal by ~280ms so the
-   visitor reads it as "the pills landed -> the orbit forms around
-   them". Reduced-motion users get the orbit revealed in a single beat
-   via the standard `aiop-reveal` parent. */
+   beat. We delay the non-pill orbit children's reveal by ~280ms so
+   the visitor reads it as "the pills landed -> the orbit forms
+   around them". Reduced-motion users get the orbit revealed in a
+   single beat via the standard `aiop-reveal` parent. */
 @media (prefers-reduced-motion: no-preference) {
   .aiop-vision .aiop-orbit__ring,
   .aiop-vision .aiop-orbit__core,
@@ -8604,8 +8626,9 @@
 /* The Bridge -> Orbit handoff layer was removed when the Reality-
    check interstitial was inserted between the bridge and the Vision
    flywheel. The Vision orbit now appears as a calm next chapter
-   after the Reality check, and the chips morph in place inside the
-   bridge frame without flying anywhere. */
+   after the Reality check, and the bridge plays out its scroll-
+   coupled fade and parenthetical reveal in place — chips stay as
+   bordered editorial marks throughout, no flight, no morph. */
 
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -8656,9 +8679,9 @@
   .aiop-reality {
     /* Padding-only height bump on desktop. The actual `min-height:
        100vh` requirement (so the freeze math in `quote-bridge.tsx`
-       has scroll length to play out the morph) lives on the
-       wrapper-scoped rule above so reduced-motion users can opt out
-       cleanly. */
+       has scroll length to play out the fade + note reveal) lives on
+       the wrapper-scoped rule above so reduced-motion users can opt
+       out cleanly. */
     padding-block: clamp(56px, 8vw, 120px);
     display: flex;
     align-items: center;
