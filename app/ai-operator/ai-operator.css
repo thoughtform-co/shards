@@ -2655,35 +2655,57 @@
   line-height: 1.3;
 }
 
-/* Headless satellite — repositioned for the nested variant so it
-   sits OUTSIDE the dashed outer ring, in the top-right negative
-   space between the inscribed circle and the square container.
-   The base satellite chrome (dot + label) stays the same; only the
-   placement and the connector length change. The connector extends
-   far enough leftward to bridge from the satellite back into the
-   sphere, which makes the relationship read as "exposes the
-   substrate" rather than "floats next to the diagram". */
+/* Headless satellite — repositioned for the nested variant so the
+   cluster (label + dot) sits centred RIGHT ABOVE the substrate,
+   with a vertical connector emanating from below the dot pointing
+   straight down into the substrate at the orbit's centre. This
+   reads as "Headless exposes the substrate" through a clean
+   top-down spine rather than the earlier diagonal flight from a
+   top-right corner.
+   The cluster stacks vertically via `column-reverse` so the source
+   order (dot first, label second) renders as label-on-top with the
+   dot at the bottom — that puts the dot adjacent to the connector
+   line, anchoring the spine visually at the dot. */
 .aiop-orbit--nested .aiop-orbit__satellite {
-  top: 6%;
-  right: 0;
-  left: auto;
-  transform: translate(0, 0);
+  top: 16%;
+  bottom: auto;
+  left: 50%;
+  right: auto;
+  transform: translate(-50%, 0);
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 4px;
   font-size: clamp(9px, 1vw, 11px);
   z-index: 4;
 }
 
 .aiop-orbit--nested .aiop-orbit__satellite::before {
-  /* Longer than the base 22px so the line has reach, then rotated
-     diagonally so it visibly points at the substrate at the centre
-     instead of extending horizontally into empty space. The
-     transform-origin pins the rotation pivot at the satellite-side
-     end of the line, so the far end swings down-left toward the
-     substrate; the ~50° rotation matches the natural angle from a
-     top-right satellite position to the centre of a square orbit. */
-  width: clamp(120px, 15vw, 180px);
-  left: calc(-1 * clamp(120px, 15vw, 180px));
-  transform: translateY(-50%) rotate(50deg);
-  transform-origin: right center;
+  /* The base diagonal connector line is replaced by an `::after`
+     on the orbit container itself (see below) so the line can sit
+     BEHIND the substrate via a lower z-index and visibly end at
+     the substrate's edge. */
+  display: none;
+}
+
+.aiop-orbit--nested::after {
+  /* Vertical hairline from below the satellite cluster down to the
+     substrate's top edge (~37% from container top). The 50px we
+     subtract / add in the calcs accounts for the cluster's
+     intrinsic height (label + gap + dot ≈ 49px) so the line
+     starts immediately under the dot regardless of viewport size.
+     z-index: 1 keeps the line above the rings (z-index auto) but
+     BELOW the substrate (z-index: 2), so the line cleanly ends at
+     the substrate's circular edge instead of painting on top of it. */
+  content: "";
+  position: absolute;
+  top: calc(16% + 50px);
+  left: 50%;
+  width: 1px;
+  height: max(20px, calc(21% - 50px));
+  background: var(--aiop-rule-strong);
+  transform: translateX(-50%);
+  z-index: 1;
+  pointer-events: none;
 }
 
 @media (max-width: 600px) {
@@ -2711,21 +2733,11 @@
     width: 22%;
   }
 
-  /* Pull the satellite slightly inward and tighten the connector
-     so the dot stays inside the smaller container without the label
-     overflowing (label hides via the base narrow-viewport rule). */
-  .aiop-orbit--nested .aiop-orbit__satellite {
-    top: 4%;
-    right: 2%;
-  }
-
-  .aiop-orbit--nested .aiop-orbit__satellite::before {
-    /* Shorter line on narrow viewports — the rotation + origin
-       inherit from the base nested rule so the line still aims at
-       the substrate, just with a tighter reach that fits inside the
-       smaller orbit container without poking past the inner pills. */
-    width: 70px;
-    left: -70px;
+  /* The base satellite rule hides the label horizontally on narrow
+     viewports to avoid overflow. With the new vertical layout the
+     label sits above the dot and fits cleanly, so opt back in. */
+  .aiop-orbit--nested .aiop-orbit__satellite-label {
+    display: inline-block;
   }
 }
 
