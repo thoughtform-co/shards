@@ -523,7 +523,7 @@ export const approachSteps: ApproachStep[] = [
     id: "encode",
     label: "Encode",
     tone: "gold",
-    headline: "Turn how the team works into a layer that outlives the model.",
+    headline: "Turn how the team works into a portable layer any agent can use.",
     body:
       "The model doesn't know your brand, your standards, or your review process. You have to teach it — this is the adoption layer the diagnosis named, written down. At Loop, I encoded 10+ workflows into a portable machine substrate: brand voice, claim gates, creative prompting, marketplace copy. A teammate can read it and an agent can run on it. Models change, but the encoded layer carries forward.",
     signal: { k: "Outcome", v: "A Skill the team owns. Versioned. Headless." },
@@ -1118,10 +1118,10 @@ export type SoftwareForFewRow = {
 };
 
 export const softwareForFewSection = {
-  title: "Software",
-  titleEm: "for few.",
+  title: "Why",
+  titleEm: "build custom tools?",
   body:
-    "At the end of 2025, AI models finally became good enough that anyone with ideas could just build anything, and the bottlenecks I'd been collecting for months could finally turn into tailor-made tools and interfaces.",
+    "Most bottlenecks remain unsolved because existing SaaS isn't good enough and custom development for a problem-for-few doesn't make sense. That changed at the end of 2025 when AI models finally became good enough that people could actually build their own solutions — which I've started doing across the entire marketing department at Loop.",
   actions: [
     { id: "cases", label: "Explore cases", href: "#cases" },
     { id: "headless", label: "Headless vision", href: "#headless" },
