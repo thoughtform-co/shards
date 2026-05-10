@@ -401,7 +401,7 @@ export const visionSection = {
      short connector line. */
   satellite: { id: "headless", label: "Headless" },
   caption:
-    "Once you figure out how to navigate AI, you learn how to encode the way you work into a layer you can build any agent on.",
+    "Navigate first. Then encode what works into something both the team and the agents you build can reuse. Tacit knowledge stops living with a few people, and the team takes on work it couldn't do before.",
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
