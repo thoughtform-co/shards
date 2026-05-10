@@ -21,7 +21,9 @@ import { LoopStripeMorph } from "./loop-stripe-morph";
 import { QuoteBridge } from "./quote-bridge";
 import { ScrollReveal } from "./reveal";
 import { SoftwareForFew } from "./software-for-few";
-import { StripeBridge } from "./stripe-bridge";
+import { StripeLedger } from "./stripe-ledger";
+import { StripeReflect } from "./stripe-reflect";
+import { StripeVideo } from "./stripe-video";
 
 /*
  * AI Operator — public landing page.
@@ -74,16 +76,28 @@ import { StripeBridge } from "./stripe-bridge";
  *   12 Surface pick     — "Pick the surface that fits the workflow."
  *                         Three surface families framing cohort
  *                         scaling instead of developer onboarding.
- *   13 Stripe bridge    — Closing interstitial. Stripe co-founder
- *                         pull-quote on a softly playing background
- *                         video, three personal lines about Ledger,
- *                         a paraphrased engineer-reply card, and a
- *                         tie-back to the hero's "economic layer for
- *                         the age of co-intelligence" thesis. The
- *                         resting beat between the architecture deep
- *                         dive and the ask. (client)
- *   14 CTA              — One ask. Smallest commitment.
- *   15 Footer
+ *   13 Stripe reflect   — First beat of the closer. Evans-style
+ *                         interstitial: cream gradient, lane washes,
+ *                         dot grid, a single tranquil self-quote
+ *                         that turns the page from "what I've built"
+ *                         toward "where does this fit at Stripe?".
+ *                         Sets up the video that follows.
+ *   14 Stripe video     — Second beat of the closer. The visitor
+ *                         watches the Collison clip in a centered
+ *                         16:9 frame on a dark backdrop. Audio
+ *                         activates on viewport entry, pauses on
+ *                         exit. Small mono-caps attribution + one
+ *                         italic byline beneath the frame. (client)
+ *   15 Stripe ledger    — Third beat of the closer. Two-column
+ *                         editorial story about the AI-invoice
+ *                         frustration and the Ledger build, paired
+ *                         with an inline schematic, a paraphrased
+ *                         Stripe-engineer reply card, and a closing
+ *                         call-out conclusion card whose italic
+ *                         clause echoes the hero's `ledeStrong` so
+ *                         the page reads as a closed loop.
+ *   16 CTA              — One ask. Smallest commitment.
+ *   17 Footer
  */
 
 function Arrow() {
@@ -687,18 +701,26 @@ export default function AiOperatorPage() {
         </div>
       </section>
 
-      {/* ─── Stripe bridge — closing interstitial before the CTA ─────
+      {/* ─── Closer — three deliberate beats before the CTA ──────────
        *
-       * The "resting beat" between the architecture deep dive and the
-       * ask. A Stripe co-founder pull-quote on a softly playing
-       * background video, three personal lines about Ledger, a
-       * paraphrased engineer-reply card, and a closing tie-back whose
-       * italic clause echoes the hero's `ledeStrong`. The high-agency
-       * theme is demonstrated through the work, never asserted in
-       * the copy. Audio choreography (mute on first frame, unmute
-       * on viewport entry, pause + mute on exit) lives in the
-       * component. */}
-      <StripeBridge />
+       * The single resting beat became three sections so the closer
+       * breathes. The visitor moves through:
+       *
+       *   - Stripe reflect: a tranquil Evans-style interstitial that
+       *     turns the page from architecture toward personal frame
+       *     ("where does this fit at Stripe?"). Pure server.
+       *   - Stripe video: a dedicated section where the Collison
+       *     clip plays as the centerpiece, with audio activating on
+       *     viewport entry and a small mono-caps attribution + one
+       *     italic byline beneath. (client — owns the IO + mute pill)
+       *   - Stripe ledger: an editorial deep-dive on the AI-invoice
+       *     frustration and the Ledger build, with an inline
+       *     schematic, a paraphrased engineer-reply card, and a
+       *     closing call-out conclusion card carrying the hero
+       *     tie-back. Pure server. */}
+      <StripeReflect />
+      <StripeVideo />
+      <StripeLedger />
 
       {/* ─── CTA ────────────────────────────────────────────────────── */}
       <section

@@ -481,51 +481,24 @@ export const visionMarketSignals: VisionMarketSignal[] = [
 /* ─────────────────────────────────────────────────────────────────────
  * Flywheel bridge — full-viewport interstitial between Vision and Approach
  *
- * One personal quote with three Navigate / Encode / Build pills
- * inlined inside the second sentence (replacing the lowercase verbs
- * `navigate`, `encode`, `build`). Mirrors the Evans bridge pattern
- * (`quote-bridge.tsx` + `quoteParts`): each marked phrase wraps in a
- * lane-coloured chip that visually anchors the trio inside the prose
- * itself, so the legend lives in the sentence rather than below it.
- *
- * Differences from the Evans bridge:
- *   - No parallax, no scroll-coupled fade, no pin. Single calm beat.
- *   - Inline marks render as full pills (mono caps + lane dot)
- *     rather than Evans's bordered editorial chips, mirroring the
- *     existing Navigate / Encode / Build orbit pills the rest of the
- *     page uses as the framework's visual signature.
- *
- * Each `mark` part is rendered as an inline pill displaying its
- * `label`; surrounding `text` parts render as plain prose. The
- * lowercase verbs (`navigate AI`, `encode their craft`, `build
- * tools`) live in the data only as semantic context — the rendered
- * sentence reads "...Today they [Navigate] AI, [Encode] their craft
- * into Skills, and [Build] tools I wouldn't have thought of." with
- * the bracketed labels rendered as inline pills.
+ * Single personal quote rendered as flat italic prose. An earlier
+ * cut wrapped three verbs in lane-coloured Navigate / Encode / Build
+ * pills inline, but the pills made the framework feel like a brand
+ * stamp on the candidate's own voice — and they pre-empt Collison's
+ * "moved into marketing, changing the funnel" cadence the closer
+ * picks up later. Dropping them lets the line read as honest
+ * autobiography instead of internal vocabulary, and the resonance
+ * with the closer becomes audible without either side pointing at
+ * it.
  *
  * Pure quote, no eyebrow, no attribution. The page is already in
  * first person; an outside-voice attribution would feel wrong here.
  * ─────────────────────────────────────────────────────────────────── */
 
-export type FlywheelBridgePart =
-  | { text: string; mark?: undefined; label?: undefined }
-  | { mark: "navigate" | "encode" | "build"; label: string; text?: undefined };
-
-export const flywheelBridgeSection: {
-  parts: FlywheelBridgePart[];
-} = {
-  parts: [
-    {
-      text: "18 months ago I moved from the AI team to embed with marketing. Today they ",
-    },
-    { mark: "navigate", label: "Navigate" },
-    { text: " AI, " },
-    { mark: "encode", label: "Encode" },
-    { text: " their craft into Skills, and " },
-    { mark: "build", label: "Build" },
-    { text: " tools I wouldn't have thought of." },
-  ],
-};
+export const flywheelBridgeSection = {
+  quote:
+    "18 months ago I moved from the AI team into marketing. Today the same team produces what would have taken twenty people \u2014 on tools they built themselves.",
+} as const;
 
 /* ─────────────────────────────────────────────────────────────────────
  * Approach — Navigate, Encode, Build (the flywheel, explained)
@@ -1738,97 +1711,125 @@ export const selectedCaseSection = {
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
- * Stripe bridge — closing interstitial before the CTA
+ * Closer · three sections (reflect → video → ledger) before the CTA
  *
- * A "resting beat" between Surface pick (the architecture deep dive)
- * and the CTA. Frames the candidate's fit through four artefacts:
+ * The original single `StripeBridge` was split into three deliberate
+ * beats so the closer breathes:
  *
- *   1. A Stripe co-founder pull-quote naming the high-agency trait,
- *      rendered atop the same clip playing softly behind it. The
- *      audio choreography (mute on first frame, unmute when the
- *      section enters viewport, pause + mute on exit) lives in
- *      `stripe-bridge.tsx`.
- *   2. A short note under the attribution that ties Collison's line
- *      to the personal beat below — the bridge's equivalent of the
- *      Evans parenthetical "(because AI isn't software)".
- *   3. Three short personal lines naming Stripe's place on both sides
- *      of the candidate's AI work, the Ledger build, and the engineer
- *      reply that came back. The high-agency theme is demonstrated,
- *      not asserted — no "I have high agency" line ever appears.
- *   4. A small paraphrased card carrying the Stripe engineer's reply
- *      so the conversation reads as already underway. Kept discreet
- *      — no name, no screenshot.
- *   5. A two-line closing tie-back whose italic clause echoes the
- *      hero's `ledeStrong` ("the economic layer for the age of co-
- *      intelligence") so the page reads as a closed loop.
+ *   A · Stripe reflect — Evans-style interstitial. Cream gradient,
+ *       lane washes, dot grid, a single tranquil self-quote that
+ *       turns the page from "what I've built" toward "where does
+ *       this fit at Stripe?". Sets up the video that follows.
+ *   B · Stripe video — dark dedicated section. The visitor finally
+ *       watches the Collison clip in a centered 16:9 frame; audio
+ *       activates on viewport entry, pauses on exit. Small mono-caps
+ *       attribution + one italic byline beneath the frame.
+ *   C · Stripe ledger — dark editorial deep-dive. Three short
+ *       paragraphs about the AI-invoice frustration and the Ledger
+ *       build, paired with an inline schematic that visually rhymes
+ *       with the actual Ledger product (dark warm + gold accents).
+ *       A paraphrased Stripe-engineer reply card, then a closing
+ *       call-out conclusion card whose italic clause echoes the
+ *       hero's `ledeStrong` so the page reads as a closed loop.
  *
- * Video asset lives at `/public/ai-operator/Stripe - High Agency.mp4`
- * and is URL-encoded by the renderer.
+ * Video asset for section B: `/public/ai-operator/Stripe - High Agency.mp4`.
  * ─────────────────────────────────────────────────────────────────── */
 
-export type StripeBridgeQuotePart = {
-  text: string;
-};
+/* Persistent mute-toggle pill copy, shared by section B (the video).
+   Lifted out of the per-section data so the renderer can read it
+   without coupling to the rest of the section's content. */
+export const stripeAudioToggle = {
+  listen: "Tap for sound",
+  mute: "Mute",
+} as const;
 
-export const stripeBridgeSection = {
+/* ─── Section A · Stripe reflect ─────────────────────────────────── */
+
+export const stripeReflectSection = {
+  /* Single tranquil self-quote. Picks up the Evans-bridge editorial
+     weight (italic display centerpiece) but in the candidate's own
+     voice — a question rather than a borrowed thesis. The mono-caps
+     subline frames the voice without a real-person attribution. */
+  quote:
+    "I keep returning to the same question: what is the version of this work at Stripe?",
+  attribName: "Vincent Buyssens",
+  attribMeta: "A question I keep returning to",
+  /* Optional parenthetical scroll-note. Mirrors Evans's
+     "(because AI isn't software)" — adds a quiet editorial beat
+     without asserting anything. Set to `null` to skip. */
+  note: "asked once a week, lately",
+} as const;
+
+/* ─── Section B · Stripe video ───────────────────────────────────── */
+
+export const stripeVideoSection = {
   video: {
     src: "/ai-operator/Stripe - High Agency.mp4",
-    /* Captions track is wired in markup but the .vtt file is not
-       yet authored. Renderer omits the <track> element when null. */
+    /* Captions track slot. The .vtt file is not yet authored, so
+       the renderer omits the <track> element when null. */
     captions: null as string | null,
   },
-  /* Pull-quote — Stripe co-founder on the kind of people they hire.
-     Rendered as a single italic display centerpiece, mirroring the
-     Evans bridge's editorial weight. The quote stays in plain text
-     for this cut so it reads cleanly; the data shape is kept simple
-     and can grow a `mark` slot later if a future iteration wants
-     inline editorial chips. */
-  quoteParts: [
-    {
-      text:
-        "The type of people we're looking for are high-agency people — people who say, \u2018I've been talking to customers, I know exactly what we should do, we got to go fix this.\u2019",
-    },
-  ] satisfies StripeBridgeQuotePart[],
+  /* Mono-caps attribution row directly below the video frame. */
   attribName: "John Collison",
-  attribMeta: "Co-founder & President, Stripe",
+  attribMeta: "TBPN Live · May 2026",
+  /* Italic byline below the attribution. Reflects the parallel
+     between Collison's three threads (high-agency, double majors,
+     marketing funnel) and the candidate's last 18 months without
+     pointing at it explicitly. */
+  byline: "What he describes is the work above.",
+} as const;
 
-  /* Soft note under the attribution — one short line that lets
-     Collison's quote land and then quietly turns it toward the
-     personal beat below. Italic display, parenthetical brackets in
-     a quieter register, mirroring `aiop-bridge__scroll-note`. */
-  note: "which is what brought me here in the first place",
+/* ─── Section C · Stripe ledger ──────────────────────────────────── */
 
-  /* Three short editorial lines beneath the quote. No headline, no
-     eyebrow — they read as the candidate picking up where the
-     co-founder left off. The third line is the bridge into the
-     email card to its right. */
-  personalLines: [
-    "Stripe sits on both sides of how I work — the AI tools I build with, and the spine my consultancy runs on.",
-    "When downloading invoices across a dozen AI portals became my biggest bottleneck this year, I didn't write Stripe to ask for the feature. I built Ledger to take it back.",
-    "Then I wrote anyway. A Stripe engineer wrote back.",
+export type LedgerSchematicChip = { label: string; tone?: "default" | "accent" };
+
+export const stripeLedgerSection = {
+  /* Story column — three short editorial paragraphs. No headline,
+     no eyebrow; the section reads as continued narration after the
+     video lands. */
+  story: [
+    "Earlier this year I noticed something. The biggest bottleneck in my consultancy wasn't the work — it was downloading invoices from a dozen AI portals every month. Cursor, Anthropic, Krea, Vercel, Loops. Every one of them paid through Stripe.",
+    "I wrote up the case for surfacing those invoices inside Stripe Link — GDPR notes, the actual user journey, why a single virtual card doesn't solve it. Then I emailed Irace. And while I waited, I built it anyway.",
+    "Ledger reads invoices, clusters vendors semantically, and runs a Navigator that talks about the numbers like a thoughtful colleague — with context about the business, not generic advice. It's a small product, but everything I've been thinking about for 18 months at Loop runs underneath it.",
   ] as const,
 
-  /* Stylised email card — paraphrased reply, kept tight. No name,
-     no screenshot. Sits inline-right of the personal beat on
-     desktop, stacks beneath on narrow widths. */
+  /* Right-column visual — inline Ledger schematic. CSS-rendered
+     preview consistent with how `stripeTeaser.schematic` is built;
+     no real screenshot needed for this cut. The chip list represents
+     the AI-subscription pile that triggered the build; the connector
+     names the Ledger pipeline at a glance; the insight strip gives
+     the visitor a taste of what Navigator AI actually returns. */
+  schematic: {
+    eyebrow: "Ledger · financial command center",
+    sourcesLabel: "AI subscriptions paid through Stripe",
+    sources: [
+      { label: "Cursor" },
+      { label: "Anthropic" },
+      { label: "Krea" },
+      { label: "Vercel" },
+      { label: "Loops" },
+    ] as LedgerSchematicChip[],
+    connector: "read · cluster · interpret",
+    insightLabel: "Navigator · this quarter",
+    insight:
+      "67% of your Q2 spend is AI infrastructure — that's the substrate, not overhead.",
+  },
+
+  /* Stylised email card — paraphrased reply from the Stripe engineer.
+     Stays small and discreet, sits below the schematic on desktop. */
   emailCard: {
     eyebrow: "From a Stripe engineer · May 2026",
     body: "Tell me a slight bit more about your invoicing needs.",
     foot: "(reply, lightly paraphrased)",
   },
 
-  /* Closing tie-back. The italic `em` clause echoes the hero's
-     `ledeStrong` so the page reads as a closed loop. */
-  closing: {
+  /* Closing call-out conclusion card. Sits at the bottom of the
+     section as a single full-width card whose italic clause echoes
+     the hero's `ledeStrong` so the page reads as a closed loop. */
+  conclusion: {
+    eyebrow: "Ambition",
     lead: "My ambition isn't to transform a marketing department.",
     em: "It's to help build the economic layer for the age of co-intelligence.",
-  },
-
-  /* Persistent mute toggle pill copy. Renderer flips between the two
-     based on the live `muted` state. */
-  audioToggle: {
-    listen: "Tap for sound",
-    mute: "Mute",
   },
 } as const;
 
