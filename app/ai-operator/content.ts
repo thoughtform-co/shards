@@ -901,6 +901,20 @@ export const casesSection = {
       def: "Build a workflow that didn't exist before.",
     },
   ],
+  /* Bridge callout — sits as the very last child of `.aiop-cases__list`
+     after the StripeTeaserCard. While the headless-shift section
+     slides up over the frozen Cases (parallax-pair behaviour), this
+     callout is the last thing the visitor reads on the Cases side
+     before the headless thesis takes over. The italic em rhymes with
+     the headless-shift body strong line ("...decoupling the rest is
+     the work I'm doing now.") so the callout reads as setup → the
+     headless-shift body reads as elaboration. The card is intentionally
+     unlabelled (no mono-caps eyebrow) so the two-line display body
+     lands as the only beat — quieter and more editorial. */
+  bridgeCallout: {
+    lead: "The work is the engine.",
+    em: "The interface is the cheapest layer to swap.",
+  },
 } as const;
 
 export type CaseTone = "gold" | "sage" | "slate" | "violet";
@@ -1429,7 +1443,7 @@ export const headlessShiftSection = {
   body:
     "Salesforce shipped Headless 360, Stripe shipped a CLI for the terminal — both bet on the same idea: the orchestration matters more than the surface that exposes it.",
   bodyStrong:
-    "My Loop tools are partly there; the rest is what I'm working on. It's also the discipline I teach in workshops — design the orchestration first, because the surface is the cheapest layer to swap later.",
+    "My Loop tools are partway there. Some run engine-first already, others are still bound to their interfaces, and decoupling the rest is the work I'm doing now.",
   actions: [
     { id: "headless", label: "See the overview", href: "#headless" },
   ],
@@ -1607,9 +1621,16 @@ export type SurfacePickInterface = {
   detail: string;
 };
 
-export type SurfacePickSurface = {
+/* Each row in the new "Where it lands" panel pairs one cohort role
+   with one surface and a short editorial note. The icon stays
+   coupled to the surface (mirroring the existing surface chip
+   chrome — `C` for Cursor, `Cl` for Claude, etc.) while the role
+   label is the new scannable left edge. */
+export type SurfacePickRoleSurface = {
+  role: string;
   icon: string;
-  name: string;
+  surface: string;
+  note: string;
 };
 
 export const surfacePickSection = {
@@ -1647,14 +1668,44 @@ export const surfacePickSection = {
     },
   ] satisfies SurfacePickInterface[],
   surfacesLabel: "Where it lands",
-  surfaces: [
-    { icon: "C", name: "Cursor" },
-    { icon: "Cl", name: "Claude" },
-    { icon: "◐", name: "Web app" },
-    { icon: "#", name: "Slack" },
-    { icon: "A", name: "Agents" },
-    { icon: "⤴", name: "Internal tools" },
-  ] satisfies SurfacePickSurface[],
+  /* Role-clustered surfaces — replaces the earlier flat 6-cell grid
+     so the right-hand panel reads as a sequence of "who reaches
+     this engine, and on which surface". Internal tools dropped from
+     this panel because the API column on the left already covers
+     that path; Web app is the marketer's surface, Agents are the
+     ops/automation surface. */
+  roleSurfaces: [
+    {
+      role: "Developer",
+      icon: "C",
+      surface: "Cursor",
+      note: "code-aware copilot",
+    },
+    {
+      role: "PR · Comms",
+      icon: "Cl",
+      surface: "Claude",
+      note: "long-form drafting",
+    },
+    {
+      role: "PM",
+      icon: "#",
+      surface: "Slack",
+      note: "where the team already lives",
+    },
+    {
+      role: "Marketer",
+      icon: "◐",
+      surface: "Web app",
+      note: "team-built UIs",
+    },
+    {
+      role: "Ops",
+      icon: "A",
+      surface: "Agents",
+      note: "scheduled, autonomous",
+    },
+  ] satisfies SurfacePickRoleSurface[],
   closing:
     "Build once → scale through surfaces → cohort inherits the capability",
 } as const;

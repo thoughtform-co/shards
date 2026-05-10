@@ -697,23 +697,37 @@ export default function AiOperatorPage() {
                 <p className="aiop-surface-pick__destinations-label">
                   {surfacePickSection.surfacesLabel}
                 </p>
+                {/* Role-clustered sequence — each row pairs one
+                    cohort role with one surface and a short
+                    editorial note. Replaces the earlier flat 6-cell
+                    grid so the right panel reads as a scannable
+                    "who reaches the engine, where" list rather than
+                    a generic destinations grid. */}
                 <ul
-                  className="aiop-surface-pick__destinations-grid"
+                  className="aiop-surface-pick__roles"
                   role="list"
                 >
-                  {surfacePickSection.surfaces.map((s) => (
+                  {surfacePickSection.roleSurfaces.map((row) => (
                     <li
-                      key={s.name}
-                      className="aiop-surface-pick__destination"
+                      key={row.role}
+                      className="aiop-surface-pick__role"
                     >
-                      <span
-                        className="aiop-surface-pick__destination-icon"
-                        aria-hidden="true"
-                      >
-                        {s.icon}
+                      <span className="aiop-surface-pick__role-label">
+                        {row.role}
                       </span>
-                      <span className="aiop-surface-pick__destination-name">
-                        {s.name}
+                      <span className="aiop-surface-pick__role-surface">
+                        <span
+                          className="aiop-surface-pick__role-icon"
+                          aria-hidden="true"
+                        >
+                          {row.icon}
+                        </span>
+                        <span className="aiop-surface-pick__role-name">
+                          {row.surface}
+                        </span>
+                      </span>
+                      <span className="aiop-surface-pick__role-note">
+                        {row.note}
                       </span>
                     </li>
                   ))}

@@ -11296,31 +11296,56 @@
   font-weight: 600;
 }
 
-.aiop-surface-pick__destinations-grid {
+/* Role-clustered "Where it lands" panel — replaces the earlier flat
+   2-column grid of bordered surface chips. Each row pairs one
+   cohort role (mono caps left edge, the scannable spine of the
+   panel) with one surface (icon + name) and a short italic note.
+   Reads top-to-bottom as a sequence: who reaches the engine, on
+   which surface, and why. */
+.aiop-surface-pick__roles {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  display: flex;
+  flex-direction: column;
   flex: 1;
   align-content: start;
 }
 
-.aiop-surface-pick__destination {
+.aiop-surface-pick__role {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.95fr) minmax(0, 1.05fr) minmax(0, 1.4fr);
+  align-items: center;
+  gap: clamp(12px, 1.4vw, 18px);
+  padding: clamp(11px, 1.2vw, 14px) 4px;
+  border-bottom: 1px solid var(--aiop-rule-soft);
+}
+
+.aiop-surface-pick__role:last-child {
+  border-bottom: 0;
+}
+
+.aiop-surface-pick__role-label {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-ink-soft);
+  white-space: nowrap;
+}
+
+.aiop-surface-pick__role-surface {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  border: 1px solid var(--aiop-rule-strong);
-  padding: 10px 12px;
-  background: var(--aiop-card);
   min-width: 0;
 }
 
-.aiop-surface-pick__destination-icon {
+.aiop-surface-pick__role-icon {
   flex-shrink: 0;
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -11328,17 +11353,54 @@
   font-size: 12px;
   font-weight: 500;
   color: var(--aiop-gold-bright);
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
   line-height: 1;
 }
 
-.aiop-surface-pick__destination-name {
+.aiop-surface-pick__role-name {
   font-family: var(--aiop-body);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--aiop-ink);
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.aiop-surface-pick__role-note {
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--aiop-muted);
+}
+
+@media (max-width: 720px) {
+  .aiop-surface-pick__role {
+    grid-template-columns: minmax(0, auto) 1fr;
+    grid-template-rows: auto auto;
+    grid-auto-flow: row;
+    row-gap: 6px;
+    column-gap: 12px;
+    padding: 14px 4px;
+  }
+
+  .aiop-surface-pick__role-label {
+    grid-column: 1 / 2;
+    grid-row: 1;
+  }
+
+  .aiop-surface-pick__role-surface {
+    grid-column: 2 / 3;
+    grid-row: 1;
+  }
+
+  .aiop-surface-pick__role-note {
+    grid-column: 1 / 3;
+    grid-row: 2;
+    font-size: 13px;
+  }
 }
 
 
@@ -11407,6 +11469,79 @@
   );
   box-shadow: 0 18px 42px rgba(26, 22, 18, 0.06);
   max-width: 78ch;
+}
+
+/* ─── 29.1b · `.aiop-cases__bridge` — turn-into-headless callout
+ *
+ * Sits as the very last child of `.aiop-cases__list`, after the
+ * StripeTeaserCard. While the headless-shift section slides up over
+ * the frozen Cases (parallax-pair behaviour from the wrapper
+ * `.aiop-cases-and-shift`), this callout is the last thing the
+ * visitor reads on the Cases side before the headless thesis takes
+ * over. Soft-framed cream card in the same chrome family as the
+ * Stripe ledger conclusion (mono-caps eyebrow + pulsing accent dot,
+ * two-line display body with italic emphasis on the second line),
+ * adapted to the cream/paper register the Cases section uses.
+ *
+ * The italic em ("the interface is the cheapest layer to swap")
+ * deliberately rhymes with the Headless-shift body strong line
+ * below ("...decoupling the rest is the work I'm doing now."),
+ * so the callout reads as setup → headless-shift reads as the
+ * elaboration. Reuses the existing `aiop-stripe-pulse` keyframe
+ * (defined in section 14c · Stripe video) for the dot. */
+.aiop-cases__bridge {
+  position: relative;
+  width: 100%;
+  max-width: min(100%, 720px);
+  margin: clamp(40px, 5vw, 64px) auto 0;
+  padding: clamp(24px, 2.6vw, 36px) clamp(28px, 3vw, 44px);
+  background: linear-gradient(
+    180deg,
+    var(--aiop-paper-2) 0%,
+    var(--aiop-paper) 100%
+  );
+  border: 1px solid var(--aiop-rule);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(12px, 1.4vw, 18px);
+  text-align: center;
+}
+
+.aiop-cases__bridge-body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 0.8vw, 10px);
+  font-family: var(--aiop-display);
+  font-weight: 480;
+  font-size: clamp(20px, 2vw, 28px);
+  line-height: 1.32;
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+}
+
+.aiop-cases__bridge-lead {
+  color: var(--aiop-ink-soft);
+  font-style: normal;
+}
+
+.aiop-cases__bridge-em {
+  color: var(--aiop-ink);
+  font-style: italic;
+  font-weight: 500;
+}
+
+@media (max-width: 720px) {
+  .aiop-cases__bridge {
+    padding: 22px 20px;
+    margin-top: 32px;
+  }
+
+  .aiop-cases__bridge-body {
+    font-size: clamp(18px, 5vw, 22px);
+  }
 }
 
 /* Phase pill block — small wrapper above the Software-for-few title

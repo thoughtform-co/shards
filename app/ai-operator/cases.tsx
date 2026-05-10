@@ -78,11 +78,31 @@ export function Cases() {
         {/* Stripe teaser — sits after the four production case rows
             inside the same list container so the parallax-pinned
             `.aiop-cases` block stays one continuous frozen surface
-            during the HeadlessShift slide-over. The teaser is the
-            section's closing beat now; the previous `aiop-cases__close`
-            editorial line was retired so the booking ask hands
-            directly into the headless thesis below. */}
+            during the HeadlessShift slide-over. */}
         <StripeTeaserCard />
+
+        {/* Bridge callout — last child of the list, the final beat
+            the visitor reads on the Cases side before the headless-
+            shift section slides up over it. Soft-framed cream card
+            with no eyebrow so the two-line display body is the only
+            beat. The italic em ("the interface is the cheapest layer
+            to swap") rhymes with the headless-shift body strong line
+            below ("decoupling the rest is the work I'm doing now")
+            so the callout reads as setup → headless-shift reads as
+            elaboration. */}
+        <aside
+          className="aiop-cases__bridge aiop-reveal"
+          aria-label="Cases-to-headless bridge callout"
+        >
+          <p className="aiop-cases__bridge-body">
+            <span className="aiop-cases__bridge-lead">
+              {casesSection.bridgeCallout.lead}
+            </span>
+            <em className="aiop-cases__bridge-em">
+              {casesSection.bridgeCallout.em}
+            </em>
+          </p>
+        </aside>
       </div>
 
       <OperatorModal
