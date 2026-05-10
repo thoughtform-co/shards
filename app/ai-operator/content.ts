@@ -1833,7 +1833,7 @@ export const stripeReflectSection = {
      external attribution — this is self-reflection; the figcaption
      row is dropped so the quote stands alone. */
   quote:
-    "My ambition for Stripe runs beyond a marketing role. Stripe runs through all my work. Using it from Europe, where payments get genuinely complicated, you start thinking about Stripe at a product level.",
+    "My ambition for Stripe runs beyond a marketing role. Stripe runs through all my work. Using it from Europe, where payments get genuinely complicated, you really start thinking about Stripe at a product level.",
   /* Optional parenthetical scroll-note. Renderer in
      `stripe-reflect.tsx` gates this on truthiness, so `null` makes
      the brackets disappear cleanly. */
