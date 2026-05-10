@@ -1441,22 +1441,20 @@ export const headlessShiftSection = {
   title: "Software is going",
   titleEm: "headless.",
   body:
-    "Salesforce shipped Headless 360, Stripe shipped a CLI for the terminal — both bet on the same idea: the orchestration matters more than the surface that exposes it.",
+    "Salesforce shipped Headless 360. Stripe shipped a CLI. Both bet on the same idea — the engine matters more than the surface.",
   bodyStrong:
-    "My Loop tools are partway there. Some run engine-first already, others are still bound to their interfaces, and decoupling the rest is the work I'm doing now.",
+    "My Loop tools are partway there — some engine-first, others still bound to their UI. Finishing that decoupling is the work I'm doing now.",
   /* Third paragraph — closes the interstitial on a Stripe-applied
      beat instead of leaving the visitor with the Loop status. The
      first two paragraphs already establish the industry trend
      (Salesforce/Stripe) and the candidate's own work (Loop); this
-     one names the equivalent move on the marketing side. Avoids
-     "this posture" / corporate-architecture vocabulary and skips
-     name-checking the Forward Deployed program — both read as
-     pattern-matching to Stripe's deck rather than as Vince's own
-     voice. Stays specific: Link is a real CLI, the docs are a real
-     API, voice/claims/review-loops are the actual marketing
-     equivalents I'm building at Loop. */
+     one names the equivalent move on the marketing side. Stays
+     specific (Link is a real CLI, the docs are a real API,
+     voice/claims/review-loops are the actual marketing
+     equivalents) without falling into "this posture" /
+     corporate-architecture vocabulary. */
   bodyStripe:
-    "Stripe's developer side already works this way — Link runs as a CLI, the docs surface as an API. What I'm doing at Loop is the same move on the marketing side: voice, claims, and review loops as one engine that shows up wherever the team already works.",
+    "Stripe's developer side already works this way — Link as a CLI, the docs as an API. At Loop I'm doing the same on the marketing side: voice, claims, and review loops as one engine.",
   actions: [
     { id: "headless", label: "See the overview", href: "#headless" },
   ],
