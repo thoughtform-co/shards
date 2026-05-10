@@ -113,7 +113,7 @@ export function StripeReflect() {
     };
   }, [animated]);
 
-  const { quote, note } = stripeReflectSection;
+  const { quote, note, cta } = stripeReflectSection;
 
   return (
     <section
@@ -164,6 +164,20 @@ export function StripeReflect() {
                 )
               </span>
             </p>
+          ) : null}
+
+          {cta ? (
+            <a className="aiop-stripe-reflect__cta" href={cta.href}>
+              <span className="aiop-stripe-reflect__cta-label">
+                {cta.label}
+              </span>
+              <span
+                className="aiop-stripe-reflect__cta-arrow"
+                aria-hidden="true"
+              >
+                ↓
+              </span>
+            </a>
           ) : null}
         </figure>
       </div>

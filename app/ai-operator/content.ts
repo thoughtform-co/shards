@@ -1828,15 +1828,26 @@ export const stripeReflectSection = {
   /* Single tranquil self-quote. The reflect declares the ambition
      and primes the personal beat below: every AI tool I onboard
      teams onto runs through Stripe, so does the consultancy, and
-     using it daily from Europe shapes how I think about the
-     product. No external attribution — this is self-reflection;
-     the figcaption row is dropped so the quote stands alone. */
+     using Stripe daily from Europe — where payments get genuinely
+     complicated — pushes me to think about the product. No
+     external attribution — this is self-reflection; the figcaption
+     row is dropped so the quote stands alone. */
   quote:
-    "My ambition for Stripe runs beyond a marketing role. Stripe is woven through how I work and everything I build. Using it daily from Europe shapes how I think about the product.",
+    "My ambition for Stripe runs beyond a marketing role. Stripe runs through all my work. Using it from Europe, where payments get genuinely complicated, you start thinking about Stripe at a product level.",
   /* Optional parenthetical scroll-note. Renderer in
      `stripe-reflect.tsx` gates this on truthiness, so `null` makes
      the brackets disappear cleanly. */
   note: null as string | null,
+  /* Tongue-in-cheek scroll affordance below the quote. Anchors to
+     the Stripe-ledger section directly below, where the X-thread +
+     Ledger case make the actual case for what I'd build at Stripe.
+     Reads as a wink: the visitor pretends I'm advising Stripe even
+     though it's a job application page. The down-arrow signals
+     "scroll" rather than "open in a new tab". */
+  cta: {
+    label: "How Stripe could make my life better",
+    href: "#stripe-ledger",
+  },
 } as const;
 
 /* ─── Section B · Stripe video ───────────────────────────────────── */
