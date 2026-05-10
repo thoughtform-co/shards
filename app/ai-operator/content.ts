@@ -164,12 +164,13 @@ export const diagnosisSection: {
   gap: {
     title: string;
     titleEm: string;
+    subline?: string;
   };
 } = {
   title: "The missing layer is rarely",
   titleEm: "the model.",
   lede:
-    "Most companies already have AI tools, data, and founders who want to move fast. What they lack is the layer that helps teams use the tools inside real work, encode what good looks like, and turn the useful patterns into capability.",
+    "Most companies already have AI tools, data, and founders who want to move fast. What they lack is the layer between what their teams know and what AI does.",
   useCases: [
     {
       n: "01",
@@ -203,6 +204,12 @@ export const diagnosisSection: {
   gap: {
     title: "The fix isn't more AI.",
     titleEm: "It's learning how to brief an AI.",
+    /* Quiet parenthetical aside — flags that briefing is harder than
+       it looks without trying to argue the WHY here. The Bridge's
+       Evans quote names it as the asking gap and the parenthetical
+       under the attribution lands the new-category insight, so the
+       gap card just has to seed the difficulty. */
+    subline: "(which is more difficult than it sounds.)",
   },
 };
 
@@ -248,12 +255,14 @@ export const quoteBridgeSection = {
      visitor begins to scroll past the bridge. Driven from CSS via
      `--aiop-bridge-progress`; renders silently until the progress
      window opens, so the Evans line lands first and the editorial
-     punchline arrives a beat later. */
-  scrollNote: "because AI isn't software",
+     punchline arrives a beat later. Names the new category
+     (intelligence, not software) so the Reality interstitial that
+     follows can take that as a given and unpack it structurally. */
+  scrollNote: "because AI isn't software, it's an intelligence",
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
- * Reality check — Why traditional adoption doesn't work
+ * Reality check — Why traditional adoption doesn't work with AI
  *
  * Sits between the Evans bridge and the Vision flywheel. Names the
  * structural reason the asking gap is hard: AI is neither a tool nor
@@ -302,9 +311,9 @@ export type AiRealityColumn = {
 
 export const aiRealitySection = {
   title: "Why traditional adoption",
-  titleEm: "doesn't work.",
+  titleEm: "doesn't work with AI.",
   lede:
-    "Adoption starts with understanding what AI actually is. Not normal software, not quite a colleague, but something in between. IT can roll out access. People can coach behaviour. Neither can carry this alone, because the hard part is translating the intelligence into the work, and the work back to the stakeholders who need to trust it.",
+    "AI is intelligence engaged across a spectrum. Used as a tool, it executes commands deterministically. Worked with as a collaborator, it interprets intent and inherits judgment. The skill is learning how to navigate this spectrum.",
   actions: [
     { id: "vision", label: "See the flywheel", href: "#vision" },
   ],

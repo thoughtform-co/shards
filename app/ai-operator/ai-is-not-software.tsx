@@ -1,7 +1,7 @@
 import { aiRealitySection } from "./content";
 
 /*
- * AiIsNotSoftware — "Why traditional adoption doesn't work."
+ * AiIsNotSoftware — "Why traditional adoption doesn't work with AI."
  *
  * Sits between the Evans bridge and the Vision flywheel inside the
  * `.aiop-bridge-and-reality` parallax-reveal wrapper. Names the

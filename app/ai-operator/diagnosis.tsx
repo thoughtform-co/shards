@@ -81,6 +81,9 @@ export function Diagnosis() {
           <p className="aiop-diagnosis__gap-title">
             {gap.title} <em>{gap.titleEm}</em>
           </p>
+          {gap.subline ? (
+            <p className="aiop-diagnosis__gap-subline">{gap.subline}</p>
+          ) : null}
         </aside>
       </div>
     </section>
