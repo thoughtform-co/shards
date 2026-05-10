@@ -1738,6 +1738,101 @@ export const selectedCaseSection = {
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
+ * Stripe bridge — closing interstitial before the CTA
+ *
+ * A "resting beat" between Surface pick (the architecture deep dive)
+ * and the CTA. Frames the candidate's fit through four artefacts:
+ *
+ *   1. A Stripe co-founder pull-quote naming the high-agency trait,
+ *      rendered atop the same clip playing softly behind it. The
+ *      audio choreography (mute on first frame, unmute when the
+ *      section enters viewport, pause + mute on exit) lives in
+ *      `stripe-bridge.tsx`.
+ *   2. A short note under the attribution that ties Collison's line
+ *      to the personal beat below — the bridge's equivalent of the
+ *      Evans parenthetical "(because AI isn't software)".
+ *   3. Three short personal lines naming Stripe's place on both sides
+ *      of the candidate's AI work, the Ledger build, and the engineer
+ *      reply that came back. The high-agency theme is demonstrated,
+ *      not asserted — no "I have high agency" line ever appears.
+ *   4. A small paraphrased card carrying the Stripe engineer's reply
+ *      so the conversation reads as already underway. Kept discreet
+ *      — no name, no screenshot.
+ *   5. A two-line closing tie-back whose italic clause echoes the
+ *      hero's `ledeStrong` ("the economic layer for the age of co-
+ *      intelligence") so the page reads as a closed loop.
+ *
+ * Video asset lives at `/public/ai-operator/Stripe - High Agency.mp4`
+ * and is URL-encoded by the renderer.
+ * ─────────────────────────────────────────────────────────────────── */
+
+export type StripeBridgeQuotePart = {
+  text: string;
+};
+
+export const stripeBridgeSection = {
+  video: {
+    src: "/ai-operator/Stripe - High Agency.mp4",
+    /* Captions track is wired in markup but the .vtt file is not
+       yet authored. Renderer omits the <track> element when null. */
+    captions: null as string | null,
+  },
+  /* Pull-quote — Stripe co-founder on the kind of people they hire.
+     Rendered as a single italic display centerpiece, mirroring the
+     Evans bridge's editorial weight. The quote stays in plain text
+     for this cut so it reads cleanly; the data shape is kept simple
+     and can grow a `mark` slot later if a future iteration wants
+     inline editorial chips. */
+  quoteParts: [
+    {
+      text:
+        "The type of people we're looking for are high-agency people — people who say, \u2018I've been talking to customers, I know exactly what we should do, we got to go fix this.\u2019",
+    },
+  ] satisfies StripeBridgeQuotePart[],
+  attribName: "John Collison",
+  attribMeta: "Co-founder & President, Stripe",
+
+  /* Soft note under the attribution — one short line that lets
+     Collison's quote land and then quietly turns it toward the
+     personal beat below. Italic display, parenthetical brackets in
+     a quieter register, mirroring `aiop-bridge__scroll-note`. */
+  note: "which is what brought me here in the first place",
+
+  /* Three short editorial lines beneath the quote. No headline, no
+     eyebrow — they read as the candidate picking up where the
+     co-founder left off. The third line is the bridge into the
+     email card to its right. */
+  personalLines: [
+    "Stripe sits on both sides of how I work — the AI tools I build with, and the spine my consultancy runs on.",
+    "When downloading invoices across a dozen AI portals became my biggest bottleneck this year, I didn't write Stripe to ask for the feature. I built Ledger to take it back.",
+    "Then I wrote anyway. A Stripe engineer wrote back.",
+  ] as const,
+
+  /* Stylised email card — paraphrased reply, kept tight. No name,
+     no screenshot. Sits inline-right of the personal beat on
+     desktop, stacks beneath on narrow widths. */
+  emailCard: {
+    eyebrow: "From a Stripe engineer · May 2026",
+    body: "Tell me a slight bit more about your invoicing needs.",
+    foot: "(reply, lightly paraphrased)",
+  },
+
+  /* Closing tie-back. The italic `em` clause echoes the hero's
+     `ledeStrong` so the page reads as a closed loop. */
+  closing: {
+    lead: "My ambition isn't to transform a marketing department.",
+    em: "It's to help build the economic layer for the age of co-intelligence.",
+  },
+
+  /* Persistent mute toggle pill copy. Renderer flips between the two
+     based on the live `muted` state. */
+  audioToggle: {
+    listen: "Tap for sound",
+    mute: "Mute",
+  },
+} as const;
+
+/* ─────────────────────────────────────────────────────────────────────
  * CTA + footer
  * ─────────────────────────────────────────────────────────────────── */
 

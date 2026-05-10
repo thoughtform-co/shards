@@ -3263,6 +3263,568 @@
 
 
 /* ═══════════════════════════════════════════════════════════════════════
+ * 14c · v2 — Stripe bridge (closing interstitial before the CTA)
+ *
+ * Sits between Surface pick (architecture deep dive) and the CTA.
+ * Mirrors the structural posture of the Evans bridge (`.aiop-bridge`)
+ * and the Flywheel bridge (`.aiop-flywheel-bridge`): full-viewport
+ * editorial chapter, centered figure, attribution rule, soft
+ * parenthetical note. The atmospheric layer is different — instead
+ * of three lane washes + dot grid, the section's bleed carries a
+ * softly playing background video of the Stripe co-founder clip the
+ * pull-quote is drawn from, with a dark gradient veil over it so
+ * the cream editorial type stays high-contrast.
+ *
+ * Audio choreography (mute on first frame, unmute on viewport entry,
+ * pause + mute on exit, persistent toggle pill) lives in
+ * `stripe-bridge.tsx`. The choreography is opt-in: skipped on narrow
+ * viewports and under `prefers-reduced-motion: reduce`. Static
+ * fallback gives the video native `controls` so the visitor can
+ * still trigger playback.
+ *
+ * The component writes `--aiop-stripe-progress` (0..1) onto the
+ * section as it transits the viewport so the closing tie-back can
+ * drift a beat after the quote, mirroring the Evans parenthetical
+ * reveal pattern but without the pin-and-freeze.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-stripe-bridge {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* Dark warm base. Sits beneath the video so the section reads as a
+     dark editorial chapter even before the video has loaded. The
+     video at ~0.55 opacity blends with this base; the gradient veil
+     above the video lifts contrast for the centered type. */
+  background:
+    radial-gradient(
+      ellipse 80% 70% at 50% 35%,
+      #1f1a14 0%,
+      #14110d 100%
+    );
+  border-block: 1px solid rgba(26, 22, 18, 0.4);
+  padding-block: clamp(72px, 9vw, 120px);
+  /* Full-viewport beat — mirrors `.aiop-bridge` and
+     `.aiop-flywheel-bridge`. `100dvh` accounts for mobile browser
+     chrome; subtracting the sticky header height keeps the figure
+     clear on narrow heights. */
+  min-height: calc(100dvh - var(--aiop-header-h));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* Cream text against the dark video bleed — paper tone so the
+     editorial register matches the rest of the route while staying
+     legible against the darker atmosphere. */
+  color: var(--aiop-paper);
+}
+
+/* Bleed wrapper. Holds the video element and the gradient veil that
+   sits on top of it. `pointer-events: none` lets clicks fall through
+   to anything underneath, but the inner column is z-indexed above so
+   that doesn't actually matter today. */
+.aiop-stripe-bridge__bleed {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* Background video. `object-fit: cover` keeps the frame full-bleed
+   regardless of aspect ratio; opacity drops it to atmospheric
+   texture so the cream type on the veil above remains the focus.
+   The blur intentionally takes the video out of "watch the show"
+   register and into "ambient atmosphere" — any in-video chyron
+   text or banner content softens to color and motion rather than
+   competing with the editorial column. The slight desaturation
+   pulls the video closer to the section's warm palette without
+   bleaching the original frame. */
+.aiop-stripe-bridge__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  /* `scale(1.04)` hides the blur edge that sits inside the section.
+     Without it the blur creates a visible halo at the section's
+     edges where the un-blurred backing color shows through. */
+  transform: scale(1.04);
+  opacity: 0.42;
+  filter: saturate(0.7) contrast(0.92) blur(2.5px);
+  pointer-events: none;
+}
+
+/* Static-fallback path: under reduced motion / narrow viewports the
+   video element gets native `controls`. Re-enable pointer-events on
+   the element itself so the controls are clickable; the visitor
+   needs to be able to scrub if they want sound. The blur is
+   dropped here so visitors who explicitly choose to play the video
+   can actually see what they're watching. */
+.aiop-stripe-bridge:not(.is-animated) .aiop-stripe-bridge__video {
+  pointer-events: auto;
+  opacity: 0.85;
+  filter: none;
+  transform: none;
+}
+
+/* Multi-stop dark gradient veil over the video. Keeps the centered
+   editorial column legible against arbitrary video frames without
+   washing the imagery out completely. The top stop is slightly
+   warmer and lighter so the quote area feels open; the bottom stop
+   is dense enough that any in-video chyron / banner text never
+   competes with the closing tie-back. The mid-section is held
+   firmly so the personal beat + email card sit on a calm surface. */
+.aiop-stripe-bridge__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(20, 16, 12, 0.62) 0%,
+      rgba(18, 14, 10, 0.82) 50%,
+      rgba(12, 9, 6, 0.95) 88%,
+      rgba(10, 8, 6, 0.98) 100%
+    );
+  pointer-events: none;
+}
+
+/* Persistent mute toggle pill. Anchored to the section's top-right
+   so it stays in place regardless of inner content height. Quiet by
+   default, with a gentle pulsing dot when muted to nudge the
+   visitor that audio is available. */
+.aiop-stripe-bridge__audio-toggle {
+  position: absolute;
+  top: clamp(16px, 2.4vw, 28px);
+  right: clamp(16px, 2.4vw, 28px);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px 9px 12px;
+  background: rgba(243, 236, 224, 0.12);
+  border: 1px solid rgba(243, 236, 224, 0.22);
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-paper);
+  cursor: pointer;
+  transition:
+    background 200ms ease,
+    border-color 200ms ease,
+    transform 200ms ease;
+}
+
+.aiop-stripe-bridge__audio-toggle:hover,
+.aiop-stripe-bridge__audio-toggle:focus-visible {
+  background: rgba(243, 236, 224, 0.18);
+  border-color: rgba(243, 236, 224, 0.36);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.aiop-stripe-bridge__audio-toggle:focus-visible {
+  box-shadow: 0 0 0 2px rgba(243, 236, 224, 0.32);
+}
+
+.aiop-stripe-bridge__audio-icon {
+  width: 10px;
+  height: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--aiop-amber);
+}
+
+/* Pulsing diamond when muted — quiet visual cue that audio is on
+   offer. Skipped under reduced motion. */
+.aiop-stripe-bridge__audio-toggle--muted .aiop-stripe-bridge__audio-icon {
+  animation: aiop-stripe-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes aiop-stripe-pulse {
+  0%, 100% { opacity: 0.7; }
+  50%      { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiop-stripe-bridge__audio-toggle--muted .aiop-stripe-bridge__audio-icon {
+    animation: none;
+  }
+}
+
+/* Inner editorial column. Sits above bleed + veil. Generous vertical
+   gap separates the three beats (quote, personal beat, closing) so
+   the section reads as three deliberate frames rather than a wall
+   of text. */
+.aiop-stripe-bridge__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(40px, 5.5vw, 72px);
+  width: 100%;
+}
+
+
+/* ─── Pull-quote + attribution + soft note ───────────────────────── */
+
+.aiop-stripe-bridge__quote {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(28px, 3.5vw, 44px);
+  max-width: min(100%, 1080px);
+}
+
+.aiop-stripe-bridge__pull {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-weight: 480;
+  font-size: clamp(22px, 2.4vw, 34px);
+  line-height: 1.32;
+  letter-spacing: -0.018em;
+  color: var(--aiop-paper);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.aiop-stripe-bridge__pull-mark {
+  font-family: var(--aiop-display);
+  font-size: clamp(40px, 4vw, 58px);
+  line-height: 0;
+  vertical-align: -0.42em;
+  color: color-mix(in oklab, var(--aiop-amber) 70%, var(--aiop-paper));
+  margin-right: 4px;
+  font-style: normal;
+  opacity: 0.7;
+}
+
+.aiop-stripe-bridge__plain {
+  display: inline;
+}
+
+.aiop-stripe-bridge__attrib-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 1vw, 16px);
+}
+
+.aiop-stripe-bridge__attrib {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(243, 236, 224, 0.72);
+}
+
+.aiop-stripe-bridge__attrib-rule {
+  width: 28px;
+  height: 1px;
+  background: rgba(243, 236, 224, 0.5);
+  flex-shrink: 0;
+}
+
+.aiop-stripe-bridge__attrib-name {
+  color: var(--aiop-paper);
+  font-weight: 600;
+}
+
+.aiop-stripe-bridge__attrib-meta {
+  color: rgba(243, 236, 224, 0.6);
+}
+
+/* Soft parenthetical note under the attribution. Drifts subtly on
+   `--aiop-stripe-progress` so it eases in as the section enters and
+   reads as a quiet aside that turns the quote toward the personal
+   beat below. */
+.aiop-stripe-bridge__note {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-weight: 440;
+  font-size: clamp(15px, 1.4vw, 19px);
+  line-height: 1.4;
+  letter-spacing: -0.008em;
+  color: rgba(243, 236, 224, 0.78);
+  text-align: center;
+  max-width: 50ch;
+}
+
+.aiop-stripe-bridge.is-animated .aiop-stripe-bridge__note {
+  opacity: clamp(
+    0,
+    calc((var(--aiop-stripe-progress, 0) - 0.18) * 5),
+    1
+  );
+  transition: opacity 240ms ease-out;
+}
+
+.aiop-stripe-bridge__note-bracket {
+  display: inline-block;
+  color: rgba(243, 236, 224, 0.45);
+  font-style: normal;
+  margin: 0 1px;
+}
+
+
+/* ─── Personal beat (lines + email card) ─────────────────────────── */
+
+/* Two-column layout on desktop: three short editorial lines on the
+   left, the stylised email card on the right. Stack on narrow
+   widths. Width is held a little tighter than the quote so the beat
+   reads as a centered conversational block, not a full-bleed body. */
+.aiop-stripe-bridge__beat {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(32px, 4vw, 56px);
+  align-items: center;
+  width: 100%;
+  max-width: min(100%, 1040px);
+  text-align: left;
+}
+
+.aiop-stripe-bridge__lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 1.6vw, 22px);
+}
+
+.aiop-stripe-bridge__line {
+  display: grid;
+  grid-template-columns: 12px 1fr;
+  gap: 14px;
+  align-items: baseline;
+}
+
+/* Small leading dot — quiet rhythm marker, picks up the amber lane
+   so the personal beat carries a faint accent that contrasts the
+   sage / violet rest of the page. */
+.aiop-stripe-bridge__line-mark {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--aiop-amber) 70%, var(--aiop-paper));
+  margin-top: 0.65em;
+  justify-self: center;
+  opacity: 0.75;
+}
+
+.aiop-stripe-bridge__line-text {
+  font-family: var(--aiop-body);
+  font-size: clamp(15px, 1.25vw, 18px);
+  line-height: 1.55;
+  color: rgba(243, 236, 224, 0.92);
+  letter-spacing: -0.005em;
+}
+
+/* Email card — bordered frame in the same grammar as the Evans
+   bridge marks but oriented as a small inline aside. Cream-on-dark
+   inversion so the card reads as a paper note pinned to the dark
+   editorial surface. */
+.aiop-stripe-bridge__email {
+  position: relative;
+  padding: clamp(18px, 1.8vw, 26px) clamp(20px, 2vw, 28px);
+  background: rgba(243, 236, 224, 0.06);
+  border: 1px solid rgba(243, 236, 224, 0.18);
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.1vw, 14px);
+}
+
+.aiop-stripe-bridge__email-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.aiop-stripe-bridge__email-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--aiop-sage);
+  flex-shrink: 0;
+}
+
+.aiop-stripe-bridge__email-eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(243, 236, 224, 0.7);
+}
+
+.aiop-stripe-bridge__email-body {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-weight: 460;
+  font-size: clamp(16px, 1.45vw, 21px);
+  line-height: 1.42;
+  color: var(--aiop-paper);
+  letter-spacing: -0.012em;
+}
+
+.aiop-stripe-bridge__email-quote {
+  display: inline-block;
+  color: color-mix(in oklab, var(--aiop-amber) 60%, var(--aiop-paper));
+  opacity: 0.8;
+  margin: 0 2px;
+  font-style: normal;
+}
+
+.aiop-stripe-bridge__email-foot {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(243, 236, 224, 0.45);
+}
+
+
+/* ─── Closing tie-back ───────────────────────────────────────────── */
+
+/* Two-line display block, italic emphasis on the second clause.
+   Echoes the hero's `ledeStrong` so the page reads as a closed
+   loop. Drifts in slightly later than the personal beat via
+   `--aiop-stripe-progress` so the closing line lands as the last
+   beat the visitor reads on the way to the CTA. */
+.aiop-stripe-bridge__closing {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(8px, 1vw, 14px);
+  max-width: min(100%, 880px);
+  text-align: center;
+  font-family: var(--aiop-display);
+  font-weight: 480;
+  font-size: clamp(20px, 2.2vw, 30px);
+  line-height: 1.32;
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+  /* Soft dark halo behind the type so the closing line stays
+     readable even when the video frame underneath happens to carry
+     a chyron, banner, or otherwise busy content. The shadow is wide
+     and low-opacity so it reads as atmospheric rim glow, not a
+     stamped letterpress effect. */
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    0 0 18px rgba(10, 8, 6, 0.85);
+}
+
+.aiop-stripe-bridge__closing-lead {
+  color: rgba(243, 236, 224, 0.78);
+  font-style: normal;
+}
+
+.aiop-stripe-bridge__closing-em {
+  color: var(--aiop-paper);
+  font-style: italic;
+  font-weight: 500;
+}
+
+.aiop-stripe-bridge.is-animated .aiop-stripe-bridge__closing {
+  opacity: clamp(
+    0,
+    calc((var(--aiop-stripe-progress, 0) - 0.32) * 4),
+    1
+  );
+  transform: translateY(
+    calc(12px * (1 - clamp(0, calc((var(--aiop-stripe-progress, 0) - 0.32) * 4), 1)))
+  );
+  transition:
+    opacity 240ms ease-out,
+    transform 240ms ease-out;
+}
+
+
+/* ─── Responsive ─────────────────────────────────────────────────── */
+
+@media (max-width: 960px) {
+  /* Below the desktop choreography breakpoint the audio-toggle pill
+     never renders (the component drops it from the DOM under
+     `is-animated === false`), so nothing to override there. The
+     editorial layout collapses: the personal beat stacks on top of
+     the email card, the email card slides full-width below it. */
+  .aiop-stripe-bridge__beat {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+}
+
+@media (max-width: 720px) {
+  .aiop-stripe-bridge {
+    /* Drop the full-viewport min-height on short-form portrait
+       screens so the section doesn't stretch into an awkward empty
+       slab when the inner content is shorter than 100svh. */
+    min-height: 0;
+    padding-block: clamp(56px, 14vw, 96px);
+  }
+
+  .aiop-stripe-bridge__inner {
+    gap: clamp(28px, 6vw, 48px);
+  }
+
+  .aiop-stripe-bridge__pull {
+    font-size: clamp(20px, 5.4vw, 28px);
+  }
+
+  .aiop-stripe-bridge__beat {
+    gap: 24px;
+  }
+
+  .aiop-stripe-bridge__email {
+    padding: 18px 20px;
+  }
+
+  .aiop-stripe-bridge__closing {
+    font-size: clamp(18px, 4.8vw, 24px);
+  }
+}
+
+/* Reduced-motion fallback. The component already turns the
+   IntersectionObserver-driven autoplay/audio activation off under
+   reduced motion, but the progress-driven note + closing fades
+   should also resolve to fully visible so the visitor sees the
+   complete content immediately. */
+@media (prefers-reduced-motion: reduce) {
+  .aiop-stripe-bridge.is-animated .aiop-stripe-bridge__note,
+  .aiop-stripe-bridge.is-animated .aiop-stripe-bridge__closing {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
  * 15 · v2 — Approach (Navigate, Encode, Build) sections
  *
  * Three alternating rows. Each row pairs a copy column with an

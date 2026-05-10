@@ -21,6 +21,7 @@ import { LoopStripeMorph } from "./loop-stripe-morph";
 import { QuoteBridge } from "./quote-bridge";
 import { ScrollReveal } from "./reveal";
 import { SoftwareForFew } from "./software-for-few";
+import { StripeBridge } from "./stripe-bridge";
 
 /*
  * AI Operator — public landing page.
@@ -73,8 +74,16 @@ import { SoftwareForFew } from "./software-for-few";
  *   12 Surface pick     — "Pick the surface that fits the workflow."
  *                         Three surface families framing cohort
  *                         scaling instead of developer onboarding.
- *   13 CTA              — One ask. Smallest commitment.
- *   14 Footer
+ *   13 Stripe bridge    — Closing interstitial. Stripe co-founder
+ *                         pull-quote on a softly playing background
+ *                         video, three personal lines about Ledger,
+ *                         a paraphrased engineer-reply card, and a
+ *                         tie-back to the hero's "economic layer for
+ *                         the age of co-intelligence" thesis. The
+ *                         resting beat between the architecture deep
+ *                         dive and the ask. (client)
+ *   14 CTA              — One ask. Smallest commitment.
+ *   15 Footer
  */
 
 function Arrow() {
@@ -677,6 +686,19 @@ export default function AiOperatorPage() {
           </div>
         </div>
       </section>
+
+      {/* ─── Stripe bridge — closing interstitial before the CTA ─────
+       *
+       * The "resting beat" between the architecture deep dive and the
+       * ask. A Stripe co-founder pull-quote on a softly playing
+       * background video, three personal lines about Ledger, a
+       * paraphrased engineer-reply card, and a closing tie-back whose
+       * italic clause echoes the hero's `ledeStrong`. The high-agency
+       * theme is demonstrated through the work, never asserted in
+       * the copy. Audio choreography (mute on first frame, unmute
+       * on viewport entry, pause + mute on exit) lives in the
+       * component. */}
+      <StripeBridge />
 
       {/* ─── CTA ────────────────────────────────────────────────────── */}
       <section
