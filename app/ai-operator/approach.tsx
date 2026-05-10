@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {
+  approachOutcome,
   approachSection,
   approachSteps,
   type ApproachStep,
@@ -84,6 +85,59 @@ export function Approach() {
             </li>
           ))}
         </ol>
+
+        {/* Outcome card — names self-sufficiency as the visible result
+            of the three phases turning together. The five-stage ladder
+            mirrors the Stripe FDA job posting language verbatim and
+            rhymes with the Stripe teaser's `Self-sufficiency loop`
+            capability further down the page. Visual posture mirrors
+            `.aiop-diagnosis__gap` (centered card with diamond markers)
+            so the section opens (diagnosis gap) and closes (approach
+            outcome) on the same typographic gesture. */}
+        <aside
+          className="aiop-approach__outcome aiop-reveal"
+          aria-labelledby="aiop-approach-outcome-headline"
+        >
+          <p className="aiop-approach__outcome-eyebrow">
+            {approachOutcome.eyebrow}
+          </p>
+          <h3
+            className="aiop-approach__outcome-headline"
+            id="aiop-approach-outcome-headline"
+          >
+            {approachOutcome.headline}
+          </h3>
+          <p className="aiop-approach__outcome-body">
+            {approachOutcome.body}
+          </p>
+          <ol className="aiop-approach__outcome-ladder" role="list">
+            {approachOutcome.ladder.map((stage, idx) => (
+              <li
+                key={stage.n}
+                className="aiop-approach__outcome-stage"
+                data-aiop-stage={stage.n}
+              >
+                <span className="aiop-approach__outcome-stage-n">
+                  {stage.n}
+                </span>
+                <span className="aiop-approach__outcome-stage-label">
+                  {stage.label}
+                </span>
+                <span className="aiop-approach__outcome-stage-body">
+                  {stage.body}
+                </span>
+                {idx < approachOutcome.ladder.length - 1 ? (
+                  <span
+                    className="aiop-approach__outcome-stage-arrow"
+                    aria-hidden="true"
+                  >
+                    →
+                  </span>
+                ) : null}
+              </li>
+            ))}
+          </ol>
+        </aside>
 
         <p className="aiop-approach__close aiop-reveal">
           {approachSection.close}
@@ -219,6 +273,22 @@ function SubstrateCard({
           ))}
         </ul>
       </div>
+      {visual.freedomBands ? (
+        <div className="aiop-substrate__freedom">
+          <p className="aiop-substrate__freedom-h">{visual.freedomBands.label}</p>
+          <ul className="aiop-substrate__freedom-list" role="list">
+            {visual.freedomBands.bands.map((band) => (
+              <li
+                key={band.id}
+                className={`aiop-substrate__band aiop-substrate__band--${band.id}`}
+              >
+                <span className="aiop-substrate__band-tag">{band.tag}</span>
+                <span className="aiop-substrate__band-example">{band.example}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
       <p className="aiop-substrate__foot">{visual.foot}</p>
       <VisualAction onClick={onPractice} />
     </article>

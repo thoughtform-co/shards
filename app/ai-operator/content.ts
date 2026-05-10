@@ -478,7 +478,7 @@ export const approachSection = {
   caption:
     "I've led the AI adoption at Loop Earplugs since 2024, first across the whole company, then embedded inside marketing, helping teams turn the way they actually work into reusable skills they can build their own automations on.",
   close:
-    "The hardest AI critics ended up product managing the tools I vibe-coded for them, and that's the spirit I want to bring to Stripe.",
+    "The hardest AI critics ended up product managing the tools I vibe-coded for them. That's the spirit — and the self-sufficiency — I want to bring to Stripe.",
 } as const;
 
 export type ApproachTone = "violet" | "gold" | "sage";
@@ -502,6 +502,25 @@ export type SubstrateVisual = {
     tone: "violet" | "gold" | "sage" | "slate" | "ink";
     label: string;
   }[];
+  /* Optional Three Degrees of Freedom mini-strip rendered below the
+     `What gets encoded` chips and above the foot. Names the canonical
+     Skill anatomy: which parts of the contract are LOCKED (banned
+     terms, legal claims), which are GUIDED (audience register, market
+     norms), which are OPEN (headlines, rhythm, framing). The framework
+     is Anthropic's own best practice for Skill design ("Set
+     appropriate degrees of freedom"), is the same trio shown on
+     harvestfields slide 5, and rhymes with the LOCK/GUIDE/EXPLORE
+     bands `thoughtform-strategy` documents. Surfacing it here makes
+     the Encode visual scannable without forcing the visitor into the
+     modal. */
+  freedomBands?: {
+    label: string;
+    bands: {
+      id: "locked" | "guided" | "open";
+      tag: string;
+      example: string;
+    }[];
+  };
   foot: string;
 };
 
@@ -600,8 +619,15 @@ export const approachSteps: ApproachStep[] = [
     label: "Encode",
     tone: "gold",
     headline: "Turn how the team works into a portable layer any agent can use.",
+    /* Body shape: insight → definition → proof → implication. The
+       lead two sentences ("AI is intelligence. It just needs context.")
+       carry the WHY skills work; everything after is the WHAT and the
+       Loop proof. Length is held to roughly the previous body so the
+       row keeps its rhythm. The temp-agency analogy from the Anthropic
+       podcast is intentionally NOT in the body — the lead two
+       sentences cover the same idea more efficiently. */
     body:
-      "The model doesn't know your brand, your standards, or your review process. You have to teach it — this is the adoption layer the diagnosis named, written down. At Loop, I encoded 10+ workflows into a portable machine substrate: brand voice, claim gates, creative prompting, marketplace copy. A teammate can read it and an agent can run on it. Models change, but the encoded layer carries forward.",
+      "AI is intelligence. It just needs context. Encoding is how you teach it the nuances of your brand, your standards, your review process, written down so any agent can inherit it. That's what I've done at Loop: dozens of workflows captured as substrate — brand voice, claim gates, marketplace copy. A teammate can read it. An agent can run on it. Models change. The encoded layer carries forward.",
     signal: { k: "Outcome", v: "A Skill the team owns. Versioned. Headless." },
     visual: {
       kind: "substrate",
@@ -620,6 +646,20 @@ export const approachSteps: ApproachStep[] = [
         { initial: "R", tone: "gold", label: "Regs & policy" },
         { initial: "F", tone: "slate", label: "Review feedback" },
       ],
+      /* Three Degrees of Freedom — the canonical Skill anatomy. Same
+         framework that runs harvestfields slide 5 and that Anthropic
+         documents in their Skill best-practices guide. Three short
+         examples per band, deliberately concrete (banned terms /
+         audience register / headlines) so the chip strip reads as
+         operating instructions rather than abstract theory. */
+      freedomBands: {
+        label: "Three degrees of freedom",
+        bands: [
+          { id: "locked", tag: "Locked", example: "Banned terms, legal claims, product facts." },
+          { id: "guided", tag: "Guided", example: "Audience register, market norms." },
+          { id: "open", tag: "Open", example: "Headlines, rhythm, campaign framing." },
+        ],
+      },
       foot: "Connects to your data without replacing it.",
     },
     modal: {
@@ -641,6 +681,7 @@ export const approachSteps: ApproachStep[] = [
             "What good looks like — approved work, rejected drafts, the difference between them.",
             "Where the data lives — briefs, boards, registries, linked not copied.",
             "Who confirms — review gates, escalation paths, what gets logged.",
+            "Three degrees of freedom — what to lock, what to guide, what to leave open. Anthropic's own best practice for Skill design.",
           ],
         },
         {
@@ -661,8 +702,14 @@ export const approachSteps: ApproachStep[] = [
     label: "Build",
     tone: "sage",
     headline: "Hand the team a running system they actually own.",
+    /* Body shape: personal arc → method → handoff. The opener names
+       the inheritance from creative-AI-user to tool-builder so Build
+       reads as the natural next step from Navigate + Encode, not as a
+       jump to engineering. The handoff line ("Nobody understands
+       their domain better than they do.") seeds the self-sufficiency
+       outcome that the new card below the three phases lands. */
     body:
-      "Once the bottleneck is named and the process encoded, building is the fast part. I capture user frustrations in a Teams call, turn the transcript into a user story in Cursor, and either build the interface around it or expose the logic headlessly via MCP/API. Then I hand it to the person I built it for. Nobody understands their domain better than they do.",
+      "I came into Loop using AI for my own creative work. When I saw teammates hit the same bottlenecks I had, I started using the same design instincts to build the tool around them. Once the bottleneck is named and the process encoded, building is the fast part. I capture user frustrations in a Teams call, turn the transcript into a user story in Cursor, and either build the interface around it or expose the logic headlessly via MCP/API. Then I hand it to the person I built it for. Nobody understands their domain better than they do.",
     signal: { k: "Outcome", v: "A thin running surface the team uses daily." },
     visual: {
       kind: "engine",
@@ -707,10 +754,52 @@ export const approachSteps: ApproachStep[] = [
           ],
         },
       ],
-      signal: "The engine underneath is the asset every interface inherits.",
+      signal: "Building is the unlock. The flywheel that follows is what keeps the team running without me.",
     },
   },
 ];
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Approach outcome — the flywheel turns
+ *
+ * Sits between the three-phase list and the existing approach close
+ * line. Names self-sufficiency as the visible result of Navigate +
+ * Encode + Build running together. The five-stage maturity ladder
+ * mirrors the Stripe FDA job posting language verbatim ("from
+ * awareness, to first win, to regular AI integration, to full
+ * workflow transformation, to self-sufficiency") and rhymes with the
+ * Stripe teaser's `Self-sufficiency loop` capability so the cohort
+ * journey reads consistently across the route.
+ *
+ * Visual posture: a single calm card mirroring `.aiop-diagnosis__gap`
+ * — centered, with diamond markers — so the section opens (diagnosis
+ * gap) and closes (approach outcome) on the same typographic gesture.
+ * ─────────────────────────────────────────────────────────────────── */
+
+export type ApproachOutcomeStage = {
+  n: string;
+  label: string;
+  body: string;
+};
+
+export const approachOutcome: {
+  eyebrow: string;
+  headline: string;
+  body: string;
+  ladder: ApproachOutcomeStage[];
+} = {
+  eyebrow: "Outcome",
+  headline: "The studio runs the program without me.",
+  body:
+    "Navigate gives them the mental model. Encode gives them the substrate. Build gives them the tools. The flywheel turns when the team starts coaching itself — exactly what Stripe wants from the FDA program.",
+  ladder: [
+    { n: "01", label: "Awareness", body: "Knows AI can change this work." },
+    { n: "02", label: "First win", body: "AI ships something into the live work." },
+    { n: "03", label: "Default", body: "Starts every task with an AI tool." },
+    { n: "04", label: "Builder", body: "Builds and iterates on their own tools." },
+    { n: "05", label: "Self-sufficient", body: "Coaches the next cohort without me." },
+  ],
+};
 
 /* ─────────────────────────────────────────────────────────────────────
  * Cases — Heimdall-style showcase grid

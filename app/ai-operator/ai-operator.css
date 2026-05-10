@@ -3648,6 +3648,99 @@
 .aiop-substrate__input--gold   .aiop-substrate__input-dot { background: rgba(98, 67, 185, 0.5); color: var(--aiop-ink); }
 .aiop-substrate__input--slate  .aiop-substrate__input-dot { background: rgba(79, 91, 107, 0.5); }
 
+/* Three Degrees of Freedom mini-strip — sits inside the dark substrate
+   card below the `What gets encoded` chips and above the foot. Three
+   short rows naming the canonical Skill anatomy (locked / guided /
+   open). The framework is Anthropic's own best practice for Skill
+   design and rhymes with harvestfields slide 5; surfacing it here
+   makes the Encode visual scannable without forcing the visitor into
+   the modal.
+
+   Visual posture mirrors `.aiop-substrate__inputs` (dashed top border,
+   muted mono caps label). Each row carries a left-edge accent in the
+   amber → sage → violet progression so the three bands read as a
+   progression of constraint, not three options of equal weight. */
+.aiop-substrate__freedom {
+  display: grid;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px dashed rgba(243, 236, 224, 0.18);
+}
+
+.aiop-substrate__freedom-h {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(243, 236, 224, 0.6);
+  font-weight: 600;
+}
+
+.aiop-substrate__freedom-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.aiop-substrate__band {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  align-items: baseline;
+  gap: 12px;
+  padding: 8px 12px 8px 11px;
+  border: 1px solid rgba(243, 236, 224, 0.10);
+  border-left-width: 2px;
+  border-radius: 3px;
+  background: rgba(243, 236, 224, 0.03);
+  font-size: 11.5px;
+  color: rgba(243, 236, 224, 0.85);
+}
+
+.aiop-substrate__band-tag {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.aiop-substrate__band-example {
+  font-family: var(--aiop-body);
+  color: rgba(243, 236, 224, 0.78);
+  line-height: 1.4;
+}
+
+.aiop-substrate__band--locked {
+  border-left-color: var(--aiop-amber);
+}
+.aiop-substrate__band--locked .aiop-substrate__band-tag {
+  color: var(--aiop-amber);
+}
+
+.aiop-substrate__band--guided {
+  border-left-color: rgba(125, 165, 118, 0.85);
+}
+.aiop-substrate__band--guided .aiop-substrate__band-tag {
+  color: rgba(167, 198, 156, 0.95);
+}
+
+.aiop-substrate__band--open {
+  border-left-color: rgba(150, 130, 220, 0.85);
+}
+.aiop-substrate__band--open .aiop-substrate__band-tag {
+  color: rgba(190, 173, 240, 0.95);
+}
+
+@media (max-width: 480px) {
+  .aiop-substrate__band {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
 .aiop-substrate__foot {
   margin: 0;
   font-family: var(--aiop-mono);
@@ -5103,6 +5196,198 @@
 .aiop-approach__close::before,
 .aiop-approach__close::after {
   content: none;
+}
+
+
+/* ─── Approach outcome card ──────────────────────────────────────────
+ *
+ * Sits between the three-phase list and the existing approach close
+ * line. Names self-sufficiency as the visible outcome of Navigate +
+ * Encode + Build running together, with a five-stage maturity ladder
+ * mirroring the Stripe FDA job posting language ("from awareness, to
+ * first win, to regular AI integration, to full workflow
+ * transformation, to self-sufficiency").
+ *
+ * Visual posture mirrors `.aiop-diagnosis__gap` (centered card with
+ * diamond markers) so the section opens (diagnosis gap → violet) and
+ * closes (approach outcome → sage) on the same typographic gesture
+ * but in different lane colours: diagnosis names the problem in
+ * Navigate's lane, outcome names the result in Build's lane.
+ *
+ * The five-stage ladder uses a flex strip that flows left-to-right at
+ * desktop widths and stacks at narrow widths. Arrows between stages
+ * are decorative and hidden on stack-mode so they never point to a
+ * stage on the next row. Stage numbers (01..05) carry the progression
+ * cue when arrows aren't visible.
+ * ─────────────────────────────────────────────────────────────────── */
+
+.aiop-approach__outcome {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  max-width: 880px;
+  margin: clamp(48px, 6vw, 80px) auto 0;
+  padding: clamp(28px, 3.5vw, 40px) clamp(28px, 4vw, 48px);
+  background: var(--aiop-card-soft);
+  border: 1px solid color-mix(
+    in oklab,
+    var(--aiop-sage) 28%,
+    var(--aiop-rule-strong)
+  );
+  box-shadow: 0 12px 32px -16px color-mix(
+    in oklab,
+    var(--aiop-sage) 40%,
+    transparent
+  );
+}
+
+.aiop-approach__outcome::before,
+.aiop-approach__outcome::after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: var(--aiop-card-soft);
+  border: 1px solid color-mix(
+    in oklab,
+    var(--aiop-sage) 28%,
+    var(--aiop-rule-strong)
+  );
+  transform: rotate(45deg);
+}
+
+.aiop-approach__outcome::before {
+  top: -8px;
+  left: 50%;
+  margin-left: -7px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.aiop-approach__outcome::after {
+  bottom: -8px;
+  left: 50%;
+  margin-left: -7px;
+  border-left: 0;
+  border-top: 0;
+}
+
+.aiop-approach__outcome-eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-sage);
+  font-weight: 600;
+  margin: 0;
+}
+
+.aiop-approach__outcome-headline {
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: clamp(24px, 2.4vw, 32px);
+  font-weight: 500;
+  letter-spacing: -0.018em;
+  line-height: 1.2;
+  color: var(--aiop-ink);
+  margin: 4px 0 0;
+}
+
+.aiop-approach__outcome-body {
+  font-family: var(--aiop-body);
+  font-size: clamp(15px, 1.4vw, 17px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  max-width: 62ch;
+  margin: 6px auto 0;
+}
+
+.aiop-approach__outcome-ladder {
+  list-style: none;
+  margin: clamp(20px, 2.4vw, 28px) 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 8px;
+  width: 100%;
+}
+
+.aiop-approach__outcome-stage {
+  position: relative;
+  flex: 1 1 130px;
+  min-width: 120px;
+  max-width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 4px;
+  padding: 12px 14px 12px 14px;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-soft);
+  border-radius: 8px;
+}
+
+.aiop-approach__outcome-stage-n {
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  color: var(--aiop-sage);
+  font-weight: 600;
+}
+
+.aiop-approach__outcome-stage-label {
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--aiop-ink);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.aiop-approach__outcome-stage-body {
+  font-family: var(--aiop-body);
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--aiop-ink-soft);
+  margin-top: 2px;
+}
+
+.aiop-approach__outcome-stage-arrow {
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--aiop-sage);
+  font-size: 13px;
+  font-family: var(--aiop-mono);
+  background: var(--aiop-card-soft);
+  padding: 0 3px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  .aiop-approach__outcome-ladder {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .aiop-approach__outcome-stage {
+    max-width: none;
+    flex: 1 1 auto;
+  }
+
+  .aiop-approach__outcome-stage-arrow {
+    display: none;
+  }
 }
 
 
