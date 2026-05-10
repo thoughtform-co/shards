@@ -76,7 +76,7 @@ export const hero = {
     "As an embedded Creative Technologist at Loop Earplugs, I helped marketing teams navigate AI inside their work, encode what makes it good, and build the capability on top of it.",
   ] as const,
   ledeStrong:
-    "Now, I want to help Stripe build the economic layer for the age of co-intelligence.",
+    "Now I want to bring the same work to Stripe — embedded with marketing, treating AI as a capability the team owns rather than another tool they buy.",
   meta: [
     {
       k: "EMAIL",
@@ -1448,13 +1448,15 @@ export const headlessShiftSection = {
      beat instead of leaving the visitor with the Loop status. The
      first two paragraphs already establish the industry trend
      (Salesforce/Stripe) and the candidate's own work (Loop); this
-     one names the version of the work I'd build inside the
-     Forward Deployed program. Keeps the headless arc grounded in
-     specifics — Link CLI on the developer side, voice/claims/
-     review loops on the marketing side — so the parallel reads as
-     a working extension rather than an abstract analogy. */
+     one names the equivalent move on the marketing side. Avoids
+     "this posture" / corporate-architecture vocabulary and skips
+     name-checking the Forward Deployed program — both read as
+     pattern-matching to Stripe's deck rather than as Vince's own
+     voice. Stays specific: Link is a real CLI, the docs are a real
+     API, voice/claims/review-loops are the actual marketing
+     equivalents I'm building at Loop. */
   bodyStripe:
-    "Stripe already lives this posture for developers — Link CLI, product surfaces, docs API. Extending it to marketing's substrate — voice, claims, review loops — is what I'd build inside the Forward Deployed program.",
+    "Stripe's developer side already works this way — Link runs as a CLI, the docs surface as an API. What I'm doing at Loop is the same move on the marketing side: voice, claims, and review loops as one engine that shows up wherever the team already works.",
   actions: [
     { id: "headless", label: "See the overview", href: "#headless" },
   ],
@@ -1549,15 +1551,15 @@ export const substrateMapSection = {
   title: "Three layers,",
   titleEm: "one operating model.",
   /* Lede pivots on the Stripe-applied parallel: Link/CLI is the
-     headless posture at the protocol layer; the substrate is the
-     same posture at the judgment layer. Replaces the earlier
-     "doesn't add a new database" framing with a working
-     comparison the visitor can verify against an actual Stripe
-     surface. The original definitional clauses (what matters / how
-     to decide / what to check) are preserved so the substrate-map
-     card chrome below it still resolves cleanly against the lede. */
+     same architecture at the protocol layer; the substrate is the
+     same architecture one layer up. Drops "posture" since it reads
+     as borrowed corporate-architecture vocabulary; uses plain
+     words ("works this way", "same idea") instead. The original
+     definitional clauses (what matters / how to decide / what to
+     check) are preserved so the substrate-map card chrome below it
+     still resolves cleanly against the lede. */
   body:
-    "Stripe already runs this posture at the protocol layer — Link, the CLI, the developer-first surfaces. The substrate is the same posture one layer up: what matters, how to decide, what to check before something ships, encoded once and inherited by every surface.",
+    "Stripe's protocol layer already works this way — Link, the CLI, the developer surfaces all call the same engine. The substrate is the same idea one layer up: what matters, how to decide, what to check before something ships, encoded once and inherited by every surface.",
   cardLabel: "Substrate map",
   flow: "Source → Authority → Surface",
   columns: {
@@ -1655,15 +1657,17 @@ export type SurfacePickRoleSurface = {
 export const surfacePickSection = {
   title: "Pick the surface",
   titleEm: "that fits the workflow.",
-  /* Lede threads two callbacks: it picks up the headless posture
-     from the section above, and previews both halves of the card
-     below it — the role-clustered "Where it lands" panel on the
-     right (developers/Cursor, comms/Claude, PMs/Slack, marketers/
-     UIs, ops/agents) and the three-protocol column on the left
-     (MCP, API, CLI). Reads as: same posture, scaled by role,
-     callable three ways. */
+  /* Lede threads two callbacks: it picks up the engine + surfaces
+     architecture from the section above, and previews both halves
+     of the card below it — the role-clustered "Where it lands"
+     panel on the right (developers/Cursor, comms/Claude, PMs/
+     Slack, marketers/UIs, ops/agents) and the three-protocol
+     column on the left (MCP, API, CLI). Reads as: same engine,
+     scaled by role, callable three ways. Drops "posture" and
+     "cohort" — both read as consultancy vocabulary; "team" is
+     the word Vince actually uses. */
   body:
-    "Same headless posture, scaled across the cohort. Each role reaches the substrate on the surface that fits — developers in Cursor, comms in Claude, PMs in Slack, marketers in their own UIs, ops in agents. Three ways in: MCP, API, CLI.",
+    "Same engine, scaled across the team. Each role reaches it on the surface that fits — developers in Cursor, comms in Claude, PMs in Slack, marketers in their own UIs, ops in agents. Three ways in: MCP, API, CLI.",
   cardLabel: "Three ways in",
   flow: "Source → Surface",
   interfaces: [
@@ -1767,7 +1771,7 @@ export const selectedCaseSection = {
       n: "03",
       title: "Architecture",
       body:
-        "One engine. Two postures. Every run becomes an eval case. Headless from day one — Web, Copilot Studio, Power Automate, MCP, all calling the same protocol.",
+        "One engine, two modes — Localise and Review. Every run becomes an eval case. Headless from day one: Web, Copilot Studio, Power Automate, MCP, all calling the same protocol.",
     },
   ],
   cta: {
