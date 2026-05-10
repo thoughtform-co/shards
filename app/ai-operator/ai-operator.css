@@ -3770,24 +3770,28 @@
 
 /* Section title above the video frame. Names the cold-open thesis
    explicitly so the visitor reads the Collison clip as a job pitch
-   from frame one. Paper-on-warm-black, display font, balanced. The
-   italic register is reserved for the byline callout below the
-   frame, so this title is upright. */
+   from frame one. Mirrors the typography of `.aiop-section-title`
+   used by the Diagnosis head (tight sans, 620 weight, negative
+   tracking) so this section reads as a peer of the rest of the page
+   rather than a one-off. Paper color is preserved for legibility on
+   the warm-black register; alignment is left so the title sits on
+   the same grid edge as the video frame below. */
 .aiop-stripe-video__head {
   width: 100%;
   max-width: min(92vw, 1100px);
   margin: 0 auto clamp(28px, 3vw, 44px);
-  text-align: center;
+  text-align: left;
 }
 
 .aiop-stripe-video__title {
   margin: 0;
-  font-family: var(--aiop-display);
-  font-weight: 480;
-  font-size: clamp(28px, 3.6vw, 48px);
-  line-height: 1.12;
-  letter-spacing: -0.02em;
-  color: rgba(243, 236, 224, 0.92);
+  font-family: var(--aiop-body);
+  font-weight: 620;
+  font-size: clamp(30px, 3.6vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+  color: rgba(243, 236, 224, 0.94);
+  max-width: 26ch;
   text-wrap: balance;
 }
 
@@ -3993,7 +3997,8 @@
   }
 
   .aiop-stripe-video__title {
-    font-size: clamp(22px, 6vw, 30px);
+    font-size: clamp(24px, 6.4vw, 32px);
+    max-width: none;
   }
 
   .aiop-stripe-video__frame {
