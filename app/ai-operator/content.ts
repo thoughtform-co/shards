@@ -72,7 +72,7 @@ export const hero = {
     { em: "built inside the work." },
   ] as const,
   lede: [
-    "What John just described is what I've been doing for the past 18 months.",
+    "The relationship between human intelligence and AI is the work of our generation.",
     "As an embedded Creative Technologist at Loop Earplugs, I helped marketing teams navigate AI inside their work, encode what makes it good, and build the capability on top of it.",
   ] as const,
   ledeStrong:
@@ -1775,13 +1775,12 @@ export const stripeVideoSection = {
   },
   /* Mono-caps attribution row directly below the video frame. */
   attribName: "John Collison",
-  attribMeta: "TBPN Live · May 2026",
-  /* Italic byline below the attribution. Reflects the parallel
-     between Collison's three threads (high-agency, double majors,
-     marketing funnel) and the candidate's last 18 months without
-     pointing at it explicitly. The video opens the page, so the
-     work the byline points at sits below it. */
-  byline: "What he describes is the work below.",
+  attribMeta: "TBPN Live · April 2026",
+  /* Italic byline below the attribution. The video opens the page,
+     so the byline names the connection directly: what Collison just
+     described is the past 18 months at Loop. The hero immediately
+     below picks up that thread without having to repeat it. */
+  byline: "What John just described is what I've been doing for the past 18 months.",
 } as const;
 
 /* ─── Section C · Stripe ledger ──────────────────────────────────── */
