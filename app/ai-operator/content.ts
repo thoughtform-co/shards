@@ -1441,9 +1441,9 @@ export const headlessShiftSection = {
   title: "Software is going",
   titleEm: "headless.",
   body:
-    "Salesforce shipped Headless 360. Stripe shipped a CLI. Both bet on the same idea — the engine matters more than the surface.",
+    "Salesforce went Headless 360. Stripe also shipped a CLI. Same approach: the engine matters more than the surface.",
   bodyStrong:
-    "My Loop tools are partway there — some engine-first, others still bound to their UI. Finishing that decoupling is the work I'm doing now.",
+    "I'm doing the same on the marketing side. Not all the way there yet, but the direction is clear.",
   /* Third paragraph — closes the interstitial on a Stripe-applied
      beat instead of leaving the visitor with the Loop status. The
      first two paragraphs already establish the industry trend
@@ -1454,7 +1454,7 @@ export const headlessShiftSection = {
      equivalents) without falling into "this posture" /
      corporate-architecture vocabulary. */
   bodyStripe:
-    "Stripe's developer side already works this way — Link as a CLI, the docs as an API. At Loop I'm doing the same on the marketing side: voice, claims, and review loops as one engine.",
+    "Voice, legal claims, localization nuances should all be part of the same engine; encoded in a substrate any interface can use.",
   actions: [
     { id: "headless", label: "See the overview", href: "#headless" },
   ],
