@@ -1444,6 +1444,17 @@ export const headlessShiftSection = {
     "Salesforce shipped Headless 360, Stripe shipped a CLI for the terminal — both bet on the same idea: the orchestration matters more than the surface that exposes it.",
   bodyStrong:
     "My Loop tools are partway there. Some run engine-first already, others are still bound to their interfaces, and decoupling the rest is the work I'm doing now.",
+  /* Third paragraph — closes the interstitial on a Stripe-applied
+     beat instead of leaving the visitor with the Loop status. The
+     first two paragraphs already establish the industry trend
+     (Salesforce/Stripe) and the candidate's own work (Loop); this
+     one names the version of the work I'd build inside the
+     Forward Deployed program. Keeps the headless arc grounded in
+     specifics — Link CLI on the developer side, voice/claims/
+     review loops on the marketing side — so the parallel reads as
+     a working extension rather than an abstract analogy. */
+  bodyStripe:
+    "Stripe already lives this posture for developers — Link CLI, product surfaces, docs API. Extending it to marketing's substrate — voice, claims, review loops — is what I'd build inside the Forward Deployed program.",
   actions: [
     { id: "headless", label: "See the overview", href: "#headless" },
   ],
@@ -1537,8 +1548,16 @@ export const headlessSection = {
 export const substrateMapSection = {
   title: "Three layers,",
   titleEm: "one operating model.",
+  /* Lede pivots on the Stripe-applied parallel: Link/CLI is the
+     headless posture at the protocol layer; the substrate is the
+     same posture at the judgment layer. Replaces the earlier
+     "doesn't add a new database" framing with a working
+     comparison the visitor can verify against an actual Stripe
+     surface. The original definitional clauses (what matters / how
+     to decide / what to check) are preserved so the substrate-map
+     card chrome below it still resolves cleanly against the lede. */
   body:
-    "The substrate doesn't add a new database. It encodes the reasoning on top of the systems marketers already use — what matters, how to decide, what to check before something ships — so every surface inherits the same judgment, even when the model underneath changes.",
+    "Stripe already runs this posture at the protocol layer — Link, the CLI, the developer-first surfaces. The substrate is the same posture one layer up: what matters, how to decide, what to check before something ships, encoded once and inherited by every surface.",
   cardLabel: "Substrate map",
   flow: "Source → Authority → Surface",
   columns: {
@@ -1636,8 +1655,15 @@ export type SurfacePickRoleSurface = {
 export const surfacePickSection = {
   title: "Pick the surface",
   titleEm: "that fits the workflow.",
+  /* Lede threads two callbacks: it picks up the headless posture
+     from the section above, and previews both halves of the card
+     below it — the role-clustered "Where it lands" panel on the
+     right (developers/Cursor, comms/Claude, PMs/Slack, marketers/
+     UIs, ops/agents) and the three-protocol column on the left
+     (MCP, API, CLI). Reads as: same posture, scaled by role,
+     callable three ways. */
   body:
-    "A tool built for one marketer becomes a way in for another. The substrate underneath stays the same; the way to reach it adapts to where the work already happens — an AI-native protocol for tools like Cursor and Claude, a REST API for systems and automations, a CLI for quick scripts.",
+    "Same headless posture, scaled across the cohort. Each role reaches the substrate on the surface that fits — developers in Cursor, comms in Claude, PMs in Slack, marketers in their own UIs, ops in agents. Three ways in: MCP, API, CLI.",
   cardLabel: "Three ways in",
   flow: "Source → Surface",
   interfaces: [
@@ -1797,21 +1823,17 @@ export const stripeAudioToggle = {
 /* ─── Section A · Stripe reflect ─────────────────────────────────── */
 
 export const stripeReflectSection = {
-  /* Single tranquil self-quote. The video that previously lived
-     directly below this section now opens the page, so the reflect
-     no longer asks "where does this work fit at Stripe?" — that
-     question has already been answered by the time the visitor
-     gets here. Instead it declares that the ambition runs beyond
-     the marketing role and hands straight into the Ledger story
-     below as the case. The mono-caps subline frames the voice. */
+  /* Single tranquil self-quote. The reflect declares the ambition
+     and primes the personal beat below: every AI tool I onboard
+     teams onto runs through Stripe, so does the consultancy, and
+     using it daily from Europe shapes how I think about the
+     product. No external attribution — this is self-reflection;
+     the figcaption row is dropped so the quote stands alone. */
   quote:
-    "My ambition for Stripe runs beyond a marketing role \u2014 and the case below is where that conviction came from.",
-  attribName: "Vincent Buyssens",
-  attribMeta: "Where the conviction comes from",
-  /* Optional parenthetical scroll-note. The new reflect doesn't
-     need a parenthetical aside; the Ledger story below is its own
-     follow-on. Renderer in `stripe-reflect.tsx` gates this on
-     truthiness, so `null` makes the brackets disappear cleanly. */
+    "My ambition for Stripe runs beyond a marketing role. Stripe is woven through how I work and everything I build. Using it daily from Europe shapes how I think about the product.",
+  /* Optional parenthetical scroll-note. Renderer in
+     `stripe-reflect.tsx` gates this on truthiness, so `null` makes
+     the brackets disappear cleanly. */
   note: null as string | null,
 } as const;
 
@@ -1834,81 +1856,365 @@ export const stripeVideoSection = {
   byline: "What John just described is what I've been doing for the past 18 months.",
 } as const;
 
-/* ─── Section C · Stripe ledger ──────────────────────────────────── */
+/* ─── Section C · Stripe ledger ──────────────────────────────────── *
+ *
+ * Rewritten as a context section: left column carries the editorial
+ * eyebrow + title + body that frames why the Ledger build happened;
+ * right column carries an embedded, auto-scrolling X-thread between
+ * Stripe / @voidwalker_com / @irace that lands the receipt. The
+ * earlier schematic, paraphrased email card, and full-width AMBITION
+ * conclusion are gone — the schematic's job is now done by the X
+ * thread, and the AMBITION clause migrated up to the CTA where the
+ * visitor lands.
+ */
 
-export type LedgerSchematicChip = { label: string; tone?: "default" | "accent" };
+export type XThreadVerified = "blue" | "business" | null;
 
-export const stripeLedgerSection = {
-  /* Story column — three short editorial paragraphs. No headline,
-     no eyebrow; the section reads as continued narration after the
-     video lands. */
-  story: [
-    "Earlier this year I noticed something. The biggest bottleneck in my consultancy wasn't the work — it was downloading invoices from a dozen AI portals every month. Cursor, Anthropic, Krea, Vercel, Loops. Every one of them paid through Stripe.",
-    "I wrote up the case for surfacing those invoices inside Stripe Link — GDPR notes, the actual user journey, why a single virtual card doesn't solve it. Then I emailed Irace. And while I waited, I built it anyway.",
-    "Ledger reads invoices, clusters vendors semantically, and runs a Navigator that talks about the numbers like a thoughtful colleague — with context about the business, not generic advice. It's a small product, but everything I've been thinking about for 18 months at Loop runs underneath it.",
-  ] as const,
+export type XThreadStats = {
+  /* Each metric is the pill string as it should render in the action
+     bar (e.g. "16", "31", "1.2K", "71K"). Numbers stay strings to
+     preserve the exact short-form X uses. */
+  replies: string;
+  reposts: string;
+  likes: string;
+  views: string;
+};
 
-  /* Right-column visual — inline Ledger schematic. CSS-rendered
-     preview consistent with how `stripeTeaser.schematic` is built;
-     no real screenshot needed for this cut. The chip list represents
-     the AI-subscription pile that triggered the build; the connector
-     names the Ledger pipeline at a glance; the insight strip gives
-     the visitor a taste of what Navigator AI actually returns. */
-  schematic: {
-    eyebrow: "Ledger · financial command center",
-    sourcesLabel: "AI subscriptions paid through Stripe",
-    sources: [
-      { label: "Cursor" },
-      { label: "Anthropic" },
-      { label: "Krea" },
-      { label: "Vercel" },
-      { label: "Loops" },
-    ] as LedgerSchematicChip[],
-    connector: "read · cluster · interpret",
-    insightLabel: "Navigator · this quarter",
-    insight:
-      "67% of your Q2 spend is AI infrastructure — that's the substrate, not overhead.",
-  },
+export type XThreadMedia = {
+  kind: "video";
+  /* Poster image rendered as the still frame for the embedded video.
+     Drop captures into `public/ai-operator/x-thread/`. */
+  poster: string;
+  /* Pill duration shown at the bottom-left corner of the player,
+     matching X's overlay (e.g. "0:16"). */
+  duration: string;
+  /* Optional click-through. The video card links to the live mockup
+     so visitors can experience what was demoed in the tweet. */
+  href?: string;
+  hrefLabel?: string;
+  /* Width / height ratio for the player, defaulting to 9:16
+     (mobile-vertical) which matches the original mockup recording. */
+  ratio?: "9:16" | "16:9" | "1:1";
+};
 
-  /* Stylised email card — paraphrased reply from the Stripe engineer.
-     Stays small and discreet, sits below the schematic on desktop. */
-  emailCard: {
-    eyebrow: "From a Stripe engineer · May 2026",
-    body: "Tell me a slight bit more about your invoicing needs.",
-    foot: "(reply, lightly paraphrased)",
-  },
+export type XThreadTweet = {
+  id: string;
+  name: string;
+  handle: string;
+  date: string;
+  verified: XThreadVerified;
+  body: string;
+  /* Avatar image path under `public/ai-operator/x-thread/`. When the
+     PNG is missing, the renderer falls back to a monogram circle
+     drawn in CSS using the first character of `name`. */
+  avatar?: string;
+  media?: XThreadMedia;
+  stats: XThreadStats;
+  /* When true, render a vertical reply line dropping from the avatar
+     into the next tweet, matching X's threaded-conversation chrome. */
+  hasReplyLine?: boolean;
+};
 
-  /* Closing call-out conclusion card. Sits at the bottom of the
-     section as a single full-width card whose italic clause echoes
-     the hero's `ledeStrong` so the page reads as a closed loop. */
-  conclusion: {
-    eyebrow: "Ambition",
-    lead: "My ambition isn't to transform a marketing department.",
-    em: "It's to help build the economic layer for the age of co-intelligence.",
-  },
-} as const;
+export const stripeXThread: {
+  /* Header label X shows when a single conversation is open. */
+  headTitle: string;
+  tweets: XThreadTweet[];
+} = {
+  headTitle: "Post",
+  tweets: [
+    {
+      id: "stripe-roadmap",
+      name: "Stripe",
+      handle: "@stripe",
+      date: "Apr 29",
+      verified: "business",
+      body:
+        "Our roadmap is now public: see hundreds of upcoming product ships. We\u2019ll be adding to this list regularly.\n\nWhat\u2019s missing? @jeff_weinstein @jrfarr @kevinyien @hazelcough @backseatVC and others will be answering your questions today. \uD83E\uDDF5",
+      avatar: "/ai-operator/x-thread/stripe.png",
+      stats: { replies: "16", reposts: "31", likes: "273", views: "71K" },
+      hasReplyLine: true,
+    },
+    {
+      id: "vince-1",
+      name: "Vince Buyssens",
+      handle: "@voidwalker_com",
+      date: "Apr 30",
+      verified: "blue",
+      body:
+        "One portal in Link where we can download all our invoices! Doesn\u2019t make sense to log into dozens of different portals to collect invoices paid with the same account / card",
+      avatar: "/ai-operator/x-thread/vince.png",
+      stats: { replies: "1", reposts: "0", likes: "1", views: "511" },
+      hasReplyLine: true,
+    },
+    {
+      id: "irace-1",
+      name: "Bryan Irace",
+      handle: "@irace",
+      date: "Apr 30",
+      verified: null,
+      body: "Fully agreed, thank you for the feedback!",
+      avatar: "/ai-operator/x-thread/irace.png",
+      stats: { replies: "1", reposts: "0", likes: "0", views: "56" },
+      hasReplyLine: true,
+    },
+    {
+      id: "vince-2",
+      name: "Vince Buyssens",
+      handle: "@voidwalker_com",
+      date: "Apr 30",
+      verified: "blue",
+      body:
+        "put way too much time into this mockup, but I really think people would LOVE this",
+      avatar: "/ai-operator/x-thread/vince.png",
+      media: {
+        kind: "video",
+        poster: "/ai-operator/x-thread/mockup-poster.png",
+        duration: "0:16",
+        href: "/link-to-collect.html",
+        hrefLabel: "Open the live Link / Collect mockup",
+        ratio: "9:16",
+      },
+      stats: { replies: "1", reposts: "0", likes: "0", views: "59" },
+      hasReplyLine: true,
+    },
+    {
+      id: "irace-2",
+      name: "Bryan Irace",
+      handle: "@irace",
+      date: "Apr 30",
+      verified: null,
+      body:
+        "Oh wow, this is super cool \u2014 thank you so much for sharing. Will share with the rest of the team for inspiration.\n\nPlease keep the feedback coming!",
+      avatar: "/ai-operator/x-thread/irace.png",
+      stats: { replies: "1", reposts: "0", likes: "1", views: "61" },
+      hasReplyLine: false,
+    },
+  ],
+};
+
+export const stripeLedgerSection: {
+  eyebrow: string;
+  title: string;
+  /* Body is two paragraphs rendered as separate <p> elements in the
+     copy column. Sentences avoid em dashes per the Thoughtform voice
+     rule. */
+  body: readonly string[];
+  thread: typeof stripeXThread;
+} = {
+  eyebrow: "From both sides of the rails",
+  title: "I built the workaround. Then I told Stripe.",
+  body: [
+    "Every AI tool I onboard teams onto runs through Stripe. So does the consultancy underneath all of it. Daily use on both sides of the rails surfaces ideas constantly. The obvious one: an invoices tab inside Link, so I'd stop logging into a dozen portals to download them by hand every month.",
+    "I built the workaround anyway. Email forwarding for the invoices that still arrive that way. A browser automation for the Stripe-paid ones that don't. Slack reminders every two weeks because sometimes I just need the nudge. None of which I should have had to build in an age of headless AI.",
+  ],
+  thread: stripeXThread,
+};
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Ledger / Saga case row — standalone post-`stripe-ledger` slot
+ *
+ * Mirrors the production `CaseProject` shape so we can reuse the
+ * existing `aiop-case-row` chrome verbatim, but renders as a single
+ * standalone row (no modal trigger, no walkthrough button, no
+ * num/total cell). The header meta strip uses the StripeTeaser
+ * `metaLabel · metaTag` pattern instead of `01 / 04`.
+ *
+ * Content is the canonical Saga briefing authored in
+ * `04_ledger.thoughtform/docs/AI_OPERATOR_PRODUCT_CARD.md`. Filenames
+ * follow the existing `/cases/screenshots/<id>/` and `/cases/assets/`
+ * conventions used by Mímir, Vesper, Babylon, Heimdall.
+ *
+ * Tone reuse (`gold`) is intentional: matches Ledger's brand colour
+ * (#CAA554) and rhymes Saga with Mímir at a different scale.
+ * No em dashes in the copy per Thoughtform voice rule.
+ * ─────────────────────────────────────────────────────────────────── */
+
+export const ledgerCase: {
+  id: string;
+  metaLabel: string;
+  metaTag: string;
+  name: string;
+  nameEm: string;
+  codename: string;
+  codenameEm: string;
+  tagline: string;
+  subline: string;
+  team: string;
+  status: "Production" | "WIP";
+  year: string;
+  tone: CaseTone;
+  workflowMode: WorkflowMode;
+  challenge: string;
+  workflowBefore: string;
+  workflowAfter: string;
+  capabilities: CaseCapability[];
+  surfaces: string[];
+  stack: string[];
+  companyLeverage: string;
+  image: string;
+  screenshots: ProjectScreenshot[];
+  cta: { label: string; href: string };
+} = {
+  id: "saga",
+  metaLabel: "Personal",
+  metaTag: "Production · 2026",
+  name: "Financial Command ",
+  nameEm: "Center",
+  codename: "Sa",
+  codenameEm: "ga",
+  tagline: "Financial Substrate",
+  subline: "The flywheel, applied to my own business.",
+  team: "Thoughtform · personal substrate",
+  status: "Production",
+  year: "2026",
+  tone: "gold",
+  workflowMode: "Repair",
+  challenge:
+    "I was paying my accountant to remind me to send invoices. Most of my software runs on Stripe, where vendors stopped emailing PDFs years ago for privacy and phishing reasons, so every quarter became a tour of a dozen portals, manually downloading the invoices Stripe had already issued.",
+  workflowBefore:
+    "Every quarter meant logging into Cursor, Anthropic, Vercel, Krea, Loops, Midjourney, Supabase, Figma, and Linear to download the invoices Stripe had already issued. The accountant chased the missing PDFs by email, and Belgian VAT reverse-charge details lived in each merchant's billing UI.",
+  workflowAfter:
+    "Push-triggered Cloud Run worker watches Gmail and Drive for invoice PDFs, Claude classifies and renames them under the canonical purchase tree, a Slack briefing surfaces only the portals still due for manual collection that week, and Navigator AI answers questions about the quarter when it's time to file.",
+  capabilities: [
+    {
+      k: "Multi-source intake",
+      v: "Gmail push, Drive push, Slack receipt thread, and KBC bank CSV all flow through one ingestion pipeline. Hash-deduped, classified by Claude, renamed under the canonical purchase tree.",
+    },
+    {
+      k: "Portal cadence reminders",
+      v: "Volume-based and effort-weighted scoring posts a Slack briefing twice a week, surfacing only the vendors actually due for manual collection in the upcoming window.",
+    },
+    {
+      k: "Navigator AI",
+      v: "Claude grounded on the Thoughtform business context plus the live finance snapshot. Talks about the numbers like a colleague who already knows the practice, not generic finance advice.",
+    },
+    {
+      k: "Headless finance engine",
+      v: "Same Cloud Run substrate answers the web dashboard, the Electron desktop, the Slack bot, and a finance MCP server in Claude.ai and Cursor.",
+    },
+  ],
+  surfaces: [
+    "Web app",
+    "Electron desktop",
+    "Slack bot",
+    "Cloud Run worker",
+    "MCP server",
+    "Drive auto-sync",
+  ],
+  stack: [
+    "Next.js",
+    "Supabase",
+    "Cloud Run",
+    "Anthropic",
+    "Voyage AI",
+    "Electron",
+    "MCP",
+    "Slack",
+    "Gmail API",
+  ],
+  companyLeverage:
+    "The /link-to-collect page on thoughtform.co is the Stripe-facing pitch: a public preview of exactly this layer inside Stripe Link. After Stripe shared their roadmap publicly on April 29, I posted the use case and the mockup. Bryan Irace replied. The substrate I encoded for one consultant is the same one Stripe could run for every founder paying through Link.",
+  image: "/ai-operator/ledger-screenshot-1.png",
+  /* User-provided captures live directly under /public/ai-operator/.
+     ScreenshotGallery rotates through the four entries every ~4.5s,
+     pausing on hover/focus and respecting prefers-reduced-motion. */
+  screenshots: [
+    {
+      src: "/ai-operator/ledger-screenshot-1.png",
+      alt: "Saga: Ledger app screenshot 1",
+      caption: "Ledger \u00b7 dashboard",
+    },
+    {
+      src: "/ai-operator/ledger-screenshot-2.png",
+      alt: "Saga: Ledger app screenshot 2",
+      caption: "Ledger \u00b7 navigator",
+    },
+    {
+      src: "/ai-operator/ledger-screenshot-3.png",
+      alt: "Saga: Ledger app screenshot 3",
+      caption: "Ledger \u00b7 portal briefing",
+    },
+    {
+      src: "/ai-operator/ledger-screenshot-4.png",
+      alt: "Saga: Ledger app screenshot 4",
+      caption: "Ledger \u00b7 link collect",
+    },
+  ],
+  cta: { label: "Visit landing page", href: "/link-to-collect.html" },
+};
 
 /* ─────────────────────────────────────────────────────────────────────
  * CTA + footer
  * ─────────────────────────────────────────────────────────────────── */
 
-export const ctaSection = {
+export type CtaAction = {
+  id: string;
+  kind: "primary" | "ghost";
+  label: string;
+  href: string;
+  external?: boolean;
+};
+
+export const ctaSection: {
+  /* AMBITION call-out card that migrated from the old
+     `stripeLedgerSection.conclusion`. Sits at the top of the CTA
+     wrap so the visitor lands on the philosophical anchor before
+     the practical ask. The italic clause echoes the hero's
+     `ledeStrong` so the page reads as a closed loop. */
+  ambition: { eyebrow: string; lead: string; em: string };
+  eyebrow: string;
+  title: string;
+  titleEm: string;
+  body: string;
+  fine: string;
+  /* Four-action grid: email is primary, LinkedIn / CV / cover
+     letter render as ghost buttons. The renderer maps each entry
+     to the existing button/link chrome; `external: true` marks
+     the link to open in a new tab with `rel="noopener noreferrer"`. */
+  actions: CtaAction[];
+} = {
+  ambition: {
+    eyebrow: "Ambition",
+    lead: "My ambition isn't to transform a marketing department.",
+    em: "It's to help build the economic layer for the age of co-intelligence.",
+  },
   eyebrow: "Smallest commitment that starts work",
   title: "Let's talk.",
   titleEm: "Inside one of your team's routines.",
   body:
     "Embedded mandates, accelerator programs, or focused encoding sprints alongside one team. We start with one workflow and work outward.",
   fine:
-    "Antwerp · CET. Comfortable working remotely with US-based teams. CV available on request.",
-  primary: {
-    label: "vince@thoughtform.co",
-    href: "mailto:vince@thoughtform.co?subject=Forward-deployed%20AI%20operator",
-  },
-  secondary: {
-    label: "linkedin.com/in/starhaven",
-    href: "https://www.linkedin.com/in/starhaven/",
-  },
-} as const;
+    "Antwerp \u00b7 CET. Comfortable working remotely with US-based teams.",
+  actions: [
+    {
+      id: "email",
+      kind: "primary",
+      label: "vince@thoughtform.co",
+      href: "mailto:vince@thoughtform.co?subject=Forward-deployed%20AI%20operator",
+    },
+    {
+      id: "linkedin",
+      kind: "ghost",
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/starhaven/",
+      external: true,
+    },
+    {
+      id: "cv",
+      kind: "ghost",
+      label: "View CV",
+      href: "/applications/cv.html",
+      external: true,
+    },
+    {
+      id: "cover",
+      kind: "ghost",
+      label: "Cover letter",
+      href: "/applications/cover-letter.html",
+      external: true,
+    },
+  ],
+};
 
 export const footer = {
   line: "Vincent Buyssens · Forward-Deployed AI Operator",

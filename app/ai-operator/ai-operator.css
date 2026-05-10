@@ -3666,12 +3666,14 @@
 }
 
 
-/* ─── Section C · Stripe ledger ──────────────────────────────────── */
+/* ─── Section C · Stripe ledger (context + X-thread) ─────────────── */
 
 /* Continues the dark warm register from section B so the two read
-   as one evening sequence; a slightly deeper top stop hands the
-   visual transition cleanly from the lifted "screen" register of
-   the video into the more grounded editorial body of the ledger. */
+   as one evening sequence. The section is rewritten as a two-column
+   context layout: editorial copy on the left, embedded X-thread on
+   the right. Schematic / email card / AMBITION conclusion are gone
+   from this section — the schematic's job is now done by the X
+   thread itself, and the AMBITION clause migrated up to the CTA. */
 .aiop-stripe-ledger {
   position: relative;
   isolation: isolate;
@@ -3694,15 +3696,18 @@
   gap: clamp(40px, 5vw, 72px);
 }
 
-/* Two-column layout: story column (left) + aside (right). Stack on
-   narrow widths so the visitor reads top-to-bottom. */
+/* Two-column layout: copy column (left) + X-thread (right). Stack
+   on narrow widths so the visitor reads top-to-bottom. The thread
+   needs slightly more horizontal room than the schematic it
+   replaced, so the columns are tilted from `1.15fr / 0.85fr` to a
+   roughly even split. */
 .aiop-stripe-ledger__beat {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(40px, 5vw, 72px);
   align-items: start;
   width: 100%;
-  max-width: min(100%, 1140px);
+  max-width: min(100%, 1180px);
   margin: 0 auto;
 }
 
@@ -3713,285 +3718,38 @@
   }
 }
 
-.aiop-stripe-ledger__story {
+/* Copy column — eyebrow chip + display title + two body paragraphs.
+   Mirrors the headless-shift `__copy` rhythm so the closer reads in
+   the same voice as the architecture interstitial. */
+.aiop-stripe-ledger__copy {
   display: flex;
   flex-direction: column;
   gap: clamp(16px, 1.8vw, 24px);
+  position: sticky;
+  top: clamp(120px, 18vh, 180px);
 }
 
-.aiop-stripe-ledger__story-p {
-  margin: 0;
-  font-family: var(--aiop-body);
-  font-size: clamp(16px, 1.35vw, 19px);
-  line-height: 1.62;
-  color: rgba(243, 236, 224, 0.92);
-  letter-spacing: -0.005em;
-  max-width: 60ch;
+@media (max-width: 960px) {
+  .aiop-stripe-ledger__copy {
+    position: static;
+    top: auto;
+  }
 }
 
-.aiop-stripe-ledger__story-p:first-child::first-line {
-  /* Subtle lead-in: slightly heavier weight on the first line so the
-     section opens with a quiet editorial anchor. */
-  font-weight: 540;
-  color: var(--aiop-paper);
-}
-
-.aiop-stripe-ledger__aside {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(16px, 1.6vw, 24px);
-}
-
-
-/* Ledger schematic — CSS-rendered preview that visually rhymes with
-   the actual Ledger product (dark warm + gold accents lifted from
-   `04_ledger.thoughtform/README.md`). Sharp corners, mono labels,
-   small chip row, pipeline connector, Navigator insight strip. */
-.aiop-stripe-ledger__schematic {
-  position: relative;
-  padding: clamp(20px, 1.8vw, 26px) clamp(22px, 1.9vw, 30px);
-  background:
-    linear-gradient(
-      180deg,
-      #131110 0%,
-      #0b0907 100%
-    );
-  border: 1px solid rgba(202, 165, 84, 0.25);
-  border-radius: 0;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(14px, 1.4vw, 20px);
-  /* Subtle inset so the gold edge reads as an authored frame, not a
-     simple stroke. */
-  box-shadow:
-    inset 0 1px 0 rgba(243, 236, 224, 0.04),
-    0 8px 32px rgba(0, 0, 0, 0.4);
-}
-
-.aiop-stripe-ledger__schematic-head {
+.aiop-stripe-ledger__eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-}
-
-.aiop-stripe-ledger__schematic-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #caa554;
-  flex-shrink: 0;
-}
-
-.aiop-stripe-ledger__schematic-eyebrow {
-  font-family: var(--aiop-mono);
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #caa554;
-}
-
-.aiop-stripe-ledger__schematic-sources {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.aiop-stripe-ledger__schematic-label {
-  font-family: var(--aiop-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(243, 236, 224, 0.55);
-}
-
-.aiop-stripe-ledger__schematic-chips {
-  list-style: none;
   margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.aiop-stripe-ledger__schematic-chip {
-  padding: 5px 10px;
-  background: rgba(243, 236, 224, 0.06);
-  border: 1px solid rgba(243, 236, 224, 0.14);
-  border-radius: 0;
   font-family: var(--aiop-mono);
   font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: rgba(243, 236, 224, 0.86);
-}
-
-.aiop-stripe-ledger__schematic-chip--accent {
-  border-color: rgba(202, 165, 84, 0.35);
-  background: rgba(202, 165, 84, 0.08);
-  color: #e8d49a;
-}
-
-.aiop-stripe-ledger__schematic-connector {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.aiop-stripe-ledger__schematic-connector-line {
-  flex: 1;
-  height: 1px;
-  background: rgba(202, 165, 84, 0.22);
-}
-
-.aiop-stripe-ledger__schematic-connector-label {
-  font-family: var(--aiop-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
+  font-weight: 600;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(202, 165, 84, 0.7);
-  white-space: nowrap;
+  color: var(--aiop-amber);
 }
 
-.aiop-stripe-ledger__schematic-insight {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 14px 16px;
-  background: rgba(202, 165, 84, 0.06);
-  border-left: 2px solid #caa554;
-  border-radius: 0;
-}
-
-.aiop-stripe-ledger__schematic-insight-label {
-  font-family: var(--aiop-mono);
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #caa554;
-}
-
-.aiop-stripe-ledger__schematic-insight-body {
-  margin: 0;
-  font-family: var(--aiop-display);
-  font-style: italic;
-  font-weight: 460;
-  font-size: clamp(14px, 1.2vw, 17px);
-  line-height: 1.45;
-  color: rgba(243, 236, 224, 0.92);
-}
-
-.aiop-stripe-ledger__schematic-insight-quote {
-  display: inline-block;
-  color: #caa554;
-  opacity: 0.7;
-  margin: 0 2px;
-  font-style: normal;
-}
-
-
-/* Stylised email card — paraphrased reply. Same grammar as the
-   schematic above so the right column reads as one cohesive
-   surface. */
-.aiop-stripe-ledger__email {
-  position: relative;
-  padding: clamp(18px, 1.8vw, 24px) clamp(20px, 2vw, 28px);
-  background: rgba(243, 236, 224, 0.06);
-  border: 1px solid rgba(243, 236, 224, 0.18);
-  border-radius: 6px;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  display: flex;
-  flex-direction: column;
-  gap: clamp(10px, 1.1vw, 14px);
-}
-
-.aiop-stripe-ledger__email-head {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.aiop-stripe-ledger__email-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--aiop-sage);
-  flex-shrink: 0;
-}
-
-.aiop-stripe-ledger__email-eyebrow {
-  font-family: var(--aiop-mono);
-  font-size: 10.5px;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(243, 236, 224, 0.7);
-}
-
-.aiop-stripe-ledger__email-body {
-  margin: 0;
-  font-family: var(--aiop-display);
-  font-style: italic;
-  font-weight: 460;
-  font-size: clamp(16px, 1.45vw, 21px);
-  line-height: 1.42;
-  color: var(--aiop-paper);
-  letter-spacing: -0.012em;
-}
-
-.aiop-stripe-ledger__email-quote {
-  display: inline-block;
-  color: color-mix(in oklab, var(--aiop-amber) 60%, var(--aiop-paper));
-  opacity: 0.8;
-  margin: 0 2px;
-  font-style: normal;
-}
-
-.aiop-stripe-ledger__email-foot {
-  margin: 0;
-  font-family: var(--aiop-mono);
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(243, 236, 224, 0.45);
-}
-
-
-/* Closing call-out conclusion card. Single full-width card that
-   sits at the bottom of the section. Carries the closing tie-back
-   whose italic clause echoes the hero's `ledeStrong` so the page
-   reads as a closed loop into the CTA below. */
-.aiop-stripe-ledger__conclusion {
-  position: relative;
-  width: 100%;
-  max-width: min(100%, 980px);
-  margin: 0 auto;
-  padding: clamp(28px, 3.5vw, 48px) clamp(32px, 4vw, 56px);
-  background:
-    linear-gradient(
-      180deg,
-      rgba(243, 236, 224, 0.05) 0%,
-      rgba(243, 236, 224, 0.025) 100%
-    );
-  border: 1px solid rgba(243, 236, 224, 0.18);
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(14px, 1.6vw, 22px);
-}
-
-.aiop-stripe-ledger__conclusion-head {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.aiop-stripe-ledger__conclusion-dot {
+.aiop-stripe-ledger__eyebrow-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
@@ -4001,21 +3759,487 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .aiop-stripe-ledger__conclusion-dot {
+  .aiop-stripe-ledger__eyebrow-dot {
     animation: none;
   }
 }
 
-.aiop-stripe-ledger__conclusion-eyebrow {
+.aiop-stripe-ledger__title {
+  margin: 4px 0 0;
+  max-width: 22ch;
+  color: var(--aiop-paper);
+  text-wrap: balance;
+}
+
+.aiop-stripe-ledger__title em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--aiop-amber);
+}
+
+.aiop-stripe-ledger__body {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 1.5vw, 20px);
+  margin-top: clamp(8px, 1vw, 12px);
+}
+
+.aiop-stripe-ledger__body-p {
+  margin: 0;
+  font-family: var(--aiop-body);
+  font-size: clamp(16px, 1.35vw, 19px);
+  line-height: 1.62;
+  color: rgba(243, 236, 224, 0.86);
+  letter-spacing: -0.005em;
+  max-width: 56ch;
+}
+
+/* X-thread mount — the right column. Constrains the width and the
+   max height so the thread reads as one cohesive embedded surface. */
+.aiop-stripe-ledger__thread {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+@media (max-width: 720px) {
+  .aiop-stripe-ledger {
+    padding-block: clamp(56px, 14vw, 96px);
+  }
+
+  .aiop-stripe-ledger__body-p {
+    font-size: clamp(15px, 4.4vw, 17px);
+  }
+}
+
+
+/* ─── Embedded X / Twitter thread ───────────────────────────────────
+ *
+ * Faithful recreation of X's dark mode chrome rendered as a static
+ * column with auto-scroll choreography. Lives in the right column
+ * of `#stripe-ledger`. The whole thing is presentational — none of
+ * these classes feed back into the live X site.
+ *
+ * Palette matches X dark mode:
+ *   --x-bg     #000000  page background
+ *   --x-fg     #e7e9ea  primary text
+ *   --x-dim    #71767b  secondary text (handles, timestamps, action counts)
+ *   --x-line   #2f3336  borders + reply lines
+ *   --x-blue   #1d9bf0  verified-blue glyph + active states
+ *   --x-gold   #e7a33e  verified-business glyph (Stripe)
+ *
+ * Auto-scroll loop is implemented in `stripe-x-thread.tsx`. CSS only
+ * needs to ensure the scroll container has a fixed max-height and
+ * `overflow-y: auto` so the loop has scrollback to traverse.
+ * ─────────────────────────────────────────────────────────────── */
+
+.aiop-x-thread {
+  --x-bg: #000000;
+  --x-fg: #e7e9ea;
+  --x-dim: #71767b;
+  --x-line: #2f3336;
+  --x-blue: #1d9bf0;
+  --x-gold: #e7a33e;
+  --x-hover: rgba(231, 233, 234, 0.03);
+
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  border: 1px solid var(--x-line);
+  border-radius: 16px;
+  background: var(--x-bg);
+  color: var(--x-fg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  letter-spacing: -0.003em;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow:
+    0 1px 0 rgba(231, 233, 234, 0.04) inset,
+    0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+/* Header — back arrow + "Post" title, sticky to the top of the
+   container so the chrome reads like the actual X conversation
+   view. */
+.aiop-x-thread__head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 14px 16px;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--x-line);
+}
+
+.aiop-x-thread__back {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: var(--x-fg);
+}
+
+.aiop-x-thread__title {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--x-fg);
+}
+
+/* Scroll container — fixed max-height so the auto-scroll loop has
+   scrollback. Hides the native scrollbar to keep the embedded
+   surface clean. */
+.aiop-x-thread__scroll {
+  max-height: 640px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.aiop-x-thread__scroll::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .aiop-x-thread__scroll {
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/* Tweet shell — two columns: avatar/reply-line column on the left,
+   tweet body on the right. */
+.aiop-x-thread__tweet {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  column-gap: 12px;
+  padding: 12px 16px 4px;
+  border-bottom: 1px solid var(--x-line);
+}
+
+.aiop-x-thread__tweet:last-child {
+  border-bottom: 0;
+}
+
+/* Left column carries the avatar and (optionally) a vertical reply
+   line that drops to the next tweet. */
+.aiop-x-thread__col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.aiop-x-thread__avatar {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1c1f23, #0f1115);
+  flex-shrink: 0;
+  border: 1px solid var(--x-line);
+}
+
+.aiop-x-thread__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.aiop-x-thread__avatar-monogram {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--x-fg);
+  letter-spacing: -0.02em;
+}
+
+.aiop-x-thread__avatar[data-handle="@stripe"] {
+  background: #635bff;
+}
+
+.aiop-x-thread__avatar[data-handle="@voidwalker_com"] {
+  background: linear-gradient(135deg, #2c2a4a, #5a4a3a);
+}
+
+.aiop-x-thread__avatar[data-handle="@irace"] {
+  background: linear-gradient(135deg, #3a4a3a, #2a3540);
+}
+
+.aiop-x-thread__reply-line {
+  flex: 1;
+  width: 2px;
+  margin-top: 4px;
+  margin-bottom: -16px;
+  background: var(--x-line);
+  align-self: stretch;
+}
+
+/* Tweet body — header / text / media / actions. */
+.aiop-x-thread__body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding-bottom: 8px;
+}
+
+.aiop-x-thread__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.aiop-x-thread__name {
+  font-weight: 700;
+  color: var(--x-fg);
+}
+
+.aiop-x-thread__handle,
+.aiop-x-thread__date,
+.aiop-x-thread__sep {
+  color: var(--x-dim);
+  font-weight: 400;
+}
+
+.aiop-x-thread__sep {
+  margin: 0 2px;
+}
+
+.aiop-x-thread__verified {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: 2px;
+  flex-shrink: 0;
+}
+
+.aiop-x-thread__verified--blue {
+  color: var(--x-blue);
+}
+
+.aiop-x-thread__verified--business {
+  color: var(--x-gold);
+}
+
+/* Tweet body text — supports paragraph splits via `\n\n` rendered as
+   stacked spans with a blank line between them. */
+.aiop-x-thread__text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.42;
+  color: var(--x-fg);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.aiop-x-thread__para {
+  display: block;
+}
+
+/* Embedded video card — poster image with a centered play overlay
+   and a short duration pill in the bottom-left corner, matching X's
+   inline player chrome. The 9x16 ratio class matches the original
+   mockup recording. */
+.aiop-x-thread__media {
+  position: relative;
+  display: block;
+  margin-top: 8px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #15181c;
+  border: 1px solid var(--x-line);
+  aspect-ratio: 16 / 9;
+  text-decoration: none;
+  color: inherit;
+}
+
+.aiop-x-thread__media--9x16 {
+  aspect-ratio: 9 / 16;
+  max-height: 420px;
+  margin-inline: auto;
+  width: min(280px, 100%);
+}
+
+.aiop-x-thread__media--1x1 {
+  aspect-ratio: 1 / 1;
+}
+
+.aiop-x-thread__media-poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.aiop-x-thread__media-play {
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  color: white;
+}
+
+.aiop-x-thread__media-play::before {
+  content: "";
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.aiop-x-thread__media-play svg {
+  position: relative;
+  z-index: 1;
+  margin-left: 4px;
+}
+
+.aiop-x-thread__media-duration {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: white;
+  background: rgba(0, 0, 0, 0.72);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* Action bar — five glyphs (reply, repost, like, views, bookmark)
+   plus a share button. Each action is dim by default; renders just
+   the count next to the icon, no hover effects since the bar is
+   aria-hidden and purely decorative on this page. */
+.aiop-x-thread__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+  max-width: 425px;
+  color: var(--x-dim);
+}
+
+.aiop-x-thread__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 1;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.aiop-x-thread__action svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+}
+
+.aiop-x-thread__action--share {
+  margin-left: auto;
+}
+
+.aiop-x-thread__action-value {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 720px) {
+  .aiop-x-thread {
+    max-width: 100%;
+  }
+  .aiop-x-thread__media--9x16 {
+    width: min(240px, 100%);
+    max-height: 360px;
+  }
+}
+
+
+/* ─── AMBITION card — migrated from the old `__conclusion` ─────────
+ *
+ * Now lives at the top of the CTA section (`page.tsx` → CTA block).
+ * Same dramatic frame, same italic-em treatment, but rendered on
+ * the cream paper background of the CTA instead of the dark register
+ * of the old stripe-ledger. The italic clause echoes the hero's
+ * `ledeStrong` so the page reads as a closed loop.
+ * ─────────────────────────────────────────────────────────────── */
+
+.aiop-ambition-card {
+  position: relative;
+  width: 100%;
+  max-width: min(100%, 980px);
+  margin: 0 auto clamp(40px, 5vw, 64px);
+  padding: clamp(28px, 3.5vw, 48px) clamp(32px, 4vw, 56px);
+  background: linear-gradient(
+    180deg,
+    rgba(99, 91, 255, 0.04) 0%,
+    rgba(99, 91, 255, 0.015) 100%
+  );
+  border: 1px solid var(--aiop-rule);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 1.6vw, 22px);
+}
+
+.aiop-ambition-card__head {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.aiop-ambition-card__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--aiop-violet);
+  flex-shrink: 0;
+  animation: aiop-stripe-pulse 2.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiop-ambition-card__dot {
+    animation: none;
+  }
+}
+
+.aiop-ambition-card__eyebrow {
   font-family: var(--aiop-mono);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--aiop-amber);
+  color: var(--aiop-violet);
 }
 
-.aiop-stripe-ledger__conclusion-body {
+.aiop-ambition-card__body {
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -4028,41 +4252,71 @@
   text-wrap: balance;
 }
 
-.aiop-stripe-ledger__conclusion-lead {
-  color: rgba(243, 236, 224, 0.78);
+.aiop-ambition-card__lead {
+  color: var(--aiop-ink-soft);
   font-style: normal;
 }
 
-.aiop-stripe-ledger__conclusion-em {
-  color: var(--aiop-paper);
+.aiop-ambition-card__em {
+  color: var(--aiop-ink);
   font-style: italic;
   font-weight: 500;
 }
 
 @media (max-width: 720px) {
-  .aiop-stripe-ledger {
-    padding-block: clamp(56px, 14vw, 96px);
-  }
-
-  .aiop-stripe-ledger__story-p {
-    font-size: clamp(15px, 4.4vw, 17px);
-  }
-
-  .aiop-stripe-ledger__schematic {
-    padding: 18px 20px;
-  }
-
-  .aiop-stripe-ledger__email {
-    padding: 18px 20px;
-  }
-
-  .aiop-stripe-ledger__conclusion {
+  .aiop-ambition-card {
     padding: 24px 22px;
+    margin-bottom: clamp(28px, 8vw, 40px);
   }
-
-  .aiop-stripe-ledger__conclusion-body {
+  .aiop-ambition-card__body {
     font-size: clamp(18px, 5vw, 24px);
   }
+}
+
+
+/* ─── CTA actions grid · 4 buttons (email + LinkedIn + CV + cover) ─
+ *
+ * The single-column flex stack the original CTA used reads fine
+ * with two buttons. Once the CV and cover-letter links land, the
+ * stack risks running too tall on desktop, so this modifier turns
+ * the column into a 2x2 grid above 720px and keeps it as a stack
+ * below. */
+
+.aiop-cta__actions--grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  align-items: stretch;
+  align-content: start;
+  width: 100%;
+}
+
+@media (min-width: 720px) {
+  .aiop-cta__actions--grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 12px;
+    row-gap: 12px;
+    justify-items: stretch;
+  }
+}
+
+.aiop-cta__actions--grid > .aiop-button {
+  width: 100%;
+  justify-content: space-between;
+}
+
+
+/* ─── Standalone case row modifier (Saga / Ledger) ────────────────
+ *
+ * The `CaseLedger` component reuses the existing `aiop-case-row`
+ * chrome but renders as a single standalone row outside the
+ * production `Cases` section. The modifier just gives it a little
+ * extra top padding so it visually breathes after the dark
+ * `#stripe-ledger` register hands the page back to the cream paper. */
+
+.aiop-case-row--standalone {
+  padding-block: clamp(56px, 7vw, 88px);
+  border-top: 1px solid var(--aiop-rule);
 }
 
 
@@ -11652,14 +11906,18 @@
   align-items: center;
   gap: 8px;
   padding: 5px 10px 5px 8px;
-  background: color-mix(in oklab, var(--aiop-violet) 14%, transparent);
-  border: 1px solid color-mix(in oklab, var(--aiop-violet) 38%, transparent);
+  /* Uses `--aiop-case-accent` (set per-row by the tone modifier) so
+     the tag reads violet on the Stripe teaser (`--violet`) and gold
+     on the standalone Saga row (`--gold`) with the same source-of-
+     truth styling. */
+  background: color-mix(in oklab, var(--aiop-case-accent) 14%, transparent);
+  border: 1px solid color-mix(in oklab, var(--aiop-case-accent) 38%, transparent);
   font-family: var(--aiop-mono);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--aiop-violet);
+  color: var(--aiop-case-accent);
 }
 
 .aiop-case-row__teaser-tag-divider {
@@ -11672,18 +11930,18 @@
   width: 6px;
   height: 6px;
   border-radius: 999px;
-  background: var(--aiop-violet);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--aiop-violet) 22%, transparent);
+  background: var(--aiop-case-accent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--aiop-case-accent) 22%, transparent);
   flex-shrink: 0;
   animation: aiopTeaserPulse 2400ms ease-in-out infinite;
 }
 
 @keyframes aiopTeaserPulse {
   0%, 100% {
-    box-shadow: 0 0 0 3px color-mix(in oklab, var(--aiop-violet) 22%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--aiop-case-accent) 22%, transparent);
   }
   50% {
-    box-shadow: 0 0 0 6px color-mix(in oklab, var(--aiop-violet) 12%, transparent);
+    box-shadow: 0 0 0 6px color-mix(in oklab, var(--aiop-case-accent) 12%, transparent);
   }
 }
 

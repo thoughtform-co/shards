@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { AiIsNotSoftware } from "./ai-is-not-software";
 import { Approach } from "./approach";
+import { CaseLedger } from "./case-ledger";
 import { Cases } from "./cases";
 import {
   ctaSection,
@@ -92,21 +93,28 @@ import { StripeVideo } from "./stripe-video";
  *   13 Surface pick     — "Pick the surface that fits the workflow."
  *                         Three surface families framing cohort
  *                         scaling instead of developer onboarding.
- *   14 Stripe reflect   — First beat of the closer. Evans-style
- *                         interstitial that declares the ambition
- *                         runs beyond the marketing role and hands
- *                         straight into the Ledger story below as
- *                         the case.
- *   15 Stripe ledger    — Closer payoff. Two-column editorial story
- *                         about the AI-invoice frustration and the
- *                         Ledger build, paired with an inline
- *                         schematic, a paraphrased Stripe-engineer
- *                         reply card, and a closing call-out
- *                         conclusion card whose italic clause echoes
- *                         the hero's `ledeStrong` so the page reads
- *                         as a closed loop.
- *   16 CTA              — One ask. Smallest commitment.
- *   17 Footer
+ *   14 Stripe reflect   — First beat of the closer. Three-paragraph
+ *                         self-quote that opens with the ambition
+ *                         (`runs beyond a marketing role`) and lands
+ *                         on the European-builder posture before the
+ *                         Ledger context section picks it up.
+ *   15 Stripe ledger    — Two-column context: editorial copy on the
+ *                         left (`From both sides of the rails`),
+ *                         auto-scrolling X-thread on the right
+ *                         (Stripe / @voidwalker_com / Bryan Irace).
+ *                         The thread is the receipt the copy refers
+ *                         to.
+ *   16 Saga / Ledger    — Standalone case row rendered with the
+ *                         existing `aiop-case-row` chrome (gold
+ *                         tone, Repair mode, codename Sa·ga, four
+ *                         capabilities). Header CTA opens
+ *                         `/link-to-collect.html` in a new tab.
+ *   17 CTA              — Leads with the migrated AMBITION clause
+ *                         (`build the economic layer for the age of
+ *                         co-intelligence`), then the practical ask,
+ *                         then a 4-action grid: email, LinkedIn, CV,
+ *                         cover letter.
+ *   18 Footer
  */
 
 function Arrow() {
@@ -742,54 +750,100 @@ export default function AiOperatorPage() {
         </div>
       </section>
 
-      {/* ─── Closer — two deliberate beats before the CTA ──────────
+      {/* ─── Closer — three deliberate beats before the CTA ────────
        *
-       * The Stripe-video moved to the very top of the page (it now
-       * opens the route, before the hero), so the closer is two
-       * beats:
+       * The Stripe-video opens the page (above the hero), so the
+       * closer carries three beats:
        *
-       *   - Stripe reflect: a tranquil Evans-style interstitial that
-       *     declares the ambition runs beyond the marketing role and
-       *     hands straight into the Ledger story below. Pure server.
-       *   - Stripe ledger: editorial deep-dive on the AI-invoice
-       *     frustration and the Ledger build, with an inline
-       *     schematic, a paraphrased engineer-reply card, and a
-       *     closing call-out conclusion card whose italic clause
-       *     echoes the hero's `ledeStrong` so the page reads as a
-       *     closed loop. Pure server. */}
+       *   - Stripe reflect: tranquil three-paragraph self-quote on a
+       *     cream gradient. No external attribution; the quote
+       *     stands alone.
+       *   - Stripe ledger: two-column context section (editorial
+       *     copy left, auto-scrolling X-thread right). The thread is
+       *     the receipt: Stripe published their roadmap on April 29,
+       *     I posted a use case the next day with a mockup, and
+       *     Bryan Irace replied.
+       *   - Case Ledger (Saga): standalone case row mirroring the
+       *     production-row chrome. Reads as the proof I built the
+       *     same flywheel for myself before pitching it to Stripe. */}
       <StripeReflect />
       <StripeLedger />
+      <CaseLedger />
 
-      {/* ─── CTA ────────────────────────────────────────────────────── */}
+      {/* ─── CTA ──────────────────────────────────────────────────────
+       *
+       * Three layers stacked inside the section:
+       *
+       *   1. Ambition card — the migrated `__conclusion` from the old
+       *      `stripe-ledger`. Same italic-em treatment, just lives
+       *      where the visitor lands.
+       *   2. Copy + actions grid — `eyebrow + title + body + fine` on
+       *      the left, four action buttons on the right (email
+       *      primary, LinkedIn / CV / cover letter as ghost links).
+       *   3. The footer below the section closes the page out.
+       */}
       <section
         className="aiop-section aiop-section--tight aiop-cta"
         id="cta"
       >
-        <div className="aiop-wrap aiop-cta__grid">
-          <div className="aiop-reveal">
-            <p className="aiop-eyebrow aiop-eyebrow--ink">
-              {ctaSection.eyebrow}
-            </p>
-            <h2 className="aiop-cta__title">
-              {ctaSection.title} <em>{ctaSection.titleEm}</em>
-            </h2>
-            <p className="aiop-cta__body">{ctaSection.body}</p>
-            <p className="aiop-cta__fine">{ctaSection.fine}</p>
-          </div>
-          <div className="aiop-cta__actions aiop-reveal">
-            <a className="aiop-button" href={ctaSection.primary.href}>
-              {ctaSection.primary.label}
-              <Arrow />
-            </a>
-            <a
-              className="aiop-button aiop-button--ghost"
-              href={ctaSection.secondary.href}
-              target="_blank"
-              rel="noreferrer"
+        <div className="aiop-wrap">
+          <aside
+            className="aiop-ambition-card aiop-reveal"
+            aria-labelledby="aiop-cta-ambition"
+          >
+            <header className="aiop-ambition-card__head">
+              <span
+                className="aiop-ambition-card__dot"
+                aria-hidden="true"
+              />
+              <span className="aiop-ambition-card__eyebrow">
+                {ctaSection.ambition.eyebrow}
+              </span>
+            </header>
+            <p
+              className="aiop-ambition-card__body"
+              id="aiop-cta-ambition"
             >
-              {ctaSection.secondary.label}
-              <Arrow />
-            </a>
+              <span className="aiop-ambition-card__lead">
+                {ctaSection.ambition.lead}
+              </span>
+              <em className="aiop-ambition-card__em">
+                {ctaSection.ambition.em}
+              </em>
+            </p>
+          </aside>
+
+          <div className="aiop-cta__grid">
+            <div className="aiop-reveal">
+              <p className="aiop-eyebrow aiop-eyebrow--ink">
+                {ctaSection.eyebrow}
+              </p>
+              <h2 className="aiop-cta__title">
+                {ctaSection.title} <em>{ctaSection.titleEm}</em>
+              </h2>
+              <p className="aiop-cta__body">{ctaSection.body}</p>
+              <p className="aiop-cta__fine">{ctaSection.fine}</p>
+            </div>
+            <div
+              className="aiop-cta__actions aiop-cta__actions--grid aiop-reveal"
+              aria-label="Get in touch"
+            >
+              {ctaSection.actions.map((action) => (
+                <a
+                  key={action.id}
+                  className={`aiop-button${
+                    action.kind === "ghost" ? " aiop-button--ghost" : ""
+                  }`}
+                  href={action.href}
+                  {...(action.external
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                >
+                  {action.label}
+                  <Arrow />
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </section>

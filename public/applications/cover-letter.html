@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vincent Buyssens · Cover Letter · v12</title>
+<meta name="description" content="Vincent Buyssens — Cover letter for Stripe's Forward Deployed AI Accelerator role. May 2026.">
+<meta name="author" content="Vincent Buyssens">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=PT+Mono&display=swap" rel="stylesheet">
+<style>
+  /* ─────────────────────────────────────────────────────────────────────
+   * Vincent Buyssens · Cover Letter · v12 · 2026.05
+   * Single-file, print-first deliverable. A4 portrait, two pages.
+   *
+   * Companion to the CV (v17) — inherits the same chassis so the two
+   * documents read as one system: cream paper, soft grid background,
+   * gold accent, Inter + PT Mono typography, mono-caps page strip, hero
+   * name lockup, page-contact footer, toolbar, A4 print rules.
+   *
+   * Layered on top: long-form letter typography. 10.5pt body, 1.55
+   * line-height, 145mm constrained measure (~65 chars/line), 3.5mm
+   * paragraph rhythm. One quiet mono-caps subhead ("At Loop") sits
+   * between the positioning trio and the proof block as a single
+   * narrative breath marker. The rest is pure prose.
+   *
+   * Layout:
+   *   Page 1 — Hero · Meta strip (Date / To) · Salutation · Opener,
+   *            Why Stripe, The insight · "At Loop" subhead · Studio.
+   *   Page 2 — Brand films · Performance + Localization · Throughline ·
+   *            Lecturing · Geography · Closing case · Final line ·
+   *            Sign-off · Page-contact footer.
+   * ──────────────────────────────────────────────────────────────────── */
+
+
+  /* ─── 01 · TOKENS (mirror CV v17) ────────────────────────────────── */
+  :root {
+    --paper:        #FAF7EE;
+    --paper-soft:   #F4EFE2;
+    --paper-deep:   #EFE7D2;
+    --paper-bright: #FFFCF3;
+    --card:         #FFFFFF;
+
+    --ink:          #110F09;
+    --ink-deep:     #0A0907;
+    --ink-80:       rgba(17, 15, 9, 0.85);
+    --ink-70:       rgba(17, 15, 9, 0.72);
+    --ink-55:       rgba(17, 15, 9, 0.58);
+    --ink-40:       rgba(17, 15, 9, 0.42);
+    --ink-25:       rgba(17, 15, 9, 0.25);
+    --ink-15:       rgba(17, 15, 9, 0.15);
+    --ink-08:       rgba(17, 15, 9, 0.08);
+
+    --gold:         #9A7A2E;
+    --gold-bright:  #C9A156;
+    --gold-soft:    rgba(154, 122, 46, 0.16);
+    --gold-glow:    rgba(154, 122, 46, 0.28);
+    --gold-rule:    rgba(154, 122, 46, 0.40);
+
+    --sage:         #4F6B4A;
+    --sage-soft:    rgba(79, 107, 74, 0.18);
+    --slate:        #4F5B6B;
+    --slate-soft:   rgba(79, 91, 107, 0.18);
+
+    --rule:         rgba(17, 15, 9, 0.12);
+    --rule-soft:    rgba(17, 15, 9, 0.06);
+
+    --r-xs: 2px;
+    --r-sm: 4px;
+    --r-md: 6px;
+    --r-lg: 10px;
+    --r-xl: 14px;
+    --r-pill: 999px;
+
+    --shadow-card:  0 1px 2px rgba(17, 15, 9, 0.04),
+                    0 4px 12px rgba(17, 15, 9, 0.05);
+    --shadow-page:  0 1px 2px rgba(0, 0, 0, 0.04),
+                    0 8px 32px rgba(0, 0, 0, 0.10);
+
+    --font-sans:    "Inter", "Helvetica Neue", system-ui, sans-serif;
+    --font-display: "Inter", "Helvetica Neue", system-ui, sans-serif;
+    --font-mono:    "PT Mono", ui-monospace, "JetBrains Mono", monospace;
+  }
+
+
+  /* ─── 02 · RESET ────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+
+  /* ─── 03 · BASE ─────────────────────────────────────────────────── */
+  html { background: #E8E2D2; }
+  body {
+    background: #E8E2D2;
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 10.5pt;
+    line-height: 1.55;
+    letter-spacing: -0.005em;
+    font-feature-settings: "ss01", "kern", "cv11";
+    font-variant-numeric: tabular-nums;
+    font-variation-settings: "opsz" 14;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; text-decoration: none; }
+
+
+  /* ─── 04 · PAGE CHROME (mirror CV v17) ──────────────────────────── */
+  .cv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18mm;
+    padding: 24mm 0;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    background: var(--paper);
+    padding: 12mm 18mm 12mm;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-page);
+    overflow: hidden;
+  }
+
+  .page__head {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 4mm;
+    margin-bottom: 7mm;
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: 7pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-55);
+  }
+  .page__head-name { color: var(--ink-70); }
+  .page__num {
+    color: var(--ink-40);
+    font-variant-numeric: tabular-nums;
+  }
+  .page__num strong { color: var(--ink); font-weight: 400; }
+
+
+  /* ─── 05 · GRID BACKGROUND (mirror CV) ──────────────────────────── */
+  .grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(17, 15, 9, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(17, 15, 9, 0.055) 1px, transparent 1px);
+    background-size: 6mm 6mm;
+    mask-image: radial-gradient(ellipse 75% 80% at 50% 35%, black 25%, transparent 78%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 80% at 50% 35%, black 25%, transparent 78%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+
+  /* ─── 06 · HERO LOCKUP (mirror CV page 1, no byline) ────────────── */
+  .hero__lockup {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2mm;
+  }
+  .hero__name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 30pt;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    font-variation-settings: "opsz" 32;
+  }
+  .hero__name em {
+    font-style: normal;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .hero__role {
+    font-family: var(--font-mono);
+    font-size: 9pt;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-70);
+  }
+  .hero__role-sep {
+    color: var(--gold);
+    margin: 0 0.6em;
+    font-weight: 600;
+  }
+
+
+  /* ─── 07 · INLINE SVG ICONS ─────────────────────────────────────── */
+  .ico {
+    width: 9pt;
+    height: 9pt;
+    flex-shrink: 0;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+
+  /* ─── 08 · LETTER ───────────────────────────────────────────────── */
+  /* The .letter section grows to fill the page so .page-contact's
+     margin-top: auto pulls the contact strip to the bottom of page 2. */
+  .letter {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .letter > * { position: relative; z-index: 1; }
+
+  /* — Meta strip · single horizontal line of mono caps. Date on the
+       left, addressee on the right, separated by a gold pulse dot. — */
+  .letter__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2mm 4mm;
+    margin-top: 6mm;
+    padding: 3mm 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: 7pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .letter__meta-row { display: inline-flex; align-items: center; }
+  .letter__meta-key {
+    color: var(--gold);
+    font-weight: 600;
+    margin-right: 2.4mm;
+  }
+  .letter__meta-row + .letter__meta-row::before {
+    content: "";
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+    margin: 0 3.2mm 0 0;
+  }
+
+  /* — Salutation · display face, modest scale to bridge hero → body — */
+  .letter__salutation {
+    margin-top: 6mm;
+    font-family: var(--font-display);
+    font-size: 12pt;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    font-variation-settings: "opsz" 24;
+  }
+
+  /* — Body · long-form column, constrained measure (~65 chars/line) — */
+  .letter__body {
+    margin-top: 4mm;
+    max-width: 145mm;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    color: var(--ink-80);
+    letter-spacing: -0.003em;
+  }
+  .letter__body p { margin-bottom: 3.5mm; }
+  .letter__body p:last-child { margin-bottom: 0; }
+  .letter__body strong { color: var(--ink); font-weight: 600; }
+  .letter__body em { font-style: italic; }
+
+  /* — Subhead · quiet mono caps with gold dot + extending gold rule.
+       Used as a single narrative breath marker between movements. — */
+  .letter__subhead {
+    display: flex;
+    align-items: center;
+    gap: 1.8mm;
+    margin: 6mm 0 3mm;
+    font-family: var(--font-mono);
+    font-size: 7pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .letter__subhead-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+  .letter__subhead::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--gold-rule);
+    margin-left: 1.5mm;
+  }
+
+  /* — Sign-off · "Best," over "Vincent" in display weight. — */
+  .letter__signoff {
+    margin-top: 8mm;
+    display: flex;
+    flex-direction: column;
+    gap: 2mm;
+  }
+  .letter__signoff-best {
+    font-family: var(--font-display);
+    font-size: 10.5pt;
+    font-weight: 400;
+    color: var(--ink-80);
+    letter-spacing: -0.005em;
+  }
+  .letter__signoff-name {
+    font-family: var(--font-display);
+    font-size: 14pt;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    line-height: 1;
+    font-variation-settings: "opsz" 28;
+  }
+
+  /* — Inline placeholder · for the [landing page URL] still TBD. — */
+  .letter__placeholder {
+    font-family: var(--font-mono);
+    font-size: 0.86em;
+    color: var(--gold);
+    background: var(--gold-soft);
+    padding: 0.1em 0.45em;
+    border-radius: var(--r-xs);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  /* — Page-contact · clean horizontal strip pinned at the bottom of
+       the last page. Mirrors the CV's page-contact pattern exactly. — */
+  .page-contact {
+    margin-top: auto;
+    padding-top: 8mm;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    column-gap: 8mm;
+    font-family: var(--font-mono);
+    font-size: 7pt;
+    letter-spacing: 0.04em;
+    color: var(--ink-70);
+  }
+  .page-contact__col {
+    display: flex;
+    flex-direction: column;
+    gap: 2.2mm;
+    align-items: flex-start;
+  }
+  .page-contact__col--right { align-items: flex-end; }
+  .page-contact__location { justify-self: center; }
+  .page-contact a,
+  .page-contact > span,
+  .page-contact__col > a,
+  .page-contact__col > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.6mm;
+    color: var(--ink);
+    transition: color 120ms ease;
+    white-space: nowrap;
+  }
+  .page-contact a:hover { color: var(--gold); }
+  .page-contact .ico {
+    color: var(--gold);
+    width: 8.5pt;
+    height: 8.5pt;
+  }
+
+
+  /* ─── 09 · TOOLBAR (screen only) ────────────────────────────────── */
+  .toolbar {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 8px 14px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    z-index: 100;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    border-radius: var(--r-md);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  }
+  .toolbar button {
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    padding: 6px 12px;
+    font: inherit;
+    cursor: pointer;
+    letter-spacing: 0.12em;
+    border-radius: var(--r-xs);
+    text-transform: uppercase;
+  }
+  .toolbar button:hover { background: var(--gold-bright); }
+
+
+  /* ─── 10 · PRINT ────────────────────────────────────────────────── */
+  @page { size: A4 portrait; margin: 0; }
+  @media print {
+    html, body {
+      background: var(--paper);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .toolbar { display: none; }
+    .cv { gap: 0; padding: 0; }
+    .page {
+      box-shadow: none;
+      page-break-after: always;
+      break-after: page;
+      height: 297mm;
+      min-height: 297mm;
+      overflow: hidden;
+      margin: 0;
+    }
+    .page:last-child {
+      page-break-after: auto;
+      break-after: auto;
+    }
+    .letter__body p,
+    .letter__subhead,
+    .letter__salutation,
+    .letter__meta,
+    .letter__signoff,
+    .page-contact {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar" role="toolbar" aria-label="Document actions">
+  <span>Vincent Buyssens · Cover Letter · v12 · 2026.05</span>
+  <button type="button" onclick="window.print()">Print / Save PDF</button>
+</div>
+
+<!-- Reusable inline icon symbols. Referenced via <use href="#icon-x"/>. -->
+<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="icon-mail" viewBox="0 0 24 24">
+      <rect x="2.5" y="4.5" width="19" height="15" rx="2"/>
+      <path d="m21.5 6.5-9.5 6.5L2.5 6.5"/>
+    </symbol>
+    <symbol id="icon-phone" viewBox="0 0 24 24">
+      <path d="M21.5 16.6v3a1.9 1.9 0 0 1-2.1 1.9 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A1.9 1.9 0 0 1 3.6 1.7h3a1.9 1.9 0 0 1 1.9 1.7 12.8 12.8 0 0 0 .7 2.8 1.9 1.9 0 0 1-.4 2.1L7.6 9.5a16 16 0 0 0 6 6l1.2-1.2a1.9 1.9 0 0 1 2.1-.4 12.8 12.8 0 0 0 2.8.7 1.9 1.9 0 0 1 1.7 2"/>
+    </symbol>
+    <symbol id="icon-pin" viewBox="0 0 24 24">
+      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+      <circle cx="12" cy="10" r="3"/>
+    </symbol>
+    <symbol id="icon-globe" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M2 12h20"/>
+      <path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10Z"/>
+    </symbol>
+    <symbol id="icon-linkedin" viewBox="0 0 24 24">
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4V8h4v2a4 4 0 0 1 2-2"/>
+      <rect x="2" y="9" width="4" height="12"/>
+      <circle cx="4" cy="4.5" r="2"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main class="cv">
+
+  <!-- ════════════════════ PAGE 1 ════════════════════ -->
+  <article class="page" aria-labelledby="letter-title">
+    <div class="grid-bg" aria-hidden="true"></div>
+
+    <header class="page__head">
+      <span class="page__head-name">Vincent Buyssens · Cover Letter</span>
+      <span class="page__num">01 <span aria-hidden="true">/</span> 02</span>
+    </header>
+
+    <section class="letter">
+      <div class="hero__lockup">
+        <h1 class="hero__name" id="letter-title">Vincent <em>Buyssens</em></h1>
+        <p class="hero__role">Forward-Deployed AI Operator <span class="hero__role-sep" aria-hidden="true">·</span> Creative Technologist</p>
+      </div>
+
+      <div class="letter__meta" aria-label="Letter meta">
+        <span class="letter__meta-row"><span class="letter__meta-key">Date</span>May 2026</span>
+        <span class="letter__meta-row"><span class="letter__meta-key">To</span>Stripe · Forward Deployed AI Accelerator</span>
+      </div>
+
+      <p class="letter__salutation">Dear Stripe team,</p>
+
+      <div class="letter__body">
+        <p>I'm applying for the Forward Deployed AI Accelerator role because when I read the listing, I immediately recognized the type of work I've been doing at Loop Earplugs since 2024. Stripe describes FDAs embedded with about 20 marketers, building tools alongside them and moving them from awareness to self-sufficiency. At Loop, I've run that arc across six teams: map the real work, build on live deliverables, encode what works into reusable substrate, transfer ownership, move on. What started as a months-long embedding has now become a scalable system I can now apply to almost any team.</p>
+
+        <p>Why Stripe? AI is reshaping how work gets done and how new businesses get built. Smaller teams, new operating models, agents becoming co-founders, etc... I want to work at the financial infrastructure layer underneath that shift. The job opening also echoes what I've been doing at Loop: adoption and automation are not separate tracks. The person teaching marketers to rethink their work should also be the person helping them building their tools..</p>
+
+        <p>My core learning at Loop: adoption starts with navigation. AI sits between a tool and a collaborator, and the hard part is not technical. It's helping people answer a question most have never had to ask: how do I actually want AI to transform how I work? The artifact that used to be the end of the process, the brief, the campaign, the dashboard, is now often the starting point for an agent, a Skill, or a workflow. My job is helping teams see that shift and making sure they become self-sufficient in it.</p>
+
+        <h2 class="letter__subhead"><span class="letter__subhead-dot" aria-hidden="true"></span>At Loop</h2>
+
+        <p>Loop gave me a compressed, high-feedback environment to prove this: 230 people, fast-moving, global, with marketing as the engine of the business. I convinced the founders and VP Marketing to embed me in Studio, our most visible creative team. I joined reviews, scanned briefs for AI angles, changed the mental model first, and built the tooling underneath. Studio became an AI-first creative operation. <strong>500+ ads per month.</strong> The engine underneath: paid social copy Skills I encoded and a custom image and video generation platform I built. <strong>Campaigns ship 2&ndash;3&times; faster</strong> than external agencies, consistently beating ROAS benchmarks. <strong>90% of briefings now involve AI</strong>, all driven autonomously by the Studio team.</p>
+      </div>
+    </section>
+  </article>
+
+
+  <!-- ════════════════════ PAGE 2 ════════════════════ -->
+  <article class="page" aria-label="Cover letter, page 2">
+    <div class="grid-bg" aria-hidden="true"></div>
+
+    <header class="page__head">
+      <span class="page__head-name">Vincent Buyssens · Cover Letter</span>
+      <span class="page__num">02 <span aria-hidden="true">/</span> 02</span>
+    </header>
+
+    <section class="letter">
+      <div class="letter__body">
+        <p>I also led production on two full-AI above-the-line brand films that landed because of grounded, human storytelling; a deliberate counterweight to the AI slop in everyone's feeds. That comes from years of hands-on creative direction, including the Under Armour <em>"Forever Is Made Now"</em> campaign at Tool of North America. I know what craft looks like inside a studio, but I also understand what the Performance team needs from that studio: assets that convert, data that informs the next brief, and a feedback loop between creative quality and commercial results. That's what made the next step natural.</p>
+
+        <p>For Performance Marketing, I built a briefing agent that surfaces insights across past campaigns, ad performance, and competitive data for our Creative Strategists. For Localization, an end-to-end pipeline that transcribes, translates, and dubs top-performing UGC into new markets in hours. Each team started further along because the substrate from the previous team carried forward.</p>
+
+        <p>The biggest throughline across all of it: teaching people how to encode their way of working — experience, judgment, evaluation criteria — into substrate any LLM can inherit. You can't build durable agents or automations without that layer. And once people learn to encode, the flywheel starts turning. They build on their own substrate, teach their peers, and the approach compounds without me. That's documented in the showcase page I'm sharing with this application: <span class="letter__placeholder">[landing page URL]</span>.</p>
+
+        <p>I also bring five years of lecturing at Thomas More University College on AI, internet culture, and storytelling across four media programs. The combination means I can build in real time and coach someone standing next to me while I do it.</p>
+
+        <p>I know Antwerp isn't Toronto or Chicago, but I'm open to relocating, and equally ready to serve as the FDA for European marketing teams from day one. The work I've done at Loop was cross-functional and asynchronous by design anyway so I can adapt to whatever the team needs. I'm raising the geography thing directly because the capability match is exact, and I'd rather make the case than assume it's a wall.</p>
+
+        <p>And I think my case is strong, because this role didn't exist eighteen months ago, barely had a name, but I built it anyway because the work was right in front of me. I'm super proud of my work at Loop and what the teams have achieved, and Stripe is where I want to do it next. AI is going to reshape every business that runs on your infrastructure, and someone needs to make sure Stripe's own teams are operating at that same speed.</p>
+
+        <p>And I want to be that person.</p>
+      </div>
+
+      <div class="letter__signoff" aria-label="Sign-off">
+        <span class="letter__signoff-best">Best,</span>
+        <span class="letter__signoff-name">Vincent</span>
+      </div>
+
+      <footer class="page-contact" aria-label="Contact details">
+        <div class="page-contact__col">
+          <a href="mailto:vince@thoughtform.co">
+            <svg class="ico" aria-hidden="true"><use href="#icon-mail"/></svg>
+            vince@thoughtform.co
+          </a>
+          <span>
+            <svg class="ico" aria-hidden="true"><use href="#icon-phone"/></svg>
+            +32 471 09 42 21
+          </span>
+        </div>
+        <span class="page-contact__location">
+          <svg class="ico" aria-hidden="true"><use href="#icon-pin"/></svg>
+          Antwerp, Belgium
+        </span>
+        <div class="page-contact__col page-contact__col--right">
+          <a href="https://thoughtform.co">
+            <svg class="ico" aria-hidden="true"><use href="#icon-globe"/></svg>
+            thoughtform.co
+          </a>
+          <a href="https://www.linkedin.com/in/starhaven/">
+            <svg class="ico" aria-hidden="true"><use href="#icon-linkedin"/></svg>
+            linkedin.com/in/starhaven
+          </a>
+        </div>
+      </footer>
+    </section>
+  </article>
+
+</main>
+
+</body>
+</html>

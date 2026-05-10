@@ -141,6 +141,15 @@ export function HeadlessShift() {
           <p className="aiop-shift__body aiop-shift__body--strong">
             {headlessShiftSection.bodyStrong}
           </p>
+          {/* Third paragraph — Stripe-applied closing beat. Plain
+              `aiop-shift__body` typography keeps the rhythm with
+              the other two paragraphs; the `--stripe` modifier is
+              wired in case a later iteration wants a small visual
+              accent (e.g., an amber left rule) to differentiate
+              the closing beat. */}
+          <p className="aiop-shift__body aiop-shift__body--stripe">
+            {headlessShiftSection.bodyStripe}
+          </p>
           <div
             className="aiop-shift__actions"
             aria-label="Headless interstitial links"

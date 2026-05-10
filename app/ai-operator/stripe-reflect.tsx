@@ -3,29 +3,22 @@ import { stripeReflectSection } from "./content";
 /*
  * StripeReflect — first beat of the closer.
  *
- * A single tranquil interstitial that turns the page from the
- * architecture deep dive ("what I've built, how it scales") toward
- * the personal frame the closer is about to land ("where does this
- * fit at Stripe?"). Visually mirrors the Evans `QuoteBridge`
- * (`quote-bridge.tsx` + `.aiop-bridge` block in `ai-operator.css`):
- * cream gradient base, three soft lane washes (violet / amber /
- * sage) loosely placed in a triangle, faint dot grid, italic display
- * centerpiece quote with an attribution rule beneath it.
+ * A single tranquil interstitial that opens the closer with the
+ * candidate's own voice. Three-paragraph self-quote on a cream
+ * gradient with three soft lane washes (violet / amber / sage)
+ * loosely placed in a triangle and a faint dot grid behind it.
  *
- * Difference from the Evans bridge: this is self-reflection, not a
- * borrowed thesis. There is no external attribution — the mono-caps
- * subline frames the voice ("a question I keep returning to"), and
- * an optional parenthetical scroll-note sits below it as a quiet
- * editorial aside.
+ * No external attribution — this is self-reflection, so the
+ * figcaption row that briefly carried `Vincent Buyssens / Where the
+ * conviction comes from` was retired. The optional parenthetical
+ * `note` is preserved for future iterations; renders only when truthy.
  *
  * Pure server component. No parallax pin, no slide-up pair, no
  * scroll choreography — the reveal is handled by the existing
- * `.aiop-reveal` IntersectionObserver in `reveal.tsx`. Keeps this
- * beat calm before the video that follows takes the visitor's
- * attention.
+ * `.aiop-reveal` IntersectionObserver in `reveal.tsx`.
  */
 export function StripeReflect() {
-  const { quote, attribName, attribMeta, note } = stripeReflectSection;
+  const { quote, note } = stripeReflectSection;
 
   return (
     <section
@@ -59,38 +52,23 @@ export function StripeReflect() {
             {quote}
           </blockquote>
 
-          <div className="aiop-stripe-reflect__attrib-block">
-            <figcaption className="aiop-stripe-reflect__attrib">
+          {note ? (
+            <p className="aiop-stripe-reflect__note">
               <span
-                className="aiop-stripe-reflect__attrib-rule"
+                className="aiop-stripe-reflect__note-bracket"
                 aria-hidden="true"
-              />
-              <span className="aiop-stripe-reflect__attrib-name">
-                {attribName}
+              >
+                (
               </span>
-              <span className="aiop-stripe-reflect__attrib-meta">
-                {attribMeta}
+              {note}
+              <span
+                className="aiop-stripe-reflect__note-bracket"
+                aria-hidden="true"
+              >
+                )
               </span>
-            </figcaption>
-
-            {note ? (
-              <p className="aiop-stripe-reflect__note">
-                <span
-                  className="aiop-stripe-reflect__note-bracket"
-                  aria-hidden="true"
-                >
-                  (
-                </span>
-                {note}
-                <span
-                  className="aiop-stripe-reflect__note-bracket"
-                  aria-hidden="true"
-                >
-                  )
-                </span>
-              </p>
-            ) : null}
-          </div>
+            </p>
+          ) : null}
         </figure>
       </div>
     </section>

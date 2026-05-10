@@ -1,0 +1,2202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vincent Buyssens · Curriculum Vitae · v17</title>
+<meta name="description" content="Vincent Buyssens — Forward-deployed AI operator. Embedded with marketing and creative teams at Loop Earplugs. Founder of Thoughtform. Curriculum Vitae, May 2026.">
+<meta name="author" content="Vincent Buyssens">
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=PT+Mono&display=swap" rel="stylesheet">
+<style>
+  /* ─────────────────────────────────────────────────────────────────────
+   * Vincent Buyssens · CV · v17 · 2026.05
+   * Single-file, print-first deliverable. A4 portrait, five pages.
+   *
+   * v17 keeps the v16 chassis intact and brings the page wording closer
+   * to v15 across multiple pages:
+   *   - Page 1 practice-areas band restored to the v15 quartet
+   *     (AI Strategy, AI Prototyping, Training, Keynotes).
+   *   - Page 2 Production pillar trades the abstract taste/brand line
+   *     for concrete proof: cross-channel AI guidelines + two full-AI
+   *     above-the-line videos for DemandGen.
+   *   - Page 2 Building pillar heading + bullets switch to the
+   *     descriptive product names from /ai-operator (Briefing Agent,
+   *     Studio PM Orchestrator, AI Image & Video Suite, UGC Dubber)
+   *     with tighter, less corporate copy.
+   *   - Page 4 article blurbs reframe around the actual classes:
+   *     Online Communities held inside an actual online community
+   *     (Azeroth), Social Media Storytelling taught one Meta level up
+   *     (through Instagram).
+   *   - Page 5 pre-AI lede drops the AI-slop "two receipts from
+   *     before the language existed" framing for the sharper
+   *     "prompting complex systems before LLMs existed" thesis, and
+   *     the Save The Expanse paragraph collapses its choppy fragments
+   *     into one fluent sentence.
+   *   - Page 2 closes with a new testimonial callout (.testimonial)
+   *     instead of the deleted stack line: an executive quote from
+   *     Betty Jakobsen (Global & EMEA Export Marketing, Google) on
+   *     two parallel motions Vince pioneered — integrating Google +
+   *     non-Google AI products into creative production, and
+   *     upskilling marketing teams to use them at scale. Light
+   *     treatment: a single gold hairline at the top, a soft radial
+   *     wash, no border / radius / shadow — the earlier framed
+   *     version felt too heavy against the restrained pillar-stack
+   *     above. Centered Inter italic for the quote, PT Mono caps for
+   *     the attribution. Page-break-inside avoid is set so the
+   *     callout never splits across pages.
+   *
+   * v16 retargets the document around the forward-deployed AI operator
+   * profile (embedded with marketing + creative cohorts, transforms
+   * workflows, builds the tools/skills/agents alongside them, scales
+   * patterns across the org). Visual chassis is inherited from v15.
+   *
+   * Page 1 changes (the "Vision" page):
+   *   1. ROLE LINE — "Creative Technologist" is augmented with
+   *      "Forward-Deployed AI Operator" so the reader locates the
+   *      profile inside the role, not next to it.
+   *   2. PROFILE THESIS — rewritten to lead with the embedded posture
+   *      and the strategy-and-building-in-the-same-hands argument.
+   *   3. PRACTICE AREAS — the four cards are retargeted from generic
+   *      practice surfaces (Strategy / Prototyping / Training /
+   *      Keynotes) to the four motions the embedded role actually
+   *      performs: Workflow Transformation, Tool & Agent Building,
+   *      Embedded Coaching, Pattern Scaling.
+   *
+   * Page 2 changes (Loop Earplugs):
+   *   1. POSITION LINE — "Lead Creative Technologist" is augmented with
+   *      "Forward-Deployed across Marketing & Studio" so the page maps
+   *      one-to-one onto the embedded operator role.
+   *   2. CONTEXT — tightened to lead with the embedded posture.
+   *   3. BUILDING PILLAR — bullet list is rewritten to name the four
+   *      shipped systems (Mímir, Heimdall, Vesper, Babylon) instead of
+   *      describing categories. Stack is named explicitly.
+   *
+   * Pages 3–5 inherited verbatim from v15.
+   *
+   * Inherits v15's chassis: cream paper, soft grid background, color
+   * dots, eyebrow-pill, category eyebrows, .linked anchors with unicode
+   * arrow, inline SVG contact icons, Inter + PT Mono typography,
+   * profile-row, flywheel-orbit, page-contact strip.
+   *
+   * Layers:
+   *   01 · TOKENS         — paper, ink, gold, sage, slate, rule, radius, type
+   *   02 · RESET          — zeroed defaults
+   *   03 · BASE           — html / body, font features, tabular nums
+   *   04 · PAGE CHROME    — the .page article + minimal head strip
+   *   05 · COMPONENTS     — hero, skills, role, pillars, points, opener,
+   *                         lede, press, impact dl, articles, case-block,
+   *                         speaking, grid-bg, eyebrow-pill, ico, pop, dot,
+   *                         profile-row, profile-photo, flywheel-orbit,
+   *                         flywheel-phases, page-contact
+   *   06 · TOOLBAR        — screen-only print/save shortcut
+   *   07 · PRINT          — @page A4, page-break rules, color preservation
+   * ──────────────────────────────────────────────────────────────────── */
+
+
+  /* ─── 01 · TOKENS ───────────────────────────────────────────────── */
+  :root {
+    /* Paper & ink — UNCHANGED from V9. */
+    --paper:        #FAF7EE;
+    --paper-soft:   #F4EFE2;
+    --paper-deep:  #EFE7D2;
+    --paper-bright: #FFFCF3;
+    --card:         #FFFFFF;
+
+    --ink:          #110F09;
+    --ink-deep:     #0A0907;
+    --ink-80:       rgba(17, 15, 9, 0.85);
+    --ink-70:       rgba(17, 15, 9, 0.72);
+    --ink-55:       rgba(17, 15, 9, 0.58);
+    --ink-40:       rgba(17, 15, 9, 0.42);
+    --ink-25:       rgba(17, 15, 9, 0.25);
+    --ink-15:       rgba(17, 15, 9, 0.15);
+    --ink-08:       rgba(17, 15, 9, 0.08);
+
+    /* Gold — primary accent. UNCHANGED from V9. */
+    --gold:         #9A7A2E;
+    --gold-bright:  #C9A156;
+    --gold-soft:    rgba(154, 122, 46, 0.16);
+    --gold-glow:    rgba(154, 122, 46, 0.28);
+    --gold-rule:    rgba(154, 122, 46, 0.40);
+
+    /* Sage & Slate — secondary accent dots ONLY. Never typography.
+       Aether-adjacent neutrals (no Loop violet). */
+    --sage:         #4F6B4A;
+    --sage-soft:    rgba(79, 107, 74, 0.18);
+    --slate:        #4F5B6B;
+    --slate-soft:   rgba(79, 91, 107, 0.18);
+
+    /* Rules */
+    --rule:         rgba(17, 15, 9, 0.12);
+    --rule-soft:    rgba(17, 15, 9, 0.06);
+
+    /* Tones for content sitting on the dark pop panel */
+    --on-dark:      rgba(250, 247, 238, 0.95);
+    --on-dark-70:   rgba(250, 247, 238, 0.72);
+    --on-dark-55:   rgba(250, 247, 238, 0.55);
+    --on-dark-15:   rgba(250, 247, 238, 0.15);
+
+    /* Radius — modern restraint (Aether-aligned) */
+    --r-xs: 2px;
+    --r-sm: 4px;
+    --r-md: 6px;
+    --r-lg: 10px;
+    --r-xl: 14px;
+    --r-pill: 999px;
+
+    /* Shadow */
+    --shadow-card:  0 1px 2px rgba(17, 15, 9, 0.04),
+                    0 4px 12px rgba(17, 15, 9, 0.05);
+    --shadow-page:  0 1px 2px rgba(0, 0, 0, 0.04),
+                    0 8px 32px rgba(0, 0, 0, 0.10);
+    --shadow-pop:   0 2mm 4mm rgba(17, 15, 9, 0.18),
+                    0 6mm 18mm rgba(17, 15, 9, 0.22);
+
+    /* Type */
+    --font-sans:    "Inter", "Helvetica Neue", system-ui, sans-serif;
+    --font-display: "Inter", "Helvetica Neue", system-ui, sans-serif;
+    --font-mono:    "PT Mono", ui-monospace, "JetBrains Mono", monospace;
+  }
+
+
+  /* ─── 02 · RESET ────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+
+  /* ─── 03 · BASE ─────────────────────────────────────────────────── */
+  html { background: #E8E2D2; }
+  body {
+    background: #E8E2D2;
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 10pt;
+    line-height: 1.55;
+    letter-spacing: -0.005em;
+    font-feature-settings: "ss01", "kern", "cv11";
+    font-variant-numeric: tabular-nums;
+    font-variation-settings: "opsz" 14;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; text-decoration: none; }
+
+
+  /* ─── 04 · PAGE CHROME ──────────────────────────────────────────── */
+  .cv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18mm;
+    padding: 24mm 0;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    background: var(--paper);
+    padding: 12mm 16mm 10mm;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-page);
+    overflow: hidden;
+  }
+
+  .page__head {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 4mm;
+    margin-bottom: 7mm;
+    border-bottom: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: 7pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-55);
+  }
+  .page__head-name { color: var(--ink-70); }
+  .page__num {
+    color: var(--ink-40);
+    font-variant-numeric: tabular-nums;
+  }
+  .page__num strong { color: var(--ink); font-weight: 400; }
+
+
+  /* ─── 05 · COMPONENTS ───────────────────────────────────────────── */
+
+  /* — Soft grid background (Aether's hero-grid-bg, adapted to print).
+       Uses a 6mm cell that survives PDF compression cleanly. — */
+  .grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(17, 15, 9, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(17, 15, 9, 0.055) 1px, transparent 1px);
+    background-size: 6mm 6mm;
+    mask-image: radial-gradient(ellipse 75% 80% at 50% 35%, black 25%, transparent 78%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 80% at 50% 35%, black 25%, transparent 78%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* — Eyebrow-pill (small status chip with pulse dot, Aether pattern). — */
+  .eyebrow-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 2.2mm;
+    padding: 1.4mm 3mm 1.4mm 2.4mm;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-pill);
+    font-family: var(--font-mono);
+    font-size: 6.5pt;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-70);
+    box-shadow: 0 1px 2px rgba(17, 15, 9, 0.04);
+  }
+  .eyebrow-pill__pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 0 3px var(--gold-soft);
+    flex-shrink: 0;
+  }
+  .eyebrow-pill--sage .eyebrow-pill__pulse {
+    background: var(--sage);
+    box-shadow: 0 0 0 3px var(--sage-soft);
+  }
+  .eyebrow-pill--slate .eyebrow-pill__pulse {
+    background: var(--slate);
+    box-shadow: 0 0 0 3px var(--slate-soft);
+  }
+
+  /* — Color dots (small colored circles, used as visual rhythm markers) — */
+  .dot-mark {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+  .dot-mark--sage  { background: var(--sage); }
+  .dot-mark--slate { background: var(--slate); }
+  .dot-mark--gold  { background: var(--gold); }
+
+  /* — Inline SVG icons (mail/phone/pin/globe/linkedin) — */
+  .ico {
+    width: 9pt;
+    height: 9pt;
+    flex-shrink: 0;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* — Linked title (with trailing ↗ arrow indicator) — */
+  .linked {
+    color: inherit;
+    text-decoration: none;
+    background-image: linear-gradient(var(--rule-soft), var(--rule-soft));
+    background-size: 100% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-image 120ms ease;
+  }
+  .linked:hover {
+    background-image: linear-gradient(var(--gold), var(--gold));
+  }
+  .linked::after {
+    content: " \2197";
+    color: var(--gold);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 0.8em;
+    margin-left: 0.15em;
+    display: inline-block;
+    transform: translateY(-0.05em);
+  }
+
+  /* — Eyebrow (gold caps micro-label, used on page 5) — */
+  .eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 7pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 400;
+    margin-bottom: 3mm;
+  }
+
+  /* — Hero (page 1) — */
+  .hero {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3.5mm;
+  }
+  .hero > * { position: relative; z-index: 1; }
+
+  .hero__lockup {
+    display: flex;
+    flex-direction: column;
+    gap: 2mm;
+  }
+  .hero__name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 30pt;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    font-variation-settings: "opsz" 32;
+  }
+  .hero__name em {
+    font-style: normal;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .hero__role {
+    font-family: var(--font-mono);
+    font-size: 9pt;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-70);
+  }
+  .hero__role-sep {
+    color: var(--gold);
+    margin: 0 0.6em;
+    font-weight: 600;
+  }
+
+  .hero__byline-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2mm;
+  }
+  .hero__byline {
+    font-size: 10pt;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .hero__byline strong { font-weight: 600; }
+  .hero__byline .dot {
+    color: var(--gold);
+    margin: 0 1.5mm;
+    font-weight: 600;
+  }
+  .hero__credentials {
+    font-family: var(--font-mono);
+    font-size: 7.5pt;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-55);
+  }
+
+  /* — Skills band — 4 cards with thin gold top-rule + tiny color dot — */
+  .skills {
+    margin-top: 7mm;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2.5mm;
+  }
+  .skill {
+    position: relative;
+    padding: 3mm 3.5mm 2.8mm;
+    background: var(--card);
+    border: 1px solid var(--rule-soft);
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-card);
+  }
+  .skill::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 3.5mm;
+    right: 3.5mm;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 0 0 var(--r-xs) var(--r-xs);
+  }
+  .skill__head {
+    display: flex;
+    align-items: center;
+    gap: 1.8mm;
+    margin-top: 0.3mm;
+  }
+  .skill__name {
+    font-weight: 600;
+    font-size: 9pt;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+    line-height: 1.2;
+  }
+  .skill__desc {
+    font-family: var(--font-mono);
+    font-size: 6.5pt;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-55);
+    margin-top: 1.4mm;
+    line-height: 1.45;
+  }
+
+  /* — Pop · the dark elevated panel (Aether spotlight). v15: simplified to
+       a single-column flex container; the photo lives outside the pop in
+       the .profile-row grid, and contact has moved to the page footer. — */
+  .pop {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2.4mm;
+    background: linear-gradient(180deg, var(--ink-deep) 0%, var(--ink) 100%);
+    color: var(--on-dark);
+    border-radius: var(--r-lg);
+    padding: 5mm 6mm 5.5mm;
+    box-shadow: var(--shadow-pop);
+    overflow: hidden;
+    height: 100%;
+  }
+  .pop::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 45% at 12% 0%, rgba(201, 161, 86, 0.14), transparent 65%),
+      radial-gradient(ellipse 50% 50% at 100% 100%, rgba(201, 161, 86, 0.06), transparent 70%);
+    pointer-events: none;
+  }
+  .pop > * { position: relative; z-index: 1; }
+
+  /* — Profile row · square portrait + dark pop, side by side. — */
+  .profile-row {
+    display: grid;
+    grid-template-columns: 52mm 1fr;
+    gap: 5mm;
+    margin-top: 6mm;
+    align-items: stretch;
+  }
+  .profile-photo {
+    position: relative;
+    border-radius: var(--r-md);
+    overflow: hidden;
+    border: 1px solid var(--rule-soft);
+    box-shadow: var(--shadow-card);
+    background: var(--paper-soft);
+    min-height: 52mm;
+  }
+  .profile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .pop__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 2mm;
+    font-family: var(--font-mono);
+    font-size: 6.5pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold-bright);
+    font-weight: 600;
+  }
+  .pop__eyebrow::before {
+    content: "";
+    width: 8mm;
+    height: 1px;
+    background: var(--gold-bright);
+    opacity: 0.6;
+  }
+  .pop__summary {
+    font-size: 9.5pt;
+    line-height: 1.55;
+    color: var(--on-dark);
+    letter-spacing: -0.005em;
+  }
+  .pop__summary strong {
+    color: var(--paper-bright);
+    font-weight: 600;
+  }
+  .pop__summary em {
+    font-style: italic;
+    color: var(--gold-bright);
+  }
+  .pop__thesis {
+    display: block;
+    font-family: var(--font-display);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 11pt;
+    line-height: 1.35;
+    color: var(--paper-bright);
+    letter-spacing: -0.015em;
+    margin-bottom: 2.2mm;
+    font-variation-settings: "opsz" 24;
+  }
+
+  /* — Role block — */
+  .role { margin-bottom: 4.5mm; }
+  .role + .role {
+    padding-top: 4.5mm;
+    border-top: 1px solid var(--rule);
+  }
+  .role__head {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 4mm;
+    margin-bottom: 0.5mm;
+  }
+  .role__eyebrow-row {
+    grid-column: 1 / -1;
+    margin-bottom: 2mm;
+  }
+  .role__category {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.8mm;
+    grid-column: 1 / -1;
+    font-family: var(--font-mono);
+    font-size: 6.5pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 1.5mm;
+  }
+  .role__category::before {
+    content: "";
+    width: 5mm;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.5;
+  }
+  .role__title {
+    font-family: var(--font-display);
+    font-size: 16pt;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    line-height: 1.05;
+    font-variation-settings: "opsz" 28;
+  }
+  .role__period {
+    font-family: var(--font-mono);
+    font-size: 7.5pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-55);
+    white-space: nowrap;
+  }
+  .role__position {
+    margin-top: 2.5mm;
+    font-size: 9.5pt;
+    color: var(--ink-70);
+  }
+  .role__position .dot {
+    color: var(--gold);
+    margin: 0 6px;
+  }
+  .role__context {
+    font-size: 9.5pt;
+    line-height: 1.5;
+    color: var(--ink-80);
+    margin: 1.8mm 0 2.5mm;
+  }
+  .role__context em { font-style: italic; }
+
+  /* — Pillars (page 1, Loop) — 2x2 cards with rotating color-dot top-rule — */
+  .pillars {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.5mm;
+    margin-top: 3mm;
+  }
+  .pillar {
+    position: relative;
+    padding: 3.5mm 4mm 3.5mm;
+    background: var(--card);
+    border: 1px solid var(--rule-soft);
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-card);
+  }
+  .pillar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 4mm;
+    width: 22mm;
+    height: 2px;
+    background: var(--gold);
+    border-radius: 0 0 var(--r-xs) var(--r-xs);
+  }
+  .pillar--sage::before  { background: var(--sage); }
+  .pillar--slate::before { background: var(--slate); }
+  .pillar__label-row {
+    display: flex;
+    align-items: center;
+    gap: 1.8mm;
+    margin-top: 0.5mm;
+    margin-bottom: 1.5mm;
+  }
+  .pillar__label {
+    font-family: var(--font-mono);
+    font-size: 6.5pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-70);
+    font-weight: 600;
+  }
+  .pillar--sage .pillar__label  { color: var(--sage); }
+  .pillar--slate .pillar__label { color: var(--slate); }
+  .pillar:not([class*="--"]) .pillar__label { color: var(--gold); }
+  .pillar__lead {
+    font-size: 9pt;
+    line-height: 1.35;
+    color: var(--ink);
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    margin-bottom: 1.8mm;
+  }
+  .pillar__list { list-style: none; }
+  .pillar__list li {
+    font-size: 8.5pt;
+    line-height: 1.4;
+    color: var(--ink-80);
+    padding-left: 3.5mm;
+    position: relative;
+    margin-bottom: 1mm;
+  }
+  .pillar__list li:last-child { margin-bottom: 0; }
+  .pillar__list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 1.5mm;
+    width: 3px;
+    height: 3px;
+    background: var(--gold);
+  }
+  .pillar--sage  .pillar__list li::before { background: var(--sage); }
+  .pillar--slate .pillar__list li::before { background: var(--slate); }
+  .pillar__list li strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  /* — Points (achievements list) — */
+  .points {
+    list-style: none;
+    margin-top: 2mm;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2mm;
+  }
+  .points li {
+    font-size: 8.8pt;
+    line-height: 1.42;
+    color: var(--ink-80);
+    padding-left: 4.5mm;
+    position: relative;
+  }
+  .points li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 1.7mm;
+    width: 3px;
+    height: 3px;
+    background: var(--gold);
+  }
+  .points li strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .points li em { font-style: italic; }
+
+  /* — Page opener (pages 2-4) — */
+  .opener {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8mm;
+    margin-bottom: 5mm;
+    padding-bottom: 4mm;
+    border-bottom: 1px solid var(--ink);
+  }
+  .opener__title {
+    font-family: var(--font-display);
+    font-size: 26pt;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    line-height: 1;
+    font-variation-settings: "opsz" 32;
+  }
+  .opener__period {
+    font-family: var(--font-mono);
+    font-size: 8.5pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-55);
+    white-space: nowrap;
+    align-self: flex-end;
+    padding-bottom: 1mm;
+  }
+
+  .lede {
+    font-size: 9.5pt;
+    line-height: 1.5;
+    color: var(--ink-80);
+    margin-bottom: 6mm;
+  }
+
+  /* — Press section — */
+  .press {
+    margin-top: 4mm;
+    padding-top: 3mm;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .press__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.8mm;
+    font-family: var(--font-mono);
+    font-size: 7pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2mm;
+  }
+  .press__item {
+    display: grid;
+    grid-template-columns: 4mm 36mm 1fr;
+    gap: 2.5mm;
+    padding: 1.6mm 0;
+    border-top: 1px solid var(--rule-soft);
+    font-size: 9pt;
+    align-items: center;
+  }
+  .press__item:first-of-type { border-top: none; padding-top: 0; }
+  .press__item:last-child { padding-bottom: 0; }
+  .press__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+    justify-self: center;
+  }
+  .press__item:nth-child(3n) .press__dot { background: var(--sage); }
+  .press__item:nth-child(3n+1) .press__dot { background: var(--gold); }
+  .press__item:nth-child(3n+2) .press__dot { background: var(--slate); }
+  .press__source {
+    font-family: var(--font-mono);
+    font-size: 7.5pt;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-55);
+  }
+  .press__quote {
+    color: var(--ink-80);
+    line-height: 1.45;
+  }
+
+  /* — Impact (definition list, semantic <dl>) — */
+  .impact {
+    display: grid;
+    grid-template-columns: 22mm 1fr;
+    column-gap: 5mm;
+    row-gap: 0;
+    margin-top: 2mm;
+  }
+  .impact dt,
+  .impact dd {
+    padding: 2.2mm 0;
+    border-top: 1px solid var(--rule);
+  }
+  .impact dt {
+    font-family: var(--font-mono);
+    font-size: 7pt;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-55);
+  }
+  .impact dd {
+    font-size: 9.5pt;
+    line-height: 1.55;
+    color: var(--ink-80);
+  }
+  .impact dd strong { color: var(--ink); font-weight: 600; }
+
+  /* — Articles (page 3) — */
+  .articles {
+    margin-top: 7mm;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 8mm;
+    row-gap: 4mm;
+    padding-top: 5mm;
+    border-top: 1px solid var(--rule);
+  }
+  .articles__label {
+    grid-column: 1 / -1;
+    display: inline-flex;
+    align-items: center;
+    gap: 1.8mm;
+    font-family: var(--font-mono);
+    font-size: 7pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .article { display: flex; flex-direction: column; gap: 3mm; }
+  .article__tile {
+    aspect-ratio: 16 / 10;
+    background: var(--paper-soft);
+    border: 1px solid var(--rule-soft);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    position: relative;
+  }
+  .article__tile img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .article__source {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.8mm;
+    font-family: var(--font-mono);
+    font-size: 7pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .article__headline {
+    font-family: var(--font-display);
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-top: 0.5mm;
+    font-variation-settings: "opsz" 24;
+  }
+  .article__blurb {
+    font-size: 9pt;
+    line-height: 1.5;
+    color: var(--ink-70);
+    margin-top: 1.5mm;
+  }
+
+  /* — Page 5 case-blocks — */
+  .case-hero-wrap {
+    position: relative;
+    z-index: 1;
+  }
+  .case-title {
+    font-family: var(--font-display);
+    font-size: 30pt;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+    margin-top: 2mm;
+    margin-bottom: 4mm;
+    font-variation-settings: "opsz" 32;
+  }
+  .case-hero {
+    margin-bottom: 5mm;
+    padding-top: 3mm;
+    border-top: 1px solid var(--rule);
+  }
+  .case-lede {
+    font-size: 11pt;
+    line-height: 1.6;
+    color: var(--ink-80);
+    max-width: 138mm;
+  }
+  .case-lede strong { color: var(--ink); font-weight: 600; }
+
+  .case-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 4.5mm;
+  }
+  .case-block {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1.55fr;
+    gap: 7mm;
+    padding-top: 3.5mm;
+    align-items: start;
+  }
+  .case-block::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gold-rule);
+  }
+  .case-block.is-reverse {
+    grid-template-columns: 1.55fr 1fr;
+  }
+  .case-tile {
+    aspect-ratio: 1 / 1;
+    background: var(--paper-soft);
+    border: 1px solid var(--rule-soft);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    position: relative;
+  }
+  .case-tile img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .case-text { display: flex; flex-direction: column; }
+  .case-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-family: var(--font-mono);
+    font-size: 7pt;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 3mm;
+  }
+  .case-year { color: var(--gold); font-weight: 600; }
+  .case-source { color: var(--ink-55); }
+  .case-headline {
+    font-family: var(--font-display);
+    font-size: 17pt;
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    margin-bottom: 3mm;
+    font-variation-settings: "opsz" 28;
+  }
+  .case-body {
+    font-size: 9.1pt;
+    line-height: 1.46;
+    color: var(--ink-80);
+  }
+  .case-body p + p { margin-top: 1.4mm; }
+  .case-body strong { color: var(--ink); font-weight: 600; }
+  .case-body em { font-style: italic; }
+
+  /* — Speaking (page 5 closer) — */
+  .speaking {
+    margin-top: 4.5mm;
+    padding-top: 3.5mm;
+    border-top: 1px solid var(--ink);
+  }
+  .speaking__title {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.8mm;
+    font-family: var(--font-mono);
+    font-size: 7pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 3mm;
+  }
+
+  /* — Vision page: horizontal Navigate / Encode / Build model — */
+  .vision {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .vision > * { position: relative; z-index: 1; }
+  .vision__intro {
+    display: grid;
+    gap: 4mm;
+  }
+  .vision-model {
+    position: relative;
+    margin-top: 6mm;
+    padding: 5.5mm 6mm 5mm;
+    border: 1px solid var(--rule-soft);
+    border-radius: var(--r-xl);
+    background: linear-gradient(180deg, rgba(255, 252, 243, 0.76), rgba(244, 239, 226, 0.78));
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+  .vision-atmosphere {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 50% 35% at 50% 65%, rgba(154, 122, 46, 0.10), transparent 65%),
+      radial-gradient(ellipse 40% 30% at 15% 85%, rgba(79, 107, 74, 0.07), transparent 60%),
+      radial-gradient(ellipse 40% 30% at 85% 85%, rgba(79, 91, 107, 0.07), transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .vision-model__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5mm;
+    padding-bottom: 4mm;
+    border-bottom: 1px solid var(--rule);
+  }
+  .vision-model__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 2mm;
+    font-family: var(--font-mono);
+    font-size: 7pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  /* (.vision-model__note removed in v15 — operating-model header is now
+     just the gold-dot label; the "Navigate · Encode · Build" hint was
+     redundant with the orbit pills + phase descriptions.) */
+  /* — Flywheel · circular orbit (ported from Aether home-hero, .hero-orbit).
+       Concentric rings, three color-coded pills positioned around the
+       perimeter at top / bottom-left / bottom-right, and a centred
+       substrate core. Paired with a stacked column of phase descriptions
+       on the right via .flywheel-pair. — */
+  .flywheel-pair {
+    display: grid;
+    grid-template-columns: 70mm 1fr;
+    gap: 7mm;
+    margin-top: 4.5mm;
+    align-items: stretch;
+  }
+  .flywheel-orbit {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: grid;
+    place-items: center;
+  }
+  .flywheel-orbit__ring {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+  .flywheel-orbit__ring--outer {
+    inset: 4%;
+    border: 1px dashed var(--gold-rule);
+  }
+  .flywheel-orbit__ring--inner {
+    inset: 22%;
+    border: 1px solid var(--rule);
+  }
+  .flywheel-orbit__pill {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: 1.6mm;
+    padding: 1.4mm 2.8mm;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-pill);
+    font-family: var(--font-mono);
+    font-size: 6.6pt;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+    box-shadow: 0 2px 6px rgba(17, 15, 9, 0.06);
+    white-space: nowrap;
+    z-index: 2;
+  }
+  .flywheel-orbit__pill .dot-mark {
+    width: 5px;
+    height: 5px;
+  }
+  .flywheel-orbit__pill--top {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .flywheel-orbit__pill--bottom-left {
+    bottom: 8%;
+    left: 0;
+  }
+  .flywheel-orbit__pill--bottom-right {
+    bottom: 8%;
+    right: 0;
+  }
+  .flywheel-orbit__core {
+    position: relative;
+    z-index: 1;
+    width: 38%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: linear-gradient(160deg, var(--paper-bright), var(--paper-soft));
+    border: 1px solid var(--rule);
+    box-shadow: 0 4px 14px rgba(17, 15, 9, 0.10);
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 3mm;
+  }
+  .flywheel-orbit__core strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 11pt;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    color: var(--ink);
+    font-variation-settings: "opsz" 24;
+    line-height: 1;
+  }
+  .flywheel-orbit__core span {
+    display: block;
+    margin-top: 1mm;
+    font-family: var(--font-mono);
+    font-size: 5.8pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-55);
+    font-weight: 600;
+  }
+
+  /* — Flywheel phases · stacked phase descriptions accompanying the orbit.
+       justify-content: space-between distributes the three rows across
+       the orbit's height so Navigate sits near the top pill, Encode in the
+       middle, Build near the bottom pills. — */
+  .flywheel-phases {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 3mm;
+  }
+  .flywheel-phases__row {
+    position: relative;
+    padding-left: 5mm;
+  }
+  .flywheel-phases__row::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 1.6mm;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+  .flywheel-phases__row--encode::before { background: var(--sage); }
+  .flywheel-phases__row--build::before { background: var(--slate); }
+  .flywheel-phases__phase {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 6.4pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .flywheel-phases__row--encode .flywheel-phases__phase { color: var(--sage); }
+  .flywheel-phases__row--build .flywheel-phases__phase { color: var(--slate); }
+  .flywheel-phases__title {
+    margin-top: 1.2mm;
+    font-family: var(--font-display);
+    font-size: 11pt;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    font-variation-settings: "opsz" 24;
+  }
+  .flywheel-phases__body {
+    margin-top: 1.5mm;
+    font-size: 8pt;
+    line-height: 1.4;
+    color: var(--ink-70);
+  }
+
+  .loop-indicator {
+    margin-top: 4mm;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 7pt;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  /* (.vision-outcome removed in v15 — the "Adoption is not a program"
+     tagline created visual noise below the orbit; the loop indicator
+     "↻ Each turn makes the next turn lighter" already closes the
+     operating-model frame.) */
+  /* — Page contact · clean horizontal strip pinned at the bottom of Page 1.
+       Replaces the old .pop__contact column that lived inside the dark
+       profile pop. Five items (mail, phone, location, web, LinkedIn)
+       separated by gold pulse dots, mono caps. — */
+  /* Business-card grid: 3 columns × 2 rows. Email/phone stack at the
+     left, location sits centred in the middle, website/LinkedIn stack
+     at the right. The middle column is auto-sized so the side columns
+     get equal flex space. */
+  .page-contact {
+    margin-top: auto;
+    padding-top: 6mm;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    column-gap: 8mm;
+    font-family: var(--font-mono);
+    font-size: 7pt;
+    letter-spacing: 0.04em;
+    color: var(--ink-70);
+  }
+  .page-contact__col {
+    display: flex;
+    flex-direction: column;
+    gap: 2.2mm;
+    align-items: flex-start;
+  }
+  .page-contact__col--right { align-items: flex-end; }
+  .page-contact__location { justify-self: center; }
+  .page-contact a,
+  .page-contact > span,
+  .page-contact__col > a,
+  .page-contact__col > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.6mm;
+    color: var(--ink);
+    transition: color 120ms ease;
+    white-space: nowrap;
+  }
+  .page-contact a:hover { color: var(--gold); }
+  .page-contact .ico {
+    color: var(--gold);
+    width: 8.5pt;
+    height: 8.5pt;
+  }
+
+  /* Make the .vision section flex-grow so .page-contact's margin-top: auto
+     pushes the contact strip to the bottom of the printed A4 page. */
+  .vision { flex: 1; }
+
+  /* — Dedicated Loop page: proof band + stacked pillars — */
+  .loop-page {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .loop-page__intro {
+    display: grid;
+    gap: 2.5mm;
+  }
+  .loop-page__headline {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 8mm;
+    margin-top: 3mm;
+  }
+  .loop-page__position {
+    margin-top: 2.5mm;
+    font-size: 9.5pt;
+    color: var(--ink-70);
+  }
+  .stat-band {
+    margin-top: 7mm;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--rule-soft);
+    border: 1px solid var(--rule-soft);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+  }
+  .stat {
+    position: relative;
+    padding: 4mm;
+    background: linear-gradient(180deg, var(--paper-soft) 0%, var(--paper-bright) 100%);
+  }
+  .stat__value {
+    font-family: var(--font-display);
+    font-size: 21pt;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    font-variation-settings: "opsz" 32;
+  }
+  .stat__label {
+    display: flex;
+    align-items: center;
+    gap: 1.7mm;
+    margin-top: 2mm;
+    font-family: var(--font-mono);
+    font-size: 6.4pt;
+    line-height: 1.35;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-55);
+  }
+  .pillar-stack {
+    margin-top: 7mm;
+    display: grid;
+    gap: 5mm;
+  }
+  .pillar-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 29mm 1fr;
+    column-gap: 6mm;
+    padding-top: 4mm;
+    border-top: 1px solid var(--gold-rule);
+  }
+  .pillar-row--sage { border-top-color: rgba(79, 107, 74, 0.38); }
+  .pillar-row--slate { border-top-color: rgba(79, 91, 107, 0.38); }
+  .pillar-row__label {
+    display: flex;
+    align-items: center;
+    gap: 1.8mm;
+    font-family: var(--font-mono);
+    font-size: 6.5pt;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .pillar-row--sage .pillar-row__label { color: var(--sage); }
+  .pillar-row--slate .pillar-row__label { color: var(--slate); }
+  .pillar-row__lead {
+    font-family: var(--font-display);
+    font-size: 10.5pt;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 2mm;
+  }
+  .pillar-row__list {
+    list-style: none;
+    display: grid;
+    gap: 1mm;
+  }
+  .pillar-row__list li {
+    position: relative;
+    padding-left: 4mm;
+    font-size: 8.6pt;
+    line-height: 1.4;
+    color: var(--ink-80);
+  }
+  .pillar-row__list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 1.5mm;
+    width: 3px;
+    height: 3px;
+    background: var(--gold);
+  }
+  .pillar-row--sage .pillar-row__list li::before { background: var(--sage); }
+  .pillar-row--slate .pillar-row__list li::before { background: var(--slate); }
+  .pillar-row__list strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .pillar-row__stack {
+    margin-top: 2.2mm;
+    padding-top: 2mm;
+    border-top: 1px dashed var(--rule-soft);
+    font-family: var(--font-mono);
+    font-size: 7pt;
+    line-height: 1.45;
+    letter-spacing: 0.06em;
+    color: var(--ink-55);
+  }
+
+  /* — Testimonial · light gradient callout for executive proof quotes
+       (Page 2 footer). Sits below the pillar-stack as a quiet
+       endorsement: a single gold hairline at the top (mirroring the
+       .case-block pattern) plus a soft radial wash that fades to paper
+       at the edges, so the callout feels like a tonal shift rather
+       than a boxed card. The earlier framed version (border + radius +
+       shadow) felt too heavy against the restrained pillar-stack
+       above. Italic Inter at display size for the quote, PT Mono caps
+       for the attribution. Page-break-inside avoid is set in the
+       print rule below. — */
+  .testimonial {
+    margin-top: 7mm;
+    padding: 6mm 6mm 5mm;
+    text-align: center;
+    position: relative;
+    background:
+      radial-gradient(ellipse 70% 100% at 50% 50%, rgba(201, 161, 86, 0.09), transparent 72%);
+  }
+  .testimonial::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gold-rule);
+  }
+  .testimonial__quote {
+    font-family: var(--font-display);
+    font-size: 10pt;
+    line-height: 1.5;
+    color: var(--ink);
+    letter-spacing: -0.012em;
+    font-style: italic;
+    font-weight: 400;
+    font-variation-settings: "opsz" 24;
+    max-width: 158mm;
+    margin: 0 auto;
+  }
+  .testimonial__quote strong {
+    font-style: normal;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .testimonial__attribution {
+    margin-top: 3mm;
+    display: inline-flex;
+    align-items: center;
+    gap: 2mm;
+    font-family: var(--font-mono);
+    font-size: 6.8pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-70);
+    font-weight: 600;
+  }
+  .testimonial__attribution::before,
+  .testimonial__attribution::after {
+    content: "";
+    width: 5mm;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.55;
+  }
+  .testimonial__attribution-name {
+    color: var(--ink);
+  }
+  .testimonial__attribution-meta {
+    color: var(--ink-55);
+    font-weight: 400;
+  }
+  .testimonial__attribution .dot {
+    color: var(--gold);
+    margin: 0 0.4mm;
+    font-weight: 600;
+  }
+
+
+  /* ─── 06 · TOOLBAR (screen only) ────────────────────────────────── */
+  .toolbar {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 8px 14px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    z-index: 100;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    border-radius: var(--r-md);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+  }
+  .toolbar button {
+    background: var(--gold);
+    color: var(--ink);
+    border: none;
+    padding: 6px 12px;
+    font: inherit;
+    cursor: pointer;
+    letter-spacing: 0.12em;
+    border-radius: var(--r-xs);
+    text-transform: uppercase;
+  }
+  .toolbar button:hover { background: var(--gold-bright); }
+
+
+  /* ─── 07 · PRINT ────────────────────────────────────────────────── */
+  @page { size: A4 portrait; margin: 0; }
+  @media print {
+    html, body {
+      background: var(--paper);
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .toolbar { display: none; }
+    .cv { gap: 0; padding: 0; }
+    .page {
+      box-shadow: none;
+      page-break-after: always;
+      break-after: page;
+      height: 297mm;
+      min-height: 297mm;
+      overflow: hidden;
+      margin: 0;
+    }
+    .page:last-child {
+      page-break-after: auto;
+      break-after: auto;
+    }
+    .role,
+    .case-block,
+    .article,
+    .pillar,
+    .skill,
+    .press__item,
+    .impact > *,
+    .pop,
+    .profile-row,
+    .profile-photo,
+    .flywheel-pair,
+    .flywheel-orbit,
+    .flywheel-phases__row,
+    .page-contact,
+    .testimonial {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="toolbar" role="toolbar" aria-label="Document actions">
+  <span>Vincent Buyssens · CV · v17 · 2026.05</span>
+  <button type="button" onclick="window.print()">Print / Save PDF</button>
+</div>
+
+<!-- Reusable inline icon symbols. Referenced via <use href="#icon-x"/>. -->
+<svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="icon-mail" viewBox="0 0 24 24">
+      <rect x="2.5" y="4.5" width="19" height="15" rx="2"/>
+      <path d="m21.5 6.5-9.5 6.5L2.5 6.5"/>
+    </symbol>
+    <symbol id="icon-phone" viewBox="0 0 24 24">
+      <path d="M21.5 16.6v3a1.9 1.9 0 0 1-2.1 1.9 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A1.9 1.9 0 0 1 3.6 1.7h3a1.9 1.9 0 0 1 1.9 1.7 12.8 12.8 0 0 0 .7 2.8 1.9 1.9 0 0 1-.4 2.1L7.6 9.5a16 16 0 0 0 6 6l1.2-1.2a1.9 1.9 0 0 1 2.1-.4 12.8 12.8 0 0 0 2.8.7 1.9 1.9 0 0 1 1.7 2"/>
+    </symbol>
+    <symbol id="icon-pin" viewBox="0 0 24 24">
+      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+      <circle cx="12" cy="10" r="3"/>
+    </symbol>
+    <symbol id="icon-globe" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M2 12h20"/>
+      <path d="M12 2a15 15 0 0 1 4 10 15 15 0 0 1-4 10 15 15 0 0 1-4-10 15 15 0 0 1 4-10Z"/>
+    </symbol>
+    <symbol id="icon-linkedin" viewBox="0 0 24 24">
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4V8h4v2a4 4 0 0 1 2-2"/>
+      <rect x="2" y="9" width="4" height="12"/>
+      <circle cx="4" cy="4.5" r="2"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main class="cv">
+
+  <!-- ════════════════════ PAGE 1 — VISION ════════════════════ -->
+  <article class="page" aria-labelledby="page-1-title">
+    <div class="grid-bg" aria-hidden="true"></div>
+
+    <header class="page__head">
+      <span class="page__head-name">Vincent Buyssens · Curriculum Vitae</span>
+      <span class="page__num">01 <span aria-hidden="true">/</span> 05</span>
+    </header>
+
+    <section class="vision">
+      <div class="vision__intro">
+        <div class="hero__lockup">
+          <h1 class="hero__name" id="page-1-title">Vincent <em>Buyssens</em></h1>
+          <p class="hero__role">Forward-Deployed AI Operator <span class="hero__role-sep" aria-hidden="true">·</span> Creative Technologist</p>
+        </div>
+
+        <div class="hero__byline-block">
+          <p class="hero__byline">
+            Embedded at <strong>Loop Earplugs</strong>
+            <span class="dot" aria-hidden="true">·</span>
+            Founder of <strong>Thoughtform</strong>
+          </p>
+          <p class="hero__credentials">Bachelor in Journalism · Thomas More University College · 2010–2014</p>
+        </div>
+      </div>
+
+      <div class="skills" role="list" aria-label="Practice areas">
+        <div class="skill" role="listitem">
+          <div class="skill__head">
+            <span class="dot-mark dot-mark--gold" aria-hidden="true"></span>
+            <div class="skill__name">AI Strategy</div>
+          </div>
+          <div class="skill__desc">Vision</div>
+          <div class="skill__desc">Operating Models</div>
+        </div>
+        <div class="skill" role="listitem">
+          <div class="skill__head">
+            <span class="dot-mark dot-mark--sage" aria-hidden="true"></span>
+            <div class="skill__name">AI Prototyping</div>
+          </div>
+          <div class="skill__desc">Tool Building</div>
+          <div class="skill__desc">Vibe Coding</div>
+        </div>
+        <div class="skill" role="listitem">
+          <div class="skill__head">
+            <span class="dot-mark dot-mark--slate" aria-hidden="true"></span>
+            <div class="skill__name">Training</div>
+          </div>
+          <div class="skill__desc">Team Enablement</div>
+          <div class="skill__desc">Adoption</div>
+        </div>
+        <div class="skill" role="listitem">
+          <div class="skill__head">
+            <span class="dot-mark dot-mark--gold" aria-hidden="true"></span>
+            <div class="skill__name">Keynotes</div>
+          </div>
+          <div class="skill__desc">Conferences</div>
+          <div class="skill__desc">Exec Briefings</div>
+        </div>
+      </div>
+
+      <div class="profile-row">
+        <figure class="profile-photo" aria-hidden="true">
+          <img src="01_Source/Vince.png" alt="">
+        </figure>
+        <div class="pop">
+          <span class="pop__eyebrow">Profile</span>
+          <p class="pop__summary">
+            <span class="pop__thesis">A creative technologist who's been navigating the tides of digital change for over a decade.</span>
+            I keep strategy and building in the same hands. Embedded where strategy turns into practice — I help teams navigate AI inside real work, encode what makes the work good, and build the reusable capability underneath it.
+          </p>
+        </div>
+      </div>
+
+      <section class="vision-model" aria-labelledby="vision-model-title">
+        <div class="vision-atmosphere" aria-hidden="true"></div>
+        <header class="vision-model__head">
+          <span class="vision-model__label" id="vision-model-title">
+            <span class="dot-mark dot-mark--gold" aria-hidden="true"></span>
+            Operating model
+          </span>
+        </header>
+
+        <div class="flywheel-pair">
+          <div class="flywheel-orbit" aria-label="Navigate Encode Build flywheel" role="img">
+            <span class="flywheel-orbit__ring flywheel-orbit__ring--outer" aria-hidden="true"></span>
+            <span class="flywheel-orbit__ring flywheel-orbit__ring--inner" aria-hidden="true"></span>
+
+            <span class="flywheel-orbit__pill flywheel-orbit__pill--top">
+              <span class="dot-mark dot-mark--gold" aria-hidden="true"></span>
+              <span>Navigate</span>
+            </span>
+            <span class="flywheel-orbit__pill flywheel-orbit__pill--bottom-left">
+              <span class="dot-mark dot-mark--sage" aria-hidden="true"></span>
+              <span>Encode</span>
+            </span>
+            <span class="flywheel-orbit__pill flywheel-orbit__pill--bottom-right">
+              <span class="dot-mark dot-mark--slate" aria-hidden="true"></span>
+              <span>Build</span>
+            </span>
+
+            <div class="flywheel-orbit__core">
+              <strong>Substrate</strong>
+              <span>Compounds</span>
+            </div>
+          </div>
+
+          <div class="flywheel-phases">
+            <article class="flywheel-phases__row flywheel-phases__row--navigate">
+              <span class="flywheel-phases__phase">Navigate</span>
+              <h2 class="flywheel-phases__title">Read the territory.</h2>
+              <p class="flywheel-phases__body">Learn the model inside real work: goals, people, constraints, sources, taste, governance, and momentum.</p>
+            </article>
+
+            <article class="flywheel-phases__row flywheel-phases__row--encode">
+              <span class="flywheel-phases__phase">Encode</span>
+              <h2 class="flywheel-phases__title">Capture the patterns.</h2>
+              <p class="flywheel-phases__body">Turn what works into shared substrate: rules, examples, review gates, workflows, prompts, and reusable Skills.</p>
+            </article>
+
+            <article class="flywheel-phases__row flywheel-phases__row--build">
+              <span class="flywheel-phases__phase">Build</span>
+              <h2 class="flywheel-phases__title">Ship the capability.</h2>
+              <p class="flywheel-phases__body">Surface substrate as tools, agents, automations, and headless workflows that teams can actually use.</p>
+            </article>
+          </div>
+        </div>
+
+        <p class="loop-indicator">↻ Each turn makes the next turn lighter</p>
+      </section>
+
+      <footer class="page-contact" aria-label="Contact details">
+        <div class="page-contact__col">
+          <a href="mailto:vince@thoughtform.co">
+            <svg class="ico" aria-hidden="true"><use href="#icon-mail"/></svg>
+            vince@thoughtform.co
+          </a>
+          <span>
+            <svg class="ico" aria-hidden="true"><use href="#icon-phone"/></svg>
+            +32 471 09 42 21
+          </span>
+        </div>
+        <span class="page-contact__location">
+          <svg class="ico" aria-hidden="true"><use href="#icon-pin"/></svg>
+          Antwerp, Belgium
+        </span>
+        <div class="page-contact__col page-contact__col--right">
+          <a href="https://thoughtform.co">
+            <svg class="ico" aria-hidden="true"><use href="#icon-globe"/></svg>
+            thoughtform.co
+          </a>
+          <a href="https://www.linkedin.com/in/starhaven/">
+            <svg class="ico" aria-hidden="true"><use href="#icon-linkedin"/></svg>
+            linkedin.com/in/starhaven
+          </a>
+        </div>
+      </footer>
+    </section>
+  </article>
+
+
+  <!-- ════════════════════ PAGE 2 — LOOP EARPLUGS ════════════════════ -->
+  <article class="page" aria-labelledby="page-2-title">
+    <div class="grid-bg" aria-hidden="true"></div>
+
+    <header class="page__head">
+      <span class="page__head-name">Vincent Buyssens · Curriculum Vitae</span>
+      <span class="page__num">02 <span aria-hidden="true">/</span> 05</span>
+    </header>
+
+    <section class="loop-page">
+      <div class="loop-page__intro">
+        <span class="eyebrow-pill">
+          <span class="eyebrow-pill__pulse" aria-hidden="true"></span>
+          Current · Embedded role
+        </span>
+
+        <div class="loop-page__headline">
+          <div>
+            <h1 class="opener__title" id="page-2-title">Loop Earplugs</h1>
+            <p class="loop-page__position">Lead Creative Technologist · Forward-Deployed across Marketing &amp; Studio</p>
+          </div>
+          <span class="role__period">2024 – Present</span>
+        </div>
+
+        <p class="role__context">
+          Embedded with marketing, studio, and creative strategy on a company-wide AI mandate. Operates as a peer alongside Technology, People, and Legal, aligned directly with the executive team on AI strategy and governance.
+        </p>
+      </div>
+
+      <div class="stat-band" aria-label="Loop Earplugs proof points">
+        <div class="stat">
+          <div class="stat__value">130+</div>
+          <div class="stat__label">
+            <span class="dot-mark dot-mark--gold" aria-hidden="true"></span>
+            Claude users across company
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat__value">90%</div>
+          <div class="stat__label">
+            <span class="dot-mark dot-mark--sage" aria-hidden="true"></span>
+            Briefings involving AI
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat__value">2–3×</div>
+          <div class="stat__label">
+            <span class="dot-mark dot-mark--slate" aria-hidden="true"></span>
+            Faster than agencies
+          </div>
+        </div>
+        <div class="stat">
+          <div class="stat__value">10+</div>
+          <div class="stat__label">
+            <span class="dot-mark dot-mark--gold" aria-hidden="true"></span>
+            Reusable Skills built
+          </div>
+        </div>
+      </div>
+
+      <div class="pillar-stack">
+        <section class="pillar-row" aria-labelledby="loop-strategy">
+          <div class="pillar-row__label">
+            <span class="dot-mark dot-mark--gold" aria-hidden="true"></span>
+            Strategy
+          </div>
+          <div>
+            <h2 class="pillar-row__lead" id="loop-strategy">Designed the operating model the company runs on.</h2>
+            <ul class="pillar-row__list">
+              <li>Pioneered AI adoption as <strong>one of Belgium's first ChatGPT Enterprise companies</strong></li>
+              <li>Spearheaded the company-wide AI vision with the executive team</li>
+              <li>Authored a four-function operating model with clear swim lanes between strategy, governance, adoption, and building</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="pillar-row pillar-row--sage" aria-labelledby="loop-adoption">
+          <div class="pillar-row__label">
+            <span class="dot-mark dot-mark--sage" aria-hidden="true"></span>
+            Adoption
+          </div>
+          <div>
+            <h2 class="pillar-row__lead" id="loop-adoption">Coached the full cohort journey from awareness to self-sufficiency.</h2>
+            <ul class="pillar-row__list">
+              <li>Designed curriculum, ran workshops, aligned stakeholders, activated <strong>AI Stewards</strong> as in-team multipliers</li>
+              <li><strong>Scaled Claude from 5 to 130+ users</strong> across legal, finance, analytics, marketing, and studio</li>
+              <li>Built <strong>10+ reusable Skills</strong> encoding brand voice, paid social copy, marketplace, and keynote creation — each one transferable across the cohort</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="pillar-row pillar-row--slate" aria-labelledby="loop-production">
+          <div class="pillar-row__label">
+            <span class="dot-mark dot-mark--slate" aria-hidden="true"></span>
+            Production
+          </div>
+          <div>
+            <h2 class="pillar-row__lead" id="loop-production">Transformed marketing &amp; studio into AI-first creative teams.</h2>
+            <ul class="pillar-row__list">
+              <li><strong>90% of briefings</strong> now involve AI; marketers start every task with an AI tool</li>
+              <li>Campaigns ship <strong>2–3× faster</strong> than external agencies, consistently above ROAS benchmark</li>
+              <li>Co-developed Loop's guidelines for how and where AI is used across all marketing channels</li>
+              <li>Led production of <strong>two full-AI above-the-line videos</strong> for DemandGen</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="pillar-row" aria-labelledby="loop-building">
+          <div class="pillar-row__label">
+            <span class="dot-mark dot-mark--gold" aria-hidden="true"></span>
+            Building
+          </div>
+          <div>
+            <h2 class="pillar-row__lead" id="loop-building">Built four integrated AI tools around team bottlenecks.</h2>
+            <ul class="pillar-row__list">
+              <li><strong>Briefing Agent:</strong> creative-strategy briefing engine that draws on our ads data, strategic insights, customer reviews, and PMM strategies to create better briefings, faster.</li>
+              <li><strong>Studio PM Orchestrator:</strong> production bridge across Monday, Figma, and Frontify; reduces tedious work like copying briefings to mere minutes.</li>
+              <li><strong>AI Image &amp; Video Suite:</strong> in-house generation workspace, multi-model. Replaced fragmented vendor stack for Studio.</li>
+              <li><strong>UGC Dubber:</strong> end-to-end translation pipeline from transcription through dubbing and captioning, with a built-in proofreading step.</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <figure class="testimonial" aria-labelledby="loop-testimonial-quote">
+        <blockquote class="testimonial__quote" id="loop-testimonial-quote">
+          Vince pioneered how to integrate our AI products (Veo 3, Nano Banana 2) and non-Google AI into creative production, and how to <strong>upskill marketing teams to use them</strong> at scale.
+        </blockquote>
+        <figcaption class="testimonial__attribution">
+          <span class="testimonial__attribution-name">Betty Jakobsen</span>
+          <span class="dot" aria-hidden="true">·</span>
+          <span class="testimonial__attribution-meta">Global &amp; EMEA Export Marketing, Google</span>
+        </figcaption>
+      </figure>
+    </section>
+  </article>
+
+
+  <!-- ════════════════════ PAGE 3 — AI CREATIVE PRODUCTION ════════════════════ -->
+  <article class="page" aria-labelledby="page-3-title">
+    <header class="page__head">
+      <span class="page__head-name">Vincent Buyssens · Curriculum Vitae</span>
+      <span class="page__num">03 <span aria-hidden="true">/</span> 05</span>
+    </header>
+
+    <section class="opener">
+      <h1 class="opener__title" id="page-3-title">AI Creative Production</h1>
+      <span class="opener__period">2022 – 2024</span>
+    </section>
+
+    <p class="lede">
+      Three years running technical and creative direction across Belgian agencies on early Generative AI work. Hands on the tools. Workflows from scratch.
+    </p>
+
+    <section class="role" aria-labelledby="role-storyme">
+      <div class="role__head">
+        <span class="role__category">Studio Production</span>
+        <h2 class="role__title" id="role-storyme">StoryMe</h2>
+        <span class="role__period">2023 – 2024</span>
+        <p class="role__position">
+          AI Captain
+          <span class="dot" aria-hidden="true">·</span>
+          Brussels
+        </p>
+      </div>
+
+      <p class="role__context">
+        Led production of <em><a class="linked" href="https://www.youtube.com/watch?v=jFVezT4mznU">"Welcome to Latent Land,"</a></em> the first hybrid AI-video production made in Belgium. Broader AI direction inside the agency and across the Belgian creative industry.
+      </p>
+
+      <ul class="points">
+        <li>Oversaw a hybrid team of art directors, copywriters, and editors. Created Gen AI footage and set up custom production pipelines.</li>
+        <li>Trained the StoryMe creative team in Midjourney, Stable Diffusion, and AnimateDiff.</li>
+        <li>Ran practical AI workshops for art directors, designers, and motion designers across the Belgian creative industry.</li>
+        <li>Co-drafted the <strong>AI Charter</strong> for the Belgian Union of Advertisers (UBA) and Association of Communication Companies (ACC), balancing innovation with safety.</li>
+        <li>Authored the testimonial on AI and audiovisual authors' rights for the <a class="linked" href="https://vimeo.com/showcase/10218939/video/906081362">Society of Audiovisual Authors</a>.</li>
+      </ul>
+
+      <div class="press">
+        <span class="press__label">
+          <span class="dot-mark dot-mark--gold" aria-hidden="true"></span>
+          In Press
+        </span>
+        <div class="press__item">
+          <span class="press__dot" aria-hidden="true"></span>
+          <span class="press__source">De Tijd</span>
+          <span class="press__quote"><a class="linked" href="https://www.tijd.be/ondernemen/technologie/ai-is-een-rekenmachine-voor-de-creatieve-geest/10469709.html">"AI is the calculator for the creative mind."</a></span>
+        </div>
+        <div class="press__item">
+          <span class="press__dot" aria-hidden="true"></span>
+          <span class="press__source">Media Marketing</span>
+          <span class="press__quote"><a class="linked" href="https://www.mm.be/news-fr-75811-l-uba-et-l-acc-proposent-une-charte-pour-une-bonne-utilisation-de-l-ia">"L'UBA et l'ACC proposent une charte pour une bonne utilisation de l'IA."</a></span>
+        </div>
+        <div class="press__item">
+          <span class="press__dot" aria-hidden="true"></span>
+          <span class="press__source">Bloovi</span>
+          <span class="press__quote"><a class="linked" href="https://www.bloovi.be/artikels/insights/2023/deze-antwerpse-digital-nomad-voorspelt-steile-opmars-van-ai-in-de-creatieve-sector-ik-heb-in-mijn-carriere-nooit-een-technologie-zo-snel-zien-evolueren">Early Belgian voice on Generative AI in the creative sector.</a></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="role" aria-labelledby="role-tool">
+      <div class="role__head">
+        <span class="role__category">Brand Campaigns</span>
+        <h2 class="role__title" id="role-tool">Tool of North America</h2>
+        <span class="role__period">2023 – 2024</span>
+        <p class="role__position">
+          AI Technical &amp; Creative Director
+          <span class="dot" aria-hidden="true">·</span>
+          Brussels
+        </p>
+      </div>
+
+      <p class="role__context">
+        AI direction for an ad agency adopting generative tooling at production scale. Hands-on integration of Diffusion Models and LLMs into brand workflows.
+      </p>
+
+      <ul class="points">
+        <li>Led AI direction for the <strong>Under Armour</strong> campaign with Anthony Joshua: <em><a class="linked" href="https://www.linkedin.com/posts/voidwalkerdotcom_so-happy-i-can-finally-share-this-under-armour-activity-7171409112994332672---v4">"Forever Is Made Now."</a></em> Created Gen AI assets and set up custom workflows.</li>
+        <li>Built fine-tuning pipelines on Diffusion Models and LLMs to expedite brand asset creation across the agency.</li>
+      </ul>
+    </section>
+
+    <section class="role" aria-labelledby="role-starhaven">
+      <div class="role__head">
+        <span class="role__category">Advisory · Own Company</span>
+        <h2 class="role__title" id="role-starhaven">Starhaven</h2>
+        <span class="role__period">2022</span>
+        <p class="role__position">
+          Founder
+          <span class="dot" aria-hidden="true">·</span>
+          AI Consultancy for the Creative Industry
+        </p>
+      </div>
+
+      <p class="role__context">
+        Founded one of Belgium's first AI consultancy agencies focused on the creative industry. Hands-on advisory and capability-building for agencies and brands navigating the early Generative AI wave.
+      </p>
+    </section>
+  </article>
+
+
+  <!-- ════════════════════ PAGE 4 — LECTURING ════════════════════ -->
+  <article class="page" aria-labelledby="page-4-title">
+    <header class="page__head">
+      <span class="page__head-name">Vincent Buyssens · Curriculum Vitae</span>
+      <span class="page__num">04 <span aria-hidden="true">/</span> 05</span>
+    </header>
+
+    <section class="opener">
+      <h1 class="opener__title" id="page-4-title">Lecturing</h1>
+      <span class="opener__period">2019 – 2024</span>
+    </section>
+
+    <p class="lede">
+      Five years lecturing at Thomas More on AI, internet culture, storytelling, and community management. AI strategy lead across four media programs from 2022.
+    </p>
+
+    <section class="role" aria-labelledby="role-thomas-more">
+      <div class="role__head">
+        <span class="role__category">Faculty</span>
+        <h2 class="role__title" id="role-thomas-more">Thomas More University College</h2>
+        <span class="role__period">2019 – 2024</span>
+        <p class="role__position">
+          Lecturer
+          <span class="dot" aria-hidden="true">·</span>
+          Mechelen
+        </p>
+      </div>
+
+      <dl class="impact">
+        <dt>Curriculum</dt>
+        <dd>Inspired and instructed students in <strong>International Communication &amp; Media</strong> and <strong>Media &amp; Entertainment Business</strong> on AI, internet subcultures, content marketing, and social media strategy. Coached personal branding, public speaking, and creative digital strategy.</dd>
+
+        <dt>AI Lead</dt>
+        <dd>Cross-program AI lead for <strong>Media &amp; Entertainment Business</strong>, <strong>International Communication &amp; Media</strong>, <strong>Experience Design</strong>, and <strong>Journalism</strong>. Shared Generative AI knowledge with Thomas More Research (2023).</dd>
+
+        <dt>Approach</dt>
+        <dd>COVID lockdowns moved classes online. <strong>World of Warcraft</strong> became the classroom. <strong>Instagram Live</strong> became the broadcast channel.</dd>
+      </dl>
+    </section>
+
+    <section class="articles" aria-label="Press coverage">
+      <span class="articles__label">
+        <span class="dot-mark dot-mark--gold" aria-hidden="true"></span>
+        In Press
+      </span>
+
+      <article class="article">
+        <div class="article__tile">
+          <img src="01_Source/World%20of%20Warcraft.png" alt="World of Warcraft raid screenshot with chat reading 'Thomas More for life!' — Vincent's students convened in Azeroth during lockdown.">
+        </div>
+        <span class="article__source">
+          <span class="dot-mark dot-mark--sage" aria-hidden="true"></span>
+          Gazet van Antwerpen
+        </span>
+        <h3 class="article__headline"><a class="linked" href="https://www.gva.be/cnt/dmf20200316_04891563">"Docent gebruikt videospel World of Warcraft als leeromgeving."</a></h3>
+        <p class="article__blurb">Online Communities class, held inside an actual online community. Azeroth became the field site when lockdown closed the campus.</p>
+      </article>
+
+      <article class="article">
+        <div class="article__tile">
+          <img src="01_Source/Instagram%20Class.png" alt="Vincent Buyssens broadcasting with podcast microphone and headphones — running classes over Instagram Live during lockdown.">
+        </div>
+        <span class="article__source">
+          <span class="dot-mark dot-mark--slate" aria-hidden="true"></span>
+          MIT Technology Review
+        </span>
+        <h3 class="article__headline"><a class="linked" href="https://www.technologyreview.com/2020/12/12/1014220/kids-zoom-fatigue-remote-learning-roblox-instagram/">"Kids are sick of Zoom too — so their teachers are getting creative."</a></h3>
+        <p class="article__blurb">Took my Social Media Storytelling course to a Meta level, literally, by teaching all my classes via Instagram Live, Stories, and DMs.</p>
+      </article>
+    </section>
+  </article>
+
+
+  <!-- ════════════════════ PAGE 5 — NAVIGATING BEFORE AI ════════════════════ -->
+  <article class="page" aria-labelledby="page-5-title">
+    <div class="grid-bg" aria-hidden="true"></div>
+
+    <header class="page__head">
+      <span class="page__head-name">Vincent Buyssens · Curriculum Vitae</span>
+      <span class="page__num">05 <span aria-hidden="true">/</span> 05</span>
+    </header>
+
+    <div class="case-hero-wrap">
+      <span class="eyebrow">Track Record · Pre-AI</span>
+      <h1 class="case-title" id="page-5-title">Navigating before AI</h1>
+
+      <div class="case-hero">
+        <p class="case-lede">
+          Was prompting complex systems before LLMs existed — fan communities, platforms, internet momentum. <strong>Decided I could 'just do things' before 'high agency' had a name for it.</strong>
+        </p>
+      </div>
+    </div>
+
+    <div class="case-stack">
+      <article class="case-block" aria-labelledby="case-pokemon">
+        <div class="case-tile">
+          <img src="01_Source/Pok%C3%A9mon%20Go.png" alt="VTM news segment featuring Vincent Buyssens captioned 'Pokémon Go Consultant', 2016.">
+        </div>
+        <div class="case-text">
+          <div class="case-meta">
+            <span class="case-year">2016</span>
+            <span class="case-source">Belgian Press</span>
+          </div>
+          <h3 class="case-headline" id="case-pokemon">Pokémon Go Belgium</h3>
+          <div class="case-body">
+            <p>Pokémon Go dropped in 2016. Jumped in early and stepped forward as <strong>Belgium's first Pokémon Go consultant</strong>.</p>
+            <p>Co-founded Pokémon Go Belgium with friends. The hub for everything Pokémon Go in the country.</p>
+            <p>Organised a hunt on Antwerp's Kammenstraat. A thousand people turned up. Ran a second one with Antwerp Zoo. <strong>Sixteen thousand</strong>.</p>
+            <p>Advised Unizo on how local entrepreneurs could turn the wave into customers.</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="case-block is-reverse" aria-labelledby="case-expanse">
+        <div class="case-text">
+          <div class="case-meta">
+            <span class="case-year">2018</span>
+            <span class="case-source">Newsweek</span>
+          </div>
+          <h3 class="case-headline" id="case-expanse"><a class="linked" href="https://www.newsweek.com/expanse-save-amazon-syfy-season-4-renew-fans-934620">Save The Expanse</a></h3>
+          <div class="case-body">
+            <p>SyFy cancelled <em>The Expanse</em> in 2018. What started as venting on Reddit turned into a campaign.</p>
+            <p>Set up a Discord as the command center, coordinated tweetstorms and Facebook ads from there, and pushed the petition past <strong>100,000 signatures</strong>.</p>
+            <p>Crowdfunded a banner plane to circle Amazon Studios in Santa Monica. <strong>SAVE THE EXPANSE</strong>. Flew to LA to put the campaign in front of Jeff Bezos.</p>
+            <p>Amazon picked up the show. Three more seasons followed.</p>
+          </div>
+        </div>
+        <div class="case-tile">
+          <img src="01_Source/The%20Expanse.png" alt="Forbes article 'Amazon Has Officially Saved The Expanse, Will Air Season 4', Paul Tassi, May 26, 2018.">
+        </div>
+      </article>
+    </div>
+
+    <section class="speaking" aria-labelledby="speaking-title">
+      <span class="speaking__title" id="speaking-title">
+        <span class="dot-mark dot-mark--gold" aria-hidden="true"></span>
+        Selected Speaking &amp; Cultural Coverage
+      </span>
+      <div class="press" style="margin-top: 0; padding-top: 0; border-top: none;">
+        <div class="press__item">
+          <span class="press__dot" aria-hidden="true"></span>
+          <span class="press__source">Newsweek</span>
+          <span class="press__quote"><a class="linked" href="https://www.newsweek.com/expanse-save-amazon-syfy-season-4-renew-fans-934620">"The Flight to Save The Expanse"</a></span>
+        </div>
+        <div class="press__item">
+          <span class="press__dot" aria-hidden="true"></span>
+          <span class="press__source">De Morgen</span>
+          <span class="press__quote"><a class="linked" href="https://www.demorgen.be/nieuws/eerste-wikipedia-pagina-voor-750-000-dollar-geveild~b818561f/">First Wikipedia page sold as NFT for $750,000.</a></span>
+        </div>
+        <div class="press__item">
+          <span class="press__dot" aria-hidden="true"></span>
+          <span class="press__source">De Standaard</span>
+          <span class="press__quote"><a class="linked" href="https://www.standaard.be/cnt/dmf20161018_02526101">"South Park Meets de Wetstraat"</a></span>
+        </div>
+        <div class="press__item">
+          <span class="press__dot" aria-hidden="true"></span>
+          <span class="press__source">CNN</span>
+          <span class="press__quote"><a class="linked" href="https://edition.cnn.com/2018/11/13/world/wwi-coins-save-soldier-trnd/index.html">Six WWI silver coins in a soldier's pocket</a></span>
+        </div>
+      </div>
+    </section>
+  </article>
+
+</main>
+
+</body>
+</html>
