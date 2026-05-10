@@ -10,6 +10,8 @@ import {
   meta,
   substrateMapSection,
   surfacePickSection,
+  visionMarketSignals,
+  visionMarketSignalsHeader,
   visionSection,
 } from "./content";
 import { Diagnosis } from "./diagnosis";
@@ -310,6 +312,65 @@ export default function AiOperatorPage() {
             ) : null}
           </div>
         </div>
+
+        {/* News-show-style ticker at the bottom of the Vision section.
+            External validation that the flywheel above is now an
+            industry-recognized pattern: WSJ on the FDE category,
+            Stripe's Forward Deployed AI Accelerator role posting,
+            Bloomberg + WSJ on OpenAI and Anthropic's PE deployment
+            ventures. Headlines stay close to the actual article copy
+            so this strip reads as social proof, not embellishment.
+            The track is duplicated so the marquee can loop seamlessly
+            via a -50% translateX in CSS. */}
+        <aside
+          className="aiop-vision__signals"
+          aria-label="External validation: forward-deployed AI is now a recognized industry pattern"
+        >
+          <div className="aiop-wrap aiop-vision__signals-head">
+            <span className="aiop-vision__signals-eyebrow">
+              <span
+                className="aiop-vision__signals-eyebrow-bar"
+                aria-hidden="true"
+              />
+              {visionMarketSignalsHeader.eyebrow}
+            </span>
+            <span className="aiop-vision__signals-kicker">
+              {visionMarketSignalsHeader.kicker}
+            </span>
+          </div>
+
+          <div className="aiop-vision__signals-marquee">
+            <div className="aiop-vision__signals-track" role="list">
+              {[...visionMarketSignals, ...visionMarketSignals].map(
+                (signal, idx) => (
+                  <a
+                    key={`${signal.id}-${idx}`}
+                    href={signal.href}
+                    className="aiop-vision__signals-item"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    role="listitem"
+                    aria-hidden={idx >= visionMarketSignals.length}
+                    tabIndex={idx >= visionMarketSignals.length ? -1 : 0}
+                  >
+                    <span className="aiop-vision__signals-source">
+                      {signal.source}
+                    </span>
+                    <span className="aiop-vision__signals-headline">
+                      {signal.headline}
+                    </span>
+                    <span
+                      className="aiop-vision__signals-date"
+                      aria-hidden="true"
+                    >
+                      {signal.date}
+                    </span>
+                  </a>
+                ),
+              )}
+            </div>
+          </div>
+        </aside>
       </section>
 
       {/* ─── Approach + Software-for-few · parallax-reveal pair ─────

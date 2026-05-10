@@ -396,6 +396,70 @@ export const visionSection = {
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
+ * Vision news ticker — external validation strip
+ *
+ * Sits at the bottom of the Vision section as a continuously scrolling
+ * marquee of recent press + role postings. Names the through-line
+ * across every major lab and consultancy: the model alone isn't
+ * enough — they're all spinning up forward-deployed engineering
+ * teams and PE-backed deployment ventures to put AI into the work.
+ * The flywheel above is the thesis; this strip is the social proof.
+ *
+ * Each item is a SOURCE + concise headline pair, kept under ~14 words
+ * so it reads cleanly as a single ticker line. Headlines stay close
+ * to the actual article copy — no embellishment beyond what's
+ * verifiable from the linked source.
+ * ─────────────────────────────────────────────────────────────────── */
+
+export const visionMarketSignalsHeader = {
+  eyebrow: "External validation",
+  kicker: "From the wire",
+} as const;
+
+export type VisionMarketSignal = {
+  id: string;
+  source: string;
+  headline: string;
+  date: string;
+  href: string;
+};
+
+export const visionMarketSignals: VisionMarketSignal[] = [
+  {
+    id: "wsj-fde",
+    source: "WSJ",
+    headline:
+      "Forward deployed engineers — Palantir's playbook is back.",
+    date: "March 2026",
+    href: "https://www.wsj.com/articles/ai-startups-have-a-new-old-secret-weapon-forward-deployed-engineers-d18ee609",
+  },
+  {
+    id: "stripe-fda",
+    source: "Stripe Careers",
+    headline:
+      "Forward Deployed AI Accelerator — operators embedded with marketing teams.",
+    date: "May 2026",
+    href: "https://stripe.com/jobs/listing/forward-deployed-ai-accelerator-marketing/7747638",
+  },
+  {
+    id: "openai-jv",
+    source: "Bloomberg",
+    headline:
+      "OpenAI's $10B \u201CDeployment Company\u201D to deploy AI in 2,000+ portfolio firms.",
+    date: "May 2026",
+    href: "https://www.bloomberg.com/news/articles/2026-05-04/openai-finalizes-10-billion-joint-venture-with-pe-firms-to-deploy-ai",
+  },
+  {
+    id: "anthropic-jv",
+    source: "WSJ",
+    headline:
+      "Anthropic's $1.5B PE venture embeds Claude engineers in mid-size firms.",
+    date: "April 2026",
+    href: "https://www.wsj.com/business/deals/anthropic-nears-1-5-billion-joint-venture-with-wall-street-firms-8f5448ee",
+  },
+];
+
+/* ─────────────────────────────────────────────────────────────────────
  * Approach — Navigate, Encode, Build (the flywheel, explained)
  *
  * Three self-contained sections. Each one pairs a copy column with an

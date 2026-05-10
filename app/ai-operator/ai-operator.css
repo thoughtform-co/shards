@@ -2781,6 +2781,13 @@
   align-items: center;
   justify-content: center;
   gap: clamp(44px, 5vw, 72px);
+  /* Take all available vertical space inside the section so the
+     orbit stays centred in the upper region while the news ticker
+     (a sibling rendered after `.aiop-vision__inner`) anchors the
+     bottom of the section. Without `flex: 1`, the section's flex
+     centring would split the free space between the inner block
+     and the marquee, pulling the orbit upward. */
+  flex: 1 1 auto;
 }
 
 .aiop-vision__head {
@@ -2833,6 +2840,205 @@
 
   .aiop-vision__caption {
     max-width: 58ch;
+  }
+}
+
+
+/* ─── 14b.1 · v4 — Vision news ticker (external validation strip) ──
+ *
+ * Continuously scrolling marquee at the bottom of the Vision section.
+ * Names the through-line — WSJ on the FDE category, Stripe's role
+ * posting, OpenAI + Anthropic's PE deployment ventures — without
+ * commentary, so the strip reads as social proof for the flywheel
+ * above rather than a second argument.
+ *
+ * Two key design moves:
+ *   1. `mask-image` fades the left + right edges so items slide on
+ *      and off cleanly instead of popping at the section boundary.
+ *   2. The track is rendered with the items duplicated (see page.tsx)
+ *      and animated by translating to -50%, which places the start
+ *      of the second copy exactly where the start of the first copy
+ *      was — so the loop is seamless without a visible reset.
+ *
+ * Hover/focus pauses the animation so the visitor can read or click.
+ * Under `prefers-reduced-motion: reduce` the animation is disabled
+ * and the strip becomes manually horizontally scrollable.
+ * ─────────────────────────────────────────────────────────────────── */
+
+.aiop-vision__signals {
+  width: 100%;
+  border-top: 1px solid var(--aiop-rule);
+  padding: clamp(20px, 2.4vw, 28px) 0 clamp(18px, 2.2vw, 26px);
+  margin-top: clamp(36px, 5vw, 64px);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in oklab, var(--aiop-paper-2) 50%, transparent) 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+.aiop-vision__signals-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: clamp(14px, 1.8vw, 20px);
+}
+
+.aiop-vision__signals-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-violet);
+}
+
+.aiop-vision__signals-eyebrow-bar {
+  display: inline-block;
+  width: 22px;
+  height: 1.5px;
+  background: var(--aiop-violet);
+}
+
+.aiop-vision__signals-kicker {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-vision__signals-marquee {
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 4%,
+    black 96%,
+    transparent 100%
+  );
+          mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 4%,
+    black 96%,
+    transparent 100%
+  );
+}
+
+.aiop-vision__signals-track {
+  display: inline-flex;
+  align-items: center;
+  gap: clamp(36px, 4vw, 56px);
+  width: max-content;
+  padding-inline: clamp(20px, 4vw, 56px);
+  /* 60s for one full loop = roughly 1 item every 7.5s on a 4-item
+     duplicated track. Slow enough to read each headline, fast enough
+     to feel like an active wire. */
+  animation: aiop-vision-marquee 60s linear infinite;
+  will-change: transform;
+}
+
+.aiop-vision__signals-marquee:hover .aiop-vision__signals-track,
+.aiop-vision__signals-marquee:focus-within .aiop-vision__signals-track {
+  animation-play-state: paused;
+}
+
+.aiop-vision__signals-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 14px;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--aiop-ink-soft);
+  font-family: var(--aiop-body);
+  font-size: clamp(13.5px, 1vw, 15px);
+  line-height: 1.4;
+  border-bottom: 1px solid transparent;
+  padding-block: 4px;
+  transition: color 200ms ease, border-color 200ms ease;
+}
+
+.aiop-vision__signals-item:hover,
+.aiop-vision__signals-item:focus-visible {
+  color: var(--aiop-ink);
+  border-color: var(--aiop-violet);
+  outline: none;
+}
+
+.aiop-vision__signals-source {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-violet);
+  flex-shrink: 0;
+}
+
+.aiop-vision__signals-headline {
+  font-style: italic;
+}
+
+.aiop-vision__signals-date {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  flex-shrink: 0;
+}
+
+@keyframes aiop-vision-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* -50% lands the start of the duplicated half exactly where the
+       start of the original half was, so the loop is seamless. */
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiop-vision__signals-marquee {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+            mask-image: none;
+  }
+
+  .aiop-vision__signals-track {
+    animation: none;
+    transform: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .aiop-vision__signals {
+    padding: 18px 0 16px;
+    margin-top: 28px;
+  }
+
+  .aiop-vision__signals-track {
+    gap: 28px;
+    animation-duration: 45s;
+  }
+
+  .aiop-vision__signals-item {
+    gap: 10px;
+    font-size: 13px;
+  }
+
+  .aiop-vision__signals-source,
+  .aiop-vision__signals-date {
+    font-size: 9.5px;
   }
 }
 
