@@ -514,7 +514,7 @@ export const approachSection = {
   title: "The AI flywheel",
   titleEm: "at Loop",
   caption:
-    "I've led the AI adoption at Loop Earplugs since 2024, first across the whole company, then embedded inside marketing, helping teams turn the way they actually work into reusable skills they can build their own automations on.",
+    "I've led AI adoption at Loop Earplugs since 2024 — starting on the AI team, embedding into marketing to find a scalable model, and now expanding it across the business as teams turn the way they actually work into reusable skills they can build their own automations on.",
 } as const;
 
 export type ApproachTone = "violet" | "gold" | "sage";
@@ -1840,6 +1840,10 @@ export const stripeReflectSection = {
 /* ─── Section B · Stripe video ───────────────────────────────────── */
 
 export const stripeVideoSection = {
+  /* Section title above the video frame. Names the thesis of the
+     cold open explicitly so the visitor reads the clip as a job
+     pitch from the very first frame. */
+  title: "Why I'm the Forward-Deployed AI Operator You're Looking For",
   video: {
     src: "/ai-operator/Stripe - High Agency.mp4",
     /* Captions track slot. The .vtt file is not yet authored, so
@@ -2156,14 +2160,12 @@ export type CtaAction = {
 };
 
 export const ctaSection: {
-  /* AMBITION call-out card that migrated from the old
-     `stripeLedgerSection.conclusion`. Sits at the top of the CTA
-     wrap so the visitor lands on the philosophical anchor before
-     the practical ask. The italic clause echoes the hero's
-     `ledeStrong` so the page reads as a closed loop. */
-  ambition: { eyebrow: string; lead: string; em: string };
   eyebrow: string;
   title: string;
+  /* The italic em now carries the ambition itself — folded in from
+     the old standalone `aiop-ambition-card`. Rewritten in plainer
+     first-person so it reads as someone naming what they're working
+     on rather than as a slogan. */
   titleEm: string;
   body: string;
   fine: string;
@@ -2173,14 +2175,10 @@ export const ctaSection: {
      the link to open in a new tab with `rel="noopener noreferrer"`. */
   actions: CtaAction[];
 } = {
-  ambition: {
-    eyebrow: "Ambition",
-    lead: "My ambition isn't to transform a marketing department.",
-    em: "It's to help build the economic layer for the age of co-intelligence.",
-  },
   eyebrow: "Smallest commitment that starts work",
   title: "Let's talk.",
-  titleEm: "Inside one of your team's routines.",
+  titleEm:
+    "A marketing department is where I'm working. What I'm actually building is the operating model teams will need once AI sits in the loop with them.",
   body:
     "Embedded mandates, accelerator programs, or focused encoding sprints alongside one team. We start with one workflow and work outward.",
   fine:

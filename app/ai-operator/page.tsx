@@ -772,47 +772,24 @@ export default function AiOperatorPage() {
 
       {/* ─── CTA ──────────────────────────────────────────────────────
        *
-       * Three layers stacked inside the section:
+       * Two-column grid inside the section:
        *
-       *   1. Ambition card — the migrated `__conclusion` from the old
-       *      `stripe-ledger`. Same italic-em treatment, just lives
-       *      where the visitor lands.
-       *   2. Copy + actions grid — `eyebrow + title + body + fine` on
-       *      the left, four action buttons on the right (email
-       *      primary, LinkedIn / CV / cover letter as ghost links).
-       *   3. The footer below the section closes the page out.
+       *   Left  — eyebrow + title (with the folded-in ambition em) +
+       *           body + fine print.
+       *   Right — LoopStripeMorph as a foreground anchor, then a
+       *           single primary email button, then a row of three
+       *           mono-caps text links (LinkedIn / CV / cover letter).
+       *
+       * The standalone AMBITION aside used to live above the grid;
+       * its line is now folded into the title em so the visitor reads
+       * the philosophical anchor and the practical ask as one
+       * sentence rather than two stacked tiles.
        */}
       <section
         className="aiop-section aiop-section--tight aiop-cta"
         id="cta"
       >
         <div className="aiop-wrap">
-          <aside
-            className="aiop-ambition-card aiop-reveal"
-            aria-labelledby="aiop-cta-ambition"
-          >
-            <header className="aiop-ambition-card__head">
-              <span
-                className="aiop-ambition-card__dot"
-                aria-hidden="true"
-              />
-              <span className="aiop-ambition-card__eyebrow">
-                {ctaSection.ambition.eyebrow}
-              </span>
-            </header>
-            <p
-              className="aiop-ambition-card__body"
-              id="aiop-cta-ambition"
-            >
-              <span className="aiop-ambition-card__lead">
-                {ctaSection.ambition.lead}
-              </span>
-              <em className="aiop-ambition-card__em">
-                {ctaSection.ambition.em}
-              </em>
-            </p>
-          </aside>
-
           <div className="aiop-cta__grid">
             <div className="aiop-reveal">
               <p className="aiop-eyebrow aiop-eyebrow--ink">
@@ -824,25 +801,69 @@ export default function AiOperatorPage() {
               <p className="aiop-cta__body">{ctaSection.body}</p>
               <p className="aiop-cta__fine">{ctaSection.fine}</p>
             </div>
-            <div
-              className="aiop-cta__actions aiop-cta__actions--grid aiop-reveal"
-              aria-label="Get in touch"
-            >
-              {ctaSection.actions.map((action) => (
-                <a
-                  key={action.id}
-                  className={`aiop-button${
-                    action.kind === "ghost" ? " aiop-button--ghost" : ""
-                  }`}
-                  href={action.href}
-                  {...(action.external
-                    ? { target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
-                >
-                  {action.label}
-                  <Arrow />
-                </a>
-              ))}
+            <div className="aiop-cta__right aiop-reveal">
+              <div className="aiop-cta__morph" aria-hidden="true">
+                <LoopStripeMorph />
+              </div>
+              {(() => {
+                const primary = ctaSection.actions.find(
+                  (a) => a.kind === "primary",
+                );
+                const ghosts = ctaSection.actions.filter(
+                  (a) => a.kind === "ghost",
+                );
+                return (
+                  <>
+                    {primary ? (
+                      <a
+                        className="aiop-cta__primary"
+                        href={primary.href}
+                        {...(primary.external
+                          ? { target: "_blank", rel: "noopener noreferrer" }
+                          : {})}
+                      >
+                        <span className="aiop-cta__primary-label">
+                          {primary.label}
+                        </span>
+                        <span
+                          className="aiop-cta__primary-arrow"
+                          aria-hidden="true"
+                        >
+                          →
+                        </span>
+                      </a>
+                    ) : null}
+                    <nav
+                      className="aiop-cta__textlinks"
+                      aria-label="Other ways to reach me"
+                    >
+                      {ghosts.map((action) => (
+                        <a
+                          key={action.id}
+                          className="aiop-cta__textlink"
+                          href={action.href}
+                          {...(action.external
+                            ? {
+                                target: "_blank",
+                                rel: "noopener noreferrer",
+                              }
+                            : {})}
+                        >
+                          <span className="aiop-cta__textlink-label">
+                            {action.label}
+                          </span>
+                          <span
+                            className="aiop-cta__textlink-arrow"
+                            aria-hidden="true"
+                          >
+                            →
+                          </span>
+                        </a>
+                      ))}
+                    </nav>
+                  </>
+                );
+              })()}
             </div>
           </div>
         </div>

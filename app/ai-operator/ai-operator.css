@@ -2095,6 +2095,162 @@
   }
 }
 
+/* ─── CTA right column · morph + primary + text links ────────────
+ *
+ * The right column hosts the LoopStripeMorph particle field as a
+ * foreground anchor (no longer a hero watermark — see
+ * `.aiop-cta__morph` below for the full-opacity wrapper), then a
+ * single distinguished primary action (email), then a row of
+ * mono-caps text links for the secondary actions. The visual
+ * hierarchy is morph → "the one button you're meant to press" →
+ * "everything else, quietly available". */
+.aiop-cta__right {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.4vw, 32px);
+  align-items: stretch;
+  width: 100%;
+}
+
+@media (min-width: 800px) {
+  .aiop-cta__right {
+    align-items: flex-end;
+  }
+}
+
+/* Foreground host for `LoopStripeMorph`. Same component as the
+   hero watermark, but rendered at full opacity, no mask, no blend
+   mode — this is the deliberate visual anchor of the CTA. */
+.aiop-cta__morph {
+  position: relative;
+  width: clamp(200px, 22vw, 280px);
+  aspect-ratio: 1 / 1;
+  align-self: center;
+  pointer-events: none;
+}
+
+@media (min-width: 800px) {
+  .aiop-cta__morph {
+    align-self: flex-end;
+  }
+}
+
+.aiop-cta__morph .aiop-morph-canvas {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+}
+
+/* Primary action — email. Slim, no chamfer, no shadow. Body type
+   so it reads as a deliberate sentence-cased label rather than the
+   mono-caps register reserved for the text links below. */
+.aiop-cta__primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px;
+  font-family: var(--aiop-body);
+  font-size: 15px;
+  font-weight: 540;
+  letter-spacing: -0.005em;
+  color: var(--aiop-paper);
+  background: var(--aiop-ink);
+  border: 1px solid var(--aiop-ink);
+  border-radius: 4px;
+  text-decoration: none;
+  transition:
+    background 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  align-self: center;
+  min-width: 0;
+}
+
+@media (min-width: 800px) {
+  .aiop-cta__primary {
+    align-self: flex-end;
+  }
+}
+
+.aiop-cta__primary:hover,
+.aiop-cta__primary:focus-visible {
+  background: var(--aiop-ink-2);
+}
+
+.aiop-cta__primary:focus-visible {
+  outline: 2px solid var(--aiop-violet, #635bff);
+  outline-offset: 3px;
+}
+
+.aiop-cta__primary-arrow {
+  display: inline-block;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aiop-cta__primary:hover .aiop-cta__primary-arrow,
+.aiop-cta__primary:focus-visible .aiop-cta__primary-arrow {
+  transform: translateX(3px);
+}
+
+/* Secondary actions — LinkedIn / CV / Cover letter. Mono-caps
+   eyebrow type, separated by flex gap, no underline, with a quiet
+   arrow that nudges on hover. */
+.aiop-cta__textlinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px 22px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+@media (min-width: 800px) {
+  .aiop-cta__textlinks {
+    justify-content: flex-end;
+  }
+}
+
+.aiop-cta__textlink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-ink-soft);
+  text-decoration: none;
+  transition: color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aiop-cta__textlink:hover,
+.aiop-cta__textlink:focus-visible {
+  color: var(--aiop-ink);
+}
+
+.aiop-cta__textlink:focus-visible {
+  outline: 2px solid var(--aiop-violet, #635bff);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.aiop-cta__textlink-arrow {
+  display: inline-block;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aiop-cta__textlink:hover .aiop-cta__textlink-arrow,
+.aiop-cta__textlink:focus-visible .aiop-cta__textlink-arrow {
+  transform: translateX(2px);
+}
+
+@media (max-width: 720px) {
+  .aiop-cta__morph {
+    width: clamp(160px, 60vw, 220px);
+  }
+}
+
 .aiop-footer {
   border-top: 1px solid var(--aiop-rule);
   padding-block: 28px;
@@ -3476,6 +3632,29 @@
   width: 100%;
 }
 
+/* Section title above the video frame. Names the cold-open thesis
+   explicitly so the visitor reads the Collison clip as a job pitch
+   from frame one. Paper-on-warm-black, display font, balanced. The
+   italic register is reserved for the byline callout below the
+   frame, so this title is upright. */
+.aiop-stripe-video__head {
+  width: 100%;
+  max-width: min(92vw, 1100px);
+  margin: 0 auto clamp(28px, 3vw, 44px);
+  text-align: center;
+}
+
+.aiop-stripe-video__title {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-weight: 480;
+  font-size: clamp(28px, 3.6vw, 48px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: rgba(243, 236, 224, 0.92);
+  text-wrap: balance;
+}
+
 /* The frame holds the screen + the caption strip beneath it. The
    `figure` semantics is implicit — the inner aria attributes carry
    the relationship. */
@@ -3615,17 +3794,34 @@
   color: rgba(243, 236, 224, 0.6);
 }
 
+/* Framed callout — mirrors the cream `.aiop-cases__bridge` chrome
+   but inverted into the stripe-video section's dark warm register.
+   Same 4px radius, 1px rule, balanced display body, centered tile.
+   The paper-tinted border + soft inner gradient sit ~one step
+   lighter than the section background so the byline reads as a
+   deliberate quote frame rather than free-floating italic text. */
 .aiop-stripe-video__byline {
   margin: 0;
+  align-self: center;
+  width: 100%;
+  max-width: min(100%, 640px);
+  padding: clamp(18px, 2vw, 26px) clamp(24px, 2.8vw, 36px);
+  background: linear-gradient(
+    180deg,
+    rgba(243, 236, 224, 0.045) 0%,
+    rgba(243, 236, 224, 0.015) 100%
+  );
+  border: 1px solid rgba(243, 236, 224, 0.12);
+  border-radius: 4px;
   font-family: var(--aiop-display);
   font-style: italic;
   font-weight: 440;
   font-size: clamp(15px, 1.4vw, 19px);
   line-height: 1.4;
   letter-spacing: -0.008em;
-  color: rgba(243, 236, 224, 0.78);
+  color: rgba(243, 236, 224, 0.86);
   text-align: center;
-  max-width: 50ch;
+  text-wrap: balance;
 }
 
 /* Shared keyframe — drives both the video section's mute pulse and
@@ -3656,11 +3852,20 @@
     padding-block: clamp(48px, 12vw, 80px);
   }
 
+  .aiop-stripe-video__head {
+    margin-bottom: 24px;
+  }
+
+  .aiop-stripe-video__title {
+    font-size: clamp(22px, 6vw, 30px);
+  }
+
   .aiop-stripe-video__frame {
     gap: 16px;
   }
 
   .aiop-stripe-video__byline {
+    padding: 18px 20px;
     font-size: clamp(14px, 4vw, 18px);
   }
 }
@@ -4179,130 +4384,6 @@
     width: min(240px, 100%);
     max-height: 360px;
   }
-}
-
-
-/* ─── AMBITION card — migrated from the old `__conclusion` ─────────
- *
- * Now lives at the top of the CTA section (`page.tsx` → CTA block).
- * Same dramatic frame, same italic-em treatment, but rendered on
- * the cream paper background of the CTA instead of the dark register
- * of the old stripe-ledger. The italic clause echoes the hero's
- * `ledeStrong` so the page reads as a closed loop.
- * ─────────────────────────────────────────────────────────────── */
-
-.aiop-ambition-card {
-  position: relative;
-  width: 100%;
-  max-width: min(100%, 980px);
-  margin: 0 auto clamp(40px, 5vw, 64px);
-  padding: clamp(28px, 3.5vw, 48px) clamp(32px, 4vw, 56px);
-  background: linear-gradient(
-    180deg,
-    rgba(99, 91, 255, 0.04) 0%,
-    rgba(99, 91, 255, 0.015) 100%
-  );
-  border: 1px solid var(--aiop-rule);
-  border-radius: 4px;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(14px, 1.6vw, 22px);
-}
-
-.aiop-ambition-card__head {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.aiop-ambition-card__dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--aiop-violet);
-  flex-shrink: 0;
-  animation: aiop-stripe-pulse 2.4s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .aiop-ambition-card__dot {
-    animation: none;
-  }
-}
-
-.aiop-ambition-card__eyebrow {
-  font-family: var(--aiop-mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--aiop-violet);
-}
-
-.aiop-ambition-card__body {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(8px, 1vw, 14px);
-  font-family: var(--aiop-display);
-  font-weight: 480;
-  font-size: clamp(20px, 2.2vw, 30px);
-  line-height: 1.32;
-  letter-spacing: -0.018em;
-  text-wrap: balance;
-}
-
-.aiop-ambition-card__lead {
-  color: var(--aiop-ink-soft);
-  font-style: normal;
-}
-
-.aiop-ambition-card__em {
-  color: var(--aiop-ink);
-  font-style: italic;
-  font-weight: 500;
-}
-
-@media (max-width: 720px) {
-  .aiop-ambition-card {
-    padding: 24px 22px;
-    margin-bottom: clamp(28px, 8vw, 40px);
-  }
-  .aiop-ambition-card__body {
-    font-size: clamp(18px, 5vw, 24px);
-  }
-}
-
-
-/* ─── CTA actions grid · 4 buttons (email + LinkedIn + CV + cover) ─
- *
- * The single-column flex stack the original CTA used reads fine
- * with two buttons. Once the CV and cover-letter links land, the
- * stack risks running too tall on desktop, so this modifier turns
- * the column into a 2x2 grid above 720px and keeps it as a stack
- * below. */
-
-.aiop-cta__actions--grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  align-items: stretch;
-  align-content: start;
-  width: 100%;
-}
-
-@media (min-width: 720px) {
-  .aiop-cta__actions--grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    column-gap: 12px;
-    row-gap: 12px;
-    justify-items: stretch;
-  }
-}
-
-.aiop-cta__actions--grid > .aiop-button {
-  width: 100%;
-  justify-content: space-between;
 }
 
 

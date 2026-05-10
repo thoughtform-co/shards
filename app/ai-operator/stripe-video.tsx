@@ -142,16 +142,24 @@ export function StripeVideo() {
     setMuted(next);
   };
 
-  const { video, attribName, attribMeta, byline } = stripeVideoSection;
+  const { title, video, attribName, attribMeta, byline } = stripeVideoSection;
 
   return (
     <section
       ref={sectionRef}
       className={`aiop-section aiop-stripe-video${animated ? " is-animated" : ""}`}
       id="stripe-video"
-      aria-labelledby="aiop-stripe-video-attrib"
+      aria-labelledby="aiop-stripe-video-title"
     >
       <div className="aiop-wrap aiop-stripe-video__inner">
+        <header className="aiop-stripe-video__head aiop-reveal">
+          <h2
+            id="aiop-stripe-video-title"
+            className="aiop-stripe-video__title"
+          >
+            {title}
+          </h2>
+        </header>
         <div className="aiop-stripe-video__frame aiop-reveal">
           <div
             className="aiop-stripe-video__screen"
