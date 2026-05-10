@@ -2902,6 +2902,15 @@
   max-width: 64ch;
 }
 
+/* The personal-throughline half of the lede — bolder weight + violet
+   accent so it lands as a callback to the flywheel-bridge quote that
+   sits directly below the ticker. Inherits the parent's italic and
+   line-height; the only break is weight + colour. */
+.aiop-vision__signals-lede-accent {
+  font-weight: 600;
+  color: var(--aiop-violet);
+}
+
 .aiop-vision__signals-marquee {
   width: 100%;
   overflow: hidden;
@@ -3027,6 +3036,228 @@
   .aiop-vision__signals-source,
   .aiop-vision__signals-date {
     font-size: 9.5px;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 14b · v2 — Flywheel bridge (full-viewport interstitial)
+ *
+ * Sits between the Vision orbit and the Approach deep dive. Mirrors
+ * the structural posture of the Evans bridge (`.aiop-bridge`):
+ * full-viewport chapter, three soft lane washes (violet / amber /
+ * sage hinting at the trio), faint dot-grid background, centered
+ * editorial quote. Without the Evans bridge's parallax choreography
+ * — nothing pins, nothing slides up over it.
+ *
+ * Below the quote: a row of three subtle pills (Navigate / Encode /
+ * Build) acting as the legend for the verbs the second sentence of
+ * the quote uses inline. This lets the trio land explicitly without
+ * forcing the reader to decode it from prose alone.
+ *
+ * The full-viewport posture (`min-height: 100dvh - header`) ensures
+ * the section dominates the screen at scroll-stop, so the visitor
+ * isn't distracted by the Vision ticker above or the Approach
+ * headline below — a deliberate breather between model and method.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-flywheel-bridge {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    var(--aiop-paper) 0%,
+    var(--aiop-paper-2) 100%
+  );
+  border-block: 1px solid var(--aiop-rule);
+  padding-block: clamp(64px, 8vw, 112px);
+  /* Full-viewport beat — mirrors `.aiop-bridge`. `100dvh` accounts
+     for mobile browser chrome; subtracting the sticky header height
+     keeps the figure clear on narrow heights. Flex centering pins
+     the inner block vertically in the available space. */
+  min-height: calc(100dvh - var(--aiop-header-h));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.aiop-flywheel-bridge__bleed {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.aiop-flywheel-bridge__wash {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(6px);
+  opacity: 0.5;
+}
+
+/* Three lane washes — one per phase. Positions are loose so the
+   atmosphere reads as a triangle that hints at the eventual orbit
+   palette without trying to be a literal echo of it. */
+.aiop-flywheel-bridge__wash--a {
+  width: 38%;
+  aspect-ratio: 1 / 1;
+  left: 6%;
+  top: -10%;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--aiop-violet) 30%, transparent) 0%,
+    transparent 62%
+  );
+}
+
+.aiop-flywheel-bridge__wash--b {
+  width: 32%;
+  aspect-ratio: 1 / 1;
+  right: 4%;
+  top: 22%;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--aiop-amber) 22%, transparent) 0%,
+    transparent 62%
+  );
+}
+
+.aiop-flywheel-bridge__wash--c {
+  width: 44%;
+  aspect-ratio: 1 / 1;
+  left: 22%;
+  bottom: -16%;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--aiop-sage) 24%, transparent) 0%,
+    transparent 62%
+  );
+}
+
+.aiop-flywheel-bridge__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26, 22, 18, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 22, 18, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(
+    ellipse 75% 80% at 50% 50%,
+    black 25%,
+    transparent 92%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 75% 80% at 50% 50%,
+    black 25%,
+    transparent 92%
+  );
+  opacity: 0.4;
+  z-index: 0;
+}
+
+.aiop-flywheel-bridge__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: clamp(32px, 4.5vw, 56px);
+}
+
+/* Quote — italic display centerpiece. Width is generous (~1100px on
+   desktop) so the second sentence with its three inline pills fits
+   in roughly two lines instead of stacking into a tall block; the
+   Evans bridge uses the same `min(100%, 1100px)` shape. Slightly
+   smaller font than the previous draft so the line count stays
+   compact even with the inline pills carrying their own visual
+   weight inside the prose. */
+.aiop-flywheel-bridge__quote {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(20px, 2.2vw, 30px);
+  line-height: 1.35;
+  letter-spacing: -0.018em;
+  color: var(--aiop-ink);
+  max-width: min(100%, 1240px);
+  text-align: center;
+}
+
+/* Inline lane pill — wraps the verb position inside the quote text.
+   Same mono-caps + lane-dot grammar the Vision orbit + the previous
+   below-quote pills used, but sized down via `em` so the pill scales
+   proportionally with the surrounding quote font. The `vertical-align`
+   nudge centers the pill optically against the italic display
+   x-height; `font-style: normal` overrides the italic inheritance so
+   the pill reads as a label, not a continuation of the prose. */
+.aiop-flywheel-bridge__mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  padding: 0.28em 0.85em;
+  margin: 0 0.12em;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+  border-radius: 999px;
+  font-family: var(--aiop-mono);
+  font-style: normal;
+  font-size: 0.42em;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-ink-soft);
+  white-space: nowrap;
+  vertical-align: 0.18em;
+  box-shadow: 0 2px 8px rgba(26, 22, 18, 0.06);
+}
+
+.aiop-flywheel-bridge__mark-dot {
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.aiop-flywheel-bridge__mark--navigate .aiop-flywheel-bridge__mark-dot {
+  background: var(--aiop-violet);
+}
+
+.aiop-flywheel-bridge__mark--encode .aiop-flywheel-bridge__mark-dot {
+  background: var(--aiop-amber);
+}
+
+.aiop-flywheel-bridge__mark--build .aiop-flywheel-bridge__mark-dot {
+  background: var(--aiop-sage);
+}
+
+@media (max-width: 880px) {
+  .aiop-flywheel-bridge__quote {
+    max-width: 32ch;
+  }
+}
+
+@media (max-width: 640px) {
+  .aiop-flywheel-bridge {
+    min-height: calc(100svh - var(--aiop-header-h));
+    padding-block: clamp(48px, 12vw, 80px);
+  }
+
+  .aiop-flywheel-bridge__quote {
+    max-width: 24ch;
+    font-size: clamp(20px, 5vw, 26px);
+  }
+
+  .aiop-flywheel-bridge__mark {
+    /* Bump the pill text up slightly at narrow widths so the pill
+       stays legible against the smaller quote font. */
+    font-size: 0.5em;
   }
 }
 
@@ -5305,88 +5536,80 @@
   margin: 6px auto 0;
 }
 
-.aiop-approach__outcome-ladder {
+/* Achievement grid — four concrete impact cards (Paid social /
+   Production / Localization / Performance) replacing the earlier
+   maturity ladder. Cards are parallel achievements across teams, not
+   sequential stages, so no arrow connectors. The grid collapses
+   4 → 2 → 1 across breakpoints; align-items: stretch keeps all cards
+   in a row at the same height even when the body copy is uneven
+   (Production runs ~21 words vs Paid social's ~10). */
+.aiop-approach__outcome-achievements {
   list-style: none;
   margin: clamp(20px, 2.4vw, 28px) 0 0;
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   align-items: stretch;
-  gap: 8px;
+  gap: 10px;
   width: 100%;
 }
 
-.aiop-approach__outcome-stage {
-  position: relative;
-  flex: 1 1 130px;
-  min-width: 120px;
-  max-width: 200px;
+.aiop-approach__outcome-card {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
-  gap: 4px;
-  padding: 12px 14px 12px 14px;
+  gap: 8px;
+  padding: 16px 18px 18px;
   background: var(--aiop-card);
   border: 1px solid var(--aiop-rule-soft);
-  border-radius: 8px;
+  border-radius: 10px;
 }
 
-.aiop-approach__outcome-stage-n {
+/* Header row — small mono number inline with the action label. Baseline
+   alignment so the number reads as a quiet counter and the label
+   carries the visual weight as the primary anchor. */
+.aiop-approach__outcome-card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.aiop-approach__outcome-card-n {
   font-family: var(--aiop-mono);
-  font-size: 9.5px;
+  font-size: 8px;
   letter-spacing: 0.18em;
   color: var(--aiop-sage);
   font-weight: 600;
 }
 
-.aiop-approach__outcome-stage-label {
+.aiop-approach__outcome-card-label {
   font-family: var(--aiop-display);
   font-style: italic;
-  font-size: 14.5px;
+  font-size: 17px;
   font-weight: 500;
   color: var(--aiop-ink);
   letter-spacing: -0.01em;
-  line-height: 1.2;
+  line-height: 1.15;
 }
 
-.aiop-approach__outcome-stage-body {
+.aiop-approach__outcome-card-body {
+  margin: 0;
   font-family: var(--aiop-body);
-  font-size: 11.5px;
-  line-height: 1.4;
+  font-size: 12.5px;
+  line-height: 1.45;
   color: var(--aiop-ink-soft);
-  margin-top: 2px;
 }
 
-.aiop-approach__outcome-stage-arrow {
-  position: absolute;
-  right: -8px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--aiop-sage);
-  font-size: 13px;
-  font-family: var(--aiop-mono);
-  background: var(--aiop-card-soft);
-  padding: 0 3px;
-  z-index: 1;
-  pointer-events: none;
+@media (max-width: 980px) {
+  .aiop-approach__outcome-achievements {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-@media (max-width: 760px) {
-  .aiop-approach__outcome-ladder {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-  }
-
-  .aiop-approach__outcome-stage {
-    max-width: none;
-    flex: 1 1 auto;
-  }
-
-  .aiop-approach__outcome-stage-arrow {
-    display: none;
+@media (max-width: 560px) {
+  .aiop-approach__outcome-achievements {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -8215,6 +8438,15 @@
   padding-bottom: 6px;
 }
 
+/* Bold accent for the missing-layer thesis at the end of the lede.
+   Mirrors `.aiop-hero__lede strong`: full-strength ink + 620 weight
+   so the load-bearing phrase reads at a glance even when the visitor
+   scans the section. */
+.aiop-diagnosis__lede strong {
+  color: var(--aiop-ink);
+  font-weight: 620;
+}
+
 @media (max-width: 799px) {
   .aiop-diagnosis__lede {
     padding-bottom: 0;
@@ -9309,6 +9541,14 @@
   font-size: clamp(15px, 1.2vw, 17px);
   line-height: 1.55;
   color: var(--aiop-ink-soft);
+}
+
+/* Bold accent for the navigate-it-first punchline at the end of the
+   lede. Mirrors `.aiop-diagnosis__lede strong` so both interstitial
+   header columns land their thesis on the same typographic gesture. */
+.aiop-reality__lede strong {
+  color: var(--aiop-ink);
+  font-weight: 620;
 }
 
 .aiop-reality__actions {

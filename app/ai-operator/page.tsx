@@ -15,6 +15,7 @@ import {
   visionSection,
 } from "./content";
 import { Diagnosis } from "./diagnosis";
+import { FlywheelBridge } from "./flywheel-bridge";
 import { HeadlessShift } from "./headless-shift";
 import { LoopStripeMorph } from "./loop-stripe-morph";
 import { QuoteBridge } from "./quote-bridge";
@@ -328,7 +329,10 @@ export default function AiOperatorPage() {
         >
           <div className="aiop-wrap aiop-vision__signals-head">
             <p className="aiop-vision__signals-lede">
-              {visionMarketSignalsHeader.lede}
+              {visionMarketSignalsHeader.ledeStart}
+              <strong className="aiop-vision__signals-lede-accent">
+                {visionMarketSignalsHeader.ledeAccent}
+              </strong>
             </p>
           </div>
 
@@ -365,6 +369,16 @@ export default function AiOperatorPage() {
           </div>
         </aside>
       </section>
+
+      {/* ─── Flywheel bridge ─────────────────────────────────────────
+       *
+       * Single calm interstitial between the Vision orbit (the model)
+       * and the Approach deep dive (the method). One personal quote
+       * on a soft gradient — same visual register as the Evans bridge
+       * but without the parallax choreography. Lifts the "18 months
+       * at Loop" autobiographical anchor up so Build can stay
+       * method-focused below. */}
+      <FlywheelBridge />
 
       {/* ─── Approach + Software-for-few · parallax-reveal pair ─────
        *

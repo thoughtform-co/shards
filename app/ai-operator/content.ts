@@ -160,6 +160,7 @@ export const diagnosisSection: {
   title: string;
   titleEm: string;
   lede: string;
+  ledeStrong: string;
   useCases: DiagnosisUseCase[];
   gap: {
     title: string;
@@ -169,8 +170,12 @@ export const diagnosisSection: {
 } = {
   title: "The missing layer is rarely",
   titleEm: "the model.",
+  /* `lede` carries the setup; `ledeStrong` is the load-bearing
+     phrase rendered as a `<strong>` so the missing-layer thesis
+     reads at a glance even when the visitor scans the section. */
   lede:
-    "Most companies already have AI tools, data, and founders who want to move fast. What they lack is the layer between what their teams know and what AI does.",
+    "Most companies already have AI tools, data, and founders who want to move fast. What they lack is the ",
+  ledeStrong: "layer between what their teams know and what AI does.",
   useCases: [
     {
       n: "01",
@@ -312,8 +317,15 @@ export type AiRealityColumn = {
 export const aiRealitySection = {
   title: "Why traditional adoption",
   titleEm: "doesn't work with AI.",
+  /* `lede` carries the framing; `ledeStrong` is the punchline
+     rendered as a `<strong>` so the navigate-it-first thesis lands
+     hard and primes the flywheel below. Mirrors the diagnosis lede
+     pattern so both interstitial header columns read in the same
+     voice. */
   lede:
-    "AI gets sold as software. It isn't. It's intelligence. The first technology you can use as a tool and work with as a collaborator, often both at once. Before it can understand how your teams work, you have to learn how to navigate it.",
+    "AI gets sold as software. It isn't. It's intelligence. The first technology you can use as a tool and work with as a collaborator, often both at once. ",
+  ledeStrong:
+    "Before it can understand how your teams work, you have to learn how to navigate it.",
   spectrum: {
     railLabel: "Tool to collaborator continuum",
     columns: [
@@ -410,13 +422,17 @@ export const visionSection = {
 
 /* Single editorial bridge line that sits above the marquee. Does
    double duty: frames the wire items below as external validation
-   ("which is what everyone is betting on") and sets up the Loop
-   case studies that follow ("and what I started 18 months ago").
-   Rendered as an italic display-font lede instead of the previous
-   ALL CAPS eyebrow + kicker pair. */
+   (`ledeStart` — "which is what everyone is betting on") and sets
+   up the Loop case studies that follow (`ledeAccent` — "and what I
+   started 18 months ago").
+   The accent half is rendered bold + violet so the personal
+   throughline reads as a callback to the new flywheel-bridge quote
+   directly below the ticker. Rendered as an italic display-font
+   lede; the accent inherits the italic but breaks weight + colour
+   to land the second clause as the load-bearing one. */
 export const visionMarketSignalsHeader = {
-  lede:
-    "\u2026which is what everyone is betting on\u2026 and what I started 18 months ago.",
+  ledeStart: "\u2026which is what everyone is betting on\u2026 ",
+  ledeAccent: "and what I started 18 months ago.",
 } as const;
 
 export type VisionMarketSignal = {
@@ -463,6 +479,55 @@ export const visionMarketSignals: VisionMarketSignal[] = [
 ];
 
 /* ─────────────────────────────────────────────────────────────────────
+ * Flywheel bridge — full-viewport interstitial between Vision and Approach
+ *
+ * One personal quote with three Navigate / Encode / Build pills
+ * inlined inside the second sentence (replacing the lowercase verbs
+ * `navigate`, `encode`, `build`). Mirrors the Evans bridge pattern
+ * (`quote-bridge.tsx` + `quoteParts`): each marked phrase wraps in a
+ * lane-coloured chip that visually anchors the trio inside the prose
+ * itself, so the legend lives in the sentence rather than below it.
+ *
+ * Differences from the Evans bridge:
+ *   - No parallax, no scroll-coupled fade, no pin. Single calm beat.
+ *   - Inline marks render as full pills (mono caps + lane dot)
+ *     rather than Evans's bordered editorial chips, mirroring the
+ *     existing Navigate / Encode / Build orbit pills the rest of the
+ *     page uses as the framework's visual signature.
+ *
+ * Each `mark` part is rendered as an inline pill displaying its
+ * `label`; surrounding `text` parts render as plain prose. The
+ * lowercase verbs (`navigate AI`, `encode their craft`, `build
+ * tools`) live in the data only as semantic context — the rendered
+ * sentence reads "...Today they [Navigate] AI, [Encode] their craft
+ * into Skills, and [Build] tools I wouldn't have thought of." with
+ * the bracketed labels rendered as inline pills.
+ *
+ * Pure quote, no eyebrow, no attribution. The page is already in
+ * first person; an outside-voice attribution would feel wrong here.
+ * ─────────────────────────────────────────────────────────────────── */
+
+export type FlywheelBridgePart =
+  | { text: string; mark?: undefined; label?: undefined }
+  | { mark: "navigate" | "encode" | "build"; label: string; text?: undefined };
+
+export const flywheelBridgeSection: {
+  parts: FlywheelBridgePart[];
+} = {
+  parts: [
+    {
+      text: "18 months ago I moved from the AI team to embed with marketing. Today they ",
+    },
+    { mark: "navigate", label: "Navigate" },
+    { text: " AI, " },
+    { mark: "encode", label: "Encode" },
+    { text: " their craft into Skills, and " },
+    { mark: "build", label: "Build" },
+    { text: " tools I wouldn't have thought of." },
+  ],
+};
+
+/* ─────────────────────────────────────────────────────────────────────
  * Approach — Navigate, Encode, Build (the flywheel, explained)
  *
  * Three self-contained sections. Each one pairs a copy column with an
@@ -477,8 +542,6 @@ export const approachSection = {
   titleEm: "at Loop",
   caption:
     "I've led the AI adoption at Loop Earplugs since 2024, first across the whole company, then embedded inside marketing, helping teams turn the way they actually work into reusable skills they can build their own automations on.",
-  close:
-    "The hardest AI critics ended up product managing the tools I vibe-coded for them. That's the spirit — and the self-sufficiency — I want to bring to Stripe.",
 } as const;
 
 export type ApproachTone = "violet" | "gold" | "sage";
@@ -702,14 +765,15 @@ export const approachSteps: ApproachStep[] = [
     label: "Build",
     tone: "sage",
     headline: "Hand the team a running system they actually own.",
-    /* Body shape: personal arc → method → handoff. The opener names
-       the inheritance from creative-AI-user to tool-builder so Build
-       reads as the natural next step from Navigate + Encode, not as a
-       jump to engineering. The handoff line ("Nobody understands
-       their domain better than they do.") seeds the self-sufficiency
-       outcome that the new card below the three phases lands. */
+    /* Body shape: thesis → why → method → handoff. The autobiographical
+       "I came into Loop" arc has moved up to the FlywheelBridge above,
+       so this body can stay tight and method-focused. Opens with the
+       collapsed-distance thesis, names why the person closest to the
+       work can finally build, walks the actual capture-to-ship
+       sequence, lands on the same self-sufficiency punchline that the
+       Outcome card below proves out concretely. */
     body:
-      "I came into Loop using AI for my own creative work. When I saw teammates hit the same bottlenecks I had, I started using the same design instincts to build the tool around them. Once the bottleneck is named and the process encoded, building is the fast part. I capture user frustrations in a Teams call, turn the transcript into a user story in Cursor, and either build the interface around it or expose the logic headlessly via MCP/API. Then I hand it to the person I built it for. Nobody understands their domain better than they do.",
+      "AI collapses the distance between knowing the problem and shipping the tool. The person closest to the work can finally build the tool around it. The work starts in a Teams call. I listen for the frustration, turn the transcript into a user story in Cursor, and either build the interface around it or expose the logic headlessly through MCP. Then I hand it to the person I built it for. Nobody understands their domain better than they do.",
     signal: { k: "Outcome", v: "A thin running surface the team uses daily." },
     visual: {
       kind: "engine",
@@ -760,24 +824,33 @@ export const approachSteps: ApproachStep[] = [
 ];
 
 /* ─────────────────────────────────────────────────────────────────────
- * Approach outcome — the flywheel turns
+ * Approach outcome — the flywheel turns, here's what it produced
  *
  * Sits between the three-phase list and the existing approach close
  * line. Names self-sufficiency as the visible result of Navigate +
- * Encode + Build running together. The five-stage maturity ladder
- * mirrors the Stripe FDA job posting language verbatim ("from
- * awareness, to first win, to regular AI integration, to full
- * workflow transformation, to self-sufficiency") and rhymes with the
- * Stripe teaser's `Self-sufficiency loop` capability so the cohort
- * journey reads consistently across the route.
+ * Encode + Build running together — but lands it as four concrete
+ * achievements across teams instead of a generic maturity ladder.
+ * Each card seeds a section that follows on the page so the Outcome
+ * reads forward as well as backward:
  *
- * Visual posture: a single calm card mirroring `.aiop-diagnosis__gap`
- * — centered, with diamond markers — so the section opens (diagnosis
- * gap) and closes (approach outcome) on the same typographic gesture.
+ *   01 Paid social   → autonomy story the close line lands.
+ *   02 Production    → primes the Why-build-custom-tools slide.
+ *   03 Localization  → primes the Cases grid (UGC Dubber).
+ *   04 Performance   → primes the Headless / Substrate-map sections.
+ *
+ * Visual posture: same outer card chrome as before (centered,
+ * diamond markers, sage accent rhyming with the Build lane); the
+ * inner content swaps from a 5-stage ladder to a 4-across achievement
+ * grid (collapses to 2x2 then 1-up at narrow widths).
  * ─────────────────────────────────────────────────────────────────── */
 
-export type ApproachOutcomeStage = {
+export type ApproachOutcomeAchievement = {
   n: string;
+  /* Two-word noun phrase naming the operator's contribution at that
+     team — not the team domain (which is implicit in the body). The
+     label is what scans at a glance; the body fills in the team
+     context and the proof. Keeps the card from reading like a four-
+     team org chart and turns it into four crystallised outcomes. */
   label: string;
   body: string;
 };
@@ -786,18 +859,43 @@ export const approachOutcome: {
   eyebrow: string;
   headline: string;
   body: string;
-  ladder: ApproachOutcomeStage[];
+  achievements: ApproachOutcomeAchievement[];
 } = {
   eyebrow: "Outcome",
-  headline: "The studio runs the program without me.",
+  /* Headline scope: broader than the Studio team alone (other
+     embedded teams run their work autonomously too), narrower than
+     "all of marketing" (which would overclaim). "The teams I embed
+     with" lands the operator's actual reach honestly. */
+  headline: "The teams I embed with run the program without me.",
+  /* Body shape: escalating triplet (Navigate / Encode / Build, same
+     three pills the bridge above seeds) → the new operator insight
+     (pattern recognition across teams becomes the next Skill the
+     cohort inherits). The Stripe tie-in is implicit through "cohort"
+     and "next team" — language Stripe's FDA team will recognise
+     without the body reading as copy-paste from the job posting. */
   body:
-    "Navigate gives them the mental model. Encode gives them the substrate. Build gives them the tools. The flywheel turns when the team starts coaching itself — exactly what Stripe wants from the FDA program.",
-  ladder: [
-    { n: "01", label: "Awareness", body: "Knows AI can change this work." },
-    { n: "02", label: "First win", body: "AI ships something into the live work." },
-    { n: "03", label: "Default", body: "Starts every task with an AI tool." },
-    { n: "04", label: "Builder", body: "Builds and iterates on their own tools." },
-    { n: "05", label: "Self-sufficient", body: "Coaches the next cohort without me." },
+    "Navigate gives them the mental model. Encode gives them the substrate. Build gives them the tools. Moving between teams is the unlock — I see which patterns scale, encode them, and the next team starts further along than the last.",
+  achievements: [
+    {
+      n: "01",
+      label: "AI default",
+      body: "90% of Studio briefings ship with AI — without needing me anymore.",
+    },
+    {
+      n: "02",
+      label: "Custom engine",
+      body: "A custom image and video generation engine, built to remove friction so Studio keeps producing high-performing assets at scale.",
+    },
+    {
+      n: "03",
+      label: "Team handoff",
+      body: "Localization managers now product-managing and shaping the UGC dubbing tool I built for them.",
+    },
+    {
+      n: "04",
+      label: "Headless layer",
+      body: "Creative strategy methodology exposed headlessly, so Performance can build their own dashboards on top.",
+    },
   ],
 };
 

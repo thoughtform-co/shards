@@ -30,7 +30,7 @@ import { diagnosisSection } from "./content";
  * the first place the visitor sees the lane pills proper.
  */
 export function Diagnosis() {
-  const { title, titleEm, lede, useCases, gap } = diagnosisSection;
+  const { title, titleEm, lede, ledeStrong, useCases, gap } = diagnosisSection;
 
   return (
     <section className="aiop-section aiop-diagnosis" id="diagnosis">
@@ -41,7 +41,10 @@ export function Diagnosis() {
               {title} <em>{titleEm}</em>
             </h2>
           </div>
-          <p className="aiop-diagnosis__lede">{lede}</p>
+          <p className="aiop-diagnosis__lede">
+            {lede}
+            <strong>{ledeStrong}</strong>
+          </p>
         </header>
 
         <ol

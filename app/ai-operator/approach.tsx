@@ -110,38 +110,39 @@ export function Approach() {
           <p className="aiop-approach__outcome-body">
             {approachOutcome.body}
           </p>
-          <ol className="aiop-approach__outcome-ladder" role="list">
-            {approachOutcome.ladder.map((stage, idx) => (
+          {/* Four concrete achievement cards across teams. Replaces
+              the earlier 5-stage maturity ladder so the Outcome lands
+              as proof, not as a generic progression. Each card seeds a
+              section that follows further down the page (Build body,
+              Why-build-custom-tools, Cases, Headless / Substrate-map),
+              so this card reads forward as well as backward. */}
+          <ol className="aiop-approach__outcome-achievements" role="list">
+            {approachOutcome.achievements.map((achievement) => (
               <li
-                key={stage.n}
-                className="aiop-approach__outcome-stage"
-                data-aiop-stage={stage.n}
+                key={achievement.n}
+                className="aiop-approach__outcome-card"
+                data-aiop-achievement={achievement.n}
               >
-                <span className="aiop-approach__outcome-stage-n">
-                  {stage.n}
-                </span>
-                <span className="aiop-approach__outcome-stage-label">
-                  {stage.label}
-                </span>
-                <span className="aiop-approach__outcome-stage-body">
-                  {stage.body}
-                </span>
-                {idx < approachOutcome.ladder.length - 1 ? (
-                  <span
-                    className="aiop-approach__outcome-stage-arrow"
-                    aria-hidden="true"
-                  >
-                    →
+                {/* Header row: small mono number sits inline next to
+                    the label, baseline-aligned, so the label reads as
+                    the primary anchor and the number stays as a quiet
+                    counter. Replaces the earlier stacked layout where
+                    the team name was getting lost above the body. */}
+                <header className="aiop-approach__outcome-card-head">
+                  <span className="aiop-approach__outcome-card-n">
+                    {achievement.n}
                   </span>
-                ) : null}
+                  <span className="aiop-approach__outcome-card-label">
+                    {achievement.label}
+                  </span>
+                </header>
+                <p className="aiop-approach__outcome-card-body">
+                  {achievement.body}
+                </p>
               </li>
             ))}
           </ol>
         </aside>
-
-        <p className="aiop-approach__close aiop-reveal">
-          {approachSection.close}
-        </p>
       </div>
 
       <OperatorModal
