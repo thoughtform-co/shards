@@ -48,31 +48,7 @@
   padding-bottom: 0;
 }
 
-/* ─── Flywheel-bridge quote, framed as a callout tile ───────────────
- *
- * In v3 the personal "I moved from the AI team into marketing…" quote
- * is wrapped in the same callout-card chrome as the closer's stripe-
- * reflect pull (`.aiop-stripe-reflect__pull`): 1px paper-tinted
- * hairline, 4px radius, soft paper-2 → paper gradient, generous
- * inner padding. The two interstitials now read as siblings in one
- * editorial callout vocabulary across the page — the flywheel-bridge
- * is the personal mid-page beat, stripe-reflect is the closer beat.
- *
- * Only `.aiop-v3` scope, so v1's free-floating italic prose stays
- * exactly as it is on /ai-operator. Type metrics are kept identical
- * to the original quote so the line breaks, balance, and reading
- * rhythm are unchanged — only the frame is added. */
-.aiop-v3 .aiop-flywheel-bridge__quote {
-  width: 100%;
-  max-width: min(100%, 920px);
-  margin-inline: auto;
-  padding: clamp(28px, 3vw, 44px) clamp(32px, 3.4vw, 52px);
-  background: linear-gradient(
-    180deg,
-    var(--aiop-paper-2) 0%,
-    var(--aiop-paper) 100%
-  );
-  border: 1px solid var(--aiop-rule);
-  border-radius: 4px;
-  text-wrap: balance;
-}
+/* The v3-scoped flywheel-bridge callout tile was promoted to the
+   base `.aiop-flywheel-bridge__quote` rule in `ai-operator.css`, so
+   v1 and v3 now share one editorial callout vocabulary. No v3
+   override is needed any more. */

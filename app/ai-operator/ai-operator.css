@@ -3351,17 +3351,24 @@
   gap: clamp(32px, 4.5vw, 56px);
 }
 
-/* Quote — italic display centerpiece. Width is generous (~1100px on
-   desktop) so the second sentence with its three inline pills fits
-   in roughly two lines instead of stacking into a tall block; the
-   Evans bridge uses the same `min(100%, 1100px)` shape. Slightly
-   smaller font than the previous draft so the line count stays
-   compact even with the inline pills carrying their own visual
-   weight inside the prose. */
+/* Quote — italic display centerpiece, framed as a callout tile so it
+   reads as a sibling of the closer's `.aiop-stripe-reflect__pull`:
+   1px paper-tinted hairline, 4px radius, soft paper-2 → paper
+   gradient, generous inner padding. The two interstitials now share
+   one editorial callout vocabulary across the page — flywheel-bridge
+   is the personal mid-page beat, stripe-reflect is the closer beat.
+   Width stays generous so the line count stays compact and the
+   second sentence reads in roughly two lines. */
 .aiop-flywheel-bridge__quote {
   margin: 0;
-  padding: 0;
-  border: 0;
+  border: 1px solid var(--aiop-rule);
+  border-radius: 4px;
+  padding: clamp(28px, 3vw, 44px) clamp(32px, 3.4vw, 52px);
+  background: linear-gradient(
+    180deg,
+    var(--aiop-paper-2) 0%,
+    var(--aiop-paper) 100%
+  );
   font-family: var(--aiop-display);
   font-style: italic;
   font-weight: 500;
@@ -3369,8 +3376,11 @@
   line-height: 1.35;
   letter-spacing: -0.018em;
   color: var(--aiop-ink);
-  max-width: min(100%, 1240px);
+  width: 100%;
+  max-width: min(100%, 920px);
+  margin-inline: auto;
   text-align: center;
+  text-wrap: balance;
 }
 
 /* The inline `.aiop-flywheel-bridge__mark*` lane-pill rules were
