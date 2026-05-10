@@ -64,9 +64,25 @@ import { quoteBridgeSection } from "./content";
  * same rAF-batched scroll handler, same reset-on-cleanup pattern.
  */
 
-export function QuoteBridge() {
+export type QuoteBridgeProps = {
+  /* Optional override for the delayed parenthetical that appears
+   * below the attribution. Defaults to `quoteBridgeSection.scrollNote`
+   * so v1 keeps its current behaviour. v3 passes an empty string to
+   * suppress the line entirely — by then the lens section above has
+   * already named the new category, so Evans stands alone.
+   *
+   * When the resolved value is empty, the `<p>` block is skipped at
+   * render and CSS rules tied to `--aiop-bridge-progress` no-op
+   * because the element they target isn't in the DOM. */
+  scrollNote?: string;
+};
+
+export function QuoteBridge({ scrollNote }: QuoteBridgeProps = {}) {
   const sectionRef = useRef<HTMLElement>(null);
   const [animated, setAnimated] = useState(false);
+
+  const resolvedScrollNote =
+    scrollNote ?? quoteBridgeSection.scrollNote;
 
   useEffect(() => {
     const motionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -248,22 +264,26 @@ export function QuoteBridge() {
                   the quote + attribution have settled. Under reduced
                   motion / narrow viewports it renders as a static line
                   directly below the attribution. The brackets are
-                  presentational so the source string stays clean. */}
-              <p className="aiop-bridge__scroll-note">
-                <span
-                  className="aiop-bridge__scroll-note-bracket"
-                  aria-hidden="true"
-                >
-                  (
-                </span>
-                {quoteBridgeSection.scrollNote}
-                <span
-                  className="aiop-bridge__scroll-note-bracket"
-                  aria-hidden="true"
-                >
-                  )
-                </span>
-              </p>
+                  presentational so the source string stays clean.
+                  Skipped entirely when `scrollNote=""` is passed (v3),
+                  so Evans stands alone with the attribution below. */}
+              {resolvedScrollNote ? (
+                <p className="aiop-bridge__scroll-note">
+                  <span
+                    className="aiop-bridge__scroll-note-bracket"
+                    aria-hidden="true"
+                  >
+                    (
+                  </span>
+                  {resolvedScrollNote}
+                  <span
+                    className="aiop-bridge__scroll-note-bracket"
+                    aria-hidden="true"
+                  >
+                    )
+                  </span>
+                </p>
+              ) : null}
             </div>
           </figure>
         </div>
