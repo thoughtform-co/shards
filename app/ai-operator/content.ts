@@ -497,7 +497,7 @@ export const visionMarketSignals: VisionMarketSignal[] = [
 
 export const flywheelBridgeSection = {
   quote:
-    "I moved from the AI team into marketing to show AI would elevate them, not replace them. Today the studio ships its best AI ads without me, performance writes their own Claude skills, and the people I built tools for are starting to ship features themselves.",
+    "I moved from the AI team into marketing to show AI would elevate them, not replace them. Today the studio makes its best ads with AI completely autonomously, Performance writes their own Claude skills, and the people I built tools for are starting to implement features themselves.",
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
