@@ -327,16 +327,9 @@ export default function AiOperatorPage() {
           aria-label="External validation: forward-deployed AI is now a recognized industry pattern"
         >
           <div className="aiop-wrap aiop-vision__signals-head">
-            <span className="aiop-vision__signals-eyebrow">
-              <span
-                className="aiop-vision__signals-eyebrow-bar"
-                aria-hidden="true"
-              />
-              {visionMarketSignalsHeader.eyebrow}
-            </span>
-            <span className="aiop-vision__signals-kicker">
-              {visionMarketSignalsHeader.kicker}
-            </span>
+            <p className="aiop-vision__signals-lede">
+              {visionMarketSignalsHeader.lede}
+            </p>
           </div>
 
           <div className="aiop-vision__signals-marquee">

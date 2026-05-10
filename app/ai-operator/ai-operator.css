@@ -2882,36 +2882,24 @@
 .aiop-vision__signals-head {
   display: flex;
   align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  margin-bottom: clamp(14px, 1.8vw, 20px);
+  margin-bottom: clamp(14px, 1.8vw, 22px);
 }
 
-.aiop-vision__signals-eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--aiop-mono);
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--aiop-violet);
-}
-
-.aiop-vision__signals-eyebrow-bar {
-  display: inline-block;
-  width: 22px;
-  height: 1.5px;
-  background: var(--aiop-violet);
-}
-
-.aiop-vision__signals-kicker {
-  font-family: var(--aiop-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--aiop-muted);
+/* Editorial bridge line that frames the wire ticker as social proof
+   and sets up the Loop case studies below. Sized + voiced like the
+   page's other italic asides (bridge scroll-note, gap subline) so
+   the news strip reads as a continuation of the same editorial
+   narrator rather than a labelled news widget. */
+.aiop-vision__signals-lede {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-weight: 440;
+  font-size: clamp(15px, 1.4vw, 19px);
+  line-height: 1.45;
+  letter-spacing: -0.008em;
+  color: var(--aiop-ink-soft);
+  max-width: 64ch;
 }
 
 .aiop-vision__signals-marquee {
@@ -9067,10 +9055,15 @@
 /* ─── 26.5c · Continuum spectrum (rail + diamonds + columns) ──────── */
 
 /* Adapted from the Thoughtform v3 Continuum Spectrum (see
-   `01_thoughtform/legacy/landing-v3/cockpit/continuum-spectrum.css`).
-   On the AI-operator paper palette the rail uses the amber lane
-   (Encode) so the slider reads as the mental-model anchor for the
-   asking gap that Evans just named. */
+   `01_thoughtform/legacy/landing-v3/cockpit/continuum-spectrum.css`)
+   and the v7 `spectrumFloat` choreography (vertical there, horizontal
+   here). The rail uses the violet lane (Navigate) to fit the
+   Stripe-leaning brand palette, with the centre diamond floating
+   slowly between the rail's 18% and 82% positions so the "AI lives
+   somewhere on this spectrum" idea reads kinetically rather than
+   only being asserted by the centre column copy. The big top-margin
+   gives the rail real breathing room from the lede above so the
+   float reads as its own beat instead of a footnote. */
 .aiop-reality__spectrum {
   position: relative;
   width: 100%;
@@ -9078,6 +9071,7 @@
   flex-direction: column;
   gap: clamp(20px, 3vw, 36px);
   padding-top: 8px;
+  margin-top: clamp(56px, 7vw, 96px);
 }
 
 .aiop-reality__rail {
@@ -9086,9 +9080,9 @@
   width: 100%;
   background: linear-gradient(
     to right,
-    color-mix(in oklab, var(--aiop-amber) 30%, transparent) 0%,
-    var(--aiop-amber) 50%,
-    color-mix(in oklab, var(--aiop-amber) 30%, transparent) 100%
+    color-mix(in oklab, var(--aiop-violet) 30%, transparent) 0%,
+    var(--aiop-violet) 50%,
+    color-mix(in oklab, var(--aiop-violet) 30%, transparent) 100%
   );
 }
 
@@ -9097,7 +9091,7 @@
   top: 50%;
   width: 12px;
   height: 12px;
-  background: var(--aiop-amber);
+  background: var(--aiop-violet);
   transform: translate(-50%, -50%) rotate(45deg);
 }
 
@@ -9109,11 +9103,27 @@
   left: 100%;
 }
 
+/* Centre diamond — the active marker. Slightly larger, with a soft
+   violet halo, and animated horizontally between the rail's 18% and
+   82% positions to mirror the v7 Thoughtform `spectrumFloat`. Easing
+   is `ease-in-out` so the dot lingers near each end before reversing,
+   which feels contemplative rather than mechanical. */
 .aiop-reality__diamond--c {
-  left: 50%;
+  left: 18%;
   width: 16px;
   height: 16px;
-  box-shadow: 0 0 0 6px color-mix(in oklab, var(--aiop-amber) 18%, transparent);
+  box-shadow: 0 0 0 6px color-mix(in oklab, var(--aiop-violet) 18%, transparent);
+  animation: aiop-reality-spectrum-float 7s ease-in-out infinite;
+}
+
+@keyframes aiop-reality-spectrum-float {
+  0%,
+  100% {
+    left: 18%;
+  }
+  50% {
+    left: 82%;
+  }
 }
 
 .aiop-reality__cols {
@@ -9163,7 +9173,7 @@
 }
 
 .aiop-reality__col--highlight .aiop-reality__col-label {
-  color: var(--aiop-amber);
+  color: var(--aiop-violet);
 }
 
 .aiop-reality__col-title {
@@ -9229,6 +9239,14 @@
   .aiop-reality {
     min-height: 0 !important;
     padding-block: clamp(40px, 6vw, 88px) !important;
+  }
+
+  /* Park the floating diamond at the rail's centre instead of
+     animating; preserves the visual semantics ("AI lives along this
+     spectrum") without continuous motion. */
+  .aiop-reality__diamond--c {
+    animation: none !important;
+    left: 50% !important;
   }
 }
 

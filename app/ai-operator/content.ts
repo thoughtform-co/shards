@@ -313,10 +313,7 @@ export const aiRealitySection = {
   title: "Why traditional adoption",
   titleEm: "doesn't work with AI.",
   lede:
-    "AI is intelligence engaged across a spectrum. Used as a tool, it executes commands deterministically. Worked with as a collaborator, it interprets intent and inherits judgment. The skill is learning how to navigate this spectrum.",
-  actions: [
-    { id: "vision", label: "See the flywheel", href: "#vision" },
-  ],
+    "AI gets sold as software. It isn't. It's intelligence. The first technology you can use as a tool and work with as a collaborator, often both at once. Before it can understand how your teams work, you have to learn how to navigate it.",
   spectrum: {
     railLabel: "Tool to collaborator continuum",
     columns: [
@@ -411,9 +408,15 @@ export const visionSection = {
  * verifiable from the linked source.
  * ─────────────────────────────────────────────────────────────────── */
 
+/* Single editorial bridge line that sits above the marquee. Does
+   double duty: frames the wire items below as external validation
+   ("which is what everyone is betting on") and sets up the Loop
+   case studies that follow ("and what I started 18 months ago").
+   Rendered as an italic display-font lede instead of the previous
+   ALL CAPS eyebrow + kicker pair. */
 export const visionMarketSignalsHeader = {
-  eyebrow: "External validation",
-  kicker: "From the wire",
+  lede:
+    "\u2026which is what everyone is betting on\u2026 and what I started 18 months ago.",
 } as const;
 
 export type VisionMarketSignal = {

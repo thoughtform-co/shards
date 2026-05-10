@@ -40,7 +40,7 @@ import { aiRealitySection } from "./content";
  * section reads as a calm static beat below the Evans quote.
  */
 export function AiIsNotSoftware() {
-  const { title, titleEm, lede, actions, spectrum } = aiRealitySection;
+  const { title, titleEm, lede, spectrum } = aiRealitySection;
 
   return (
     <section
@@ -66,20 +66,6 @@ export function AiIsNotSoftware() {
           </div>
           <div className="aiop-reality__head-lede">
             <p className="aiop-reality__lede">{lede}</p>
-            <div
-              className="aiop-reality__actions"
-              aria-label="Reality check links"
-            >
-              {actions.map((action) => (
-                <a
-                  key={action.id}
-                  className="aiop-reality__link"
-                  href={action.href}
-                >
-                  {action.label}
-                </a>
-              ))}
-            </div>
           </div>
         </header>
 
