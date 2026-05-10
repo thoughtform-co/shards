@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 
+import "./v3.css";
 import { AiIsNotSoftware } from "../ai-is-not-software";
 import { Approach } from "../approach";
 import { CaseLedger } from "../case-ledger";
@@ -98,7 +99,7 @@ function renderHeroLede(paragraph: string) {
 
 export default function AiOperatorV3Page() {
   return (
-    <main className="aiop-stage">
+    <main className="aiop-stage aiop-v3">
       <ScrollReveal />
 
       {/* ─── Header / nav ───────────────────────────────────────────── */}

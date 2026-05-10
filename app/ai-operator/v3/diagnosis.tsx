@@ -1,39 +1,31 @@
 import { diagnosisSection } from "../content";
 
 /*
- * DiagnosisV3 — "When the gap shows up."
+ * DiagnosisV3 — "Treat AI like software, and these are the cracks…"
  *
  * V3 fork of `../diagnosis.tsx`. Same four use cases, same card
- * chrome and grid layout — but reframed by a new eyebrow, title, and
- * lede so the section reads as PROOF of the lens above
+ * chrome and grid layout, same gap card hand-off — but reframed by a
+ * new title and lede so the section reads as PROOF of the lens above
  * (`AiIsNotSoftware`) rather than as a standalone diagnosis.
  *
  * Differences from v1's `Diagnosis`:
- *   - Adds a `WHEN THE GAP SHOWS UP` eyebrow above the title using
- *     the existing `.aiop-eyebrow` chrome (same treatment as the hero
- *     and the CTA sections).
- *   - Replaces the title and lede with v3 strings inline. No new
- *     content exports — v3 is a single fork and the strings only
- *     appear here.
- *   - Drops the `<div className="aiop-diagnosis__bridge">` chevron
- *     and the `<aside className="aiop-diagnosis__gap">` card. In v3,
- *     Evans (rendered immediately after this section) carries the
- *     hand-off into the method.
+ *   - Title and lede are v3 strings inline (no new content exports —
+ *     v3 is a single fork and the strings only appear here).
+ *   - Reuses `diagnosisSection.useCases` and `diagnosisSection.gap`
+ *     from `../content` so the four organisational patterns and the
+ *     "fix isn't more AI" gap card stay in lock-step with v1.
  *
- * Reuses `diagnosisSection.useCases` from `../content` so the four
- * organisational patterns stay in lock-step with v1. Re-skinning a
- * client cut still touches the parent content module.
+ * The chevron + gap card sit below the four use cases as in v1; in
+ * v3 they hand directly into the Evans bridge below.
  */
 export function DiagnosisV3() {
+  const { gap } = diagnosisSection;
+
   return (
     <section className="aiop-section aiop-diagnosis" id="diagnosis">
       <div className="aiop-wrap">
         <header className="aiop-diagnosis__head aiop-reveal">
           <div className="aiop-diagnosis__head-title">
-            <p className="aiop-eyebrow">
-              <span className="aiop-slash" aria-hidden="true" />
-              When the gap shows up
-            </p>
             <h2 className="aiop-section-title aiop-diagnosis__title">
               Treat AI like software,{" "}
               <em>and these are the cracks that show up.</em>
@@ -72,6 +64,22 @@ export function DiagnosisV3() {
             </li>
           ))}
         </ol>
+
+        <div className="aiop-diagnosis__bridge" aria-hidden="true">
+          <span className="aiop-diagnosis__chevron" />
+        </div>
+
+        <aside
+          className="aiop-diagnosis__gap aiop-reveal"
+          aria-label="Shared root cause across the four patterns"
+        >
+          <p className="aiop-diagnosis__gap-title">
+            {gap.title} <em>{gap.titleEm}</em>
+          </p>
+          {gap.subline ? (
+            <p className="aiop-diagnosis__gap-subline">{gap.subline}</p>
+          ) : null}
+        </aside>
       </div>
     </section>
   );

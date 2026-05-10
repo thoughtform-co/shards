@@ -1,0 +1,49 @@
+/* ─────────────────────────────────────────────────────────────────────
+ * AI Operator V3 — route-scoped overrides.
+ *
+ * Lives only in the /ai-operator/v3 route (imported from v3/page.tsx
+ * and scoped under `.aiop-v3` on the page's <main>). v1 and v2 are
+ * unaffected because the parent `ai-operator.css` is not modified.
+ *
+ * What it covers:
+ *
+ *   1. Full-viewport beats — `.aiop-reality` and `.aiop-diagnosis`
+ *      become 100svh sections with their inner content vertically
+ *      centred. v1 only achieves this for `.aiop-reality` because it
+ *      lives inside the `.aiop-bridge-and-reality` parallax wrapper
+ *      that sets `min-height: 100vh`. v3 drops that wrapper so it
+ *      restores the full-viewport feel here directly.
+ *
+ *   2. Diagnosis head alignment — switch the title/lede grid from
+ *      `align-items: end` (v1's baseline-rhyme) to `align-items: start`
+ *      so the lede top aligns with the title top. With v3's longer
+ *      title, end-alignment was visibly off.
+ *
+ * Mobile note: under 960px both sections drop the min-height so they
+ * fit on small screens without forcing tall blank space.
+ * ─────────────────────────────────────────────────────────────────── */
+
+@media (min-width: 960px) {
+  .aiop-v3 .aiop-reality,
+  .aiop-v3 .aiop-diagnosis {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+  }
+
+  .aiop-v3 .aiop-reality > .aiop-wrap,
+  .aiop-v3 .aiop-diagnosis > .aiop-wrap {
+    width: 100%;
+  }
+}
+
+/* In v3 the diagnosis head reads top-aligned (lede top = title top) so
+   the new longer title ("Treat AI like software, and these are the
+   cracks that show up.") doesn't visually shove the lede down. */
+.aiop-v3 .aiop-diagnosis__head {
+  align-items: start;
+}
+
+.aiop-v3 .aiop-diagnosis__lede {
+  padding-bottom: 0;
+}
