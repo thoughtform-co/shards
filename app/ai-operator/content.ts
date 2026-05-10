@@ -75,8 +75,7 @@ export const hero = {
     "The relationship between human intelligence and AI is the work of our generation.",
     "As an embedded Creative Technologist at Loop Earplugs, I helped marketing teams navigate AI inside their work, encode what makes it good, and build the capability on top of it.",
   ] as const,
-  ledeStrong:
-    "Now I want to bring the same work to Stripe — embedded with marketing, treating AI as a capability the team owns rather than another tool they buy.",
+  ledeStrong: "Now I want to bring the same work to Stripe.",
   meta: [
     {
       k: "EMAIL",
