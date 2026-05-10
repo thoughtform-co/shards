@@ -2120,19 +2120,16 @@
 
 /* Foreground host for `LoopStripeMorph`. Same component as the
    hero watermark, but rendered at full opacity, no mask, no blend
-   mode — this is the deliberate visual anchor of the CTA. */
+   mode — this is the deliberate visual anchor of the CTA. Always
+   centered within the right column regardless of breakpoint, so
+   the Loop ring / Stripe parallelogram silhouettes have symmetric
+   breathing room rather than getting pulled to the right edge. */
 .aiop-cta__morph {
   position: relative;
-  width: clamp(200px, 22vw, 280px);
+  width: clamp(220px, 26vw, 320px);
   aspect-ratio: 1 / 1;
   align-self: center;
   pointer-events: none;
-}
-
-@media (min-width: 800px) {
-  .aiop-cta__morph {
-    align-self: flex-end;
-  }
 }
 
 .aiop-cta__morph .aiop-morph-canvas {
@@ -2141,9 +2138,26 @@
   max-width: none;
 }
 
-/* Primary action — email. Slim, no chamfer, no shadow. Body type
-   so it reads as a deliberate sentence-cased label rather than the
-   mono-caps register reserved for the text links below. */
+/* Primary actions row — email + LinkedIn rendered side-by-side as
+   two filled dark buttons of equal weight. Both are "the buttons
+   you're meant to press"; CV / cover letter sit in the subtler
+   ghost row below. The row collapses to a single column under 720px
+   so neither button is forced into uncomfortable widths. */
+.aiop-cta__primary-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: stretch;
+  justify-content: center;
+  width: 100%;
+}
+
+@media (min-width: 800px) {
+  .aiop-cta__primary-row {
+    justify-content: flex-end;
+  }
+}
+
 .aiop-cta__primary {
   display: inline-flex;
   align-items: center;
@@ -2162,14 +2176,8 @@
   transition:
     background 200ms cubic-bezier(0.16, 1, 0.3, 1),
     color 200ms cubic-bezier(0.16, 1, 0.3, 1);
-  align-self: center;
+  flex: 0 1 auto;
   min-width: 0;
-}
-
-@media (min-width: 800px) {
-  .aiop-cta__primary {
-    align-self: flex-end;
-  }
 }
 
 .aiop-cta__primary:hover,
@@ -2192,62 +2200,81 @@
   transform: translateX(3px);
 }
 
-/* Secondary actions — LinkedIn / CV / Cover letter. Mono-caps
-   eyebrow type, separated by flex gap, no underline, with a quiet
-   arrow that nudges on hover. */
-.aiop-cta__textlinks {
+/* Subtle ghost row — CV + cover letter as quiet outlined buttons.
+   Same shape language as the primaries (rounded rect, label + arrow)
+   but transparent fill, soft hairline border, and ink-soft type so
+   they read as supporting actions rather than competing with the
+   email + LinkedIn row above. */
+.aiop-cta__ghost-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 18px 22px;
-  align-items: center;
+  gap: 10px;
+  align-items: stretch;
   justify-content: center;
   width: 100%;
 }
 
 @media (min-width: 800px) {
-  .aiop-cta__textlinks {
+  .aiop-cta__ghost-row {
     justify-content: flex-end;
   }
 }
 
-.aiop-cta__textlink {
+.aiop-cta__ghost {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
+  padding: 9px 14px;
   font-family: var(--aiop-mono);
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--aiop-ink-soft);
+  background: transparent;
+  border: 1px solid var(--aiop-rule);
+  border-radius: 4px;
   text-decoration: none;
-  transition: color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    background 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.aiop-cta__textlink:hover,
-.aiop-cta__textlink:focus-visible {
+.aiop-cta__ghost:hover,
+.aiop-cta__ghost:focus-visible {
   color: var(--aiop-ink);
+  border-color: var(--aiop-rule-strong);
+  background: rgba(26, 22, 18, 0.03);
 }
 
-.aiop-cta__textlink:focus-visible {
+.aiop-cta__ghost:focus-visible {
   outline: 2px solid var(--aiop-violet, #635bff);
   outline-offset: 3px;
-  border-radius: 2px;
 }
 
-.aiop-cta__textlink-arrow {
+.aiop-cta__ghost-arrow {
   display: inline-block;
   transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.aiop-cta__textlink:hover .aiop-cta__textlink-arrow,
-.aiop-cta__textlink:focus-visible .aiop-cta__textlink-arrow {
+.aiop-cta__ghost:hover .aiop-cta__ghost-arrow,
+.aiop-cta__ghost:focus-visible .aiop-cta__ghost-arrow {
   transform: translateX(2px);
 }
 
 @media (max-width: 720px) {
   .aiop-cta__morph {
     width: clamp(160px, 60vw, 220px);
+  }
+
+  .aiop-cta__primary-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .aiop-cta__primary {
+    justify-content: space-between;
   }
 }
 
@@ -3508,12 +3535,32 @@
   max-width: min(100%, 1100px);
 }
 
+/* Reflect pull — framed as a callout card so it reads as a deliberate
+   tile rather than a free-floating quote. Same chrome family as
+   `.aiop-cases__bridge` and the `.aiop-stripe-video__byline` callout
+   so the page's editorial callouts share one visual vocabulary:
+   1px paper-tinted hairline, 4px radius, soft paper-2 → paper
+   gradient, centered tile with balanced display body. The italic
+   register stays — it's still a self-quote — but the overt
+   blockquote signaling (giant violet curly mark, edge-to-edge italic
+   ribbon) is dropped in favor of the framed-card silhouette. */
 .aiop-stripe-reflect__pull {
   margin: 0;
+  width: 100%;
+  max-width: min(100%, 920px);
+  margin-inline: auto;
+  padding: clamp(28px, 3vw, 44px) clamp(32px, 3.4vw, 52px);
+  background: linear-gradient(
+    180deg,
+    var(--aiop-paper-2) 0%,
+    var(--aiop-paper) 100%
+  );
+  border: 1px solid var(--aiop-rule);
+  border-radius: 4px;
   font-family: var(--aiop-display);
   font-style: italic;
   font-weight: 480;
-  font-size: clamp(22px, 2.2vw, 32px);
+  font-size: clamp(20px, 2vw, 28px);
   line-height: 1.35;
   letter-spacing: -0.018em;
   color: var(--aiop-ink);
@@ -3521,15 +3568,12 @@
   text-wrap: balance;
 }
 
+/* Curly-mark pre-glyph is retired now that the callout frame
+   carries the "this is a deliberate quote tile" job. The span
+   stays in the markup so the JSX doesn't have to change; we just
+   stop painting it. */
 .aiop-stripe-reflect__pull-mark {
-  font-family: var(--aiop-display);
-  font-size: clamp(40px, 4vw, 58px);
-  line-height: 0;
-  vertical-align: -0.42em;
-  color: var(--aiop-violet);
-  margin-right: 4px;
-  font-style: normal;
-  opacity: 0.6;
+  display: none;
 }
 
 .aiop-stripe-reflect__attrib-block {
@@ -3594,8 +3638,9 @@
   }
 
   .aiop-stripe-reflect__pull {
-    font-size: clamp(20px, 5.4vw, 28px);
-    max-width: 26ch;
+    padding: 22px 20px;
+    font-size: clamp(18px, 5vw, 22px);
+    max-width: 100%;
   }
 }
 
@@ -8766,6 +8811,32 @@
 }
 
 
+/* ─── 25.6a · `.aiop-surface-and-reflect` parallax-reveal wrapper
+ *
+ * Same pattern as `.aiop-approach-and-few` and `.aiop-cases-and-shift`:
+ * the later DOM sibling (`.aiop-stripe-reflect`) slides up over the
+ * frozen previous section (`.aiop-surface-pick`) as the page scrolls
+ * through the wrapper. JS lives in `stripe-reflect.tsx`; CSS just
+ * makes both children positioned so the later sibling paints over
+ * the earlier one. The mobile fallback below 960px disables the
+ * freeze entirely so the two sections read as a normal stack. */
+.aiop-surface-and-reflect {
+  position: relative;
+  width: 100%;
+}
+
+.aiop-surface-and-reflect > .aiop-surface-pick {
+  position: relative;
+  /* `stripe-reflect.tsx` writes a transform here during the
+     slide-over to keep this section visually frozen. */
+  will-change: transform;
+}
+
+.aiop-surface-and-reflect > .aiop-stripe-reflect {
+  position: relative;
+}
+
+
 /* ─── 25.5b · Section + bleed (the colored card) ─────────────────── */
 
 .aiop-shift {
@@ -9438,6 +9509,11 @@
 
 @media (prefers-reduced-motion: reduce) {
   .aiop-cases-and-shift > .aiop-cases {
+    transform: none !important;
+    will-change: auto !important;
+  }
+
+  .aiop-surface-and-reflect > .aiop-surface-pick {
     transform: none !important;
     will-change: auto !important;
   }

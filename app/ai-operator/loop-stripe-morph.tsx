@@ -19,7 +19,7 @@ import * as THREE from "three";
  * section is offscreen so it doesn't burn cycles below the fold.
  */
 
-const COUNT = 1800;
+const COUNT = 3600;
 
 /* Brand colors lifted directly from the SVGs in /public. */
 const LOOP_COLOR = new THREE.Color("#4E26B8");
@@ -166,11 +166,11 @@ export function LoopStripeMorph() {
 
     const sprite = buildSpriteTexture();
     const mat = new THREE.PointsMaterial({
-      size: 0.044,
+      size: 0.034,
       map: sprite,
       vertexColors: true,
       transparent: true,
-      opacity: 0.96,
+      opacity: 0.92,
       depthWrite: false,
       blending: THREE.NormalBlending,
     });

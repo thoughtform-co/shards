@@ -625,6 +625,18 @@ export default function AiOperatorPage() {
        * as a cohort scaling story: the substrate underneath every
        * tool stays the same, but the surface a marketer reaches it
        * through adapts to where they already work. */}
+      {/* ─── Surface-pick + Stripe-reflect parallax pair ────────────
+       *
+       * Same parallax-pair pattern as `aiop-approach-and-few` and
+       * `aiop-cases-and-shift`: the later DOM sibling
+       * (`StripeReflect`) slides up over the frozen previous section
+       * (`#surface-pick`). `stripe-reflect.tsx` reads the wrapper
+       * geometry on scroll and applies the freeze transform to
+       * `.aiop-surface-pick`. The closer's reflect quote rises into
+       * view covering the install-paths card so the visitor reads
+       * the closer's first beat as a deliberate handoff from the
+       * Headless chapter rather than as a sudden jump-cut. */}
+      <div className="aiop-surface-and-reflect">
       <section className="aiop-section aiop-surface-pick" id="surface-pick">
         <div className="aiop-wrap">
           <header className="aiop-surface-pick__head aiop-reveal">
@@ -767,6 +779,7 @@ export default function AiOperatorPage() {
        *     production-row chrome. Reads as the proof I built the
        *     same flywheel for myself before pitching it to Stripe. */}
       <StripeReflect />
+      </div>
       <StripeLedger />
       <CaseLedger />
 
@@ -796,7 +809,7 @@ export default function AiOperatorPage() {
                 {ctaSection.eyebrow}
               </p>
               <h2 className="aiop-cta__title">
-                {ctaSection.title} <em>{ctaSection.titleEm}</em>
+                <em>{ctaSection.titleEm}</em>
               </h2>
               <p className="aiop-cta__body">{ctaSection.body}</p>
               <p className="aiop-cta__fine">{ctaSection.fine}</p>
@@ -806,7 +819,7 @@ export default function AiOperatorPage() {
                 <LoopStripeMorph />
               </div>
               {(() => {
-                const primary = ctaSection.actions.find(
+                const primaries = ctaSection.actions.filter(
                   (a) => a.kind === "primary",
                 );
                 const ghosts = ctaSection.actions.filter(
@@ -814,33 +827,14 @@ export default function AiOperatorPage() {
                 );
                 return (
                   <>
-                    {primary ? (
-                      <a
-                        className="aiop-cta__primary"
-                        href={primary.href}
-                        {...(primary.external
-                          ? { target: "_blank", rel: "noopener noreferrer" }
-                          : {})}
-                      >
-                        <span className="aiop-cta__primary-label">
-                          {primary.label}
-                        </span>
-                        <span
-                          className="aiop-cta__primary-arrow"
-                          aria-hidden="true"
-                        >
-                          →
-                        </span>
-                      </a>
-                    ) : null}
-                    <nav
-                      className="aiop-cta__textlinks"
-                      aria-label="Other ways to reach me"
+                    <div
+                      className="aiop-cta__primary-row"
+                      aria-label="Get in touch"
                     >
-                      {ghosts.map((action) => (
+                      {primaries.map((action) => (
                         <a
                           key={action.id}
-                          className="aiop-cta__textlink"
+                          className="aiop-cta__primary"
                           href={action.href}
                           {...(action.external
                             ? {
@@ -849,18 +843,46 @@ export default function AiOperatorPage() {
                               }
                             : {})}
                         >
-                          <span className="aiop-cta__textlink-label">
+                          <span className="aiop-cta__primary-label">
                             {action.label}
                           </span>
                           <span
-                            className="aiop-cta__textlink-arrow"
+                            className="aiop-cta__primary-arrow"
                             aria-hidden="true"
                           >
                             →
                           </span>
                         </a>
                       ))}
-                    </nav>
+                    </div>
+                    <div
+                      className="aiop-cta__ghost-row"
+                      aria-label="Application materials"
+                    >
+                      {ghosts.map((action) => (
+                        <a
+                          key={action.id}
+                          className="aiop-cta__ghost"
+                          href={action.href}
+                          {...(action.external
+                            ? {
+                                target: "_blank",
+                                rel: "noopener noreferrer",
+                              }
+                            : {})}
+                        >
+                          <span className="aiop-cta__ghost-label">
+                            {action.label}
+                          </span>
+                          <span
+                            className="aiop-cta__ghost-arrow"
+                            aria-hidden="true"
+                          >
+                            →
+                          </span>
+                        </a>
+                      ))}
+                    </div>
                   </>
                 );
               })()}

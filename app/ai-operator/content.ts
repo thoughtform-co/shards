@@ -2064,8 +2064,8 @@ export const ledgerCase: {
   metaTag: "Production · 2026",
   name: "Financial Command ",
   nameEm: "Center",
-  codename: "Sa",
-  codenameEm: "ga",
+  codename: "Led",
+  codenameEm: "ger",
   tagline: "Financial Substrate",
   subline: "The flywheel, applied to my own business.",
   team: "Thoughtform · personal substrate",
@@ -2161,24 +2161,25 @@ export type CtaAction = {
 
 export const ctaSection: {
   eyebrow: string;
-  title: string;
-  /* The italic em now carries the ambition itself — folded in from
-     the old standalone `aiop-ambition-card`. Rewritten in plainer
+  /* The italic em carries the ambition itself — folded in from the
+     old standalone `aiop-ambition-card`. Rewritten in plainer
      first-person so it reads as someone naming what they're working
-     on rather than as a slogan. */
+     on rather than as a slogan. The earlier "Let's talk." prefix is
+     gone; the eyebrow + actions row already do the call-to-action
+     job, so the heading can be the thesis directly. */
   titleEm: string;
   body: string;
   fine: string;
-  /* Four-action grid: email is primary, LinkedIn / CV / cover
-     letter render as ghost buttons. The renderer maps each entry
-     to the existing button/link chrome; `external: true` marks
-     the link to open in a new tab with `rel="noopener noreferrer"`. */
+  /* Action grid: email + LinkedIn render as primary dark buttons,
+     CV + cover letter render as subtle outlined ghost buttons. The
+     renderer splits the array by kind into two rows. `external:
+     true` marks the link to open in a new tab with `rel="noopener
+     noreferrer"`. */
   actions: CtaAction[];
 } = {
   eyebrow: "Smallest commitment that starts work",
-  title: "Let's talk.",
   titleEm:
-    "A marketing department is where I'm working. What I'm actually building is the operating model teams will need once AI sits in the loop with them.",
+    "Marketing is where I work. The thing I'm building is how teams operate when AI is in the loop with them.",
   body:
     "Embedded mandates, accelerator programs, or focused encoding sprints alongside one team. We start with one workflow and work outward.",
   fine:
@@ -2192,7 +2193,7 @@ export const ctaSection: {
     },
     {
       id: "linkedin",
-      kind: "ghost",
+      kind: "primary",
       label: "LinkedIn",
       href: "https://www.linkedin.com/in/starhaven/",
       external: true,
