@@ -72,7 +72,7 @@ export const hero = {
     { em: "built inside the work." },
   ] as const,
   lede: [
-    "The relationship between human intelligence and AI is the work of our generation.",
+    "What John just described is what I've been doing for the past 18 months.",
     "As an embedded Creative Technologist at Loop Earplugs, I helped marketing teams navigate AI inside their work, encode what makes it good, and build the capability on top of it.",
   ] as const,
   ledeStrong:
@@ -1746,18 +1746,22 @@ export const stripeAudioToggle = {
 /* ─── Section A · Stripe reflect ─────────────────────────────────── */
 
 export const stripeReflectSection = {
-  /* Single tranquil self-quote. Picks up the Evans-bridge editorial
-     weight (italic display centerpiece) but in the candidate's own
-     voice — a question rather than a borrowed thesis. The mono-caps
-     subline frames the voice without a real-person attribution. */
+  /* Single tranquil self-quote. The video that previously lived
+     directly below this section now opens the page, so the reflect
+     no longer asks "where does this work fit at Stripe?" — that
+     question has already been answered by the time the visitor
+     gets here. Instead it declares that the ambition runs beyond
+     the marketing role and hands straight into the Ledger story
+     below as the case. The mono-caps subline frames the voice. */
   quote:
-    "I keep returning to the same question: what is the version of this work at Stripe?",
+    "My ambition for Stripe runs beyond a marketing role \u2014 and the case below is where that conviction came from.",
   attribName: "Vincent Buyssens",
-  attribMeta: "A question I keep returning to",
-  /* Optional parenthetical scroll-note. Mirrors Evans's
-     "(because AI isn't software)" — adds a quiet editorial beat
-     without asserting anything. Set to `null` to skip. */
-  note: "asked once a week, lately",
+  attribMeta: "Where the conviction comes from",
+  /* Optional parenthetical scroll-note. The new reflect doesn't
+     need a parenthetical aside; the Ledger story below is its own
+     follow-on. Renderer in `stripe-reflect.tsx` gates this on
+     truthiness, so `null` makes the brackets disappear cleanly. */
+  note: null as string | null,
 } as const;
 
 /* ─── Section B · Stripe video ───────────────────────────────────── */
@@ -1775,8 +1779,9 @@ export const stripeVideoSection = {
   /* Italic byline below the attribution. Reflects the parallel
      between Collison's three threads (high-agency, double majors,
      marketing funnel) and the candidate's last 18 months without
-     pointing at it explicitly. */
-  byline: "What he describes is the work above.",
+     pointing at it explicitly. The video opens the page, so the
+     work the byline points at sits below it. */
+  byline: "What he describes is the work below.",
 } as const;
 
 /* ─── Section C · Stripe ledger ──────────────────────────────────── */

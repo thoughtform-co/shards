@@ -28,20 +28,36 @@ import { StripeVideo } from "./stripe-video";
 /*
  * AI Operator — public landing page.
  *
- * v4 narrative arc: an interactive expansion of the CV. The hero is
- * the personal profile (portrait + bio + contact). The page reads as
- * a top-to-bottom argument: who, then how, then proof. Each chapter
- * occupies its own viewport on desktop and unfolds on narrow screens.
+ * v5 narrative arc: video-first. The first thing the visitor sees,
+ * after the sticky header, is a Stripe co-founder describing the
+ * kind of person Stripe wants. The hero — immediately below — picks
+ * up that question and answers it: this is the work I've been doing
+ * for the past 18 months at Loop. The rest of the page is the proof,
+ * and the closer's reflect/ledger pair makes the case that the
+ * ambition runs beyond the marketing role.
  *
  * Composition:
  *   01 Header / nav     (sticky)
- *   02 Hero             — CV profile: name eyebrow + thesis + bio + portrait.
- *   03 Diagnosis        — Four organisational patterns, one missing
+ *   02 Stripe video     — Cold-open. The Collison clip plays in a
+ *                         centered 16:9 frame on a dark backdrop with
+ *                         full mono-caps attribution beneath. On
+ *                         first load the browser blocks unmuted
+ *                         autoplay, the component falls back to muted
+ *                         playback, and the persistent "Tap for
+ *                         sound" pill in the frame's top-right gives
+ *                         the visitor an explicit unmute path.
+ *                         (client — owns the IO + mute pill)
+ *   03 Hero             — CV profile: name eyebrow + thesis + bio +
+ *                         portrait. The opening sentence of the lede
+ *                         picks up directly from the video so the
+ *                         hero answers the question the visitor is
+ *                         left holding.
+ *   04 Diagnosis        — Four organisational patterns, one missing
  *                         layer. Names the executive-level problem
  *                         (the adoption layer is missing) before the
  *                         Evans bridge articulates the asking gap.
  *                         Static, server-rendered.
- *   04 Quote bridge     — Benedict Evans on the asking gap. The quote
+ *   05 Quote bridge     — Benedict Evans on the asking gap. The quote
  *                         and its three lane chips recede on scroll
  *                         while a delayed parenthetical
  *                         "(because AI isn't software)" reveals below
@@ -49,53 +65,46 @@ import { StripeVideo } from "./stripe-video";
  *                         reveal pair with the Reality-check interstitial
  *                         below so the fade and reveal play out as
  *                         Reality slides up over the frozen bridge.
- *   05 Reality check    — "AI is not normal software." Explains why the
+ *   06 Reality check    — "AI is not normal software." Explains why the
  *                         asking gap is structurally hard: AI interprets
  *                         meaning, traditional adoption teaches tools.
  *                         Slides up over the frozen Evans bridge.
- *   06 Vision           — Centered Navigate/Encode/Build flywheel + one
+ *   07 Vision           — Centered Navigate/Encode/Build flywheel + one
  *                         CTA. Reads as the answer to the reality check.
- *   07 Approach         — Three motions, each with a Heimdall-style
+ *   08 Approach         — Three motions, each with a Heimdall-style
  *                         "practice in motion" pop-out (client). Pinned
  *                         to viewport bottom so its last viewport stays
  *                         frozen while the next section reveals over it.
- *   08 Software for few — Sage interstitial that slides up over the
+ *   09 Software for few — Sage interstitial that slides up over the
  *                         frozen Approach (parallax-reveal pair, client).
- *   09 Cases            — Heimdall-style showcase grid (client). Pinned
+ *   10 Cases            — Heimdall-style showcase grid (client). Pinned
  *                         to viewport bottom while Headless-shift rises
  *                         over it (parallax-reveal pair).
- *   10 Headless-shift   — Violet interstitial: Salesforce / Stripe /
+ *   11 Headless-shift   — Violet interstitial: Salesforce / Stripe /
  *                         the shift to headless. Slides up over the
  *                         frozen Cases and primes the substrate-map
  *                         vocabulary unpacked below.
- *   11 Substrate map    — "Three layers, one operating model." Single
+ *   12 Substrate map    — "Three layers, one operating model." Single
  *                         inspectable card (sources -> substrate ->
  *                         surfaces) that absorbs the headless nav
  *                         anchor and replaces the older "Build the
  *                         engine once" overview.
- *   12 Surface pick     — "Pick the surface that fits the workflow."
+ *   13 Surface pick     — "Pick the surface that fits the workflow."
  *                         Three surface families framing cohort
  *                         scaling instead of developer onboarding.
- *   13 Stripe reflect   — First beat of the closer. Evans-style
- *                         interstitial: cream gradient, lane washes,
- *                         dot grid, a single tranquil self-quote
- *                         that turns the page from "what I've built"
- *                         toward "where does this fit at Stripe?".
- *                         Sets up the video that follows.
- *   14 Stripe video     — Second beat of the closer. The visitor
- *                         watches the Collison clip in a centered
- *                         16:9 frame on a dark backdrop. Audio
- *                         activates on viewport entry, pauses on
- *                         exit. Small mono-caps attribution + one
- *                         italic byline beneath the frame. (client)
- *   15 Stripe ledger    — Third beat of the closer. Two-column
- *                         editorial story about the AI-invoice
- *                         frustration and the Ledger build, paired
- *                         with an inline schematic, a paraphrased
- *                         Stripe-engineer reply card, and a closing
- *                         call-out conclusion card whose italic
- *                         clause echoes the hero's `ledeStrong` so
- *                         the page reads as a closed loop.
+ *   14 Stripe reflect   — First beat of the closer. Evans-style
+ *                         interstitial that declares the ambition
+ *                         runs beyond the marketing role and hands
+ *                         straight into the Ledger story below as
+ *                         the case.
+ *   15 Stripe ledger    — Closer payoff. Two-column editorial story
+ *                         about the AI-invoice frustration and the
+ *                         Ledger build, paired with an inline
+ *                         schematic, a paraphrased Stripe-engineer
+ *                         reply card, and a closing call-out
+ *                         conclusion card whose italic clause echoes
+ *                         the hero's `ledeStrong` so the page reads
+ *                         as a closed loop.
  *   16 CTA              — One ask. Smallest commitment.
  *   17 Footer
  */
@@ -154,6 +163,24 @@ export default function AiOperatorPage() {
           </a>
         </div>
       </header>
+
+      {/* ─── Stripe video — cold open ────────────────────────────────
+       *
+       * First section after the header. The Collison clip plays in a
+       * centered 16:9 frame on a dark backdrop with full mono-caps
+       * attribution beneath. The visitor watches and is left holding
+       * the question "what is he talking about?" — which the hero
+       * directly below answers.
+       *
+       * Audio choreography is identical to when the section lived in
+       * the closer. The IntersectionObserver attempts unmute on
+       * viewport entry; on first page load the browser blocks
+       * unmuted autoplay (no user gesture yet) and the component
+       * falls back to muted playback. The persistent "Tap for sound"
+       * pill in the top-right of the frame gives the visitor an
+       * explicit unmute path. On exit, video pauses + re-mutes so
+       * the audio never bleeds into the hero. */}
+      <StripeVideo />
 
       {/* ─── Hero — CV profile ──────────────────────────────────────── */}
       <section className="aiop-hero" id="top">
@@ -701,25 +728,22 @@ export default function AiOperatorPage() {
         </div>
       </section>
 
-      {/* ─── Closer — three deliberate beats before the CTA ──────────
+      {/* ─── Closer — two deliberate beats before the CTA ──────────
        *
-       * The single resting beat became three sections so the closer
-       * breathes. The visitor moves through:
+       * The Stripe-video moved to the very top of the page (it now
+       * opens the route, before the hero), so the closer is two
+       * beats:
        *
        *   - Stripe reflect: a tranquil Evans-style interstitial that
-       *     turns the page from architecture toward personal frame
-       *     ("where does this fit at Stripe?"). Pure server.
-       *   - Stripe video: a dedicated section where the Collison
-       *     clip plays as the centerpiece, with audio activating on
-       *     viewport entry and a small mono-caps attribution + one
-       *     italic byline beneath. (client — owns the IO + mute pill)
-       *   - Stripe ledger: an editorial deep-dive on the AI-invoice
+       *     declares the ambition runs beyond the marketing role and
+       *     hands straight into the Ledger story below. Pure server.
+       *   - Stripe ledger: editorial deep-dive on the AI-invoice
        *     frustration and the Ledger build, with an inline
        *     schematic, a paraphrased engineer-reply card, and a
-       *     closing call-out conclusion card carrying the hero
-       *     tie-back. Pure server. */}
+       *     closing call-out conclusion card whose italic clause
+       *     echoes the hero's `ledeStrong` so the page reads as a
+       *     closed loop. Pure server. */}
       <StripeReflect />
-      <StripeVideo />
       <StripeLedger />
 
       {/* ─── CTA ────────────────────────────────────────────────────── */}
