@@ -1852,24 +1852,34 @@ export const stripeReflectSection = {
 /* ─── Section B · Stripe video ───────────────────────────────────── */
 
 export const stripeVideoSection = {
-  /* Section title above the video frame. Names the thesis of the
-     cold open explicitly so the visitor reads the clip as a job
-     pitch from the very first frame. */
-  title: "Why I'm the Forward-Deployed AI Operator You're Looking For",
+  /* Section is now a video-background hero. The clip itself does
+     the editorial work; the foreground carries only what a converting
+     landing-page hero needs: a title, a one-line body, a CTA. No
+     eyebrow, no broadcast attribution row, no italic ornament.
+     The two title pieces (`lead` + `role`) let the renderer keep
+     `Forward-Deployed AI Operator` as one nowrap phrase no matter
+     where `text-wrap: balance` decides to break the surrounding
+     clause; the closing remark joins them as plain trailing text. */
+  title: {
+    lead: "Why I'm the",
+    role: "Forward\u2011Deployed AI Operator",
+    trail: "you're looking for.",
+  },
   video: {
     src: "/ai-operator/Stripe - High Agency.mp4",
     /* Captions track slot. The .vtt file is not yet authored, so
        the renderer omits the <track> element when null. */
     captions: null as string | null,
   },
-  /* Mono-caps attribution row directly below the video frame. */
-  attribName: "John Collison",
-  attribMeta: "TBPN Live · April 2026",
-  /* Italic byline below the attribution. The video opens the page,
-     so the byline names the connection directly: what Collison just
-     described is the past 18 months at Loop. The hero immediately
-     below picks up that thread without having to repeat it. */
-  byline: "What John just described is what I've been doing for the past 18 months.",
+  /* One-line body that lands the connection: what Collison just
+     described is the past 18 months at Loop. Sits beneath the
+     title as the hero's secondary line; no card chrome, no italic. */
+  body: "What John just described is what I've been doing for the past 18 months.",
+  /* Single CTA. Subtle ghost button on a glass background that
+     reads clearly over the video without competing with the title.
+     Points the visitor at the proof: cases ship at `#cases` so a
+     recruiter watching the clip can jump straight to the work. */
+  cta: { label: "See the work", href: "#cases" },
 } as const;
 
 /* ─── Section C · Stripe ledger ──────────────────────────────────── *

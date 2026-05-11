@@ -142,7 +142,7 @@ export function StripeVideo() {
     setMuted(next);
   };
 
-  const { title, video, attribName, attribMeta, byline } = stripeVideoSection;
+  const { title, video, body, cta } = stripeVideoSection;
 
   return (
     <section
@@ -151,77 +151,80 @@ export function StripeVideo() {
       id="stripe-video"
       aria-labelledby="aiop-stripe-video-title"
     >
+      {/* Full-bleed video background. Sits at z-index 0 underneath
+          the gradient overlay and the foreground content cluster.
+          `object-fit: cover` ensures the clip fills any aspect ratio
+          without letterboxing; `aria-hidden` keeps it out of the
+          accessibility tree since the section is labelled by the
+          visible title. */}
+      <video
+        ref={videoRef}
+        className="aiop-stripe-video__bg"
+        src={video.src}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="metadata"
+        controls={!animated}
+        aria-hidden="true"
+      >
+        {video.captions ? (
+          <track kind="captions" src={video.captions} default />
+        ) : null}
+      </video>
+
+      {/* Layered overlay. Bottom-weighted dark gradient so the
+          foreground copy reads cleanly without crushing the video
+          on the upper half, plus a soft radial pull from the
+          bottom-left corner where the content cluster anchors. */}
+      <div className="aiop-stripe-video__overlay" aria-hidden="true" />
+
+      {animated ? (
+        <button
+          type="button"
+          className={`aiop-stripe-video__audio-toggle${
+            muted ? " aiop-stripe-video__audio-toggle--muted" : ""
+          }`}
+          onClick={handleToggleMute}
+          aria-pressed={!muted}
+          aria-label={muted ? "Unmute video" : "Mute video"}
+        >
+          <span
+            className="aiop-stripe-video__audio-icon"
+            aria-hidden="true"
+          >
+            {muted ? "\u25C7" : "\u25C6"}
+          </span>
+          <span className="aiop-stripe-video__audio-label">
+            {muted ? stripeAudioToggle.listen : stripeAudioToggle.mute}
+          </span>
+        </button>
+      ) : null}
+
+      {/* Foreground content cluster. Anchors to the page's editorial
+          left rail at the bottom of the section so it reads as a
+          film opening title card overlay rather than a centered
+          SaaS hero. Title, body, CTA — nothing else. */}
       <div className="aiop-wrap aiop-stripe-video__inner">
-        <header className="aiop-stripe-video__head aiop-reveal">
+        <div className="aiop-stripe-video__content aiop-reveal">
           <h2
             id="aiop-stripe-video-title"
             className="aiop-stripe-video__title"
           >
-            {title}
+            {title.lead}{" "}
+            <span className="aiop-stripe-video__title-role">
+              {title.role}
+            </span>{" "}
+            {title.trail}
           </h2>
-        </header>
-        <div className="aiop-stripe-video__frame aiop-reveal">
-          <div
-            className="aiop-stripe-video__screen"
-            aria-label={`${attribName} — ${attribMeta}`}
-          >
-            <video
-              ref={videoRef}
-              className="aiop-stripe-video__el"
-              src={video.src}
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="metadata"
-              controls={!animated}
-            >
-              {video.captions ? (
-                <track kind="captions" src={video.captions} default />
-              ) : null}
-            </video>
-
-            {animated ? (
-              <button
-                type="button"
-                className={`aiop-stripe-video__audio-toggle${
-                  muted ? " aiop-stripe-video__audio-toggle--muted" : ""
-                }`}
-                onClick={handleToggleMute}
-                aria-pressed={!muted}
-                aria-label={muted ? "Unmute video" : "Mute video"}
-              >
-                <span
-                  className="aiop-stripe-video__audio-icon"
-                  aria-hidden="true"
-                >
-                  {muted ? "\u25C7" : "\u25C6"}
-                </span>
-                <span className="aiop-stripe-video__audio-label">
-                  {muted ? stripeAudioToggle.listen : stripeAudioToggle.mute}
-                </span>
-              </button>
-            ) : null}
-          </div>
-
-          <figcaption
-            className="aiop-stripe-video__caption"
-            id="aiop-stripe-video-attrib"
-          >
-            <p className="aiop-stripe-video__attrib">
-              <span
-                className="aiop-stripe-video__attrib-rule"
-                aria-hidden="true"
-              />
-              <span className="aiop-stripe-video__attrib-name">
-                {attribName}
-              </span>
-              <span className="aiop-stripe-video__attrib-meta">
-                {attribMeta}
-              </span>
-            </p>
-            <p className="aiop-stripe-video__byline">{byline}</p>
-          </figcaption>
+          <p className="aiop-stripe-video__body">{body}</p>
+          <a className="aiop-stripe-video__cta" href={cta.href}>
+            <span className="aiop-stripe-video__cta-label">{cta.label}</span>
+            <span className="aiop-stripe-video__cta-arrow" aria-hidden="true">
+              →
+            </span>
+          </a>
         </div>
       </div>
     </section>
