@@ -322,13 +322,36 @@
 }
 
 /* Play-glyph variant of the ghost button — used by the hero-ghost
-   WalkthroughLauncher. Inherits all the .aiop-button + ghost chassis
-   (1px ink outline, transparent fill, polygon-clipped corner, dark
-   fill on hover); this modifier just exists as a hook so the launcher
-   can identify itself in the hero actions row if we ever need to. */
+   WalkthroughLauncher. Inherits the .aiop-button + ghost chassis
+   (1px ink outline, transparent fill, dark fill on hover) but
+   rebuilds the chamfered corner so the diagonal edge carries its
+   own border hairline. The shared .aiop-button clip-path approach
+   cuts the parent's 1px border at the chamfer, leaving the diagonal
+   unstroked — fine on smaller buttons but visually offset on the
+   larger Vince Intro CTA. The ::after pseudo-element draws the
+   missing diagonal border via a layered linear-gradient (transparent
+   → ink stripe → page-bg). */
 .aiop-button--video {
-  /* No additional styling needed — the play glyph carries the visual
-     differentiation. Modifier reserved for future hooks. */
+  position: relative;
+  /* Drop the inherited 14px clip-path; chamfer redrawn below. */
+  clip-path: none;
+}
+
+.aiop-button--video::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: calc(var(--aiop-notch) + 3px);
+  height: calc(var(--aiop-notch) + 3px);
+  background: linear-gradient(
+    135deg,
+    transparent calc(50% - 0.5px),
+    var(--aiop-ink) calc(50% - 0.5px),
+    var(--aiop-ink) calc(50% + 0.5px),
+    var(--aiop-paper) calc(50% + 0.5px)
+  );
+  pointer-events: none;
 }
 
 /* Play triangle that sits before the label inside an .aiop-button.
@@ -534,25 +557,66 @@
 /* Video-walkthrough variant of the header CTA. The host class
    `.aiop-header__cta` already carries the subtle cream-card fill,
    strong rule border, polygon-clipped corner, and dark hover invert
-   we want; this modifier only:
+   we want; this modifier:
      - resets the <button> defaults the parent rule didn't cover so
        the button looks identical to the previous <a> chassis,
      - tightens the left padding because the play glyph sits visually
        lighter than the old pulse dot did,
-     - exposes a focus-visible ring for keyboard users (the dot
-       variant inherited the anchor's default focus ring; the button
-       needs an explicit one). */
+     - exposes a focus-visible ring for keyboard users,
+     - swaps the parent's clip-path approach for a bordered chamfer
+       (see .aiop-header__cta--video::after below). The clip-path on
+       the parent cuts both the bg AND the 1px border at the chamfer,
+       leaving the diagonal edge unstroked which read visually as
+       "the notch is offset". This variant rebuilds the chamfer with
+       a layered linear-gradient pseudo-element so the diagonal edge
+       carries its own 1px hairline matching the rest of the border.
+*/
 .aiop-header__cta--video {
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
   padding-left: 13px;
   font-style: normal;
+  position: relative;
+  /* Drop the inherited clip-path; the chamfer is now drawn entirely
+     by the ::after pseudo-element below. */
+  clip-path: none;
 }
 
 .aiop-header__cta--video:focus-visible {
   outline: 2px solid var(--aiop-ink);
   outline-offset: 3px;
+}
+
+/* Bordered chamfer for the video CTA. Sits in the bottom-right
+   corner as a small overlay tile. The 135deg linear-gradient
+   carries three colour stops:
+     - transparent (top-left half)         -> button shows through
+     - --aiop-rule-strong (1px stripe)     -> the chamfer's border
+     - --aiop-paper (bottom-right half)    -> covers the actual
+                                              corner with the page
+                                              background colour, so
+                                              the rectangular button
+                                              reads as cleanly cut.
+   On hover the parent fills with ink; the chamfer's hairline stays
+   the same (rule-strong against ink reads as a faint stroke), and
+   the page-bg portion still mirrors the surrounding paper so the
+   cut is preserved during the dark-fill state. */
+.aiop-header__cta--video::after {
+  content: "";
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 11px;
+  height: 11px;
+  background: linear-gradient(
+    135deg,
+    transparent calc(50% - 0.5px),
+    var(--aiop-rule-strong) calc(50% - 0.5px),
+    var(--aiop-rule-strong) calc(50% + 0.5px),
+    var(--aiop-paper) calc(50% + 0.5px)
+  );
+  pointer-events: none;
 }
 
 /* Small play triangle that replaces the pulse dot. Inherits the
@@ -13696,10 +13760,15 @@
 
 /* Wide modal variant — used for video-first content that benefits
    from extra horizontal space. The base `.aiop-modal` keeps its
-   960px ceiling; this variant lifts the cap to 1200px while staying
-   responsive via `min(…, 100%)` and the overlay's gutter padding. */
+   960px ceiling; this variant lifts the cap to 1500px / 96vw and
+   uses a tall max-height so the 16:9 video frame fills most of the
+   visible viewport on desktop while the overlay's small gutter
+   keeps the card from touching the edges. The walkthrough modal
+   scroll padding (further down) tightens to give the video even
+   more frame space inside the card. */
 .aiop-modal--wide {
-  width: min(1200px, 100%);
+  width: min(1500px, 96vw);
+  max-height: min(92vh, calc(100dvh - 48px));
 }
 
 /* Walkthrough body — tighter than the case-detail body so the video

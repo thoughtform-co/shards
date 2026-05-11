@@ -77,8 +77,14 @@ export const walkthroughSection = {
   modalTitle: "Vince Intro",
   modalTitleEm: "video walkthrough",
   modalSubline: "A guided tour of the page, the flywheel, and the cases.",
-  src: null as string | null,
-  poster: null as string | null,
+  /* Source video lives at /public/ai-operator/vince-intro.mp4 (web-
+     optimized H.264 720p30, ~25MB, faststart enabled so the moov atom
+     is at the front and the file streams progressively rather than
+     waiting for the full download). The poster frame is captured at
+     the 2-second mark so the modal shows a stable opening still
+     while the metadata loads. */
+  src: "/ai-operator/vince-intro.mp4" as string | null,
+  poster: "/ai-operator/vince-intro-poster.jpg" as string | null,
   placeholder: {
     eyebrow: "Coming soon",
     line:

@@ -102,12 +102,26 @@ export function WalkthroughLauncher({
 
           <div className="aiop-modal__video">
             {hasVideo && walkthroughSection.src ? (
+              /* Native HTML5 video element. `controls` gives the
+                 browser's full control surface (play / pause, volume,
+                 scrubber, fullscreen, playback speed, captions if
+                 wired) — same control affordances visitors know from
+                 YouTube. `playsInline` keeps iOS Safari from forcing
+                 native fullscreen on play. `preload="metadata"` only
+                 fetches the moov atom + a few hundred KB on modal
+                 open; the body of the file streams in via the faststart
+                 layout when the visitor actually clicks play, so the
+                 25 MB asset isn't pre-downloaded by anyone who never
+                 opens the modal. The poster frame paints instantly
+                 from the 87 KB JPG so the modal has visual presence
+                 from the moment it opens. No autoplay — for a 6-min
+                 talking head, autoplay-muted then a mandatory unmute
+                 click is worse UX than letting the visitor click play
+                 with sound on. */
               <video
                 src={walkthroughSection.src}
                 poster={walkthroughSection.poster ?? undefined}
                 controls
-                autoPlay
-                muted
                 playsInline
                 preload="metadata"
                 aria-label={`${walkthroughSection.modalTitle} ${walkthroughSection.modalTitleEm}`}
