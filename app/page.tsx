@@ -15,6 +15,11 @@ import styles from "./page.module.css";
  * visitors who land on / from the password gate are funneled directly
  * to the showcase. /dashboard remains reachable by direct URL for
  * personal use once the cookie is set.
+ *
+ * Card content frames the practice abstractly — applied intelligence
+ * as a three-motion arc (Navigate / Encode / Build) — with no client,
+ * industry, or platform names so the door reads as a portfolio entry
+ * regardless of who's holding the password.
  */
 
 export const metadata: Metadata = {
@@ -64,14 +69,35 @@ export default function HomePage() {
             </div>
 
             <h1 className={styles.headline}>
-              A small lab of single-purpose tools and visual probes.
+              An operating system for doing AI work the way it actually gets
+              done.
             </h1>
 
             <p className={styles.support}>
-              Playful prototypes that break brand locally while still docking
-              into one shared instrument panel. Quiet by default, opened on
-              request.
+              One arc. Three motions. Substrate the team keeps using long
+              after the engagement.
             </p>
+
+            <ol className={styles.phases} aria-label="Three motions of the practice">
+              <li className={styles.phase}>
+                <span className={styles.phaseLabel}>Navigate</span>
+                <span className={styles.phaseLine}>
+                  Read the work as it really moves before AI can be useful.
+                </span>
+              </li>
+              <li className={styles.phase}>
+                <span className={styles.phaseLabel}>Encode</span>
+                <span className={styles.phaseLine}>
+                  Capture the judgment that lives in senior heads, written down.
+                </span>
+              </li>
+              <li className={styles.phase}>
+                <span className={styles.phaseLabel}>Build</span>
+                <span className={styles.phaseLine}>
+                  Surface the substrate as the tools the team uses every day.
+                </span>
+              </li>
+            </ol>
 
             <Link className={styles.link} href="/ai-operator">
               Open the showcase

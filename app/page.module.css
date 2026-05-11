@@ -205,6 +205,72 @@
   max-width: 40ch;
 }
 
+/* Three-motion trio · Navigate / Encode / Build.
+   Sits between the support lede and the showcase link, structured as
+   an editorial instrument panel: tight rows separated by hairline
+   rules so the trio reads as a coherent set without looking like a
+   bulleted feature list. Mono-caps phase label on the left, single
+   sentence body on the right. The first row drops its top border so
+   it sits flush under the support paragraph. */
+.phases {
+  margin: clamp(20px, 2.6vh, 26px) 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.phase {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  column-gap: 14px;
+  align-items: baseline;
+  padding: 11px 0;
+  border-top: 1px solid var(--rule-soft);
+}
+
+.phase:first-child {
+  border-top: none;
+  padding-top: 4px;
+}
+
+.phase:last-child {
+  padding-bottom: 0;
+}
+
+.phaseLabel {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--violet);
+  font-weight: 600;
+}
+
+.phaseLine {
+  font-family: var(--f-sans);
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 480px) {
+  .phase {
+    grid-template-columns: 70px 1fr;
+    column-gap: 12px;
+    padding: 9px 0;
+  }
+
+  .phaseLabel {
+    font-size: 9.5px;
+    letter-spacing: 0.2em;
+  }
+
+  .phaseLine {
+    font-size: 12.5px;
+  }
+}
+
 /* Hairline link to the dashboard. Underline-on-hover (the
    text-decoration is applied inline via the gap animation below)
    keeps it quiet but reachable. */
