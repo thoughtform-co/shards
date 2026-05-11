@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vincent Buyssens · Cover Letter · v12</title>
+<title>Vincent Buyssens · Cover Letter · v13</title>
 <meta name="description" content="Vincent Buyssens — Cover letter for Stripe's Forward Deployed AI Accelerator role. May 2026.">
 <meta name="author" content="Vincent Buyssens">
 <meta name="robots" content="noindex,nofollow">
@@ -12,13 +12,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&family=PT+Mono&display=swap" rel="stylesheet">
 <style>
   /* ─────────────────────────────────────────────────────────────────────
-   * Vincent Buyssens · Cover Letter · v12 · 2026.05
-   * Single-file, print-first deliverable. A4 portrait, two pages.
+   * Vincent Buyssens · Cover Letter · v13 · 2026.05
+   * Single-file, print-first deliverable. A4 portrait, three pages.
    *
-   * Companion to the CV (v17) — inherits the same chassis so the two
-   * documents read as one system: cream paper, soft grid background,
+   * v13 keeps the v12 chassis verbatim (cream paper, soft grid background,
    * gold accent, Inter + PT Mono typography, mono-caps page strip, hero
-   * name lockup, page-contact footer, toolbar, A4 print rules.
+   * name lockup, page-contact footer, toolbar, A4 print rules) and swaps
+   * in the longer v13 prose. The single structural change is a third
+   * page added to host the back half of the body so the new "company-
+   * wide Claude workshops" beat, the journalism aside, and the geography
+   * + closer paragraphs all breathe at the same rhythm as v12 page 2
+   * did. Page numbering moves from 01 / 02 to 01 / 03, 02 / 03, 03 / 03.
+   *
+   * Showcase URL injection: the throughline paragraph that closes
+   * page 2 ends with the AI operator landing-page URL plus the
+   * Dromineer access key, both rendered through the existing
+   * .letter__placeholder mono-gold pill so the URL reads as an
+   * instrument label rather than body prose.
+   *
+   * Companion to the CV (v18) — inherits the same chassis so the two
+   * documents continue to read as one system.
    *
    * Layered on top: long-form letter typography. 10.5pt body, 1.55
    * line-height, 145mm constrained measure (~65 chars/line), 3.5mm
@@ -28,14 +41,16 @@
    *
    * Layout:
    *   Page 1 — Hero · Meta strip (Date / To) · Salutation · Opener,
-   *            Why Stripe, The insight · "At Loop" subhead · Studio.
-   *   Page 2 — Brand films · Performance + Localization · Throughline ·
+   *            Why Stripe, The insight, The artifact shift.
+   *   Page 2 — "At Loop" subhead · Studio · Performance + Localization ·
+   *            Throughline (with showcase URL + Dromineer chip).
+   *   Page 3 — Company-wide workshops · Underlying substrate · Journalism ·
    *            Lecturing · Geography · Closing case · Final line ·
    *            Sign-off · Page-contact footer.
    * ──────────────────────────────────────────────────────────────────── */
 
 
-  /* ─── 01 · TOKENS (mirror CV v17) ────────────────────────────────── */
+  /* ─── 01 · TOKENS (mirror CV v18) ────────────────────────────────── */
   :root {
     --paper:        #FAF7EE;
     --paper-soft:   #F4EFE2;
@@ -108,7 +123,7 @@
   a { color: inherit; text-decoration: none; }
 
 
-  /* ─── 04 · PAGE CHROME (mirror CV v17) ──────────────────────────── */
+  /* ─── 04 · PAGE CHROME (mirror CV v18) ──────────────────────────── */
   .cv {
     display: flex;
     flex-direction: column;
@@ -218,7 +233,7 @@
 
   /* ─── 08 · LETTER ───────────────────────────────────────────────── */
   /* The .letter section grows to fill the page so .page-contact's
-     margin-top: auto pulls the contact strip to the bottom of page 2. */
+     margin-top: auto pulls the contact strip to the bottom of page 3. */
   .letter {
     position: relative;
     z-index: 1;
@@ -292,7 +307,7 @@
     display: flex;
     align-items: center;
     gap: 1.8mm;
-    margin: 6mm 0 3mm;
+    margin: 0 0 3mm;
     font-family: var(--font-mono);
     font-size: 7pt;
     letter-spacing: 0.22em;
@@ -339,7 +354,9 @@
     font-variation-settings: "opsz" 28;
   }
 
-  /* — Inline placeholder · for the [landing page URL] still TBD. — */
+  /* — Inline pill · used for the showcase URL + access key inside the
+       throughline paragraph on page 2. Same mono-gold treatment as
+       the placeholder pattern v12 used. — */
   .letter__placeholder {
     font-family: var(--font-mono);
     font-size: 0.86em;
@@ -350,6 +367,7 @@
     letter-spacing: 0.04em;
     white-space: nowrap;
   }
+  .letter__placeholder a { color: inherit; }
 
   /* — Page-contact · clean horizontal strip pinned at the bottom of
        the last page. Mirrors the CV's page-contact pattern exactly. — */
@@ -465,7 +483,7 @@
 <body>
 
 <div class="toolbar" role="toolbar" aria-label="Document actions">
-  <span>Vincent Buyssens · Cover Letter · v12 · 2026.05</span>
+  <span>Vincent Buyssens · Cover Letter · v13 · 2026.05</span>
   <button type="button" onclick="window.print()">Print / Save PDF</button>
 </div>
 
@@ -504,7 +522,7 @@
 
     <header class="page__head">
       <span class="page__head-name">Vincent Buyssens · Cover Letter</span>
-      <span class="page__num">01 <span aria-hidden="true">/</span> 02</span>
+      <span class="page__num">01 <span aria-hidden="true">/</span> 03</span>
     </header>
 
     <section class="letter">
@@ -521,15 +539,13 @@
       <p class="letter__salutation">Dear Stripe team,</p>
 
       <div class="letter__body">
-        <p>I'm applying for the Forward Deployed AI Accelerator role because when I read the listing, I immediately recognized the type of work I've been doing at Loop Earplugs since 2024. Stripe describes FDAs embedded with about 20 marketers, building tools alongside them and moving them from awareness to self-sufficiency. At Loop, I've run that arc across six teams: map the real work, build on live deliverables, encode what works into reusable substrate, transfer ownership, move on. What started as a months-long embedding has now become a scalable system I can now apply to almost any team.</p>
+        <p>I'm applying for the Forward Deployed AI Accelerator role because when I read the listing, I immediately recognized the type of work I've been doing at Loop Earplugs since 2024. Stripe describes FDAs embedded with about 20 marketers, building tools alongside them and moving them from awareness to self-sufficiency. At Loop, I've run a similar arc across six teams: map the real work, build on live deliverables, encode what works into reusable substrate, transfer ownership, move on. What started as a months-long embedding has now become a scalable system I can now apply to almost any team.</p>
 
-        <p>Why Stripe? AI is reshaping how work gets done and how new businesses get built. Smaller teams, new operating models, agents becoming co-founders, etc... I want to work at the financial infrastructure layer underneath that shift. The job opening also echoes what I've been doing at Loop: adoption and automation are not separate tracks. The person teaching marketers to rethink their work should also be the person helping them building their tools..</p>
+        <p>Why Stripe? AI is reshaping how work gets done and how new businesses get built. Smaller teams, new operating models, agents becoming co-founders, etc&hellip; I want to work at the financial infrastructure layer underneath that shift. The job opening also echoes what I've been doing at Loop: adoption and automation are not separate tracks. The person teaching marketers to rethink their work should also be the person helping them building their tools..</p>
 
-        <p>My core learning at Loop: adoption starts with navigation. AI sits between a tool and a collaborator, and the hard part is not technical. It's helping people answer a question most have never had to ask: how do I actually want AI to transform how I work? The artifact that used to be the end of the process, the brief, the campaign, the dashboard, is now often the starting point for an agent, a Skill, or a workflow. My job is helping teams see that shift and making sure they become self-sufficient in it.</p>
+        <p>My core learning at Loop: adoption starts with navigation. AI isn't software to command. It's intelligence; the first kind you can use as a tool and work with as a collaborator, often both at once. You don't command something that interprets you back. You navigate it which fundamentally changes &lsquo;what&rsquo; work is.</p>
 
-        <h2 class="letter__subhead"><span class="letter__subhead-dot" aria-hidden="true"></span>At Loop</h2>
-
-        <p>Loop gave me a compressed, high-feedback environment to prove this: 230 people, fast-moving, global, with marketing as the engine of the business. I convinced the founders and VP Marketing to embed me in Studio, our most visible creative team. I joined reviews, scanned briefs for AI angles, changed the mental model first, and built the tooling underneath. Studio became an AI-first creative operation. <strong>500+ ads per month.</strong> The engine underneath: paid social copy Skills I encoded and a custom image and video generation platform I built. <strong>Campaigns ship 2&ndash;3&times; faster</strong> than external agencies, consistently beating ROAS benchmarks. <strong>90% of briefings now involve AI</strong>, all driven autonomously by the Studio team.</p>
+        <p>Because the artifact that used to be the end of the process, like a a paid social brief, a landing page, a campaign plan; etc &hellip; has now become the starting point for an agent, a Skill, or a workflow. The thing you used to finish for the team is now the brief you give to the system. Which means everyone now has to answer a question most have never had to ask: how do I actually want AI to transform how I work? The hard part here isn't technical; it's helping them answer that. My job is to walk them through it, then make sure they're self-sufficient once they&rsquo;ve answered it.</p>
       </div>
     </section>
   </article>
@@ -541,22 +557,45 @@
 
     <header class="page__head">
       <span class="page__head-name">Vincent Buyssens · Cover Letter</span>
-      <span class="page__num">02 <span aria-hidden="true">/</span> 02</span>
+      <span class="page__num">02 <span aria-hidden="true">/</span> 03</span>
     </header>
 
     <section class="letter">
       <div class="letter__body">
-        <p>I also led production on two full-AI above-the-line brand films that landed because of grounded, human storytelling; a deliberate counterweight to the AI slop in everyone's feeds. That comes from years of hands-on creative direction, including the Under Armour <em>"Forever Is Made Now"</em> campaign at Tool of North America. I know what craft looks like inside a studio, but I also understand what the Performance team needs from that studio: assets that convert, data that informs the next brief, and a feedback loop between creative quality and commercial results. That's what made the next step natural.</p>
+        <h2 class="letter__subhead"><span class="letter__subhead-dot" aria-hidden="true"></span>At Loop</h2>
 
-        <p>For Performance Marketing, I built a briefing agent that surfaces insights across past campaigns, ad performance, and competitive data for our Creative Strategists. For Localization, an end-to-end pipeline that transcribes, translates, and dubs top-performing UGC into new markets in hours. Each team started further along because the substrate from the previous team carried forward.</p>
+        <p>Loop gave me a compressed, high-feedback environment to prove this: 230 people, fast-moving, global, with marketing as the engine of the business. That's why I went to marketing, and embedded myself in Studio first to scale creative output without losing craft. I joined reviews, scanned briefs for AI angles, changed the mental model first, and built the tooling underneath.</p>
 
-        <p>The biggest throughline across all of it: teaching people how to encode their way of working — experience, judgment, evaluation criteria — into substrate any LLM can inherit. You can't build durable agents or automations without that layer. And once people learn to encode, the flywheel starts turning. They build on their own substrate, teach their peers, and the approach compounds without me. That's documented in the showcase page I'm sharing with this application: <span class="letter__placeholder">[landing page URL]</span>.</p>
+        <p>Studio is now an AI-first creative operation: a range of Claude tone-of-voice Skills across paid social, CRM, and marketplaces compresses the copy workload. A custom image and video platform I built handles the production. The result: <strong>90% of 500 monthly ads use AI</strong>, campaigns ship <strong>2&ndash;3&times; faster</strong> than external agencies, and we consistently beat ROAS benchmarks. All of it driven autonomously by the Studio team.</p>
 
-        <p>I also bring five years of lecturing at Thomas More University College on AI, internet culture, and storytelling across four media programs. The combination means I can build in real time and coach someone standing next to me while I do it.</p>
+        <p>This same operating system then traveled to Performance Marketing and Localization. For Performance, I built a briefing agent that synthesizes past campaigns, ad performance, and competitive data for the Creative Strategists, replacing what used to be <strong>days of manual research per cycle</strong>. For Localization, an end-to-end pipeline that transcribes, translates, and dubs top-performing UGC into new markets in hours; work that previously needed agency handoffs across <strong>30+ markets</strong>. In both cases I built the first version with the team, then taught them to extend it themselves. Performance now adds its own data sources to the briefing agent. Localization shapes the dubbing pipeline around its own reviewer workflow. The work I started is the work they own now.</p>
 
-        <p>I know Antwerp isn't Toronto or Chicago, but I'm open to relocating, and equally ready to serve as the FDA for European marketing teams from day one. The work I've done at Loop was cross-functional and asynchronous by design anyway so I can adapt to whatever the team needs. I'm raising the geography thing directly because the capability match is exact, and I'd rather make the case than assume it's a wall.</p>
+        <p>The throughline across all of it: teaching people how to encode their way of working into substrate any LLM can inherit. The experience, the judgment, the evaluation criteria, captured in a format the models can read. Without that layer, nothing carries forward; models change every quarter, and the work has to start from scratch. With it, the work compounds without me, because the real thing being taught isn't the tools. It's the instinct to recognize when something in the work should be captured in the first place. Once a team has that instinct, they don't need me to point at the next opportunity. They extend their own tools, teach their peers, and the next team I embed with starts further along than the last. The whole flywheel is laid out at <span class="letter__placeholder"><a href="https://shards-cyan.vercel.app/ai-operator">shards-cyan.vercel.app/ai-operator</a></span> (access: <span class="letter__placeholder">Dromineer</span>).</p>
+      </div>
+    </section>
+  </article>
 
-        <p>And I think my case is strong, because this role didn't exist eighteen months ago, barely had a name, but I built it anyway because the work was right in front of me. I'm super proud of my work at Loop and what the teams have achieved, and Stripe is where I want to do it next. AI is going to reshape every business that runs on your infrastructure, and someone needs to make sure Stripe's own teams are operating at that same speed.</p>
+
+  <!-- ════════════════════ PAGE 3 ════════════════════ -->
+  <article class="page" aria-label="Cover letter, page 3">
+    <div class="grid-bg" aria-hidden="true"></div>
+
+    <header class="page__head">
+      <span class="page__head-name">Vincent Buyssens · Cover Letter</span>
+      <span class="page__num">03 <span aria-hidden="true">/</span> 03</span>
+    </header>
+
+    <section class="letter">
+      <div class="letter__body">
+        <p>That model is now running company-wide through Claude workshops across every team. Not training sessions, but encoding sprints where teams capture their judgment and evals into Skills they can build automations on top of. Working across teams is where the pattern recognition compounds. What Studio calls &ldquo;brand voice,&rdquo; what Legal calls &ldquo;claim integrity,&rdquo; and what Localization calls &ldquo;cultural fit&rdquo; turn out to be different faces of the same underlying judgment. Once you see that, you stop building three separate tools and start building the underlying substrate.</p>
+
+        <p>And none of this required a technical background. I actually studied journalism where I learned how to channel the instinct to investigate, ask the right questions, and share my learnings. AI is what made it possible for me to ship and I now I want to empower the teams at Stripe so they can do the same.</p>
+
+        <p>I've also spent the last five years proving that at Thomas More University College, lecturing on AI, internet culture, and storytelling across four media programs; which means I can build in real time and coach someone standing next to me while I do it.</p>
+
+        <p>I know Antwerp isn't Toronto or Chicago, but I'm open to relocating, and equally ready to serve as the FDA for European marketing teams from day one. The work I've done at Loop was cross-functional and asynchronous by design anyway so I can adapt to whatever the team needs. I'm raising the geography thing directly because I genuinely belive this role was made for me, and I'd rather make the case than assume it's a wall.</p>
+
+        <p>And I think my case is strong, because this role didn't exist eighteen months ago, barely had a name, but I built it anyway because the work was right in front of me. I&rsquo;m super proud of my work at Loop and what the teams have achieved, and Stripe is where I want to do it next. AI is going to reshape every business that runs on your infrastructure, and someone needs to make sure Stripe's own teams are operating at that same speed.</p>
 
         <p>And I want to be that person.</p>
       </div>

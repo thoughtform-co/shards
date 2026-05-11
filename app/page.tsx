@@ -9,8 +9,12 @@ import styles from "./page.module.css";
  * Reachable only after unlocking via the gate at /login (the proxy
  * rewrites locked traffic to /login). Same scene composition as the
  * gate — full-bleed gradient backdrop, top corner markers, bottom-left
- * card — but the card body is text-only with a small pointer to
- * /dashboard, where the curated experiment hub lives.
+ * card — but the card body is text-only with a single pointer to
+ * /ai-operator, the public showcase route. The internal experiment
+ * hub at /dashboard is intentionally not surfaced from here so external
+ * visitors who land on / from the password gate are funneled directly
+ * to the showcase. /dashboard remains reachable by direct URL for
+ * personal use once the cookie is set.
  */
 
 export const metadata: Metadata = {
@@ -69,8 +73,8 @@ export default function HomePage() {
               request.
             </p>
 
-            <Link className={styles.link} href="/dashboard">
-              Open the dashboard
+            <Link className={styles.link} href="/ai-operator">
+              Open the showcase
               <span className={styles.linkArrow} aria-hidden="true">
                 →
               </span>
