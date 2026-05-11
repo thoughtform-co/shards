@@ -41,7 +41,11 @@ export function FlywheelBridge() {
 
       <div className="aiop-wrap aiop-flywheel-bridge__inner aiop-reveal">
         <blockquote className="aiop-flywheel-bridge__quote">
-          {flywheelBridgeSection.quote}
+          {flywheelBridgeSection.quote.map((paragraph) => (
+            <p key={paragraph} className="aiop-flywheel-bridge__quote-p">
+              {paragraph}
+            </p>
+          ))}
         </blockquote>
       </div>
     </section>

@@ -494,9 +494,16 @@ export const visionMarketSignals: VisionMarketSignal[] = [
  * first person; an outside-voice attribution would feel wrong here.
  * ─────────────────────────────────────────────────────────────────── */
 
+/* Quote split into deliberate paragraphs. Each paragraph renders as
+   its own <p> inside the blockquote so the line break between the
+   "moved into marketing" setup and the "today the studio…" payoff
+   reads as a beat, not a long run-on sentence. Renderer in
+   `flywheel-bridge.tsx` maps the array. */
 export const flywheelBridgeSection = {
-  quote:
-    "I moved from the AI team into marketing to show AI would elevate them, not replace them. Today the studio makes its best ads with AI completely autonomously, Performance writes their own Claude skills, and the people I built tools for are starting to implement features themselves.",
+  quote: [
+    "I moved from the AI team into marketing to show AI would elevate them, not replace them.",
+    "Today the studio makes its best ads with AI completely autonomously, Performance writes their own Claude skills, and the people I built tools for are starting to implement features themselves.",
+  ],
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────

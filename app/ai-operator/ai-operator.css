@@ -3369,6 +3369,19 @@
   text-wrap: balance;
 }
 
+/* Each paragraph inside the bridge blockquote is its own <p> so the
+   visitor reads the setup line and the payoff line as two beats.
+   The gap between them scales with the surrounding rhythm; the
+   first paragraph's leading whitespace is suppressed so the open
+   sentence sits flush to the top padding. */
+.aiop-flywheel-bridge__quote-p {
+  margin: 0;
+}
+
+.aiop-flywheel-bridge__quote-p + .aiop-flywheel-bridge__quote-p {
+  margin-top: clamp(14px, 1.6vw, 22px);
+}
+
 /* The inline `.aiop-flywheel-bridge__mark*` lane-pill rules were
    retired when the flywheel quote was rewritten without explicit
    Navigate / Encode / Build pills (see `flywheel-bridge.tsx`). The
