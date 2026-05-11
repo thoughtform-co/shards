@@ -938,8 +938,8 @@ export const casesSection = {
      unlabelled (no mono-caps eyebrow) so the two-line display body
      lands as the only beat — quieter and more editorial. */
   bridgeCallout: {
-    lead: "The work is the engine.",
-    em: "The interface is the cheapest layer to swap.",
+    lead: "The easier it becomes to build interfaces,",
+    em: "the more important the underlying layer becomes.",
   },
 } as const;
 
@@ -1423,6 +1423,15 @@ export const softwareForFewSection = {
       tag: "Too costly",
     },
   ] satisfies SoftwareForFewRow[],
+  /* Quiet sign-off at the bottom of the section. Feynman as a
+     credible outside voice that lands the same point the section
+     argues — building is its own form of understanding — without
+     restating it in our own language. Renders below the two-column
+     layout as a standalone centered tile in `software-for-few.tsx`. */
+  feynman: {
+    quote: "\u201CWhat I cannot build, I do not understand.\u201D",
+    attribution: "Richard Feynman",
+  },
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────

@@ -218,6 +218,25 @@ export function SoftwareForFew() {
           </ul>
         </div>
       </div>
+
+      {/* Feynman sign-off · standalone full-width tile at the bottom
+          of the section. Sits below the two-column layout so it reads
+          as a quiet outside-voice closer on the "build to understand"
+          argument the title and body make above. The hairline above
+          and the small sage tick separator keep it editorially
+          subordinate; the page's section title still leads. */}
+      <aside
+        className="aiop-wrap aiop-few__feynman"
+        aria-label="Richard Feynman quote"
+      >
+        <span className="aiop-few__feynman-mark" aria-hidden="true" />
+        <blockquote className="aiop-few__feynman-quote">
+          {softwareForFewSection.feynman.quote}
+        </blockquote>
+        <cite className="aiop-few__feynman-cite">
+          {softwareForFewSection.feynman.attribution}
+        </cite>
+      </aside>
     </section>
   );
 }

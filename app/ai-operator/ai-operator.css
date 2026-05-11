@@ -13036,6 +13036,74 @@
 }
 
 
+/* ─── 29.2c · Feynman sign-off · Software-for-few bottom tile ─────
+ *
+ * Quiet outside-voice closer at the bottom of the Software-for-few
+ * section. Renders as a centered standalone tile below the
+ * two-column layout: a thin sage tick anchors the quote, italic
+ * display centerpiece carries the Feynman line, mono-caps cite below
+ * names the source. Hairline above separates it from the section
+ * body so it reads as editorially subordinate to the section title.
+ *
+ * `text-wrap: balance` on the quote keeps the two-clause comma
+ * cadence visually centered across viewports. The cite lives in a
+ * <cite> element so assistive tech announces it as the source of
+ * the surrounding blockquote without needing extra aria. */
+.aiop-few__feynman {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(48px, 7vw, 96px);
+  padding-top: clamp(28px, 3vw, 40px);
+  border-top: 1px solid var(--aiop-rule);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 1vw, 14px);
+  text-align: center;
+}
+
+.aiop-few__feynman-mark {
+  width: 22px;
+  height: 1px;
+  background: var(--aiop-sage);
+  opacity: 0.55;
+}
+
+.aiop-few__feynman-quote {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(18px, 1.6vw, 22px);
+  line-height: 1.4;
+  letter-spacing: -0.012em;
+  color: var(--aiop-ink-soft);
+  max-width: 36ch;
+  text-wrap: balance;
+}
+
+.aiop-few__feynman-cite {
+  font-family: var(--aiop-mono);
+  font-style: normal;
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .aiop-few__feynman {
+    margin-top: 40px;
+    padding-top: 24px;
+  }
+
+  .aiop-few__feynman-quote {
+    font-size: clamp(16px, 4.6vw, 20px);
+  }
+}
+
+
 /* ═══════════════════════════════════════════════════════════════════════
  * 30 · Stripe teaser card · post-Heimdall row
  *
