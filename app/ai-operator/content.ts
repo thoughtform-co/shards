@@ -1459,28 +1459,25 @@ export type HeadlessShiftLayer = {
 export const headlessShiftSection = {
   title: "Software is going",
   titleEm: "headless.",
+  /* Two-paragraph body now — the first names the industry pattern
+     and the marketing-side translation in one beat (Salesforce
+     Headless 360, Stripe Link + the Link CLI on top, then the
+     "same shape one layer up" claim for marketing with the actual
+     surface names in parens). The second is the ask. The earlier
+     three-paragraph version split this into industry / hedge /
+     specifics; the hedge is gone and the specifics fold into the
+     first paragraph, so the section reads top-to-bottom as pattern
+     -> my work -> ask without restating substrate vocabulary. */
   body:
-    "Salesforce went Headless 360. Stripe also shipped a CLI. Same approach: the engine matters more than the surface.",
-  /* Confident one-sentence bridge — picks up para 1's "same approach"
-     and points it at the marketing side at Loop. Earlier drafts
-     hedged ("Not all the way there yet, but the direction is
-     clear"); the hedge has been dropped because the third paragraph
-     below already names the substantive scope of the work (voice /
-     claims / localization). Reading top-to-bottom now lands as
-     industry pattern -> my version -> what gets encoded. */
+    "Salesforce shipped Headless 360. Stripe shipped Link and the Link CLI on top. Marketing has the same shape one layer up; voice, claims, localization encoded once, every surface (Slack, Cursor, agents) inheriting the same judgment.",
   bodyStrong:
-    "I'm doing the same on the marketing side at Loop.",
-  /* Third paragraph — closes the interstitial on a Stripe-applied
-     beat instead of leaving the visitor with the Loop status. The
-     first two paragraphs already establish the industry trend
-     (Salesforce/Stripe) and the candidate's own work (Loop); this
-     one names the equivalent move on the marketing side. Stays
-     specific (Link is a real CLI, the docs are a real API,
-     voice/claims/review-loops are the actual marketing
-     equivalents) without falling into "this posture" /
-     corporate-architecture vocabulary. */
-  bodyStripe:
-    "Voice, legal claims, localization nuances should all be part of the same engine; encoded in a substrate any interface can use.",
+    "I'm building this at Loop and I'd bring the same approach to the marketing cohort at Stripe.",
+  /* Third paragraph retired — the first paragraph now folds in the
+     voice/claims/localization specifics that this beat used to
+     carry, and the second paragraph carries the ask. Kept as an
+     empty string so the data shape stays stable; `headless-shift.tsx`
+     conditionally renders only when the string is non-empty. */
+  bodyStripe: "",
   actions: [
     { id: "headless", label: "See the overview", href: "#substrate-map" },
   ],
@@ -1574,16 +1571,19 @@ export const headlessSection = {
 export const substrateMapSection = {
   title: "Three layers,",
   titleEm: "one operating model.",
-  /* Lede pivots on the Stripe-applied parallel: Link/CLI is the
-     same architecture at the protocol layer; the substrate is the
-     same architecture one layer up. Drops "posture" since it reads
-     as borrowed corporate-architecture vocabulary; uses plain
-     words ("works this way", "same idea") instead. The original
-     definitional clauses (what matters / how to decide / what to
-     check) are preserved so the substrate-map card chrome below it
-     still resolves cleanly against the lede. */
+  /* Lede defines the substrate without re-anchoring on Stripe.
+     Earlier drafts opened with "Stripe's protocol layer already
+     works this way..." — that beat moved up to the Headless-shift
+     section (which is the section explicitly anchored on the
+     Stripe Link / Link CLI pattern). Repeating it here was
+     name-dropping AND making architectural claims about Stripe
+     that aren't ours to assert. The "same shape, one layer up"
+     callback links back to Headless-shift without restating the
+     claim. The definitional clauses (what matters / how to decide
+     / what to check) carry the substrate concept the diagram
+     below visualises. */
   body:
-    "Stripe's protocol layer already works this way — Link, the CLI, the developer surfaces all call the same engine. The substrate is the same idea one layer up: what matters, how to decide, what to check before something ships, encoded once and inherited by every surface.",
+    "Same shape, one layer up. The substrate is what matters, how to decide, what to check before something ships — encoded once and inherited by every surface.",
   cardLabel: "Substrate map",
   flow: "Source → Authority → Surface",
   columns: {

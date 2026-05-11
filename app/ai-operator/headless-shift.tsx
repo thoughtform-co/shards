@@ -177,15 +177,17 @@ export function HeadlessShift() {
           <p className="aiop-shift__body aiop-shift__body--strong">
             {headlessShiftSection.bodyStrong}
           </p>
-          {/* Third paragraph — Stripe-applied closing beat. Plain
-              `aiop-shift__body` typography keeps the rhythm with
-              the other two paragraphs; the `--stripe` modifier is
-              wired in case a later iteration wants a small visual
-              accent (e.g., an amber left rule) to differentiate
-              the closing beat. */}
-          <p className="aiop-shift__body aiop-shift__body--stripe">
-            {headlessShiftSection.bodyStripe}
-          </p>
+          {/* Optional Stripe-applied closing beat — only rendered
+              when `bodyStripe` is non-empty. The current copy folds
+              voice/claims/localization into the first paragraph, so
+              this slot is empty by default. Kept wired (with the
+              `--stripe` accent class) in case a future iteration
+              wants to surface a separate closing beat. */}
+          {headlessShiftSection.bodyStripe ? (
+            <p className="aiop-shift__body aiop-shift__body--stripe">
+              {headlessShiftSection.bodyStripe}
+            </p>
+          ) : null}
           <div
             className="aiop-shift__actions"
             aria-label="Headless interstitial links"
