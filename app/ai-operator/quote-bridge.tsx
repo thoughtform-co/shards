@@ -152,22 +152,36 @@ export function QuoteBridge({ scrollNote }: QuoteBridgeProps = {}) {
         const p = maxFreeze > 0 ? freeze / maxFreeze : 0;
         wrapper.style.setProperty("--aiop-bridge-progress", p.toFixed(4));
 
-        // Phase 1 hold for the Reality interstitial:
-        //   - Phase 1 (freeze 0 -> 35% of maxFreeze): the hold mirrors
-        //     the bridge's translation, keeping Reality visually
-        //     stationary at its initial below-viewport position so the
-        //     parenthetical "(because AI isn't software)" has scroll
-        //     length to be read.
-        //   - Phase 2 (35% -> 100% of maxFreeze): the hold linearly
-        //     releases back to 0 so Reality returns to its natural
-        //     document position by the time the freeze caps. Without
-        //     this release, Reality's visual box would stay translated
-        //     down past its natural bottom and the next section
-        //     (Vision) would paint over the lower portion of Reality
-        //     (clipping the spectrum sub-text).
-        const realityHoldMax = 0.35 * maxFreeze;
+        // Phase 1 hold for the Reality interstitial — kept aligned
+        // with the entry-buffer pattern used by the other parallax
+        // pairs on this page (`software-for-few.tsx`,
+        // `headless-shift.tsx`, `stripe-reflect.tsx`):
+        //   - Phase 1 (freeze 0 -> ~180px): the hold mirrors the
+        //     bridge's translation, keeping Reality visually
+        //     stationary at its below-viewport starting position so
+        //     the parenthetical "(because AI isn't software)" has
+        //     scroll length to be read. Slightly longer than the
+        //     other parallax pairs' buffer (~140px) because the
+        //     parenthetical's fade-in window has to complete before
+        //     Reality rises far enough to occlude it.
+        //   - Phase 2 (~180px -> 100% of maxFreeze): the hold
+        //     linearly releases back to 0 so Reality returns to its
+        //     natural document position by the time the freeze
+        //     caps. Without this release, Reality's visual box
+        //     would stay translated down past its natural bottom
+        //     and the next section (Vision) would paint over the
+        //     lower portion of Reality (clipping the spectrum
+        //     sub-text).
+        // Earlier this was anchored to `0.35 * maxFreeze`, which
+        // scaled with viewport height and could feel slow on tall
+        // monitors. Pixel-anchoring it keeps the cadence consistent
+        // across viewports and aligned with the other three pairs.
+        const realityBuffer = Math.min(180, vh * 0.18);
+        // Cap at 60% of maxFreeze to guarantee a Phase 2 release
+        // distance even on unusually short wrappers.
+        const realityHoldMax = Math.min(realityBuffer, maxFreeze * 0.6);
         let realityHold = 0;
-        if (freeze > 0 && maxFreeze > 0) {
+        if (freeze > 0 && realityHoldMax > 0) {
           if (freeze <= realityHoldMax) {
             realityHold = freeze;
           } else if (maxFreeze > realityHoldMax) {

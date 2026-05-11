@@ -67,6 +67,7 @@ export function StripeReflect() {
 
     const reset = () => {
       node.style.removeProperty("--aiop-reflect-progress");
+      node.style.transform = "";
       if (previous) previous.style.transform = "";
     };
 
@@ -80,18 +81,29 @@ export function StripeReflect() {
     const onScroll = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
-        const rect = node.getBoundingClientRect();
         const vh = window.innerHeight;
 
-        const total = rect.height + vh;
-        const traveled = vh - rect.top;
-        const p = Math.max(0, Math.min(1, traveled / total));
-        node.style.setProperty("--aiop-reflect-progress", p.toFixed(4));
-
-        if (!wrapper || !previous) return;
+        if (!wrapper || !previous) {
+          const rect = node.getBoundingClientRect();
+          const total = rect.height + vh;
+          const traveled = vh - rect.top;
+          const p = Math.max(0, Math.min(1, traveled / total));
+          node.style.setProperty("--aiop-reflect-progress", p.toFixed(4));
+          return;
+        }
 
         const wrapperRect = wrapper.getBoundingClientRect();
+        // Surface-pick is the first child of the wrapper, so its
+        // bottom in viewport coords doubles as the natural
+        // (transform-free) top of this reflect section.
         const previousBottomInVH = wrapperRect.top + previous.offsetHeight;
+
+        // Inner-progress derived from natural layout coords so the
+        // entry-buffer hold below doesn't distort atmospheric drift.
+        const total = node.offsetHeight + vh;
+        const traveled = vh - previousBottomInVH;
+        const p = Math.max(0, Math.min(1, traveled / total));
+        node.style.setProperty("--aiop-reflect-progress", p.toFixed(4));
 
         const freezeNeeded = vh - previousBottomInVH;
         const maxFreeze = wrapper.offsetHeight - previous.offsetHeight;
@@ -99,6 +111,29 @@ export function StripeReflect() {
 
         previous.style.transform =
           freeze > 0 ? `translate3d(0, ${freeze}px, 0)` : "";
+
+        // Entry buffer: hold this interstitial in place for the
+        // first ~140px of freeze (≈ one-to-two scroll-wheel
+        // movements) so Surface-pick's closing footer line stays
+        // readable before the reflect quote begins to rise. After
+        // the buffer, linearly release back to 0 so the section
+        // lands at its natural document position by the time the
+        // freeze caps — otherwise StripeLedger below would overlap
+        // its tail. Mirrors `software-for-few.tsx`.
+        const entryBuffer = Math.min(140, vh * 0.13);
+        const cap = Math.min(entryBuffer, maxFreeze * 0.6);
+        let hold = 0;
+        if (freeze > 0 && cap > 0) {
+          if (freeze <= cap) {
+            hold = freeze;
+          } else if (maxFreeze > cap) {
+            const phase2Span = maxFreeze - cap;
+            const phase2Progress = (freeze - cap) / phase2Span;
+            hold = cap * (1 - phase2Progress);
+          }
+        }
+        node.style.transform =
+          hold > 0 ? `translate3d(0, ${hold}px, 0)` : "";
       });
     };
 

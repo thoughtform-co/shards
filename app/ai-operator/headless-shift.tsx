@@ -65,6 +65,7 @@ export function HeadlessShift() {
 
     const reset = () => {
       node.style.removeProperty("--aiop-shift-progress");
+      node.style.transform = "";
       if (cases) cases.style.transform = "";
     };
 
@@ -78,24 +79,59 @@ export function HeadlessShift() {
     const onScroll = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
-        const rect = node.getBoundingClientRect();
         const vh = window.innerHeight;
 
-        const total = rect.height + vh;
-        const traveled = vh - rect.top;
-        const p = Math.max(0, Math.min(1, traveled / total));
-        node.style.setProperty("--aiop-shift-progress", p.toFixed(4));
-
-        if (!wrapper || !cases) return;
+        if (!wrapper || !cases) {
+          const rect = node.getBoundingClientRect();
+          const total = rect.height + vh;
+          const traveled = vh - rect.top;
+          const p = Math.max(0, Math.min(1, traveled / total));
+          node.style.setProperty("--aiop-shift-progress", p.toFixed(4));
+          return;
+        }
 
         const wrapperRect = wrapper.getBoundingClientRect();
+        // Cases sits as the first child of the wrapper, so its
+        // bottom in viewport coords doubles as the natural
+        // (transform-free) top of this section.
         const casesBottomInVH = wrapperRect.top + cases.offsetHeight;
+
+        // Inner-progress derived from natural layout coords so the
+        // entry-buffer hold below doesn't distort atmospheric drift.
+        const total = node.offsetHeight + vh;
+        const traveled = vh - casesBottomInVH;
+        const p = Math.max(0, Math.min(1, traveled / total));
+        node.style.setProperty("--aiop-shift-progress", p.toFixed(4));
 
         const freezeNeeded = vh - casesBottomInVH;
         const maxFreeze = wrapper.offsetHeight - cases.offsetHeight;
         const freeze = Math.max(0, Math.min(maxFreeze, freezeNeeded));
 
         cases.style.transform = freeze > 0 ? `translate3d(0, ${freeze}px, 0)` : "";
+
+        // Entry buffer: hold this interstitial in place for the
+        // first ~140px of freeze (≈ one-to-two scroll-wheel
+        // movements) so Cases' closing bridge callout stays
+        // readable before HeadlessShift begins rising. After the
+        // buffer, linearly release back to 0 so the section reaches
+        // its natural document position by the time freeze caps —
+        // otherwise it would sit translated past its natural bottom
+        // and the next section (Substrate map) would overlap its
+        // tail. Mirrors `software-for-few.tsx`.
+        const entryBuffer = Math.min(140, vh * 0.13);
+        const cap = Math.min(entryBuffer, maxFreeze * 0.6);
+        let hold = 0;
+        if (freeze > 0 && cap > 0) {
+          if (freeze <= cap) {
+            hold = freeze;
+          } else if (maxFreeze > cap) {
+            const phase2Span = maxFreeze - cap;
+            const phase2Progress = (freeze - cap) / phase2Span;
+            hold = cap * (1 - phase2Progress);
+          }
+        }
+        node.style.transform =
+          hold > 0 ? `translate3d(0, ${hold}px, 0)` : "";
       });
     };
 

@@ -63,6 +63,7 @@ export function SoftwareForFew() {
 
     const reset = () => {
       node.style.removeProperty("--aiop-few-progress");
+      node.style.transform = "";
       if (approach) approach.style.transform = "";
     };
 
@@ -76,14 +77,31 @@ export function SoftwareForFew() {
     const onScroll = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
-        const rect = node.getBoundingClientRect();
         const vh = window.innerHeight;
 
-        // Inner-progress: section's transit through the viewport.
-        // 0 = top of section at viewport bottom (just entering).
-        // 1 = bottom of section at viewport top (just exited).
-        const total = rect.height + vh;
-        const traveled = vh - rect.top;
+        if (!wrapper || !approach) {
+          // Defensive fallback: without the wrapper structure we
+          // can't drive the parallax pair, so just expose the
+          // inner-progress so atmospheric drift still works.
+          const rect = node.getBoundingClientRect();
+          const total = rect.height + vh;
+          const traveled = vh - rect.top;
+          const p = Math.max(0, Math.min(1, traveled / total));
+          node.style.setProperty("--aiop-few-progress", p.toFixed(4));
+          return;
+        }
+
+        const wrapperRect = wrapper.getBoundingClientRect();
+        // Approach is the first child of the wrapper (no margin), so
+        // its bottom in viewport coords doubles as the natural
+        // (transform-free) top of this section.
+        const apBottomInVH = wrapperRect.top + approach.offsetHeight;
+
+        // Inner-progress derived from the natural layout coords so
+        // the entry-buffer hold applied below doesn't distort the
+        // atmospheric drift inside the slide.
+        const total = node.offsetHeight + vh;
+        const traveled = vh - apBottomInVH;
         const p = Math.max(0, Math.min(1, traveled / total));
         node.style.setProperty("--aiop-few-progress", p.toFixed(4));
 
@@ -91,22 +109,39 @@ export function SoftwareForFew() {
         // the phase where its last viewport would scroll past, until
         // SoftwareForFew has covered the viewport. We do this with a
         // translateY that compensates for scroll in that phase.
-        if (!wrapper || !approach) return;
-
-        const wrapperRect = wrapper.getBoundingClientRect();
-        // Approach is the first child of the wrapper (no margin).
-        const apBottomInVH = wrapperRect.top + approach.offsetHeight;
-
-        // Freeze starts when approach's bottom would scroll above
-        // viewport bottom (its last viewport now fills the screen)
-        // and ends when the wrapper's bottom reaches viewport bottom
-        // (SoftwareForFew has fully taken over). The maximum needed
-        // freeze is exactly the section's own height.
         const freezeNeeded = vh - apBottomInVH;
         const maxFreeze = wrapper.offsetHeight - approach.offsetHeight;
         const freeze = Math.max(0, Math.min(maxFreeze, freezeNeeded));
 
         approach.style.transform = freeze > 0 ? `translate3d(0, ${freeze}px, 0)` : "";
+
+        // Entry buffer: hold this interstitial in place for the
+        // first ~140px of freeze (roughly one-to-two scroll-wheel
+        // movements) so Approach's closing Outcome card stays
+        // readable before the slide-up begins. Otherwise the next
+        // section starts to rise on the very next scroll pixel and
+        // the visitor never gets a chance to land on the previous
+        // section's last beat. After the buffer, the hold releases
+        // linearly back to 0 so the section lands at its natural
+        // document position by the time the freeze caps; without
+        // the release this section would sit translated past its
+        // natural bottom and the next chapter would overlap.
+        const entryBuffer = Math.min(140, vh * 0.13);
+        // Cap at 60% of maxFreeze to guarantee there is always at
+        // least some Phase 2 release distance even on small wrappers.
+        const cap = Math.min(entryBuffer, maxFreeze * 0.6);
+        let hold = 0;
+        if (freeze > 0 && cap > 0) {
+          if (freeze <= cap) {
+            hold = freeze;
+          } else if (maxFreeze > cap) {
+            const phase2Span = maxFreeze - cap;
+            const phase2Progress = (freeze - cap) / phase2Span;
+            hold = cap * (1 - phase2Progress);
+          }
+        }
+        node.style.transform =
+          hold > 0 ? `translate3d(0, ${hold}px, 0)` : "";
       });
     };
 

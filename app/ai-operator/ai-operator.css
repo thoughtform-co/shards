@@ -8575,6 +8575,11 @@
 
 .aiop-approach-and-few > .aiop-few {
   position: relative;
+  /* `software-for-few.tsx` writes a translateY here during the
+     entry-buffer phase so this section reads as held in place
+     while Approach's closing Outcome card gets a brief reading
+     beat before the slide-up begins. */
+  will-change: transform;
 }
 
 
@@ -8932,7 +8937,8 @@
    media-query change mid-session can never leave the slide in an
    animated state. The pair collapses to a static stack. */
 @media (prefers-reduced-motion: reduce) {
-  .aiop-approach-and-few > .aiop-approach {
+  .aiop-approach-and-few > .aiop-approach,
+  .aiop-approach-and-few > .aiop-few {
     transform: none !important;
     will-change: auto !important;
   }
@@ -8999,6 +9005,11 @@
 
 .aiop-cases-and-shift > .aiop-shift {
   position: relative;
+  /* `headless-shift.tsx` writes a translateY here during the
+     entry-buffer phase so this section reads as held in place
+     while Cases' closing bridge callout gets a brief reading
+     beat before the slide-up begins. */
+  will-change: transform;
 }
 
 
@@ -9025,6 +9036,11 @@
 
 .aiop-surface-and-reflect > .aiop-stripe-reflect {
   position: relative;
+  /* `stripe-reflect.tsx` writes a translateY here during the
+     entry-buffer phase so this section reads as held in place
+     while Surface-pick's footer line gets a brief reading beat
+     before the reflect quote begins to rise. */
+  will-change: transform;
 }
 
 
@@ -9699,12 +9715,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .aiop-cases-and-shift > .aiop-cases {
-    transform: none !important;
-    will-change: auto !important;
-  }
-
-  .aiop-surface-and-reflect > .aiop-surface-pick {
+  .aiop-cases-and-shift > .aiop-cases,
+  .aiop-cases-and-shift > .aiop-shift,
+  .aiop-surface-and-reflect > .aiop-surface-pick,
+  .aiop-surface-and-reflect > .aiop-stripe-reflect {
     transform: none !important;
     will-change: auto !important;
   }
