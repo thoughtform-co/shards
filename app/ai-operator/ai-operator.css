@@ -321,6 +321,34 @@
   color: var(--aiop-paper);
 }
 
+/* Play-glyph variant of the ghost button — used by the hero-ghost
+   WalkthroughLauncher. Inherits all the .aiop-button + ghost chassis
+   (1px ink outline, transparent fill, polygon-clipped corner, dark
+   fill on hover); this modifier just exists as a hook so the launcher
+   can identify itself in the hero actions row if we ever need to. */
+.aiop-button--video {
+  /* No additional styling needed — the play glyph carries the visual
+     differentiation. Modifier reserved for future hooks. */
+}
+
+/* Play triangle that sits before the label inside an .aiop-button.
+   Sized a notch larger than the header-CTA glyph because the host
+   button itself is bigger (12px mono caps vs 11px). Carries a faint
+   gold-bright tint that flips to paper on hover, in lockstep with
+   the ghost button's own color invert. */
+.aiop-button-play {
+  width: 11px;
+  height: 11px;
+  flex-shrink: 0;
+  color: var(--aiop-gold-bright);
+  display: block;
+  transition: color 140ms ease;
+}
+
+.aiop-button--ghost:hover .aiop-button-play {
+  color: var(--aiop-paper);
+}
+
 .aiop-button--gold {
   background: var(--aiop-gold-bright);
   color: var(--aiop-ink);

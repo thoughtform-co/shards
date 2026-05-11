@@ -6,34 +6,60 @@ import { walkthroughSection } from "./content";
 import { OperatorModal } from "./operator-modal";
 
 /*
- * WalkthroughLauncher — header-mounted button that opens a fullscreen
- * video walkthrough of the AI Operator landing page.
+ * WalkthroughLauncher — button that opens a fullscreen video walkthrough
+ * of the AI Operator landing page in a wide OperatorModal.
  *
- * Replaces the older "Get in touch" anchor in the nav. Owns its own
- * open state and renders the existing OperatorModal in `wide` variant
- * so the 16:9 video frame gets enough horizontal room without
- * touching any of the page's other sections.
+ * Renders in two visual variants:
+ *   - "header"     (default) — slots into the nav bar. Uses the
+ *                  .aiop-header__cta chassis (cream card on a strong
+ *                  rule border, polygon-clipped corner, dark hover
+ *                  invert) and replaces the gold pulse dot with a
+ *                  small play triangle.
+ *   - "hero-ghost" — slots into the hero CTA row alongside the
+ *                  primary "Explore vision" anchor. Uses the
+ *                  .aiop-button + .aiop-button--ghost chassis (1px
+ *                  ink outline, transparent fill, polygon-clipped
+ *                  corner, dark fill on hover) and prepends the same
+ *                  play triangle so the affordance still reads as
+ *                  video. No right-side arrow on this variant — the
+ *                  play glyph is the action cue, the arrow would
+ *                  imply navigation.
  *
- * Body content is gated on `walkthroughSection.src`:
+ * Both variants share the same modal body, open state, and a11y
+ * plumbing; only the trigger element changes.
+ *
+ * Body content gates on `walkthroughSection.src`:
  *   - When a real video file is wired (drop the .mp4 into
- *     /public/ai-operator/ and set `src` in content.ts), the body
- *     renders the same <video> element pattern the case walkthroughs
- *     in cases.tsx use, so the chrome stays uniform across the page.
- *   - Until then, the body renders a quiet "coming soon" placeholder
- *     card sized to the same 16:9 frame so the empty state feels
- *     editorial rather than broken.
- *
- * Visual: the button reuses the existing .aiop-header__cta chassis
- * (cream card on a strong rule border, polygon-clipped corner, dark
- * hover invert) and swaps the gold pulse dot for a small play
- * triangle so the affordance reads as video at a glance.
+ *     /public/ai-operator/ and set `src` in content.ts), renders the
+ *     same <video> element pattern the case walkthroughs in cases.tsx
+ *     use.
+ *   - Until then, renders the .aiop-modal__video-placeholder card so
+ *     visitors who open the modal today see a quiet "coming soon"
+ *     message instead of an empty frame.
  *
  * A11y:
  *   - aria-haspopup="dialog" + aria-expanded reflect the modal state.
  *   - Modal carries its own dialog/aria-modal/escape-close plumbing
  *     in OperatorModal.
  */
-export function WalkthroughLauncher() {
+
+type LauncherVariant = "header" | "hero-ghost";
+
+const VARIANT_BUTTON_CLASS: Record<LauncherVariant, string> = {
+  header: "aiop-header__cta aiop-header__cta--video",
+  "hero-ghost": "aiop-button aiop-button--ghost aiop-button--video",
+};
+
+const VARIANT_GLYPH_CLASS: Record<LauncherVariant, string> = {
+  header: "aiop-header__cta-play",
+  "hero-ghost": "aiop-button-play",
+};
+
+export function WalkthroughLauncher({
+  variant = "header",
+}: {
+  variant?: LauncherVariant;
+}) {
   const [open, setOpen] = useState(false);
   const hasVideo = Boolean(walkthroughSection.src);
 
@@ -41,13 +67,13 @@ export function WalkthroughLauncher() {
     <>
       <button
         type="button"
-        className="aiop-header__cta aiop-header__cta--video"
+        className={VARIANT_BUTTON_CLASS[variant]}
         onClick={() => setOpen(true)}
         aria-label={walkthroughSection.buttonAriaLabel}
         aria-haspopup="dialog"
         aria-expanded={open}
       >
-        <PlayGlyph className="aiop-header__cta-play" />
+        <PlayGlyph className={VARIANT_GLYPH_CLASS[variant]} />
         {walkthroughSection.buttonLabel}
       </button>
 
@@ -111,7 +137,8 @@ export function WalkthroughLauncher() {
 /*
  * Filled play triangle. Sizing and color come from CSS via currentColor
  * + width/height on the host class so the same SVG can serve as the
- * 9px header glyph and the 28px placeholder glyph without duplication.
+ * 9px header glyph, the 11px hero-ghost glyph, and the 28px placeholder
+ * glyph without duplication.
  */
 function PlayGlyph({ className }: { className: string }) {
   return (

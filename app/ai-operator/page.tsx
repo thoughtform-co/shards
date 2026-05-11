@@ -227,6 +227,12 @@ export default function AiOperatorPage() {
                   <Arrow />
                 </a>
               ))}
+              {/* Ghost-variant of the WalkthroughLauncher sits next to
+                  the primary "Explore vision" anchor as the secondary
+                  hero CTA. Replaced the older "See the cases" link so
+                  the row reads as one main action ("explore the page")
+                  + one playful intro ("watch a video walk-through"). */}
+              <WalkthroughLauncher variant="hero-ghost" />
             </div>
           </div>
 

@@ -71,10 +71,10 @@ export const meta = {
  * ─────────────────────────────────────────────────────────────────── */
 
 export const walkthroughSection = {
-  buttonLabel: "Video walkthrough",
+  buttonLabel: "Vince Intro",
   buttonAriaLabel:
-    "Open the AI operator video walkthrough in a fullscreen modal",
-  modalTitle: "AI Operator",
+    "Play the Vince intro video walkthrough in a fullscreen modal",
+  modalTitle: "Vince Intro",
   modalTitleEm: "video walkthrough",
   modalSubline: "A guided tour of the page, the flywheel, and the cases.",
   src: null as string | null,
@@ -129,9 +129,13 @@ export const hero = {
     },
     { k: "LOCATION", v: "Antwerp, Belgium" },
   ] as HeroMetaItem[],
+  /* Hero CTA row.
+     v6: dropped the "See the cases" ghost anchor and replaced it with
+     the WalkthroughLauncher (hero-ghost variant) — see page.tsx. The
+     primary "Explore vision" link stays here as data; the launcher
+     gets composed in alongside the map output. */
   actions: [
     { id: "vision", label: "Explore vision", href: "#vision", primary: true },
-    { id: "cases", label: "See the cases", href: "#cases" },
   ],
   portrait: {
     src: "/images/vince.png",
