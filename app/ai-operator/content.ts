@@ -124,7 +124,7 @@ export const hero = {
     {
       k: "EMAIL",
       v: "vince@thoughtform.co",
-      href: "mailto:vince@thoughtform.co?subject=Forward-deployed%20AI%20operator",
+      href: "mailto:vince@thoughtform.co",
     },
     { k: "PHONE", v: "+32 471 09 42 21" },
     {
@@ -2377,7 +2377,7 @@ export const ctaSection: {
       id: "email",
       kind: "primary",
       label: "Email",
-      href: "mailto:vince@thoughtform.co?subject=Forward-deployed%20AI%20operator",
+      href: "mailto:vince@thoughtform.co",
     },
     {
       id: "linkedin",
