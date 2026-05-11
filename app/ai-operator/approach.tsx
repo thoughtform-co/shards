@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import {
   approachOutcome,
   approachSection,
   approachSteps,
+  type ApproachHandoff,
   type ApproachStep,
   type EngineVisual,
   type RolloutVisual,
@@ -159,6 +160,99 @@ export function Approach() {
 
 /* ─── Visuals ──────────────────────────────────────────────────────── */
 
+/*
+ * Shared shell for all three flywheel visual cards. Renders the
+ * common scaffolding once — header (phase pill + descriptor eyebrow),
+ * INPUTS chip row, phase-specific dark core slot, OUTPUTS chip row
+ * with optional handoff marker, and the "See how it runs" CTA — so
+ * Navigate / Encode / Build read as one artifact at three stages
+ * instead of three different artifacts.
+ *
+ * Each variant card (`RolloutCard` / `SubstrateCard` / `EngineCard`)
+ * passes its phase-specific dark-core content through `children`.
+ * Per-tone visual signals (chip dot colour, phase pill, CTA accent)
+ * cascade through `.aiop-approach__step--violet/gold/sage` set on
+ * the parent `<li>` step, so the shell doesn't need to know the
+ * tone directly.
+ */
+function ApproachCardShell({
+  phase,
+  sub,
+  inputs,
+  outputs,
+  handoffTo,
+  onPractice,
+  children,
+}: {
+  phase: "Navigate" | "Encode" | "Build";
+  sub: string;
+  inputs: string[];
+  outputs: string[];
+  handoffTo?: ApproachHandoff;
+  onPractice: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <article className="aiop-approach-card">
+      <header className="aiop-approach-card__header">
+        <span className="aiop-approach-card__phase">
+          <span className="aiop-approach-card__phase-dot" aria-hidden="true" />
+          {phase}
+        </span>
+        <span className="aiop-approach-card__sub">{sub}</span>
+      </header>
+
+      <section className="aiop-approach-card__chips-block aiop-approach-card__chips-block--inputs">
+        <p className="aiop-approach-card__chips-label">Inputs</p>
+        <ul className="aiop-approach-card__chips" role="list">
+          {inputs.map((input) => (
+            <li key={input} className="aiop-approach-card__chip">
+              <span
+                className="aiop-approach-card__chip-dot"
+                aria-hidden="true"
+              />
+              {input}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {children}
+
+      <section className="aiop-approach-card__chips-block aiop-approach-card__chips-block--outputs">
+        <p className="aiop-approach-card__chips-label">Outputs</p>
+        <ul className="aiop-approach-card__chips" role="list">
+          {outputs.map((output) => (
+            <li key={output} className="aiop-approach-card__chip">
+              <span
+                className="aiop-approach-card__chip-dot"
+                aria-hidden="true"
+              />
+              {output}
+            </li>
+          ))}
+          {handoffTo ? (
+            <li
+              className="aiop-approach-card__chip aiop-approach-card__chip--handoff"
+              data-aiop-handoff={handoffTo.toLowerCase()}
+            >
+              <span
+                className="aiop-approach-card__handoff-arrow"
+                aria-hidden="true"
+              >
+                →
+              </span>
+              {handoffTo}
+            </li>
+          ) : null}
+        </ul>
+      </section>
+
+      <VisualAction onClick={onPractice} />
+    </article>
+  );
+}
+
 function RolloutCard({
   visual,
   onPractice,
@@ -167,72 +261,33 @@ function RolloutCard({
   onPractice: () => void;
 }) {
   return (
-    <article className="aiop-rollout">
-      <header className="aiop-rollout__head">
-        <span className="aiop-rollout__title">{visual.title}</span>
-        <span className="aiop-rollout__sub">{visual.sub}</span>
-      </header>
-      <section className="aiop-rollout__block">
-        <p className="aiop-rollout__block-label">Inputs</p>
-        <ul className="aiop-rollout__chips" role="list">
-          {visual.inputs.map((input) => (
-            <li key={input} className="aiop-rollout__chip">
-              <span className="aiop-rollout__chip-dot" aria-hidden="true" />
-              {input}
-            </li>
-          ))}
-        </ul>
-      </section>
-      <section className="aiop-rollout__block">
-        <p className="aiop-rollout__block-label">How it runs</p>
+    <ApproachCardShell
+      phase="Navigate"
+      sub={visual.sub}
+      inputs={visual.inputs}
+      outputs={visual.outputs}
+      handoffTo={visual.handoffTo}
+      onPractice={onPractice}
+    >
+      <div className="aiop-approach-card__core aiop-approach-card__core--rollout">
         <ol className="aiop-rollout__stages" role="list">
           {visual.stages.map((stage, idx) => (
             <li key={stage.tag} className="aiop-rollout__stage">
               <span className="aiop-rollout__stage-tag">{stage.tag}</span>
               <span className="aiop-rollout__stage-label">{stage.label}</span>
               {idx < visual.stages.length - 1 ? (
-                <span className="aiop-rollout__stage-arrow" aria-hidden="true">
+                <span
+                  className="aiop-rollout__stage-arrow"
+                  aria-hidden="true"
+                >
                   ›
                 </span>
               ) : null}
             </li>
           ))}
         </ol>
-      </section>
-      <footer className="aiop-rollout__foot">
-        <div>
-          <p className="aiop-rollout__block-label">Outputs</p>
-          <ul className="aiop-rollout__chips aiop-rollout__outputs" role="list">
-            {visual.outputs.map((output, idx) => (
-              <li
-                key={output}
-                className={`aiop-rollout__chip${
-                  output === "Encode" ? " aiop-rollout__chip--encode" : ""
-                }`}
-              >
-                {output === "Encode" ? (
-                  <span className="aiop-term-pill aiop-term-pill--encode">
-                    <span className="aiop-term-pill__dot" aria-hidden="true" />
-                    Encode
-                  </span>
-                ) : (
-                  <>
-                    <span className="aiop-rollout__chip-dot" aria-hidden="true" />
-                    {output}
-                  </>
-                )}
-                {idx < visual.outputs.length - 1 ? (
-                  <span className="aiop-rollout__output-arrow" aria-hidden="true">
-                    →
-                  </span>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </footer>
-      <VisualAction onClick={onPractice} />
-    </article>
+      </div>
+    </ApproachCardShell>
   );
 }
 
@@ -244,55 +299,52 @@ function SubstrateCard({
   onPractice: () => void;
 }) {
   return (
-    <article className="aiop-substrate">
-      <header className="aiop-substrate__head">
-        <strong>{visual.title}</strong>
-        <span>{visual.sub}</span>
-      </header>
-      <ul className="aiop-substrate__layers" role="list">
-        {visual.layers.map((layer) => (
-          <li key={layer.tag} className="aiop-substrate__layer">
-            <span className="aiop-substrate__layer-tag">{layer.tag}</span>
-            <span className="aiop-substrate__layer-name">{layer.name}</span>
-            <span className="aiop-substrate__layer-meta">{layer.meta}</span>
-          </li>
-        ))}
-      </ul>
-      <div className="aiop-substrate__inputs">
-        <p className="aiop-substrate__inputs-h">What gets encoded</p>
-        <ul className="aiop-substrate__inputs-list" role="list">
-          {visual.inputs.map((input) => (
-            <li
-              key={input.label}
-              className={`aiop-substrate__input aiop-substrate__input--${input.tone}`}
-            >
-              <span className="aiop-substrate__input-dot" aria-hidden="true">
-                {input.initial}
-              </span>
-              {input.label}
+    <ApproachCardShell
+      phase="Encode"
+      sub={visual.sub}
+      inputs={visual.inputs}
+      outputs={visual.outputs}
+      handoffTo={visual.handoffTo}
+      onPractice={onPractice}
+    >
+      <div className="aiop-approach-card__core aiop-approach-card__core--substrate">
+        <ul className="aiop-substrate__layers" role="list">
+          {visual.layers.map((layer) => (
+            <li key={layer.tag} className="aiop-substrate__layer">
+              <span className="aiop-substrate__layer-tag">{layer.tag}</span>
+              <span className="aiop-substrate__layer-name">{layer.name}</span>
+              <span className="aiop-substrate__layer-meta">{layer.meta}</span>
             </li>
           ))}
         </ul>
       </div>
-      {visual.freedomBands ? (
-        <div className="aiop-substrate__freedom">
-          <p className="aiop-substrate__freedom-h">{visual.freedomBands.label}</p>
-          <ul className="aiop-substrate__freedom-list" role="list">
-            {visual.freedomBands.bands.map((band) => (
+
+      {visual.freedomStrip ? (
+        <section
+          className="aiop-approach-card__freedom"
+          aria-label={visual.freedomStrip.intro}
+        >
+          <p className="aiop-approach-card__freedom-intro">
+            {visual.freedomStrip.intro}
+          </p>
+          <ul className="aiop-approach-card__freedom-list" role="list">
+            {visual.freedomStrip.bands.map((band) => (
               <li
                 key={band.id}
-                className={`aiop-substrate__band aiop-substrate__band--${band.id}`}
+                className={`aiop-approach-card__freedom-band aiop-approach-card__freedom-band--${band.id}`}
               >
-                <span className="aiop-substrate__band-tag">{band.tag}</span>
-                <span className="aiop-substrate__band-example">{band.example}</span>
+                <span className="aiop-approach-card__freedom-tag">
+                  {band.tag}
+                </span>
+                <span className="aiop-approach-card__freedom-example">
+                  {band.example}
+                </span>
               </li>
             ))}
           </ul>
-        </div>
+        </section>
       ) : null}
-      <p className="aiop-substrate__foot">{visual.foot}</p>
-      <VisualAction onClick={onPractice} />
-    </article>
+    </ApproachCardShell>
   );
 }
 
@@ -304,34 +356,33 @@ function EngineCard({
   onPractice: () => void;
 }) {
   return (
-    <article className="aiop-engine">
-      <header className="aiop-engine__head">
-        <span className="aiop-engine__title">{visual.title}</span>
-        <span className="aiop-engine__sub">{visual.sub}</span>
-      </header>
-      <div className="aiop-engine__diagram">
+    <ApproachCardShell
+      phase="Build"
+      sub={visual.sub}
+      inputs={visual.inputs}
+      outputs={visual.outputs}
+      handoffTo={visual.handoffTo}
+      onPractice={onPractice}
+    >
+      <div className="aiop-approach-card__core aiop-approach-card__core--engine">
         <div className="aiop-engine__core">
           <span className="aiop-engine__core-l">Engine</span>
           <span className="aiop-engine__core-r">Headless</span>
         </div>
-        <ul className="aiop-engine__surfaces" role="list">
-          {visual.surfaces.map((surface) => (
-            <li key={surface.name} className="aiop-engine__surface">
-              <span className="aiop-engine__surface-icon" aria-hidden="true">
-                {surface.icon}
-              </span>
-              <span className="aiop-engine__surface-name">{surface.name}</span>
-              <span className="aiop-engine__surface-verb">{surface.verb}</span>
-            </li>
-          ))}
-        </ul>
       </div>
-      <footer className="aiop-engine__foot">
-        <span className="aiop-engine__foot-k">{visual.meta.k}</span>
-        <span className="aiop-engine__foot-v">{visual.meta.v}</span>
-      </footer>
-      <VisualAction onClick={onPractice} />
-    </article>
+
+      <ul className="aiop-engine__surfaces" role="list">
+        {visual.surfaces.map((surface) => (
+          <li key={surface.name} className="aiop-engine__surface">
+            <span className="aiop-engine__surface-icon" aria-hidden="true">
+              {surface.icon}
+            </span>
+            <span className="aiop-engine__surface-name">{surface.name}</span>
+            <span className="aiop-engine__surface-verb">{surface.verb}</span>
+          </li>
+        ))}
+      </ul>
+    </ApproachCardShell>
   );
 }
 

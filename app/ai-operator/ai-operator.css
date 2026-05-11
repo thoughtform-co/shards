@@ -4129,6 +4129,16 @@
   border-block: 1px solid rgba(26, 22, 18, 0.4);
   padding-block: clamp(72px, 9vw, 120px);
   color: var(--aiop-paper);
+  /* Full-viewport chapter on desktop so the editorial beat + X-thread
+     read as one breathing surface rather than competing with the
+     reflect quote above or the case ledger below. Matches the bridge
+     and stripe-reflect posture (`min-height: 100dvh - header`) so the
+     three closer beats share the same vertical rhythm. Flex centering
+     pins the inner two-column block vertically in the available space. */
+  min-height: calc(100dvh - var(--aiop-header-h));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .aiop-stripe-ledger__inner {
@@ -4245,6 +4255,10 @@
 
 @media (max-width: 720px) {
   .aiop-stripe-ledger {
+    /* Collapse to natural height on phones so the two-column layout
+       (which stacks vertically below 960px) doesn't get stretched
+       inside a 100dvh frame on narrow viewports. */
+    min-height: 0;
     padding-block: clamp(56px, 14vw, 96px);
   }
 
@@ -4733,7 +4747,7 @@
 }
 
 .aiop-approach__step--violet .aiop-approach__label-dot { background: var(--aiop-violet); }
-.aiop-approach__step--gold   .aiop-approach__label-dot { background: var(--aiop-gold-bright); }
+.aiop-approach__step--gold   .aiop-approach__label-dot { background: var(--aiop-amber); }
 .aiop-approach__step--sage   .aiop-approach__label-dot { background: var(--aiop-sage); }
 
 .aiop-approach__headline {
@@ -4767,7 +4781,7 @@
 }
 
 .aiop-approach__step--violet .aiop-approach__signal { border-left-color: var(--aiop-violet); }
-.aiop-approach__step--gold   .aiop-approach__signal { border-left-color: var(--aiop-gold-bright); }
+.aiop-approach__step--gold   .aiop-approach__signal { border-left-color: var(--aiop-amber); }
 .aiop-approach__step--sage   .aiop-approach__signal { border-left-color: var(--aiop-sage); }
 
 .aiop-approach__signal dt {
@@ -4814,7 +4828,7 @@
 }
 
 .aiop-approach__step--violet .aiop-approach__cta { color: var(--aiop-violet); }
-.aiop-approach__step--gold   .aiop-approach__cta { color: var(--aiop-gold-bright); }
+.aiop-approach__step--gold   .aiop-approach__cta { color: var(--aiop-amber); }
 .aiop-approach__step--sage   .aiop-approach__cta { color: var(--aiop-sage); }
 
 .aiop-approach__cta-arrow {
@@ -4893,16 +4907,8 @@
   transform: translateX(3px);
 }
 
-.aiop-substrate .aiop-visual-action {
-  border-color: color-mix(in oklab, var(--aiop-visual-accent) 34%, var(--aiop-paper) 14%);
-}
-
-.aiop-substrate .aiop-visual-action:hover {
-  color: var(--aiop-paper);
-}
-
 .aiop-approach__step--violet .aiop-visual-action { --aiop-visual-accent: var(--aiop-violet); }
-.aiop-approach__step--gold   .aiop-visual-action { --aiop-visual-accent: var(--aiop-gold-bright); }
+.aiop-approach__step--gold   .aiop-visual-action { --aiop-visual-accent: var(--aiop-amber); }
 .aiop-approach__step--sage   .aiop-visual-action { --aiop-visual-accent: var(--aiop-sage); }
 
 @keyframes aiopVisualActionScan {
@@ -4943,26 +4949,54 @@
 
 
 /* ═══════════════════════════════════════════════════════════════════════
- * 16 · v2 — Approach visuals
+ * 16 · v2 — Flywheel cards (Navigate / Encode / Build)
  *
- *   .aiop-rollout    Navigate visual: cohort journey + surfaces.
- *   .aiop-substrate  Encode visual: dark substrate stack with inputs.
- *   .aiop-engine     Build visual: engine + headless surfaces.
+ * One shared shell — `.aiop-approach-card` — wraps the three phase
+ * visuals so they read as one artifact at three stages instead of
+ * three different artifacts. The shell renders:
+ *
+ *   .aiop-approach-card__header   phase pill (left) + descriptor (right)
+ *   .aiop-approach-card__chips-block--inputs
+ *                                 INPUTS row (top-of-card chip strip)
+ *   .aiop-approach-card__core     dark inset block holding the
+ *                                 phase-specific touchpoint:
+ *                                 - --rollout    01->04 stage rail (Navigate)
+ *                                 - --substrate  4-row Skill table (Encode)
+ *                                 - --engine     engine + headless widget (Build)
+ *   [optional supporting content] freedom strip (Encode), surfaces grid (Build)
+ *   .aiop-approach-card__chips-block--outputs
+ *                                 OUTPUTS row (bottom-of-card chip strip),
+ *                                 last chip optionally `--handoff` to the
+ *                                 next phase
+ *   .aiop-visual-action           "See how it runs" CTA
+ *
+ * Per-phase tone (violet / gold / sage) cascades from the parent
+ * `.aiop-approach__step--*` class so the shell and inner content
+ * don't have to know the tone directly. The dark core uses the same
+ * warm dark gradient on all three cards for visual rhythm; per-phase
+ * variation lives in chip dot colour, phase pill, and the inner
+ * content of the core.
  * ═══════════════════════════════════════════════════════════════════════ */
 
-/* — Rollout (Navigate) — */
 
-.aiop-rollout {
+/* ─── 16a · Shared shell ─────────────────────────────────────────── */
+
+.aiop-approach-card {
+  /* Light outer card matching the original Navigate/Build chrome so
+     all three phase cards read as one artifact. The dark zone now
+     lives inside `__core`, not on the outer card. */
   background: var(--aiop-card);
   border: 1px solid var(--aiop-rule-strong);
   padding: 22px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
   flex: 1;
 }
 
-.aiop-rollout__head {
+/* — Header (phase pill + descriptor eyebrow) — */
+
+.aiop-approach-card__header {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -4971,56 +5005,70 @@
   border-bottom: 1px solid var(--aiop-rule);
 }
 
-.aiop-rollout__title {
+.aiop-approach-card__phase {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: var(--aiop-mono);
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   color: var(--aiop-ink);
 }
 
-.aiop-rollout__sub {
+.aiop-approach-card__phase-dot {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  /* Tone cascades from the step parent below; this default reads on
+     untoned previews and exports. */
+  background: var(--aiop-ink-soft);
+}
+
+.aiop-approach__step--violet .aiop-approach-card__phase-dot { background: var(--aiop-violet); }
+.aiop-approach__step--gold   .aiop-approach-card__phase-dot { background: var(--aiop-amber); }
+.aiop-approach__step--sage   .aiop-approach-card__phase-dot { background: var(--aiop-sage); }
+
+.aiop-approach-card__sub {
   font-family: var(--aiop-mono);
   font-size: 10.5px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--aiop-muted);
+  text-align: right;
 }
 
-.aiop-rollout__block {
-  padding-top: 2px;
+
+/* — INPUTS / OUTPUTS chip rows — */
+
+.aiop-approach-card__chips-block {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.aiop-rollout__block + .aiop-rollout__block {
-  border-top: 1px dashed var(--aiop-rule);
-  padding-top: 18px;
-}
-
-.aiop-rollout__block-label {
-  margin: 0 0 10px;
+.aiop-approach-card__chips-label {
+  margin: 0;
   font-family: var(--aiop-mono);
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--aiop-ink);
+  color: var(--aiop-muted);
 }
 
-.aiop-rollout__chips {
+.aiop-approach-card__chips {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px 14px;
-}
-
-.aiop-rollout__outputs {
-  grid-template-columns: repeat(3, minmax(0, max-content));
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
   align-items: center;
 }
 
-.aiop-rollout__chip {
+.aiop-approach-card__chip {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -5031,22 +5079,96 @@
   color: var(--aiop-ink);
 }
 
-.aiop-rollout__chip--encode {
-  justify-content: flex-start;
-}
-
-.aiop-rollout__chip-dot {
+.aiop-approach-card__chip-dot {
   width: 6px;
   height: 6px;
-  background: var(--aiop-violet);
   flex-shrink: 0;
+  background: var(--aiop-ink-soft);
 }
 
-.aiop-rollout__output-arrow {
-  color: var(--aiop-gold-bright);
-  font-family: var(--aiop-mono);
-  margin-left: 4px;
+.aiop-approach__step--violet .aiop-approach-card__chip-dot { background: var(--aiop-violet); }
+.aiop-approach__step--gold   .aiop-approach-card__chip-dot { background: var(--aiop-amber); }
+.aiop-approach__step--sage   .aiop-approach-card__chip-dot { background: var(--aiop-sage); }
+
+/* Handoff chip — the last item in the OUTPUTS row when the visual
+   names a destination phase. Renders as "→ Encode" / "→ Build" so
+   the flywheel turn is literal. Colour matches the destination
+   phase tone (Encode=gold, Build=sage). */
+.aiop-approach-card__chip--handoff {
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
 }
+
+.aiop-approach-card__chip--handoff[data-aiop-handoff="encode"] {
+  /* Amber for the Encode handoff so the Navigate -> Encode arrow
+     matches the Encode lane's amber identity throughout the page
+     (Encode card, Headless-shift Encode lane). */
+  color: var(--aiop-amber);
+}
+.aiop-approach-card__chip--handoff[data-aiop-handoff="build"] {
+  color: var(--aiop-sage);
+}
+
+.aiop-approach-card__handoff-arrow {
+  font-family: var(--aiop-mono);
+  font-size: 13px;
+  margin-right: 2px;
+}
+
+
+/* — Dark core (phase-specific touchpoint block) — */
+
+.aiop-approach-card__core {
+  position: relative;
+  padding: 16px 18px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #1a1612, #0f0c08);
+  color: rgba(243, 236, 224, 0.92);
+}
+
+/* Subtle tonal wash inside the core so the dark block carries a
+   faint hint of the phase tone without compromising the unified
+   dark gradient. Sits behind content via z-index in the absolute
+   layout below. */
+.aiop-approach-card__core::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.aiop-approach-card__core > * {
+  position: relative;
+  z-index: 1;
+}
+
+.aiop-approach-card__core--rollout::before {
+  background: radial-gradient(
+    ellipse 60% 50% at 8% 0%,
+    rgba(98, 67, 185, 0.22),
+    transparent 70%
+  );
+}
+
+.aiop-approach-card__core--substrate::before {
+  background:
+    radial-gradient(ellipse 60% 40% at 12% 0%, rgba(202, 165, 84, 0.16), transparent 65%),
+    radial-gradient(ellipse 50% 50% at 100% 100%, rgba(98, 67, 185, 0.08), transparent 70%);
+}
+
+.aiop-approach-card__core--engine::before {
+  background: radial-gradient(
+    ellipse 60% 50% at 88% 100%,
+    rgba(125, 165, 118, 0.18),
+    transparent 70%
+  );
+}
+
+
+/* ─── 16b · Rollout core content (Navigate stage rail) ───────────── */
 
 .aiop-rollout__stages {
   list-style: none;
@@ -5054,14 +5176,14 @@
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px 6px;
   align-items: center;
 }
 
 .aiop-rollout__stage {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
   padding: 0;
   background: transparent;
   border: 0;
@@ -5072,7 +5194,7 @@
   font-family: var(--aiop-mono);
   font-size: 10px;
   letter-spacing: 0.16em;
-  color: var(--aiop-violet);
+  color: color-mix(in oklab, var(--aiop-violet) 70%, var(--aiop-paper) 30%);
   font-weight: 600;
 }
 
@@ -5081,74 +5203,18 @@
   font-size: 11px;
   letter-spacing: 0.02em;
   font-weight: 500;
-  color: var(--aiop-ink);
+  color: rgba(243, 236, 224, 0.92);
 }
 
 .aiop-rollout__stage-arrow {
-  color: var(--aiop-violet);
+  color: color-mix(in oklab, var(--aiop-violet) 60%, var(--aiop-paper) 40%);
   font-size: 14px;
   font-family: var(--aiop-mono);
   margin: 0 -2px;
 }
 
-.aiop-rollout__foot {
-  border-top: 1px solid var(--aiop-rule-soft);
-  padding-top: 18px;
-}
 
-
-/* — Substrate (Encode) — */
-
-.aiop-substrate {
-  background: linear-gradient(180deg, #1a1612, #0f0c08);
-  color: #f3ece0;
-  padding: 22px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  flex: 1;
-  overflow: hidden;
-}
-
-.aiop-substrate::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 60% 40% at 12% 0%, rgba(98, 67, 185, 0.18), transparent 65%),
-    radial-gradient(ellipse 50% 50% at 100% 100%, rgba(98, 67, 185, 0.08), transparent 70%);
-  pointer-events: none;
-}
-
-.aiop-substrate > * {
-  position: relative;
-  z-index: 1;
-}
-
-.aiop-substrate__head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding-bottom: 14px;
-  border-bottom: 1px solid rgba(243, 236, 224, 0.15);
-}
-
-.aiop-substrate__head strong {
-  font-family: var(--aiop-display);
-  font-size: 18px;
-  font-style: italic;
-  color: var(--aiop-gold-bright);
-  font-weight: 500;
-}
-
-.aiop-substrate__head span {
-  font-family: var(--aiop-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(243, 236, 224, 0.7);
-}
+/* ─── 16c · Substrate core content (Encode 4-row table) ──────────── */
 
 .aiop-substrate__layers {
   list-style: none;
@@ -5175,7 +5241,12 @@
   font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--aiop-gold-bright);
+  /* Amber matches the Headless-shift Encode lane and the rest of
+     the Encode tone cascade. Earlier this read as gold-bright
+     which the route maps to violet for Stripe alignment — but for
+     the Navigate/Encode/Build trio, Encode reads as amber so the
+     three phases land as violet/amber/sage. */
+  color: var(--aiop-amber);
   font-weight: 600;
 }
 
@@ -5197,24 +5268,34 @@
   }
 }
 
-.aiop-substrate__inputs {
-  display: grid;
-  gap: 10px;
-  padding-top: 14px;
-  border-top: 1px dashed rgba(243, 236, 224, 0.18);
+
+/* ─── 16d · Freedom strip (Encode-only supporting content) ───────── */
+
+/* Compressed Three Degrees of Freedom strip — three small pills with
+   one shared intro sentence, sitting between the substrate dark core
+   and the OUTPUTS row. The previous version was a stacked list
+   inside the dark substrate card; the new strip is light, compact,
+   and reads as a quiet conceptual marker rather than a second
+   centerpiece on the card. The bands run Locked → Guided → Open as
+   a progression of constraint, tone-matched to the amber/sage/violet
+   lane palette the page already uses. */
+.aiop-approach-card__freedom {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.aiop-substrate__inputs-h {
+.aiop-approach-card__freedom-intro {
   margin: 0;
   font-family: var(--aiop-mono);
   font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(243, 236, 224, 0.6);
   font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
 }
 
-.aiop-substrate__inputs-list {
+.aiop-approach-card__freedom-list {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -5223,213 +5304,63 @@
   gap: 6px;
 }
 
-.aiop-substrate__input {
+.aiop-approach-card__freedom-band {
   display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 12px 4px 4px;
-  border: 1px solid rgba(243, 236, 224, 0.15);
-  border-radius: 999px;
-  background: rgba(243, 236, 224, 0.04);
-  color: rgba(243, 236, 224, 0.9);
-  font-size: 11.5px;
-}
-
-.aiop-substrate__input-dot {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(243, 236, 224, 0.15);
-  font-family: var(--aiop-mono);
-  font-size: 9px;
-  font-weight: 700;
-  color: rgba(243, 236, 224, 0.95);
-}
-
-.aiop-substrate__input--ink    .aiop-substrate__input-dot { background: rgba(243, 236, 224, 0.20); color: var(--aiop-ink); }
-.aiop-substrate__input--violet .aiop-substrate__input-dot { background: rgba(98, 67, 185, 0.45); }
-.aiop-substrate__input--sage   .aiop-substrate__input-dot { background: rgba(79, 107, 74, 0.5); }
-.aiop-substrate__input--gold   .aiop-substrate__input-dot { background: rgba(98, 67, 185, 0.5); color: var(--aiop-ink); }
-.aiop-substrate__input--slate  .aiop-substrate__input-dot { background: rgba(79, 91, 107, 0.5); }
-
-/* Three Degrees of Freedom mini-strip — sits inside the dark substrate
-   card below the `What gets encoded` chips and above the foot. Three
-   short rows naming the canonical Skill anatomy (locked / guided /
-   open). The framework is Anthropic's own best practice for Skill
-   design and rhymes with harvestfields slide 5; surfacing it here
-   makes the Encode visual scannable without forcing the visitor into
-   the modal.
-
-   Visual posture mirrors `.aiop-substrate__inputs` (dashed top border,
-   muted mono caps label). Each row carries a left-edge accent in the
-   amber → sage → violet progression so the three bands read as a
-   progression of constraint, not three options of equal weight. */
-.aiop-substrate__freedom {
-  display: grid;
-  gap: 10px;
-  padding-top: 14px;
-  border-top: 1px dashed rgba(243, 236, 224, 0.18);
-}
-
-.aiop-substrate__freedom-h {
-  margin: 0;
-  font-family: var(--aiop-mono);
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(243, 236, 224, 0.6);
-  font-weight: 600;
-}
-
-.aiop-substrate__freedom-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 6px;
-}
-
-.aiop-substrate__band {
-  display: grid;
-  grid-template-columns: 78px 1fr;
   align-items: baseline;
-  gap: 12px;
-  padding: 8px 12px 8px 11px;
-  border: 1px solid rgba(243, 236, 224, 0.10);
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid var(--aiop-rule);
   border-left-width: 2px;
-  border-radius: 3px;
-  background: rgba(243, 236, 224, 0.03);
-  font-size: 11.5px;
-  color: rgba(243, 236, 224, 0.85);
+  background: var(--aiop-card-soft);
+  font-size: 11px;
+  color: var(--aiop-ink);
 }
 
-.aiop-substrate__band-tag {
+.aiop-approach-card__freedom-tag {
   font-family: var(--aiop-mono);
   font-size: 10px;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   font-weight: 600;
 }
 
-.aiop-substrate__band-example {
+.aiop-approach-card__freedom-example {
   font-family: var(--aiop-body);
-  color: rgba(243, 236, 224, 0.78);
-  line-height: 1.4;
+  color: var(--aiop-ink-soft);
+  font-size: 11px;
 }
 
-.aiop-substrate__band--locked {
+.aiop-approach-card__freedom-band--locked {
   border-left-color: var(--aiop-amber);
 }
-.aiop-substrate__band--locked .aiop-substrate__band-tag {
+.aiop-approach-card__freedom-band--locked .aiop-approach-card__freedom-tag {
   color: var(--aiop-amber);
 }
 
-.aiop-substrate__band--guided {
-  border-left-color: rgba(125, 165, 118, 0.85);
+.aiop-approach-card__freedom-band--guided {
+  border-left-color: var(--aiop-sage);
 }
-.aiop-substrate__band--guided .aiop-substrate__band-tag {
-  color: rgba(167, 198, 156, 0.95);
-}
-
-.aiop-substrate__band--open {
-  border-left-color: rgba(150, 130, 220, 0.85);
-}
-.aiop-substrate__band--open .aiop-substrate__band-tag {
-  color: rgba(190, 173, 240, 0.95);
+.aiop-approach-card__freedom-band--guided .aiop-approach-card__freedom-tag {
+  color: color-mix(in oklab, var(--aiop-sage) 80%, var(--aiop-ink) 20%);
 }
 
-@media (max-width: 480px) {
-  .aiop-substrate__band {
-    grid-template-columns: 1fr;
-    gap: 4px;
-  }
+.aiop-approach-card__freedom-band--open {
+  border-left-color: var(--aiop-violet);
 }
-
-.aiop-substrate__foot {
-  margin: 0;
-  font-family: var(--aiop-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  color: rgba(243, 236, 224, 0.6);
-  text-align: center;
-  font-style: normal;
+.aiop-approach-card__freedom-band--open .aiop-approach-card__freedom-tag {
+  color: var(--aiop-violet);
 }
 
 
-/* — Engine (Build) — */
-
-.aiop-engine {
-  background: var(--aiop-card);
-  border: 1px solid var(--aiop-rule-strong);
-  padding: 22px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  flex: 1;
-}
-
-.aiop-engine__head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--aiop-rule);
-}
-
-.aiop-engine__title {
-  font-family: var(--aiop-display);
-  font-style: italic;
-  font-size: 17px;
-  letter-spacing: -0.01em;
-  color: var(--aiop-ink);
-  font-weight: 500;
-}
-
-.aiop-engine__sub {
-  font-family: var(--aiop-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--aiop-muted);
-}
-
-/* Inner frame that visually groups the dark Engine bar and the
-   surfaces grid as one piece — engine produces, surfaces inherit.
-   The soft sage halo rhymes with the headless-shift interstitial's
-   build frame so the "one engine, many surfaces" idea reads in the
-   same lane vocabulary, without copying the pill-on-the-edge
-   treatment. The card's title, footer, and CTA stay outside the
-   frame so the card's outer scaffolding is unchanged. */
-.aiop-engine__diagram {
-  display: grid;
-  gap: clamp(10px, 1.2vw, 14px);
-  padding: clamp(12px, 1.4vw, 16px);
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in oklab, var(--aiop-sage) 7%, var(--aiop-card-soft)) 0%,
-      color-mix(in oklab, var(--aiop-sage) 4%, var(--aiop-card)) 100%
-    );
-  border: 1px solid color-mix(in oklab, var(--aiop-sage) 30%, var(--aiop-rule-strong));
-  border-radius: 4px;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.40),
-    0 0 0 1px color-mix(in oklab, var(--aiop-sage) 10%, transparent),
-    0 0 20px -6px color-mix(in oklab, var(--aiop-sage) 22%, transparent),
-    0 12px 28px -22px color-mix(in oklab, var(--aiop-sage) 30%, rgba(26, 22, 18, 0.22));
-}
+/* ─── 16e · Engine core content + surfaces grid (Build) ──────────── */
 
 .aiop-engine__core {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 14px 18px;
-  background: linear-gradient(180deg, #1a1612, #0f0c08);
+  background: linear-gradient(180deg, #221b14, #14100b);
+  border: 1px solid rgba(243, 236, 224, 0.10);
   color: var(--aiop-paper);
   position: relative;
 }
@@ -5473,6 +5404,10 @@
   border: 1px solid rgba(243, 236, 224, 0.25);
 }
 
+/* Surfaces grid sits BELOW the dark engine core, in the light card
+   area, so it reads as the four "callers" inheriting from the
+   engine above. Light card chrome matches the chip rhythm of the
+   rest of the card. */
 .aiop-engine__surfaces {
   list-style: none;
   margin: 0;
@@ -5515,21 +5450,6 @@
   letter-spacing: 0.06em;
   color: var(--aiop-muted);
 }
-
-.aiop-engine__foot {
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--aiop-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  color: var(--aiop-muted);
-  border-top: 1px solid var(--aiop-rule-soft);
-  padding-top: 12px;
-}
-
-.aiop-engine__foot-k { color: var(--aiop-sage); font-weight: 600; }
-.aiop-engine__foot-v { color: var(--aiop-ink); }
 
 
 /* ═══════════════════════════════════════════════════════════════════════

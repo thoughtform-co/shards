@@ -504,9 +504,13 @@ export const flywheelBridgeSection = {
  *
  * Three self-contained sections. Each one pairs a copy column with an
  * executive-level visual, plus a Heimdall-style pop-out card that goes
- * one level deeper. The visuals draw inspiration from the Loop AI
- * adoption rollout (Navigate), the Aether substrate card (Encode),
- * and the headless engine concept (Build).
+ * one level deeper. All three visual cards share the `ApproachCardShell`
+ * grammar (header / INPUTS / dark core / OUTPUTS) so the flywheel
+ * reads as one artifact at three stages — Navigate's outputs are
+ * Encode's inputs, Encode's outputs are Build's inputs. The three
+ * cores are: Navigate = workshop stage rail, Encode = 4-row Skill
+ * table, Build = engine widget. See `approach.tsx` for the shell
+ * implementation.
  * ─────────────────────────────────────────────────────────────────── */
 
 export const approachSection = {
@@ -518,53 +522,64 @@ export const approachSection = {
 
 export type ApproachTone = "violet" | "gold" | "sage";
 
-export type RolloutVisual = {
-  kind: "rollout";
-  title: string;
+/* Which phase the last output chip hands off to. Renders an arrow
+ * marker on the last chip (e.g., "→ Encode") so the flywheel cards
+ * read as one sequenced story — Navigate's outputs are Encode's
+ * inputs, Encode's outputs are Build's inputs. Build is terminal
+ * and leaves this unset. */
+export type ApproachHandoff = "Encode" | "Build";
+
+/* Shared shape across all three flywheel cards:
+ *   - sub      = right-side descriptor eyebrow at the top of the card
+ *   - inputs   = top-of-card chip row, the handoff arriving from the
+ *                previous phase (for Navigate, the team's starting
+ *                materials)
+ *   - outputs  = bottom-of-card chip row, the handoff to the next
+ *                phase
+ *   - handoffTo= phase name appended to the last output chip; lets
+ *                the cards literally name the flywheel turn
+ *
+ * The phase pill (NAVIGATE / ENCODE / BUILD) at the top-left of each
+ * card derives from `ApproachStep.label`, not from the visual data.
+ * Each variant then adds its own dark-core content (stages /
+ * substrate table / engine widget). */
+type ApproachVisualBase = {
   sub: string;
   inputs: string[];
-  stages: { tag: string; label: string }[];
   outputs: string[];
+  handoffTo?: ApproachHandoff;
 };
 
-export type SubstrateVisual = {
+export type RolloutVisual = ApproachVisualBase & {
+  kind: "rollout";
+  stages: { tag: string; label: string }[];
+};
+
+export type SubstrateVisual = ApproachVisualBase & {
   kind: "substrate";
-  title: string;
-  sub: string;
   layers: { tag: string; name: string; meta: string }[];
-  inputs: {
-    initial: string;
-    tone: "violet" | "gold" | "sage" | "slate" | "ink";
-    label: string;
-  }[];
-  /* Optional Three Degrees of Freedom mini-strip rendered below the
-     `What gets encoded` chips and above the foot. Names the canonical
-     Skill anatomy: which parts of the contract are LOCKED (banned
-     terms, legal claims), which are GUIDED (audience register, market
-     norms), which are OPEN (headlines, rhythm, framing). The framework
-     is Anthropic's own best practice for Skill design ("Set
-     appropriate degrees of freedom"), is the same trio shown on
-     harvestfields slide 5, and rhymes with the LOCK/GUIDE/EXPLORE
-     bands `thoughtform-strategy` documents. Surfacing it here makes
-     the Encode visual scannable without forcing the visitor into the
-     modal. */
-  freedomBands?: {
-    label: string;
+  /* Compressed Three Degrees of Freedom strip sitting between the
+     dark substrate core and the OUTPUTS row. Three short tag pills
+     (Locked / Guided / Open) with a single shared intro sentence —
+     the canonical Skill anatomy from Anthropic's Skill best
+     practices guide, surfaced as a quiet tag strip so it lands the
+     concept without becoming a second visual centerpiece on the
+     card. The same trio appears on harvestfields slide 5 and rhymes
+     with the LOCK / GUIDE / EXPLORE bands `thoughtform-strategy`
+     documents. */
+  freedomStrip?: {
+    intro: string;
     bands: {
       id: "locked" | "guided" | "open";
       tag: string;
       example: string;
     }[];
   };
-  foot: string;
 };
 
-export type EngineVisual = {
+export type EngineVisual = ApproachVisualBase & {
   kind: "engine";
-  title: string;
-  sub: string;
   surfaces: { icon: string; name: string; verb: string }[];
-  meta: { k: string; v: string };
 };
 
 export type ApproachVisual = RolloutVisual | SubstrateVisual | EngineVisual;
@@ -597,11 +612,10 @@ export const approachSteps: ApproachStep[] = [
     tone: "violet",
     headline: "Teach the teams what they are working with",
     body:
-      "AI sits between a tool and a collaborator. Deterministic enough to automate, interpretive enough to think with. It's trained on us, but it's not like us. The foundation of the adoption-automation flywheel is knowing how to navigate this intelligence.",
+      "AI sits between a tool and a collaborator. Deterministic enough to automate, interpretive enough to think with. Trained on us, but not like us. Before a team can encode their work into it or build on top, they have to learn how it actually behaves.",
     signal: { k: "Outcome", v: "AI intuition and a workflow brief per team." },
     visual: {
       kind: "rollout",
-      title: "Navigate",
       sub: "Inside the workflow",
       inputs: ["The team's actual work", "How they evaluate it"],
       stages: [
@@ -610,7 +624,8 @@ export const approachSteps: ApproachStep[] = [
         { tag: "03", label: "Workshop" },
         { tag: "04", label: "Hand off" },
       ],
-      outputs: ["AI Intuition", "Workflow brief", "Encode"],
+      outputs: ["AI intuition", "Workflow brief"],
+      handoffTo: "Encode",
     },
     modal: {
       eyebrow: "01 · Navigate",
@@ -654,48 +669,49 @@ export const approachSteps: ApproachStep[] = [
     label: "Encode",
     tone: "gold",
     headline: "Turn how the team works into a portable layer any agent can use.",
-    /* Body shape: insight → definition → proof → implication. The
-       lead two sentences ("AI is intelligence. It just needs context.")
-       carry the WHY skills work; everything after is the WHAT and the
-       Loop proof. Length is held to roughly the previous body so the
-       row keeps its rhythm. The temp-agency analogy from the Anthropic
-       podcast is intentionally NOT in the body — the lead two
-       sentences cover the same idea more efficiently. */
+    /* Body shape: handoff from Navigate → definition → Loop proof →
+       implication. Opens by picking up the previous phase's output
+       ("Once a team knows what they want AI to take on") so the
+       flywheel reads as one sequenced story rather than three
+       parallel statements. The temp-agency analogy from the Anthropic
+       podcast is intentionally NOT in the body — the lead sentence
+       covers the same idea more efficiently. */
     body:
-      "AI is intelligence. It just needs context. Encoding is how you teach it the nuances of your brand, your standards, your review process, written down so any agent can inherit it. That's what I've done at Loop: dozens of workflows captured as substrate — brand voice, claim gates, marketplace copy. A teammate can read it. An agent can run on it. Models change. The encoded layer carries forward.",
+      "Once a team knows what they want AI to take on, you encode how they actually do it: brand nuances, standards, review process — written down so any agent can inherit them. At Loop, dozens of workflows now live as substrate: brand voice, claim gates, marketplace copy. A teammate can read it. An agent can run on it. Models change. The encoded layer carries forward.",
     signal: { k: "Outcome", v: "A Skill the team owns. Versioned. Headless." },
     visual: {
       kind: "substrate",
-      title: "Aether layer",
       sub: "Encoded substrate · headless",
+      /* Top-of-card inputs are Navigate's outputs verbatim, so the
+         handoff reads as one continuous flywheel turn. The old
+         5-pill "What gets encoded" row (Brand book / Lead's
+         judgment / Past work / Regs & policy / Review feedback)
+         was doing double duty with the substrate table below it —
+         the table's `Rules / Examples / Sources / Loops` already
+         names what gets encoded at the right abstraction level. */
+      inputs: ["AI intuition", "Workflow brief"],
       layers: [
-        { tag: "Rules", name: "how the team decides", meta: "12 entries" },
-        { tag: "Examples", name: "what good looks like", meta: "38 artifacts" },
-        { tag: "Sources", name: "the data it can read", meta: "3 connectors" },
-        { tag: "Loops", name: "who confirms it", meta: "2 gates" },
+        { tag: "Rules", name: "How the team decides", meta: "12 entries" },
+        { tag: "Examples", name: "What good looks like", meta: "38 artifacts" },
+        { tag: "Sources", name: "Data it can read", meta: "3 connectors" },
+        { tag: "Loops", name: "Who confirms it", meta: "2 gates" },
       ],
-      inputs: [
-        { initial: "B", tone: "ink", label: "Brand book" },
-        { initial: "L", tone: "violet", label: "Lead's judgment" },
-        { initial: "P", tone: "sage", label: "Past work" },
-        { initial: "R", tone: "gold", label: "Regs & policy" },
-        { initial: "F", tone: "slate", label: "Review feedback" },
-      ],
-      /* Three Degrees of Freedom — the canonical Skill anatomy. Same
-         framework that runs harvestfields slide 5 and that Anthropic
-         documents in their Skill best-practices guide. Three short
-         examples per band, deliberately concrete (banned terms /
-         audience register / headlines) so the chip strip reads as
-         operating instructions rather than abstract theory. */
-      freedomBands: {
-        label: "Three degrees of freedom",
+      /* Compressed Three Degrees of Freedom strip — three tag pills
+         with one shared intro sentence. Same canonical Skill
+         anatomy Anthropic documents in their Skill best-practices
+         guide and that runs harvestfields slide 5; the chip strip
+         keeps the concept readable without becoming a second
+         centerpiece on the card. */
+      freedomStrip: {
+        intro: "Three degrees of freedom in every Skill.",
         bands: [
-          { id: "locked", tag: "Locked", example: "Banned terms, legal claims, product facts." },
-          { id: "guided", tag: "Guided", example: "Audience register, market norms." },
-          { id: "open", tag: "Open", example: "Headlines, rhythm, campaign framing." },
+          { id: "locked", tag: "Locked", example: "banned terms" },
+          { id: "guided", tag: "Guided", example: "market norms" },
+          { id: "open", tag: "Open", example: "campaign framing" },
         ],
       },
-      foot: "Connects to your data without replacing it.",
+      outputs: ["A Skill the team owns", "Versioned", "Headless"],
+      handoffTo: "Build",
     },
     modal: {
       eyebrow: "02 · Encode",
@@ -745,19 +761,23 @@ export const approachSteps: ApproachStep[] = [
        sequence, lands on the same self-sufficiency punchline that the
        Outcome card below proves out concretely. */
     body:
-      "AI collapses the distance between knowing the problem and shipping the tool. The person closest to the work can finally build the tool around it. The work starts in a Teams call. I listen for the frustration, turn the transcript into a user story in Cursor, and either build the interface around it or expose the logic headlessly through MCP. Then I hand it to the person I built it for. Nobody understands their domain better than they do.",
+      "With substrate in place, AI collapses the distance between knowing the problem and shipping the tool. The work starts in a Teams call: I listen for the frustration, turn the transcript into a user story in Cursor, then either build the interface around it or expose the logic headlessly through MCP. Then I hand it to the person closest to the work. Nobody understands their domain better than they do.",
     signal: { k: "Outcome", v: "A thin running surface the team uses daily." },
     visual: {
       kind: "engine",
-      title: "Every surface inherits the engine.",
-      sub: "Headless first.",
+      sub: "Headless first · every surface inherits",
+      /* Build's inputs are Encode's outputs — the versioned Skill is
+         what the engine runs on. Naming the handoff makes the
+         flywheel literal: Encode hands Build a Skill, Build hands
+         the team a running surface. */
+      inputs: ["A versioned Skill"],
       surfaces: [
         { icon: "⌘", name: "Chat", verb: "Claude · Cursor" },
         { icon: "{ }", name: "API", verb: "MCP · REST" },
         { icon: "◐", name: "Agent", verb: "Scheduled · autonomous" },
         { icon: "⤴", name: "In-tool", verb: "Slack · Figma · Monday" },
       ],
-      meta: { k: "Posture", v: "Headless architecture" },
+      outputs: ["A running surface the team uses daily"],
     },
     modal: {
       eyebrow: "03 · Build",
@@ -1373,7 +1393,7 @@ export const softwareForFewSection = {
     "Most bottlenecks remain unsolved because existing SaaS isn't good enough and custom development for a problem-for-few doesn't make sense. That changed at the end of 2025 when AI models finally became good enough that people could actually build their own solutions — which I've started doing across the entire marketing department at Loop.",
   actions: [
     { id: "cases", label: "Explore cases", href: "#cases" },
-    { id: "headless", label: "Headless vision", href: "#headless" },
+    { id: "headless", label: "Headless vision", href: "#substrate-map" },
   ],
   rows: [
     {
@@ -1441,8 +1461,15 @@ export const headlessShiftSection = {
   titleEm: "headless.",
   body:
     "Salesforce went Headless 360. Stripe also shipped a CLI. Same approach: the engine matters more than the surface.",
+  /* Confident one-sentence bridge — picks up para 1's "same approach"
+     and points it at the marketing side at Loop. Earlier drafts
+     hedged ("Not all the way there yet, but the direction is
+     clear"); the hedge has been dropped because the third paragraph
+     below already names the substantive scope of the work (voice /
+     claims / localization). Reading top-to-bottom now lands as
+     industry pattern -> my version -> what gets encoded. */
   bodyStrong:
-    "I'm doing the same on the marketing side. Not all the way there yet, but the direction is clear.",
+    "I'm doing the same on the marketing side at Loop.",
   /* Third paragraph — closes the interstitial on a Stripe-applied
      beat instead of leaving the visitor with the Loop status. The
      first two paragraphs already establish the industry trend
@@ -1455,7 +1482,7 @@ export const headlessShiftSection = {
   bodyStripe:
     "Voice, legal claims, localization nuances should all be part of the same engine; encoded in a substrate any interface can use.",
   actions: [
-    { id: "headless", label: "See the overview", href: "#headless" },
+    { id: "headless", label: "See the overview", href: "#substrate-map" },
   ],
   preview: {
     eyebrow: "Briefing agents",
@@ -1578,11 +1605,17 @@ export const substrateMapSection = {
       kicker: "Encoded substrate",
       badge: "Authority layer",
       title: "What matters, how to decide, what to check.",
+      /* Canonical substrate labels — same `Rules / Examples /
+         Sources / Loops` set the Encode flywheel card and the
+         Headless-shift preview use, so the visitor sees the same
+         vocabulary everywhere on the route. Earlier this section
+         used Voice / Examples / Sources / Review (Voice was
+         Loop-brand-specific; Review is a synonym for Loops). */
       items: [
-        { tag: "Voice", name: "How the brand speaks" },
+        { tag: "Rules", name: "How the team decides" },
         { tag: "Examples", name: "What good looks like" },
-        { tag: "Sources", name: "What data it can read" },
-        { tag: "Review", name: "Who confirms what" },
+        { tag: "Sources", name: "Data it can read" },
+        { tag: "Loops", name: "Who confirms what" },
       ],
       tags: ["Owned by marketing", "Versioned", "Model-portable"],
     },
@@ -1591,13 +1624,19 @@ export const substrateMapSection = {
       kicker: "Headless surfaces",
       badge: "Headless wrapper",
       title: "Where the cohort calls the engine.",
+      /* Canonical surface set — same six the Headless-shift preview
+         lists in its Build lane (`Cursor / Claude / Web app / REST /
+         Slack / Agents`). Earlier this column reordered them and
+         used "API" for what Headless-shift calls "REST"; unified
+         here so the visitor sees the same surface vocabulary in
+         both sections. */
       items: [
         { icon: "C", name: "Cursor" },
         { icon: "Cl", name: "Claude" },
         { icon: "◐", name: "Web app" },
+        { icon: "{ }", name: "REST" },
         { icon: "#", name: "Slack" },
         { icon: "A", name: "Agents" },
-        { icon: "{ }", name: "API" },
       ],
     },
   },
