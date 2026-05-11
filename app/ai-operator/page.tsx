@@ -804,29 +804,29 @@ export default function AiOperatorPage() {
       >
         <div className="aiop-wrap">
           <div className="aiop-cta__grid">
-            <div className="aiop-reveal">
-              <p className="aiop-eyebrow aiop-eyebrow--ink">
-                {ctaSection.eyebrow}
-              </p>
+            <div className="aiop-cta__copy aiop-reveal">
               <h2 className="aiop-cta__title">
                 <em>{ctaSection.titleEm}</em>
               </h2>
-              <p className="aiop-cta__body">{ctaSection.body}</p>
+              {ctaSection.body.map((paragraph, idx) => (
+                <p key={idx} className="aiop-cta__body">
+                  {paragraph}
+                </p>
+              ))}
               <p className="aiop-cta__fine">{ctaSection.fine}</p>
-            </div>
-            <div className="aiop-cta__right aiop-reveal">
-              <div className="aiop-cta__morph" aria-hidden="true">
-                <LoopStripeMorph />
-              </div>
+
+              {/* Primary actions live in the left column, anchored
+                  under the copy so Email / LinkedIn read as the
+                  practical close of the argument. CV / Cover letter
+                  move under the particle morph on the right: the
+                  morph carries the Loop -> Stripe past/future story,
+                  and those documents support that arc. */}
               {(() => {
                 const primaries = ctaSection.actions.filter(
                   (a) => a.kind === "primary",
                 );
-                const ghosts = ctaSection.actions.filter(
-                  (a) => a.kind === "ghost",
-                );
                 return (
-                  <>
+                  <div className="aiop-cta__actions">
                     <div
                       className="aiop-cta__primary-row"
                       aria-label="Get in touch"
@@ -855,35 +855,48 @@ export default function AiOperatorPage() {
                         </a>
                       ))}
                     </div>
-                    <div
-                      className="aiop-cta__ghost-row"
-                      aria-label="Application materials"
-                    >
-                      {ghosts.map((action) => (
-                        <a
-                          key={action.id}
-                          className="aiop-cta__ghost"
-                          href={action.href}
-                          {...(action.external
-                            ? {
-                                target: "_blank",
-                                rel: "noopener noreferrer",
-                              }
-                            : {})}
+                  </div>
+                );
+              })()}
+            </div>
+
+            <div className="aiop-cta__right aiop-reveal">
+              <div className="aiop-cta__morph" aria-hidden="true">
+                <LoopStripeMorph />
+              </div>
+              {(() => {
+                const ghosts = ctaSection.actions.filter(
+                  (a) => a.kind === "ghost",
+                );
+                return (
+                  <div
+                    className="aiop-cta__ghost-row"
+                    aria-label="Application materials"
+                  >
+                    {ghosts.map((action) => (
+                      <a
+                        key={action.id}
+                        className="aiop-cta__ghost"
+                        href={action.href}
+                        {...(action.external
+                          ? {
+                              target: "_blank",
+                              rel: "noopener noreferrer",
+                            }
+                          : {})}
+                      >
+                        <span className="aiop-cta__ghost-label">
+                          {action.label}
+                        </span>
+                        <span
+                          className="aiop-cta__ghost-arrow"
+                          aria-hidden="true"
                         >
-                          <span className="aiop-cta__ghost-label">
-                            {action.label}
-                          </span>
-                          <span
-                            className="aiop-cta__ghost-arrow"
-                            aria-hidden="true"
-                          >
-                            →
-                          </span>
-                        </a>
-                      ))}
-                    </div>
-                  </>
+                          →
+                        </span>
+                      </a>
+                    ))}
+                  </div>
                 );
               })()}
             </div>
