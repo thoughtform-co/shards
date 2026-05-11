@@ -9105,13 +9105,18 @@
    the moment the parallax-reveal hand-off happens (Approach unsticks
    when the wrapper's bottom hits viewport bottom — at that scroll,
    SoftwareForFew's top must already be at or above viewport top, so
-   the section needs to be ≥ 100vh tall). */
+   the section needs to be ≥ 100vh tall).
+   Column flex + justify-content:center keeps the inner wrap vertically
+   centered while letting the Feynman sign-off sit beneath it as a
+   second flex child (cross-axis stretch lets each .aiop-wrap span
+   the page and centre its own content via max-width + margin auto). */
 @media (min-width: 960px) {
   .aiop-few.is-animated {
     min-height: 100vh;
     padding-block: clamp(56px, 8vw, 120px);
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
   }
 }
 
