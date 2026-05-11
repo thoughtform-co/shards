@@ -375,6 +375,8 @@ function StripeTeaserCard() {
           <a
             className="aiop-case-row__cta aiop-case-row__cta--unlock"
             href={stripeTeaser.ctaHref}
+            target="_blank"
+            rel="noopener noreferrer"
             aria-label="Book a meeting to unlock the Stripe teaser walk-through"
           >
             {stripeTeaser.ctaLabel}

@@ -1249,7 +1249,7 @@ export const stripeTeaser: {
   metaTag: "Next move",
   team: "Stripe · Marketing FDA cohort",
   ctaLabel: "Book a meeting to unlock",
-  ctaHref: "#booking-placeholder",
+  ctaHref: "https://calendar.app.google/d1Zv2U6Ex1mGVYJR8",
 
   /* Card head — same display chrome as the case rows. The italic em
      treatment is dropped on this card so the teaser doesn't try to
