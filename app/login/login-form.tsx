@@ -106,8 +106,8 @@ export function LoginForm() {
             <h1 className={styles.headline}>Enter the access key.</h1>
 
             <p className={styles.support}>
-              A private dashboard of small experiments and prototypes — single-purpose
-              tools, visual probes, and playful builds.
+              A private showcase of applied intelligence work. Quiet by
+              default, opened on request.
             </p>
 
             <form className={styles.form} onSubmit={onSubmit} noValidate>
