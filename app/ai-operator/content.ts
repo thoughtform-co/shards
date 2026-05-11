@@ -2031,13 +2031,24 @@ export const stripeXThread: {
       body:
         "put way too much time into this mockup, but I really think people would LOVE this",
       avatar: "/ai-operator/x-thread/vince.png",
+      /* Media card now previews the Financial Command Center
+         (Ledger) case shown further down the page. Same first
+         screenshot the case `ScreenshotGallery` rotates through, so
+         the visitor sees the Slack briefing here as a teaser and
+         then the full case walkthrough below. Switched the ratio
+         to 16:9 because the Ledger screenshots are landscape
+         (~929x504) — a 9:16 portrait crop cut off half the
+         briefing. The video chrome (play button + duration) stays
+         as X's native tweet attachment treatment; clicking the
+         card still opens the live `/link-to-collect.html` mockup. */
       media: {
         kind: "video",
-        poster: "/ai-operator/x-thread/mockup-poster.png",
+        poster: "/ai-operator/ledger-screenshot-1.png",
         duration: "0:16",
         href: "/link-to-collect.html",
-        hrefLabel: "Open the live Link / Collect mockup",
-        ratio: "9:16",
+        hrefLabel:
+          "Open the live Link / Collect mockup \u2014 Financial Command Center",
+        ratio: "16:9",
       },
       stats: { replies: "1", reposts: "0", likes: "0", views: "59" },
       hasReplyLine: true,
@@ -2135,27 +2146,27 @@ export const ledgerCase: {
   tone: "gold",
   workflowMode: "Repair",
   challenge:
-    "I was paying my accountant to remind me to send invoices. Most of my software runs on Stripe, where vendors stopped emailing PDFs years ago for privacy and phishing reasons, so every quarter became a tour of a dozen portals, manually downloading the invoices Stripe had already issued.",
+    "My accountant was the reminder system, and every quarter became a tour of a dozen portals to collect invoices Stripe had already issued.",
   workflowBefore:
     "Every quarter meant logging into Cursor, Anthropic, Vercel, Krea, Loops, Midjourney, Supabase, Figma, and Linear to download the invoices Stripe had already issued. The accountant chased the missing PDFs by email, and Belgian VAT reverse-charge details lived in each merchant's billing UI.",
   workflowAfter:
-    "Push-triggered Cloud Run worker watches Gmail and Drive for invoice PDFs, Claude classifies and renames them under the canonical purchase tree, a Slack briefing surfaces only the portals still due for manual collection that week, and Navigator AI answers questions about the quarter when it's time to file.",
+    "Cloud Run watches Gmail and Drive, Claude classifies and files each PDF, a twice-weekly Slack briefing surfaces only the portals still due, and Navigator AI answers questions when it's time to file.",
   capabilities: [
     {
       k: "Multi-source intake",
-      v: "Gmail push, Drive push, Slack receipt thread, and KBC bank CSV all flow through one ingestion pipeline. Hash-deduped, classified by Claude, renamed under the canonical purchase tree.",
+      v: "Gmail, Drive, Slack, and bank CSV flow through one ingestion pipeline. Hash-deduped, classified by Claude, filed automatically.",
     },
     {
       k: "Portal cadence reminders",
-      v: "Volume-based and effort-weighted scoring posts a Slack briefing twice a week, surfacing only the vendors actually due for manual collection in the upcoming window.",
+      v: "Volume-weighted scoring surfaces only the vendors actually due in the upcoming window. Twice-weekly Slack briefings, nothing else.",
     },
     {
       k: "Navigator AI",
-      v: "Claude grounded on the Thoughtform business context plus the live finance snapshot. Talks about the numbers like a colleague who already knows the practice, not generic finance advice.",
+      v: "Claude grounded on the business context and live finance snapshot. Talks about the numbers like a colleague who knows the practice.",
     },
     {
       k: "Headless finance engine",
-      v: "Same Cloud Run substrate answers the web dashboard, the Electron desktop, the Slack bot, and a finance MCP server in Claude.ai and Cursor.",
+      v: "Same Cloud Run substrate answers the web dashboard, the Electron desktop, the Slack bot, and a finance MCP server.",
     },
   ],
   surfaces: [
@@ -2222,34 +2233,39 @@ export type CtaAction = {
 
 export const ctaSection: {
   eyebrow: string;
-  /* The italic em carries the ambition itself — folded in from the
-     old standalone `aiop-ambition-card`. Rewritten in plainer
-     first-person so it reads as someone naming what they're working
-     on rather than as a slogan. The earlier "Let's talk." prefix is
-     gone; the eyebrow + actions row already do the call-to-action
-     job, so the heading can be the thesis directly. */
+  /* The italic em is now the short "next cohort" heading — folded
+     in from a longer thesis sentence that was doing too much work.
+     The body paragraphs below carry the substantive case for that
+     cohort (Stripe-side framing). */
   titleEm: string;
-  body: string;
+  /* Two-paragraph body. The first names what's happening to
+     businesses that run on Stripe (smaller teams, agents at
+     checkout, new operating models). The second turns that into
+     the ask: Stripe's own marketing needs to operate at that same
+     speed, and that's the cohort to embed with next. */
+  body: readonly string[];
   fine: string;
-  /* Action grid: email + LinkedIn render as primary dark buttons,
+  /* Action list: email + LinkedIn render as primary dark buttons,
      CV + cover letter render as subtle outlined ghost buttons. The
      renderer splits the array by kind into two rows. `external:
      true` marks the link to open in a new tab with `rel="noopener
-     noreferrer"`. */
+     noreferrer"`. Labels stay short ("Email", "CV") since the
+     section already names what's being offered above. */
   actions: CtaAction[];
 } = {
   eyebrow: "Smallest commitment that starts work",
-  titleEm:
-    "Marketing is where I work. The thing I'm building is how teams operate when AI is in the loop with them.",
-  body:
-    "Embedded mandates, accelerator programs, or focused encoding sprints alongside one team. We start with one workflow and work outward.",
+  titleEm: "The next cohort.",
+  body: [
+    "Every business that runs on Stripe is about to change shape. Smaller teams. Agents at checkout. New operating models for whole categories.",
+    "Stripe's own marketing has to operate at that same speed. That's the cohort I'd like to embed with next.",
+  ],
   fine:
     "Antwerp \u00b7 CET. Comfortable working remotely with US-based teams.",
   actions: [
     {
       id: "email",
       kind: "primary",
-      label: "vince@thoughtform.co",
+      label: "Email",
       href: "mailto:vince@thoughtform.co?subject=Forward-deployed%20AI%20operator",
     },
     {
@@ -2262,7 +2278,7 @@ export const ctaSection: {
     {
       id: "cv",
       kind: "ghost",
-      label: "View CV",
+      label: "CV",
       href: "/applications/cv.html",
       external: true,
     },

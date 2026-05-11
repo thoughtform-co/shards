@@ -2066,12 +2066,21 @@
   color: var(--aiop-ink-2);
 }
 
+.aiop-cta__copy {
+  display: flex;
+  flex-direction: column;
+}
+
 .aiop-cta__body {
   font-size: 16px;
   line-height: 1.55;
   color: var(--aiop-ink-soft);
   margin: 16px 0 0;
   max-width: 50ch;
+}
+
+.aiop-cta__body + .aiop-cta__body {
+  margin-top: 14px;
 }
 
 .aiop-cta__fine {
@@ -2082,53 +2091,42 @@
   margin: 14px 0 0;
 }
 
+/* Action group — anchored under the copy in the left column so it
+   reads as the practical close of the argument. Only the primary row
+   lives here now (Email + LinkedIn as filled dark buttons). The CV /
+   Cover letter row moved under the particle morph on the right so
+   those materials sit with the Loop -> Stripe past/future visual. */
 .aiop-cta__actions {
   display: flex;
   flex-direction: column;
   gap: 14px;
   align-items: flex-start;
+  margin-top: clamp(28px, 3.5vw, 44px);
 }
 
-@media (min-width: 800px) {
-  .aiop-cta__actions {
-    align-items: flex-end;
-  }
-}
-
-/* ─── CTA right column · morph + primary + text links ────────────
+/* ─── CTA right column · particle morph + materials ──────────────
  *
- * The right column hosts the LoopStripeMorph particle field as a
- * foreground anchor (no longer a hero watermark — see
- * `.aiop-cta__morph` below for the full-opacity wrapper), then a
- * single distinguished primary action (email), then a row of
- * mono-caps text links for the secondary actions. The visual
- * hierarchy is morph → "the one button you're meant to press" →
- * "everything else, quietly available". */
+ * The right column hosts the LoopStripeMorph particle field plus the
+ * CV / Cover letter row underneath it. The morph visually carries
+ * the Loop -> Stripe transition (past work -> future cohort), so the
+ * documents that explain that arc belong here rather than under the
+ * practical Email / LinkedIn contact buttons. */
 .aiop-cta__right {
   display: flex;
   flex-direction: column;
-  gap: clamp(20px, 2.4vw, 32px);
-  align-items: stretch;
+  gap: clamp(18px, 2.4vw, 30px);
+  align-items: center;
+  justify-content: center;
   width: 100%;
-}
-
-@media (min-width: 800px) {
-  .aiop-cta__right {
-    align-items: flex-end;
-  }
 }
 
 /* Foreground host for `LoopStripeMorph`. Same component as the
    hero watermark, but rendered at full opacity, no mask, no blend
-   mode — this is the deliberate visual anchor of the CTA. Always
-   centered within the right column regardless of breakpoint, so
-   the Loop ring / Stripe parallelogram silhouettes have symmetric
-   breathing room rather than getting pulled to the right edge. */
+   mode — this is the deliberate visual anchor of the CTA. */
 .aiop-cta__morph {
   position: relative;
-  width: clamp(220px, 26vw, 320px);
+  width: clamp(240px, 28vw, 340px);
   aspect-ratio: 1 / 1;
-  align-self: center;
   pointer-events: none;
 }
 
@@ -2138,34 +2136,28 @@
   max-width: none;
 }
 
-/* Primary actions row — email + LinkedIn rendered side-by-side as
-   two filled dark buttons of equal weight. Both are "the buttons
-   you're meant to press"; CV / cover letter sit in the subtler
-   ghost row below. The row collapses to a single column under 720px
-   so neither button is forced into uncomfortable widths. */
+/* Primary actions row — Email + LinkedIn as filled dark buttons.
+   Left-aligned under the copy now (was right-aligned in the old
+   right-column layout). Sized a touch larger so they hold their
+   own as the section's primary call-to-action under the long
+   left-column copy block above. */
 .aiop-cta__primary-row {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
   align-items: stretch;
-  justify-content: center;
+  justify-content: flex-start;
   width: 100%;
-}
-
-@media (min-width: 800px) {
-  .aiop-cta__primary-row {
-    justify-content: flex-end;
-  }
 }
 
 .aiop-cta__primary {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 14px 20px;
+  gap: 18px;
+  padding: 18px 26px;
   font-family: var(--aiop-body);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 540;
   letter-spacing: -0.005em;
   color: var(--aiop-paper);
@@ -2177,7 +2169,7 @@
     background 200ms cubic-bezier(0.16, 1, 0.3, 1),
     color 200ms cubic-bezier(0.16, 1, 0.3, 1);
   flex: 0 1 auto;
-  min-width: 0;
+  min-width: 160px;
 }
 
 .aiop-cta__primary:hover,
@@ -2200,11 +2192,11 @@
   transform: translateX(3px);
 }
 
-/* Subtle ghost row — CV + cover letter as quiet outlined buttons.
+/* Subtle ghost row — CV + Cover letter as quiet outlined buttons.
    Same shape language as the primaries (rounded rect, label + arrow)
    but transparent fill, soft hairline border, and ink-soft type so
-   they read as supporting actions rather than competing with the
-   email + LinkedIn row above. */
+   they read as supporting materials rather than contact buttons.
+   Centered under the particle morph. */
 .aiop-cta__ghost-row {
   display: flex;
   flex-wrap: wrap;
@@ -2214,19 +2206,13 @@
   width: 100%;
 }
 
-@media (min-width: 800px) {
-  .aiop-cta__ghost-row {
-    justify-content: flex-end;
-  }
-}
-
 .aiop-cta__ghost {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 9px 14px;
+  gap: 12px;
+  padding: 12px 18px;
   font-family: var(--aiop-mono);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -4537,6 +4523,14 @@
   width: min(280px, 100%);
 }
 
+/* Landscape 16:9 variant — used by the Ledger preview embedded in
+   the X-thread. The Ledger screenshots are landscape, so this
+   ratio lets the briefing display without portrait cropping. */
+.aiop-x-thread__media--16x9 {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+}
+
 .aiop-x-thread__media--1x1 {
   aspect-ratio: 1 / 1;
 }
@@ -4545,6 +4539,10 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Top-anchored crop for the few cases where the source image
+     doesn't perfectly match the chosen ratio — keeps the identifying
+     header/title strip in view instead of a middle band. */
+  object-position: top center;
   display: block;
 }
 
@@ -4994,49 +4992,159 @@
   flex: 1;
 }
 
-/* — Header (phase pill + descriptor eyebrow) — */
+/* — Phase frame (lane with halo border + notched pill) —
+ *
+ * Mirrors the `.aiop-shift__lane` chrome used by the Headless-shift
+ * section so the page reads with one consistent wrapper-and-pill
+ * grammar across the flywheel deep-dive AND the headless
+ * interstitial. Light interior with a phase-tone halo border;
+ * a `● PHASE` pill notched onto the top edge as the single phase
+ * identifier (replacing the old outer-card header + sub eyebrow
+ * scaffolding); a mono-caps label sits inside the lane above the
+ * phase artifact. Same source pattern Mimir uses in its
+ * SurfacesPillar — Mimir was the visual reference. */
 
-.aiop-approach-card__header {
+.aiop-approach-card__lane {
+  position: relative;
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-  padding-bottom: 14px;
-  border-bottom: 1px solid var(--aiop-rule);
+  flex-direction: column;
+  gap: clamp(12px, 1.4vw, 16px);
+  margin-top: clamp(8px, 1vw, 14px);
+  padding:
+    clamp(22px, 2.4vw, 30px)
+    clamp(14px, 1.6vw, 18px)
+    clamp(14px, 1.5vw, 18px);
+  border-radius: 10px;
 }
 
-.aiop-approach-card__phase {
+.aiop-approach-card__lane--navigate {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-violet) 5%, #ffffff) 0%,
+      color-mix(in oklab, var(--aiop-violet) 4%, var(--aiop-card)) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--aiop-violet) 48%, var(--aiop-rule-strong));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.46),
+    0 0 0 1px color-mix(in oklab, var(--aiop-violet) 16%, transparent),
+    0 0 22px -4px color-mix(in oklab, var(--aiop-violet) 24%, transparent),
+    0 18px 36px -20px color-mix(in oklab, var(--aiop-violet) 32%, rgba(26, 22, 18, 0.28));
+}
+
+.aiop-approach-card__lane--encode {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-amber) 5%, #ffffff) 0%,
+      color-mix(in oklab, var(--aiop-amber) 4%, var(--aiop-card)) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--aiop-amber) 56%, var(--aiop-rule-strong));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.50),
+    0 0 0 1px color-mix(in oklab, var(--aiop-amber) 20%, transparent),
+    0 0 22px -4px color-mix(in oklab, var(--aiop-amber) 28%, transparent),
+    0 18px 36px -20px color-mix(in oklab, var(--aiop-amber) 36%, rgba(26, 22, 18, 0.28));
+}
+
+.aiop-approach-card__lane--build {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-sage) 8%, var(--aiop-card-2)) 0%,
+      color-mix(in oklab, var(--aiop-sage) 5%, var(--aiop-card)) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--aiop-sage) 38%, var(--aiop-rule-strong));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    0 0 0 1px color-mix(in oklab, var(--aiop-sage) 14%, transparent),
+    0 0 22px -4px color-mix(in oklab, var(--aiop-sage) 22%, transparent),
+    0 18px 36px -20px color-mix(in oklab, var(--aiop-sage) 32%, rgba(26, 22, 18, 0.28));
+}
+
+/* — Notched phase pill on the top edge of the lane — */
+
+.aiop-approach-card__pill {
+  position: absolute;
+  top: 0;
+  left: clamp(14px, 1.6vw, 20px);
+  transform: translateY(-50%);
+  z-index: 1;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
+  padding: 4px 10px;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-strong);
+  border-radius: 999px;
   font-family: var(--aiop-mono);
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--aiop-ink);
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(26, 22, 18, 0.06);
 }
 
-.aiop-approach-card__phase-dot {
-  width: 8px;
-  height: 8px;
+.aiop-approach-card__pill-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
   flex-shrink: 0;
-  /* Tone cascades from the step parent below; this default reads on
-     untoned previews and exports. */
   background: var(--aiop-ink-soft);
 }
 
-.aiop-approach__step--violet .aiop-approach-card__phase-dot { background: var(--aiop-violet); }
-.aiop-approach__step--gold   .aiop-approach-card__phase-dot { background: var(--aiop-amber); }
-.aiop-approach__step--sage   .aiop-approach-card__phase-dot { background: var(--aiop-sage); }
+/* Per-phase halo on the notched pill — same colour as the lane's
+   halo border so pill + frame read as one piece per phase. */
+.aiop-approach-card__pill--navigate {
+  border-color: color-mix(in oklab, var(--aiop-violet) 50%, var(--aiop-rule-strong));
+  box-shadow:
+    0 4px 14px rgba(26, 22, 18, 0.06),
+    0 0 0 3px color-mix(in oklab, var(--aiop-violet) 16%, transparent),
+    0 0 16px -4px color-mix(in oklab, var(--aiop-violet) 28%, transparent);
+}
+.aiop-approach-card__pill--navigate .aiop-approach-card__pill-dot {
+  background: var(--aiop-violet);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--aiop-violet) 22%, transparent);
+}
 
-.aiop-approach-card__sub {
+.aiop-approach-card__pill--encode {
+  border-color: color-mix(in oklab, var(--aiop-amber) 52%, var(--aiop-rule-strong));
+  box-shadow:
+    0 4px 14px rgba(26, 22, 18, 0.06),
+    0 0 0 3px color-mix(in oklab, var(--aiop-amber) 18%, transparent),
+    0 0 16px -4px color-mix(in oklab, var(--aiop-amber) 30%, transparent);
+}
+.aiop-approach-card__pill--encode .aiop-approach-card__pill-dot {
+  background: var(--aiop-amber);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--aiop-amber) 24%, transparent);
+}
+
+.aiop-approach-card__pill--build {
+  border-color: color-mix(in oklab, var(--aiop-sage) 50%, var(--aiop-rule-strong));
+  box-shadow:
+    0 4px 14px rgba(26, 22, 18, 0.06),
+    0 0 0 3px color-mix(in oklab, var(--aiop-sage) 14%, transparent),
+    0 0 16px -4px color-mix(in oklab, var(--aiop-sage) 28%, transparent);
+}
+.aiop-approach-card__pill--build .aiop-approach-card__pill-dot {
+  background: var(--aiop-sage);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--aiop-sage) 22%, transparent);
+}
+
+/* — Lane label — mono caps above the artifact inside the lane.
+   Same typographic treatment as `.aiop-shift__lane-label` so the
+   flywheel cards and the Headless-shift section share the inside-
+   the-lane vocabulary too. */
+.aiop-approach-card__lane-label {
+  margin: 0;
   font-family: var(--aiop-mono);
   font-size: 10.5px;
-  letter-spacing: 0.14em;
+  font-weight: 700;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--aiop-muted);
-  text-align: right;
+  color: var(--aiop-ink-soft);
 }
 
 

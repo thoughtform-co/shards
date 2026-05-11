@@ -224,7 +224,7 @@ type ApproachInheritedStrip = {
  */
 function ApproachCardShell({
   phase,
-  sub,
+  laneLabel,
   inputs,
   outputs,
   handoffTo,
@@ -233,7 +233,16 @@ function ApproachCardShell({
   children,
 }: {
   phase: "Navigate" | "Encode" | "Build";
-  sub: string;
+  /* Mono-caps label shown above the artifact inside the lane —
+   * names the asset (e.g. "Workshop ladder", "Encoded substrate",
+   * "Headless interface"). Matches the `.aiop-shift__lane-label`
+   * pattern used by the Headless-shift section so the visual
+   * vocabulary stays consistent. The previous outer-card
+   * descriptor eyebrow (`visual.sub`) is no longer rendered — the
+   * notched pill on the lane edge + this inner label do the
+   * identification job the eyebrow used to do, with less
+   * scaffolding. */
+  laneLabel: string;
   inputs: string[];
   outputs: string[];
   handoffTo?: ApproachHandoff;
@@ -241,16 +250,9 @@ function ApproachCardShell({
   onPractice: () => void;
   children: ReactNode;
 }) {
+  const phaseSlug = phase.toLowerCase();
   return (
     <article className="aiop-approach-card">
-      <header className="aiop-approach-card__header">
-        <span className="aiop-approach-card__phase">
-          <span className="aiop-approach-card__phase-dot" aria-hidden="true" />
-          {phase}
-        </span>
-        <span className="aiop-approach-card__sub">{sub}</span>
-      </header>
-
       <section className="aiop-approach-card__chips-block aiop-approach-card__chips-block--inputs">
         <p className="aiop-approach-card__chips-label">
           Inputs
@@ -321,7 +323,33 @@ function ApproachCardShell({
         )}
       </section>
 
-      {children}
+      {/* Phase frame — mirrors the `.aiop-shift__lane` chrome used by
+          the Headless-shift section so the page reads with one
+          consistent wrapper-and-pill vocabulary. Light interior
+          with a phase-tone halo border; a `● PHASE` pill is notched
+          onto the top edge as the single phase identifier (replacing
+          the old outer-card phase pill + descriptor eyebrow header).
+          The lane label sits inside as a mono-caps caption above
+          the artifact, and `sub` lands as a small badge on the
+          right side of the lane head. */}
+      <section
+        className={`aiop-approach-card__lane aiop-approach-card__lane--${phaseSlug}`}
+        aria-label={phase}
+      >
+        <span
+          className={`aiop-approach-card__pill aiop-approach-card__pill--${phaseSlug}`}
+        >
+          <span
+            className="aiop-approach-card__pill-dot"
+            aria-hidden="true"
+          />
+          {phase}
+        </span>
+
+        <p className="aiop-approach-card__lane-label">{laneLabel}</p>
+
+        {children}
+      </section>
 
       <section className="aiop-approach-card__chips-block aiop-approach-card__chips-block--outputs">
         <p className="aiop-approach-card__chips-label">Outputs</p>
@@ -367,12 +395,16 @@ function RolloutCard({
   return (
     <ApproachCardShell
       phase="Navigate"
-      sub={visual.sub}
+      laneLabel="Workshop ladder"
       inputs={visual.inputs}
       outputs={visual.outputs}
       handoffTo={visual.handoffTo}
       onPractice={onPractice}
     >
+      {/* Stages rail sits inside the violet-haloed Navigate lane as
+          a single dark block, mirroring the way Encode's substrate
+          table sits inside its amber lane. The dark block carries
+          the workshop process; the lane carries the wrapping. */}
       <div className="aiop-approach-card__core aiop-approach-card__core--rollout">
         <ol className="aiop-rollout__stages" role="list">
           {visual.stages.map((stage, idx) => (
@@ -407,13 +439,17 @@ function SubstrateCard({
   return (
     <ApproachCardShell
       phase="Encode"
-      sub={visual.sub}
+      laneLabel="Encoded substrate"
       inputs={visual.inputs}
       outputs={visual.outputs}
       handoffTo={visual.handoffTo}
       inheritedFrom={inheritedFrom}
       onPractice={onPractice}
     >
+      {/* Substrate table sits as a dark block inside the amber lane,
+          matching the Headless-shift Encode lane's dark substrate
+          stack. Same visual treatment, slightly more rows because
+          the deep-dive can carry the full anatomy. */}
       <div className="aiop-approach-card__core aiop-approach-card__core--substrate">
         <ul className="aiop-substrate__layers" role="list">
           {visual.layers.map((layer) => (
@@ -467,20 +503,20 @@ function EngineCard({
   return (
     <ApproachCardShell
       phase="Build"
-      sub={visual.sub}
+      laneLabel="Headless interface"
       inputs={visual.inputs}
       outputs={visual.outputs}
       handoffTo={visual.handoffTo}
       inheritedFrom={inheritedFrom}
       onPractice={onPractice}
     >
-      <div className="aiop-approach-card__core aiop-approach-card__core--engine">
-        <div className="aiop-engine__core">
-          <span className="aiop-engine__core-l">Engine</span>
-          <span className="aiop-engine__core-r">Headless</span>
-        </div>
-      </div>
-
+      {/* Surfaces grid sits directly inside the sage-haloed Build
+          lane. The previous "Engine | HEADLESS" dark banner is gone
+          — the lane itself (with its `● BUILD` notched pill + sage
+          halo) IS the engine wrapper, mirroring the Headless-shift
+          Build lane and the Mimir SurfacesPillar. The four light
+          surface tiles inside the lane are what the engine
+          produces. */}
       <ul className="aiop-engine__surfaces" role="list">
         {visual.surfaces.map((surface) => (
           <li key={surface.name} className="aiop-engine__surface">
