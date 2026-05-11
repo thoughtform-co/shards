@@ -508,6 +508,9 @@ export default function AiOperatorPage() {
                     {substrateMapSection.columns.sources.kicker}
                   </span>
                 </header>
+                <p className="aiop-substrate-map__lane-label">
+                  Trusted source layer
+                </p>
                 <h3 className="aiop-substrate-map__col-title">
                   {substrateMapSection.columns.sources.title}
                 </h3>
@@ -545,6 +548,9 @@ export default function AiOperatorPage() {
                     {substrateMapSection.columns.substrate.badge}
                   </span>
                 </header>
+                <p className="aiop-substrate-map__lane-label">
+                  Encoded substrate
+                </p>
                 <h3 className="aiop-substrate-map__col-title">
                   {substrateMapSection.columns.substrate.title}
                 </h3>
@@ -590,6 +596,9 @@ export default function AiOperatorPage() {
                     {substrateMapSection.columns.surfaces.badge}
                   </span>
                 </header>
+                <p className="aiop-substrate-map__lane-label">
+                  Headless interface
+                </p>
                 <h3 className="aiop-substrate-map__col-title">
                   {substrateMapSection.columns.surfaces.title}
                 </h3>
@@ -672,48 +681,73 @@ export default function AiOperatorPage() {
                 CLI; the surfaces panel just names where the engine
                 shows up regardless of which transport called it. */}
             <div className="aiop-surface-pick__layout">
-              <ol className="aiop-surface-pick__interfaces" role="list">
-                {surfacePickSection.interfaces.map((iface) => (
-                  <li
-                    key={iface.id}
-                    className={`aiop-surface-pick__interface aiop-surface-pick__interface--${iface.id}${
-                      iface.recommended
-                        ? " aiop-surface-pick__interface--recommended"
-                        : ""
-                    }`}
-                  >
-                    <header className="aiop-surface-pick__interface-head">
-                      <span
-                        className="aiop-surface-pick__interface-icon"
-                        aria-hidden="true"
-                      >
-                        {iface.icon}
-                      </span>
-                      <div className="aiop-surface-pick__interface-text">
-                        <span className="aiop-surface-pick__interface-label">
-                          {iface.label}
-                          {iface.recommended ? (
-                            <span className="aiop-surface-pick__interface-badge">
-                              Default
-                            </span>
-                          ) : null}
+              <article
+                className="aiop-surface-pick__lane aiop-surface-pick__lane--interfaces"
+                aria-label={surfacePickSection.cardLabel}
+              >
+                <span className="aiop-surface-pick__lane-pill">
+                  {surfacePickSection.cardLabel}
+                </span>
+                <p className="aiop-surface-pick__lane-label">
+                  Headless entrypoints
+                </p>
+                <ol className="aiop-surface-pick__interfaces" role="list">
+                  {surfacePickSection.interfaces.map((iface) => (
+                    <li
+                      key={iface.id}
+                      className={`aiop-surface-pick__interface aiop-surface-pick__interface--${iface.id}${
+                        iface.recommended
+                          ? " aiop-surface-pick__interface--recommended"
+                          : ""
+                      }`}
+                    >
+                      <header className="aiop-surface-pick__interface-head">
+                        <span
+                          className="aiop-surface-pick__interface-icon"
+                          aria-hidden="true"
+                        >
+                          {iface.icon}
                         </span>
-                        <span className="aiop-surface-pick__interface-sublabel">
-                          {iface.sublabel}
-                        </span>
-                      </div>
-                    </header>
-                    <p className="aiop-surface-pick__interface-detail">
-                      {iface.detail}
-                    </p>
-                  </li>
-                ))}
-              </ol>
+                        <div className="aiop-surface-pick__interface-text">
+                          <span className="aiop-surface-pick__interface-label">
+                            {iface.label}
+                            {iface.recommended ? (
+                              <span className="aiop-surface-pick__interface-badge">
+                                Default
+                              </span>
+                            ) : null}
+                          </span>
+                          <span className="aiop-surface-pick__interface-sublabel">
+                            {iface.sublabel}
+                          </span>
+                        </div>
+                      </header>
+                      <p className="aiop-surface-pick__interface-detail">
+                        {iface.detail}
+                      </p>
+                    </li>
+                  ))}
+                </ol>
+              </article>
+
+              <div
+                className="aiop-surface-pick__connector"
+                aria-hidden="true"
+              >
+                <span className="aiop-surface-pick__connector-line" />
+                <span className="aiop-surface-pick__connector-label">
+                  Inherits
+                </span>
+                <span className="aiop-surface-pick__connector-arrow">→</span>
+              </div>
 
               <aside
-                className="aiop-surface-pick__destinations"
+                className="aiop-surface-pick__destinations aiop-surface-pick__lane aiop-surface-pick__lane--destinations"
                 aria-label={surfacePickSection.surfacesLabel}
               >
+                <span className="aiop-surface-pick__lane-pill">
+                  Surface
+                </span>
                 <p className="aiop-surface-pick__destinations-label">
                   {surfacePickSection.surfacesLabel}
                 </p>

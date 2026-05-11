@@ -11627,7 +11627,7 @@
 .aiop-substrate-map__grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 18px;
+  gap: clamp(24px, 3vw, 34px);
 }
 
 @media (min-width: 960px) {
@@ -11638,43 +11638,72 @@
       minmax(0, 1.4fr)
       auto
       minmax(0, 1fr);
-    gap: clamp(20px, 2.2vw, 32px);
+    gap: clamp(18px, 2vw, 28px);
     align-items: stretch;
   }
 }
 
 .aiop-substrate-map__col {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 14px;
   min-width: 0;
+  margin-top: 8px;
+  padding:
+    clamp(24px, 2.3vw, 30px)
+    clamp(14px, 1.6vw, 18px)
+    clamp(14px, 1.6vw, 18px);
+  border-radius: 10px;
 }
 
 .aiop-substrate-map__col-head {
+  position: absolute;
+  top: 0;
+  left: clamp(12px, 1.4vw, 18px);
+  transform: translateY(-50%);
+  z-index: 2;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  justify-content: flex-start;
+  gap: 8px;
   flex-wrap: wrap;
+  width: max-content;
+  max-width: calc(100% - 24px);
+  padding: 4px 10px;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-strong);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(26, 22, 18, 0.06);
 }
 
 .aiop-substrate-map__col-n {
   font-family: var(--aiop-mono);
-  font-size: 10.5px;
+  font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--aiop-gold-bright);
+  color: var(--aiop-ink);
   font-weight: 600;
 }
 
 .aiop-substrate-map__col-badge {
   font-family: var(--aiop-mono);
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--aiop-muted);
-  border: 1px solid var(--aiop-rule-strong);
-  padding: 4px 9px;
+  border-left: 1px solid var(--aiop-rule);
+  padding-left: 8px;
+}
+
+.aiop-substrate-map__lane-label {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-ink-soft);
 }
 
 .aiop-substrate-map__col-title {
@@ -11686,6 +11715,55 @@
   margin: 0;
   color: var(--aiop-ink);
   max-width: 22ch;
+}
+
+.aiop-substrate-map__col--sources {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-violet) 4%, #ffffff) 0%,
+      color-mix(in oklab, var(--aiop-violet) 3%, var(--aiop-card)) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--aiop-violet) 40%, var(--aiop-rule-strong));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.44),
+    0 0 0 1px color-mix(in oklab, var(--aiop-violet) 12%, transparent),
+    0 16px 32px -24px color-mix(in oklab, var(--aiop-violet) 28%, rgba(26, 22, 18, 0.24));
+}
+
+.aiop-substrate-map__col--sources .aiop-substrate-map__col-head {
+  border-color: color-mix(in oklab, var(--aiop-violet) 50%, var(--aiop-rule-strong));
+  box-shadow:
+    0 4px 14px rgba(26, 22, 18, 0.06),
+    0 0 0 3px color-mix(in oklab, var(--aiop-violet) 14%, transparent);
+}
+
+.aiop-substrate-map__col--substrate .aiop-substrate-map__col-head {
+  border-color: color-mix(in oklab, var(--aiop-amber) 52%, var(--aiop-rule-strong));
+  box-shadow:
+    0 4px 14px rgba(26, 22, 18, 0.06),
+    0 0 0 3px color-mix(in oklab, var(--aiop-amber) 16%, transparent);
+}
+
+.aiop-substrate-map__col--surfaces {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-sage) 7%, var(--aiop-card-2)) 0%,
+      color-mix(in oklab, var(--aiop-sage) 4%, var(--aiop-card)) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--aiop-sage) 38%, var(--aiop-rule-strong));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    0 0 0 1px color-mix(in oklab, var(--aiop-sage) 12%, transparent),
+    0 16px 32px -24px color-mix(in oklab, var(--aiop-sage) 28%, rgba(26, 22, 18, 0.24));
+}
+
+.aiop-substrate-map__col--surfaces .aiop-substrate-map__col-head {
+  border-color: color-mix(in oklab, var(--aiop-sage) 48%, var(--aiop-rule-strong));
+  box-shadow:
+    0 4px 14px rgba(26, 22, 18, 0.06),
+    0 0 0 3px color-mix(in oklab, var(--aiop-sage) 14%, transparent);
 }
 
 /* Connectors — horizontal on mobile, vertical on desktop. The line
@@ -11776,8 +11854,7 @@
 .aiop-substrate-map__source-dot {
   width: 6px;
   height: 6px;
-  background: var(--aiop-gold-bright);
-  border-radius: 50%;
+  background: var(--aiop-violet);
   flex-shrink: 0;
 }
 
@@ -11787,12 +11864,14 @@
 .aiop-substrate-map__col--substrate {
   background: linear-gradient(
     180deg,
-    var(--aiop-paper-2) 0%,
-    var(--aiop-paper) 100%
+    color-mix(in oklab, var(--aiop-amber) 5%, #ffffff) 0%,
+    color-mix(in oklab, var(--aiop-amber) 4%, var(--aiop-card)) 100%
   );
-  border: 1px solid var(--aiop-rule-strong);
-  padding: clamp(16px, 1.8vw, 22px) clamp(14px, 1.6vw, 20px);
-  gap: 14px;
+  border: 1px solid color-mix(in oklab, var(--aiop-amber) 50%, var(--aiop-rule-strong));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.50),
+    0 0 0 1px color-mix(in oklab, var(--aiop-amber) 18%, transparent),
+    0 16px 32px -24px color-mix(in oklab, var(--aiop-amber) 32%, rgba(26, 22, 18, 0.24));
 }
 
 .aiop-substrate-map__rows {
@@ -11801,12 +11880,13 @@
   padding: 0;
   display: grid;
   gap: 1px;
-  background: var(--aiop-rule);
-  border: 1px solid var(--aiop-rule-strong);
+  background: rgba(243, 236, 224, 0.12);
+  border: 1px solid rgba(243, 236, 224, 0.16);
+  color: rgba(243, 236, 224, 0.92);
 }
 
 .aiop-substrate-map__row {
-  background: var(--aiop-card);
+  background: linear-gradient(180deg, #1a1612, #0f0c08);
   padding: 12px 14px;
   display: grid;
   grid-template-columns: 92px 1fr;
@@ -11821,12 +11901,12 @@
   font-size: 10.5px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--aiop-gold-bright);
+  color: var(--aiop-amber);
   font-weight: 600;
 }
 
 .aiop-substrate-map__row-name {
-  color: var(--aiop-ink-soft);
+  color: rgba(243, 236, 224, 0.82);
 }
 
 @media (max-width: 480px) {
@@ -11882,7 +11962,7 @@
   font-family: var(--aiop-mono);
   font-size: 12px;
   font-weight: 500;
-  color: var(--aiop-gold-bright);
+  color: var(--aiop-sage);
   width: 24px;
   height: 24px;
   display: inline-flex;
@@ -12025,17 +12105,158 @@
    collapse into a single column with the interfaces first. */
 .aiop-surface-pick__layout {
   display: grid;
-  gap: clamp(20px, 2.4vw, 32px);
-  background: var(--aiop-rule);
-  border: 1px solid var(--aiop-rule-strong);
-  padding: 1px;
+  gap: clamp(24px, 3vw, 34px);
 }
 
 @media (min-width: 880px) {
   .aiop-surface-pick__layout {
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-    gap: 1px;
+    grid-template-columns: minmax(0, 1.18fr) auto minmax(0, 1fr);
+    gap: clamp(18px, 2vw, 28px);
+    align-items: stretch;
+  }
+}
+
+.aiop-surface-pick__lane {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.5vw, 16px);
+  min-width: 0;
+  margin-top: 8px;
+  padding:
+    clamp(24px, 2.4vw, 30px)
+    clamp(16px, 1.8vw, 22px)
+    clamp(16px, 1.8vw, 22px);
+  border-radius: 10px;
+}
+
+.aiop-surface-pick__lane--interfaces {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-amber) 5%, #ffffff) 0%,
+      color-mix(in oklab, var(--aiop-amber) 3%, var(--aiop-card)) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--aiop-amber) 48%, var(--aiop-rule-strong));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.46),
+    0 0 0 1px color-mix(in oklab, var(--aiop-amber) 16%, transparent),
+    0 18px 34px -24px color-mix(in oklab, var(--aiop-amber) 34%, rgba(26, 22, 18, 0.26));
+}
+
+.aiop-surface-pick__lane--destinations {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-sage) 7%, var(--aiop-card-2)) 0%,
+      color-mix(in oklab, var(--aiop-sage) 4%, var(--aiop-card)) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--aiop-sage) 38%, var(--aiop-rule-strong));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    0 0 0 1px color-mix(in oklab, var(--aiop-sage) 12%, transparent),
+    0 18px 34px -24px color-mix(in oklab, var(--aiop-sage) 32%, rgba(26, 22, 18, 0.26));
+}
+
+.aiop-surface-pick__lane-pill {
+  position: absolute;
+  top: 0;
+  left: clamp(12px, 1.4vw, 18px);
+  transform: translateY(-50%);
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  width: max-content;
+  max-width: calc(100% - 24px);
+  padding: 4px 10px;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-strong);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgba(26, 22, 18, 0.06);
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
+}
+
+.aiop-surface-pick__lane--interfaces .aiop-surface-pick__lane-pill {
+  border-color: color-mix(in oklab, var(--aiop-amber) 52%, var(--aiop-rule-strong));
+  box-shadow:
+    0 4px 14px rgba(26, 22, 18, 0.06),
+    0 0 0 3px color-mix(in oklab, var(--aiop-amber) 16%, transparent);
+}
+
+.aiop-surface-pick__lane--destinations .aiop-surface-pick__lane-pill {
+  border-color: color-mix(in oklab, var(--aiop-sage) 48%, var(--aiop-rule-strong));
+  box-shadow:
+    0 4px 14px rgba(26, 22, 18, 0.06),
+    0 0 0 3px color-mix(in oklab, var(--aiop-sage) 14%, transparent);
+}
+
+.aiop-surface-pick__lane-label {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-surface-pick__connector {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 6px 0;
+}
+
+.aiop-surface-pick__connector-line {
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--aiop-rule-strong);
+}
+
+.aiop-surface-pick__connector-label {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  white-space: nowrap;
+}
+
+.aiop-surface-pick__connector-arrow {
+  font-family: var(--aiop-mono);
+  font-size: 14px;
+  color: var(--aiop-sage);
+  transform: rotate(90deg);
+  display: inline-block;
+}
+
+@media (min-width: 880px) {
+  .aiop-surface-pick__connector {
+    flex-direction: column;
     padding: 0;
+    align-self: stretch;
+  }
+
+  .aiop-surface-pick__connector-line {
+    width: 1px;
+    height: 34px;
+  }
+
+  .aiop-surface-pick__connector-label {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  .aiop-surface-pick__connector-arrow {
+    transform: none;
   }
 }
 
@@ -12049,10 +12270,10 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  background: var(--aiop-paper);
   display: grid;
   gap: 1px;
   background: var(--aiop-rule);
+  border: 1px solid var(--aiop-rule-strong);
 }
 
 .aiop-surface-pick__interface {
@@ -12167,11 +12388,6 @@
    engine shows up regardless of which interface called it. Reads as
    the "Where it lands" answer to the three "ways in" on the left. */
 .aiop-surface-pick__destinations {
-  background: var(--aiop-paper);
-  padding: clamp(20px, 2.4vw, 28px) clamp(18px, 2vw, 24px);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
   min-width: 0;
 }
 
@@ -12181,7 +12397,7 @@
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--aiop-gold-bright);
+  color: var(--aiop-ink-soft);
   font-weight: 600;
 }
 
@@ -12241,7 +12457,7 @@
   font-family: var(--aiop-mono);
   font-size: 12px;
   font-weight: 500;
-  color: var(--aiop-gold-bright);
+  color: var(--aiop-sage);
   background: var(--aiop-card);
   border: 1px solid var(--aiop-rule);
   line-height: 1;
