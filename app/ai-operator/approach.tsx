@@ -191,13 +191,11 @@ export function Approach() {
 /* ─── Visuals ──────────────────────────────────────────────────────── */
 
 /*
- * Inheritance strip — a slim dark mini block rendered in the INPUTS
- * row of Encode and Build, showing a compressed visualisation of the
- * previous phase's artifact. Makes the flywheel literal: Encode's
- * INPUTS strip is a compressed Navigate stage rail (01->04); Build's
- * INPUTS strip is a compressed Encode substrate (RULES / EXAMPLES /
- * SOURCES / LOOPS). Navigate has no previous phase, so it falls back
- * to the light text chips below.
+ * Inheritance card — a collapsed version of the previous phase's
+ * framed lane rendered in the INPUTS row of Encode and Build. Makes
+ * the flywheel literal: Encode receives a mini Navigate lane; Build
+ * receives a mini Encode lane. Navigate has no previous phase, so it
+ * falls back to the light text chips below.
  */
 type ApproachInheritedStrip = {
   fromPhase: "Navigate" | "Encode";
@@ -209,11 +207,11 @@ type ApproachInheritedStrip = {
 
 /*
  * Shared shell for all three flywheel visual cards. Renders the
- * common scaffolding once — header (phase pill + descriptor eyebrow),
- * INPUTS row (inheritance strip OR text chips), phase-specific dark
- * core slot, OUTPUTS chip row with optional handoff marker, and the
- * "See how it runs" CTA — so Navigate / Encode / Build read as one
- * artifact at three stages instead of three different artifacts.
+ * common scaffolding once — INPUTS row (collapsed inherited lane OR
+ * text chips), phase-specific framed lane, OUTPUTS chip row with
+ * optional handoff marker, and the "See how it runs" CTA — so
+ * Navigate / Encode / Build read as one artifact at three stages
+ * instead of three different artifacts.
  *
  * Each variant card (`RolloutCard` / `SubstrateCard` / `EngineCard`)
  * passes its phase-specific dark-core content through `children`.
@@ -265,39 +263,12 @@ function ApproachCardShell({
         </p>
         {inheritedFrom ? (
           <>
-            <div
-              className={`aiop-approach-card__inheritance aiop-approach-card__inheritance--from-${inheritedFrom.fromPhase.toLowerCase()}`}
-              aria-label={`Inherited from ${inheritedFrom.fromPhase}`}
-            >
-              {inheritedFrom.items.map((item, idx) => (
-                <span
-                  key={item.tag}
-                  className="aiop-approach-card__inheritance-item"
-                >
-                  <span className="aiop-approach-card__inheritance-tag">
-                    {item.tag}
-                  </span>
-                  {item.label ? (
-                    <span className="aiop-approach-card__inheritance-label">
-                      {item.label}
-                    </span>
-                  ) : null}
-                  {idx < inheritedFrom.items.length - 1 ? (
-                    <span
-                      className="aiop-approach-card__inheritance-sep"
-                      aria-hidden="true"
-                    >
-                      {inheritedFrom.separator === "arrow" ? "›" : "·"}
-                    </span>
-                  ) : null}
-                </span>
-              ))}
-            </div>
-            {/* Conceptual caption below the strip — names the actual
+            <InheritedPhaseCard inheritedFrom={inheritedFrom} />
+            {/* Conceptual caption below the collapsed card — names the actual
                 artifacts the previous phase produced (e.g. "AI
                 intuition", "Workflow brief", "A versioned Skill"),
-                kept as a quiet line so the strip stays the primary
-                visual. */}
+                kept as a quiet line so the mini lane stays the
+                primary visual. */}
             <p className="aiop-approach-card__inheritance-caption">
               <span
                 className="aiop-approach-card__inheritance-arrow"
@@ -382,6 +353,67 @@ function ApproachCardShell({
 
       <VisualAction onClick={onPractice} />
     </article>
+  );
+}
+
+function InheritedPhaseCard({
+  inheritedFrom,
+}: {
+  inheritedFrom: ApproachInheritedStrip;
+}) {
+  const sourceSlug = inheritedFrom.fromPhase.toLowerCase();
+  const laneLabel =
+    inheritedFrom.fromPhase === "Navigate"
+      ? "Workshop ladder"
+      : "Encoded substrate";
+
+  return (
+    <section
+      className={`aiop-approach-card__inheritance-lane aiop-approach-card__inheritance-lane--from-${sourceSlug}`}
+      aria-label={`Collapsed ${inheritedFrom.fromPhase} card`}
+    >
+      <span
+        className={`aiop-approach-card__inheritance-pill aiop-approach-card__inheritance-pill--${sourceSlug}`}
+      >
+        <span
+          className="aiop-approach-card__inheritance-pill-dot"
+          aria-hidden="true"
+        />
+        {inheritedFrom.fromPhase}
+      </span>
+
+      <p className="aiop-approach-card__inheritance-lane-label">
+        {laneLabel}
+      </p>
+
+      <div
+        className={`aiop-approach-card__inheritance-core aiop-approach-card__inheritance-core--from-${sourceSlug}`}
+      >
+        {inheritedFrom.items.map((item, idx) => (
+          <span
+            key={item.tag}
+            className="aiop-approach-card__inheritance-item"
+          >
+            <span className="aiop-approach-card__inheritance-tag">
+              {item.tag}
+            </span>
+            {item.label ? (
+              <span className="aiop-approach-card__inheritance-label">
+                {item.label}
+              </span>
+            ) : null}
+            {idx < inheritedFrom.items.length - 1 ? (
+              <span
+                className="aiop-approach-card__inheritance-sep"
+                aria-hidden="true"
+              >
+                {inheritedFrom.separator === "arrow" ? "›" : "·"}
+              </span>
+            ) : null}
+          </span>
+        ))}
+      </div>
+    </section>
   );
 }
 
