@@ -36,7 +36,7 @@
 
 export const meta = {
   brandLeft: "Vincent Buyssens",
-  brandSub: "AI Operator · Forward-Deployed · Antwerp",
+  brandSub: "AI Operator · Forward-Deployed",
   status: "Embedded engagements available",
   links: [
     { id: "diagnosis", label: "Diagnosis", href: "#diagnosis" },
