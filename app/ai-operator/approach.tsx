@@ -73,12 +73,42 @@ export function Approach() {
                 {step.visual.kind === "substrate" && (
                   <SubstrateCard
                     visual={step.visual}
+                    /* Visual inheritance: Encode's INPUTS show a
+                       compressed mini version of Navigate's stage
+                       rail, so the card literally renders "what
+                       comes in" from the previous phase. */
+                    inheritedFrom={(() => {
+                      const prev = approachSteps[idx - 1];
+                      if (!prev || prev.visual.kind !== "rollout") return undefined;
+                      return {
+                        fromPhase: "Navigate" as const,
+                        items: prev.visual.stages.map((s) => ({
+                          tag: s.tag,
+                          label: s.label,
+                        })),
+                        separator: "arrow" as const,
+                      };
+                    })()}
                     onPractice={() => setOpen(step)}
                   />
                 )}
                 {step.visual.kind === "engine" && (
                   <EngineCard
                     visual={step.visual}
+                    /* Visual inheritance: Build's INPUTS show a
+                       compressed mini version of Encode's substrate
+                       table (just the four tag names), so the
+                       visitor sees the substrate going into the
+                       engine. */
+                    inheritedFrom={(() => {
+                      const prev = approachSteps[idx - 1];
+                      if (!prev || prev.visual.kind !== "substrate") return undefined;
+                      return {
+                        fromPhase: "Encode" as const,
+                        items: prev.visual.layers.map((l) => ({ tag: l.tag })),
+                        separator: "bullet" as const,
+                      };
+                    })()}
                     onPractice={() => setOpen(step)}
                   />
                 )}
@@ -161,12 +191,29 @@ export function Approach() {
 /* ─── Visuals ──────────────────────────────────────────────────────── */
 
 /*
+ * Inheritance strip — a slim dark mini block rendered in the INPUTS
+ * row of Encode and Build, showing a compressed visualisation of the
+ * previous phase's artifact. Makes the flywheel literal: Encode's
+ * INPUTS strip is a compressed Navigate stage rail (01->04); Build's
+ * INPUTS strip is a compressed Encode substrate (RULES / EXAMPLES /
+ * SOURCES / LOOPS). Navigate has no previous phase, so it falls back
+ * to the light text chips below.
+ */
+type ApproachInheritedStrip = {
+  fromPhase: "Navigate" | "Encode";
+  items: { tag: string; label?: string }[];
+  /* Arrow separators for sequential things (Navigate's stages);
+   * bullet separators for categorical things (Encode's layers). */
+  separator: "arrow" | "bullet";
+};
+
+/*
  * Shared shell for all three flywheel visual cards. Renders the
  * common scaffolding once — header (phase pill + descriptor eyebrow),
- * INPUTS chip row, phase-specific dark core slot, OUTPUTS chip row
- * with optional handoff marker, and the "See how it runs" CTA — so
- * Navigate / Encode / Build read as one artifact at three stages
- * instead of three different artifacts.
+ * INPUTS row (inheritance strip OR text chips), phase-specific dark
+ * core slot, OUTPUTS chip row with optional handoff marker, and the
+ * "See how it runs" CTA — so Navigate / Encode / Build read as one
+ * artifact at three stages instead of three different artifacts.
  *
  * Each variant card (`RolloutCard` / `SubstrateCard` / `EngineCard`)
  * passes its phase-specific dark-core content through `children`.
@@ -181,6 +228,7 @@ function ApproachCardShell({
   inputs,
   outputs,
   handoffTo,
+  inheritedFrom,
   onPractice,
   children,
 }: {
@@ -189,6 +237,7 @@ function ApproachCardShell({
   inputs: string[];
   outputs: string[];
   handoffTo?: ApproachHandoff;
+  inheritedFrom?: ApproachInheritedStrip;
   onPractice: () => void;
   children: ReactNode;
 }) {
@@ -203,18 +252,73 @@ function ApproachCardShell({
       </header>
 
       <section className="aiop-approach-card__chips-block aiop-approach-card__chips-block--inputs">
-        <p className="aiop-approach-card__chips-label">Inputs</p>
-        <ul className="aiop-approach-card__chips" role="list">
-          {inputs.map((input) => (
-            <li key={input} className="aiop-approach-card__chip">
+        <p className="aiop-approach-card__chips-label">
+          Inputs
+          {inheritedFrom ? (
+            <span className="aiop-approach-card__chips-from">
+              {" "}
+              <span aria-hidden="true">·</span> from {inheritedFrom.fromPhase}
+            </span>
+          ) : null}
+        </p>
+        {inheritedFrom ? (
+          <>
+            <div
+              className={`aiop-approach-card__inheritance aiop-approach-card__inheritance--from-${inheritedFrom.fromPhase.toLowerCase()}`}
+              aria-label={`Inherited from ${inheritedFrom.fromPhase}`}
+            >
+              {inheritedFrom.items.map((item, idx) => (
+                <span
+                  key={item.tag}
+                  className="aiop-approach-card__inheritance-item"
+                >
+                  <span className="aiop-approach-card__inheritance-tag">
+                    {item.tag}
+                  </span>
+                  {item.label ? (
+                    <span className="aiop-approach-card__inheritance-label">
+                      {item.label}
+                    </span>
+                  ) : null}
+                  {idx < inheritedFrom.items.length - 1 ? (
+                    <span
+                      className="aiop-approach-card__inheritance-sep"
+                      aria-hidden="true"
+                    >
+                      {inheritedFrom.separator === "arrow" ? "›" : "·"}
+                    </span>
+                  ) : null}
+                </span>
+              ))}
+            </div>
+            {/* Conceptual caption below the strip — names the actual
+                artifacts the previous phase produced (e.g. "AI
+                intuition", "Workflow brief", "A versioned Skill"),
+                kept as a quiet line so the strip stays the primary
+                visual. */}
+            <p className="aiop-approach-card__inheritance-caption">
               <span
-                className="aiop-approach-card__chip-dot"
+                className="aiop-approach-card__inheritance-arrow"
                 aria-hidden="true"
-              />
-              {input}
-            </li>
-          ))}
-        </ul>
+              >
+                ↳
+              </span>{" "}
+              {inputs.join(" · ")}
+            </p>
+          </>
+        ) : (
+          <ul className="aiop-approach-card__chips" role="list">
+            {inputs.map((input) => (
+              <li key={input} className="aiop-approach-card__chip">
+                <span
+                  className="aiop-approach-card__chip-dot"
+                  aria-hidden="true"
+                />
+                {input}
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       {children}
@@ -293,9 +397,11 @@ function RolloutCard({
 
 function SubstrateCard({
   visual,
+  inheritedFrom,
   onPractice,
 }: {
   visual: SubstrateVisual;
+  inheritedFrom?: ApproachInheritedStrip;
   onPractice: () => void;
 }) {
   return (
@@ -305,6 +411,7 @@ function SubstrateCard({
       inputs={visual.inputs}
       outputs={visual.outputs}
       handoffTo={visual.handoffTo}
+      inheritedFrom={inheritedFrom}
       onPractice={onPractice}
     >
       <div className="aiop-approach-card__core aiop-approach-card__core--substrate">
@@ -350,9 +457,11 @@ function SubstrateCard({
 
 function EngineCard({
   visual,
+  inheritedFrom,
   onPractice,
 }: {
   visual: EngineVisual;
+  inheritedFrom?: ApproachInheritedStrip;
   onPractice: () => void;
 }) {
   return (
@@ -362,6 +471,7 @@ function EngineCard({
       inputs={visual.inputs}
       outputs={visual.outputs}
       handoffTo={visual.handoffTo}
+      inheritedFrom={inheritedFrom}
       onPractice={onPractice}
     >
       <div className="aiop-approach-card__core aiop-approach-card__core--engine">

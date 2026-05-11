@@ -5118,6 +5118,147 @@
 }
 
 
+/* — Inheritance strip (Encode + Build INPUTS row) — */
+
+/*
+ * Slim dark mini block rendered in the INPUTS row of Encode and
+ * Build, showing a compressed visualisation of the previous phase's
+ * dark core artifact. Encode inherits Navigate's stage rail; Build
+ * inherits Encode's substrate. The visual signal makes the flywheel
+ * literal: the visitor sees the previous phase compressed into the
+ * top of the next card. Navigate has no previous phase and falls
+ * back to the light text chips below.
+ *
+ * Each variant is tone-matched to the SOURCE phase, not the host
+ * phase. Encode's strip inherits from Navigate -> violet tags +
+ * arrow separators (mirrors Navigate's sequential stage rail).
+ * Build's strip inherits from Encode -> amber tags + bullet
+ * separators (mirrors Encode's categorical substrate table).
+ */
+.aiop-approach-card__chips-from {
+  color: var(--aiop-muted);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.aiop-approach-card__inheritance {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  padding: 10px 14px;
+  background: linear-gradient(180deg, #1a1612, #0f0c08);
+  color: rgba(243, 236, 224, 0.92);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Match the dark-core wash colour to the SOURCE phase so the strip
+   reads as "lifted from there." */
+.aiop-approach-card__inheritance::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.aiop-approach-card__inheritance--from-navigate::before {
+  background: radial-gradient(
+    ellipse 70% 60% at 6% 0%,
+    rgba(98, 67, 185, 0.20),
+    transparent 70%
+  );
+}
+
+.aiop-approach-card__inheritance--from-encode::before {
+  background: radial-gradient(
+    ellipse 70% 60% at 6% 0%,
+    rgba(181, 138, 54, 0.18),
+    transparent 70%
+  );
+}
+
+.aiop-approach-card__inheritance-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+}
+
+.aiop-approach-card__inheritance-tag {
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.aiop-approach-card__inheritance--from-navigate .aiop-approach-card__inheritance-tag {
+  color: color-mix(in oklab, var(--aiop-violet) 70%, var(--aiop-paper) 30%);
+}
+
+.aiop-approach-card__inheritance--from-encode .aiop-approach-card__inheritance-tag {
+  color: var(--aiop-amber);
+}
+
+.aiop-approach-card__inheritance-label {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  color: rgba(243, 236, 224, 0.86);
+}
+
+.aiop-approach-card__inheritance-sep {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  margin: 0 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.aiop-approach-card__inheritance--from-navigate .aiop-approach-card__inheritance-sep {
+  color: color-mix(in oklab, var(--aiop-violet) 60%, var(--aiop-paper) 40%);
+}
+
+.aiop-approach-card__inheritance--from-encode .aiop-approach-card__inheritance-sep {
+  color: rgba(243, 236, 224, 0.40);
+}
+
+/* Caption under the inheritance strip — names the conceptual
+   artifacts the previous phase produced (e.g. "AI intuition · Workflow
+   brief", "A versioned Skill"). Quiet so the strip stays the primary
+   visual; the caption clarifies what's actually being inherited. */
+.aiop-approach-card__inheritance-caption {
+  margin: 0;
+  padding-left: 2px;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-approach-card__inheritance-arrow {
+  color: var(--aiop-muted);
+  margin-right: 2px;
+}
+
+@media (max-width: 480px) {
+  .aiop-approach-card__inheritance {
+    gap: 4px 6px;
+    padding: 8px 10px;
+  }
+
+  .aiop-approach-card__inheritance-sep {
+    margin: 0;
+  }
+}
+
+
 /* — Dark core (phase-specific touchpoint block) — */
 
 .aiop-approach-card__core {
