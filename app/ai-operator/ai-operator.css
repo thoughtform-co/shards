@@ -7326,10 +7326,10 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 12px;
-  max-width: 880px;
+  gap: 16px;
+  max-width: 1080px;
   margin: clamp(48px, 6vw, 80px) auto 0;
-  padding: clamp(28px, 3.5vw, 40px) clamp(28px, 4vw, 48px);
+  padding: clamp(36px, 4.4vw, 56px) clamp(32px, 4.4vw, 56px);
   background: var(--aiop-card-soft);
   border: 1px solid color-mix(
     in oklab,
@@ -7413,12 +7413,12 @@
    (Production runs ~21 words vs Paid social's ~10). */
 .aiop-approach__outcome-achievements {
   list-style: none;
-  margin: clamp(20px, 2.4vw, 28px) 0 0;
+  margin: clamp(24px, 3vw, 36px) 0 0;
   padding: 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   align-items: stretch;
-  gap: 10px;
+  gap: clamp(12px, 1.2vw, 16px);
   width: 100%;
 }
 
@@ -7427,8 +7427,8 @@
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
-  gap: 8px;
-  padding: 16px 18px 18px;
+  gap: 10px;
+  padding: clamp(20px, 2vw, 24px) clamp(20px, 2vw, 24px) clamp(22px, 2.2vw, 26px);
   background: var(--aiop-card);
   border: 1px solid var(--aiop-rule-soft);
   border-radius: 10px;
@@ -7445,7 +7445,7 @@
 
 .aiop-approach__outcome-card-n {
   font-family: var(--aiop-mono);
-  font-size: 8px;
+  font-size: 9.5px;
   letter-spacing: 0.18em;
   color: var(--aiop-sage);
   font-weight: 600;
@@ -7454,7 +7454,7 @@
 .aiop-approach__outcome-card-label {
   font-family: var(--aiop-display);
   font-style: italic;
-  font-size: 17px;
+  font-size: clamp(18px, 1.6vw, 20px);
   font-weight: 500;
   color: var(--aiop-ink);
   letter-spacing: -0.01em;
@@ -7464,8 +7464,8 @@
 .aiop-approach__outcome-card-body {
   margin: 0;
   font-family: var(--aiop-body);
-  font-size: 12.5px;
-  line-height: 1.45;
+  font-size: clamp(14px, 1.05vw, 15px);
+  line-height: 1.5;
   color: var(--aiop-ink-soft);
 }
 

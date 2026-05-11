@@ -2301,10 +2301,10 @@ export const ctaSection: {
   actions: CtaAction[];
 } = {
   eyebrow: "Smallest commitment that starts work",
-  titleEm: "The next cohort.",
+  titleEm: "Let's chat.",
   body: [
     "Every business that runs on Stripe is about to change shape. Smaller teams. Agents at checkout. New operating models for whole categories.",
-    "Stripe's own marketing has to operate at that same speed. That's the cohort I'd like to embed with next.",
+    "Stripe's own marketing has to operate at that same speed. That's the cohort I'd like to embed with next, and I want to help them making sure they can do it self-sustaining.",
   ],
   fine:
     "Antwerp \u00b7 CET. Comfortable working remotely with US-based teams.",
