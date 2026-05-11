@@ -68,7 +68,18 @@ export function Diagnosis() {
                 <span className="aiop-diagnosis__card-tag">{useCase.tag}</span>
               </header>
               <h3 className="aiop-diagnosis__card-title">{useCase.title}</h3>
-              <p className="aiop-diagnosis__card-body">{useCase.body}</p>
+              <details className="aiop-diagnosis__card-details">
+                <summary className="aiop-diagnosis__card-toggle">
+                  <span className="aiop-diagnosis__card-toggle-label">
+                    Read context
+                  </span>
+                  <span
+                    className="aiop-diagnosis__card-toggle-icon"
+                    aria-hidden="true"
+                  />
+                </summary>
+                <p className="aiop-diagnosis__card-body">{useCase.body}</p>
+              </details>
             </li>
           ))}
         </ol>

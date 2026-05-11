@@ -10490,6 +10490,135 @@
 }
 
 
+/* ─── 25.6b.1 · Card body disclosure (collapsed by default) ───────
+ *
+ * Native <details>/<summary> wrapper around the card body so the
+ * elaboration stays out of the way until the visitor asks for it.
+ * Closed by default — the eyebrow + title carry the diagnostic
+ * load, and a single mono-caps "Read context" toggle invites the
+ * reader to expand. Once open the toggle adopts the lane colour so
+ * the disclosure feels like a continuation of the card's left rail
+ * rather than a generic UI affordance.
+ *
+ * Accessibility:
+ *   - <details>/<summary> exposes the expanded/collapsed state to
+ *     assistive tech without any aria-* plumbing.
+ *   - <summary> is focusable, Enter/Space-toggleable, and renders a
+ *     visible focus ring.
+ *   - The +/× icon is decorative (aria-hidden); the readable label
+ *     stays "Read context" in both states so screen readers
+ *     announce a stable accessible name alongside the implicit
+ *     state change.
+ *   - prefers-reduced-motion suppresses the icon rotation. */
+
+.aiop-diagnosis__card-details {
+  margin: 4px 0 0;
+  padding: 0;
+}
+
+/* Strip native disclosure markers across browsers so the summary
+   reads as our own mono-caps toggle. */
+.aiop-diagnosis__card-details > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  transition: color 160ms ease;
+}
+
+.aiop-diagnosis__card-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.aiop-diagnosis__card-details > summary::marker {
+  content: "";
+}
+
+.aiop-diagnosis__card-details > summary:hover {
+  color: var(--aiop-ink);
+}
+
+.aiop-diagnosis__card-details > summary:focus-visible {
+  color: var(--aiop-ink);
+  outline: 2px solid var(--aiop-rule-strong);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+/* Lane-tinted toggle when the disclosure is open — mirrors the rail
+   colour at the left of the card so the expanded card reads as one
+   coherent piece. */
+.aiop-diagnosis__card--violet .aiop-diagnosis__card-details[open] > summary {
+  color: var(--aiop-violet);
+}
+
+.aiop-diagnosis__card--gold .aiop-diagnosis__card-details[open] > summary {
+  color: var(--aiop-amber);
+}
+
+.aiop-diagnosis__card--sage .aiop-diagnosis__card-details[open] > summary {
+  color: var(--aiop-sage);
+}
+
+.aiop-diagnosis__card--slate .aiop-diagnosis__card-details[open] > summary {
+  color: var(--aiop-slate);
+}
+
+/* +/× icon built from two crossed hairlines. Rotating the vertical
+   bar 90deg on [open] turns the plus into a minus, then back. */
+.aiop-diagnosis__card-toggle-icon {
+  position: relative;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+
+.aiop-diagnosis__card-toggle-icon::before,
+.aiop-diagnosis__card-toggle-icon::after {
+  content: "";
+  position: absolute;
+  inset: 50% 0;
+  height: 1.5px;
+  margin-top: -0.75px;
+  background: currentColor;
+  transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.aiop-diagnosis__card-toggle-icon::after {
+  transform: rotate(90deg);
+}
+
+.aiop-diagnosis__card-details[open]
+  > summary
+  > .aiop-diagnosis__card-toggle-icon::after {
+  transform: rotate(0deg);
+}
+
+/* The body sits inside the disclosure now; restore its breathing
+   room from the toggle so the expanded state has the same rhythm
+   the body had when it was always visible. */
+.aiop-diagnosis__card-details > .aiop-diagnosis__card-body {
+  margin-top: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiop-diagnosis__card-details > summary,
+  .aiop-diagnosis__card-toggle-icon::before,
+  .aiop-diagnosis__card-toggle-icon::after {
+    transition: none;
+  }
+}
+
+
 /* ─── 25.6c · Bridge chevrons (between beats) ────────────────────── */
 
 /* Thin vertical hairline plus a small downward chevron, centred
