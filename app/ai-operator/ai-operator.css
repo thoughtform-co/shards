@@ -4333,6 +4333,48 @@
   color: var(--x-fg);
 }
 
+/* Top-right "Follow conversation" link — small native-X-style pill
+   pinned to the right edge of the sticky header. Opens the real
+   thread on x.com so visitors can read it in context. Uses the X
+   blue accent so it reads as a clickable follow-up, not as a
+   decorative chip. */
+.aiop-x-thread__follow {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--x-fg);
+  color: var(--x-bg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    color 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aiop-x-thread__follow:hover,
+.aiop-x-thread__follow:focus-visible {
+  background: #d7dbdc;
+}
+
+.aiop-x-thread__follow:focus-visible {
+  outline: 2px solid var(--x-blue);
+  outline-offset: 2px;
+}
+
+@media (max-width: 480px) {
+  .aiop-x-thread__follow {
+    font-size: 12px;
+    padding: 5px 12px;
+  }
+}
+
 /* Scroll container — fixed max-height so the auto-scroll loop has
    scrollback. Hides the native scrollbar to keep the embedded
    surface clean. */
@@ -4584,6 +4626,183 @@
   background: rgba(0, 0, 0, 0.72);
   border-radius: 4px;
   pointer-events: none;
+}
+
+/* ─── Case-preview media tile ───────────────────────────────────────
+ *
+ * Minimalistic designed teaser rendered inside the X media slot when
+ * `media.kind === "case-preview"`. Replaces the screenshot poster for
+ * the Financial Command Center tweet: type only, accent only, so the
+ * thread reads as a quote pointing at the case below the fold instead
+ * of embedding a raw screenshot. The host `.aiop-x-thread__media` keeps
+ * the X-style rounded border + dark background; the case-preview
+ * variant overrides the cover-image layout for a content-driven tile
+ * that mirrors the actual case-row heading rhythm. */
+.aiop-x-thread__media--case-preview {
+  /* Slightly warmer dark wash than the X media default so the case
+     tile reads as a "from Thoughtform" tile inside the X chrome
+     rather than another piece of X UI. */
+  background:
+    radial-gradient(
+      ellipse 80% 60% at 0% 0%,
+      color-mix(in oklab, var(--aiop-amber, #caa554) 10%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(180deg, #15110d, #0c0907);
+  border: 1px solid color-mix(in oklab, var(--aiop-amber, #caa554) 24%, var(--x-line));
+}
+
+.aiop-x-thread__case-preview {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  padding: clamp(14px, 3.4%, 22px) clamp(16px, 4%, 26px);
+  gap: clamp(8px, 1.4%, 14px);
+  color: var(--x-fg);
+}
+
+.aiop-x-thread__case-preview-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--x-dim);
+}
+
+.aiop-x-thread__case-preview-meta-l {
+  color: var(--aiop-amber, #caa554);
+}
+
+.aiop-x-thread__case-preview-meta-r {
+  text-align: right;
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aiop-x-thread__case-preview-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-self: center;
+  min-width: 0;
+}
+
+.aiop-x-thread__case-preview-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--x-dim);
+}
+
+.aiop-x-thread__case-preview-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--aiop-amber, #caa554);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.aiop-x-thread__case-preview-title {
+  margin: 0;
+  font-family: var(--aiop-display, "Bodoni Moda", "Times New Roman", serif);
+  font-weight: 600;
+  font-size: clamp(22px, 4.6vw, 34px);
+  line-height: 1.04;
+  letter-spacing: -0.018em;
+  color: var(--x-fg);
+}
+
+.aiop-x-thread__case-preview-title em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--aiop-amber, #caa554);
+}
+
+.aiop-x-thread__case-preview-codename {
+  margin: 0;
+  font-family: var(--aiop-display, "Bodoni Moda", "Times New Roman", serif);
+  font-weight: 500;
+  font-size: clamp(14px, 2.4vw, 18px);
+  letter-spacing: -0.008em;
+  color: var(--x-dim);
+}
+
+.aiop-x-thread__case-preview-codename em {
+  font-style: italic;
+  color: var(--aiop-amber, #caa554);
+}
+
+.aiop-x-thread__case-preview-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--x-dim);
+}
+
+.aiop-x-thread__case-preview-tag {
+  color: var(--aiop-amber, #caa554);
+}
+
+.aiop-x-thread__case-preview-sub {
+  flex: 1 1 100%;
+  font-family: var(--aiop-display, "Bodoni Moda", "Times New Roman", serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(11px, 1.5vw, 13px);
+  letter-spacing: -0.003em;
+  text-transform: none;
+  color: var(--x-dim);
+  margin-bottom: -2px;
+}
+
+.aiop-x-thread__case-preview-cta {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--x-fg);
+}
+
+.aiop-x-thread__case-preview-arrow {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0;
+  color: var(--aiop-amber, #caa554);
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aiop-x-thread__media--case-preview:hover .aiop-x-thread__case-preview-arrow,
+.aiop-x-thread__media--case-preview:focus-visible .aiop-x-thread__case-preview-arrow {
+  transform: translateX(3px);
+}
+
+@media (max-width: 480px) {
+  .aiop-x-thread__case-preview {
+    padding: 14px 16px;
+  }
+  .aiop-x-thread__case-preview-meta-r {
+    display: none;
+  }
 }
 
 /* Action bar — five glyphs (reply, repost, like, views, bookmark)

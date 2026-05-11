@@ -161,6 +161,15 @@ export function StripeXThread() {
           </svg>
         </span>
         <span className="aiop-x-thread__title">{stripeXThread.headTitle}</span>
+        <a
+          className="aiop-x-thread__follow"
+          href="https://x.com/irace/status/2049900689204093300"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Follow the conversation on X"
+        >
+          Follow conversation
+        </a>
       </header>
 
       <div className="aiop-x-thread__scroll" ref={scrollRef} role="list">
@@ -233,7 +242,7 @@ function Tweet({ tweet }: { tweet: XThreadTweet }) {
           ))}
         </p>
 
-        {tweet.media && tweet.media.kind === "video" ? (
+        {tweet.media ? (
           <MediaCard tweet={tweet} ratioClass={ratioClass} />
         ) : null}
 
@@ -362,37 +371,48 @@ function MediaCard({
   tweet: XThreadTweet;
   ratioClass: string;
 }) {
-  if (!tweet.media || tweet.media.kind !== "video") return null;
-  const { poster, duration, href, hrefLabel } = tweet.media;
+  if (!tweet.media) return null;
+  const media = tweet.media;
 
-  const inner = (
-    <>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        className="aiop-x-thread__media-poster"
-        src={poster}
-        alt={hrefLabel ?? "Embedded video preview"}
-        loading="lazy"
-      />
-      <span className="aiop-x-thread__media-play" aria-hidden="true">
-        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-          <path d="M8 5v14l11-7z" fill="currentColor" />
-        </svg>
-      </span>
-      <span className="aiop-x-thread__media-duration" aria-hidden="true">
-        {duration}
-      </span>
-    </>
-  );
+  const inner =
+    media.kind === "video" ? (
+      <>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          className="aiop-x-thread__media-poster"
+          src={media.poster}
+          alt={media.hrefLabel ?? "Embedded video preview"}
+          loading="lazy"
+        />
+        <span className="aiop-x-thread__media-play" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+            <path d="M8 5v14l11-7z" fill="currentColor" />
+          </svg>
+        </span>
+        <span className="aiop-x-thread__media-duration" aria-hidden="true">
+          {media.duration}
+        </span>
+      </>
+    ) : (
+      <CasePreview media={media} />
+    );
 
-  if (href) {
+  const variantClass =
+    media.kind === "case-preview"
+      ? " aiop-x-thread__media--case-preview"
+      : "";
+
+  if (media.href) {
     return (
       <a
-        className={`aiop-x-thread__media${ratioClass}`}
-        href={href}
+        className={`aiop-x-thread__media${ratioClass}${variantClass}`}
+        href={media.href}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={hrefLabel ?? "Open video preview"}
+        aria-label={
+          media.hrefLabel ??
+          (media.kind === "video" ? "Open video preview" : "Open case")
+        }
       >
         {inner}
       </a>
@@ -400,8 +420,82 @@ function MediaCard({
   }
 
   return (
-    <div className={`aiop-x-thread__media${ratioClass}`} aria-hidden="true">
+    <div
+      className={`aiop-x-thread__media${ratioClass}${variantClass}`}
+      aria-hidden="true"
+    >
       {inner}
+    </div>
+  );
+}
+
+/* ─── Case-preview tile ────────────────────────────────────────────
+ *
+ * Renders the Financial Command Center case as a designed mini
+ * teaser inside the X media slot. Type-only, no screenshot — so the
+ * X thread reads as a quote pointing at the case below the fold,
+ * not as an embedded asset. */
+function CasePreview({
+  media,
+}: {
+  media: Extract<XThreadTweet["media"], { kind: "case-preview" }>;
+}) {
+  return (
+    <div className="aiop-x-thread__case-preview" aria-hidden="true">
+      <div className="aiop-x-thread__case-preview-meta">
+        <span className="aiop-x-thread__case-preview-meta-l">
+          {media.meta}
+        </span>
+        {media.team ? (
+          <span className="aiop-x-thread__case-preview-meta-r">
+            {media.team}
+          </span>
+        ) : null}
+      </div>
+
+      <div className="aiop-x-thread__case-preview-body">
+        <p className="aiop-x-thread__case-preview-kicker">
+          <span
+            className="aiop-x-thread__case-preview-dot"
+            aria-hidden="true"
+          />
+          Project
+        </p>
+
+        <h3 className="aiop-x-thread__case-preview-title">
+          {media.name}
+          <em>{media.nameEm}.</em>
+        </h3>
+
+        {media.codename ? (
+          <p className="aiop-x-thread__case-preview-codename">
+            {media.codename}
+            {media.codenameEm ? <em>{media.codenameEm}</em> : null}.
+          </p>
+        ) : null}
+      </div>
+
+      <div className="aiop-x-thread__case-preview-foot">
+        {media.tagline ? (
+          <span className="aiop-x-thread__case-preview-tag">
+            {media.tagline}
+          </span>
+        ) : null}
+        {media.subline ? (
+          <span className="aiop-x-thread__case-preview-sub">
+            {media.subline}
+          </span>
+        ) : null}
+        <span className="aiop-x-thread__case-preview-cta">
+          Open case
+          <span
+            className="aiop-x-thread__case-preview-arrow"
+            aria-hidden="true"
+          >
+            →
+          </span>
+        </span>
+      </div>
     </div>
   );
 }

@@ -1945,7 +1945,11 @@ export type XThreadStats = {
   views: string;
 };
 
-export type XThreadMedia = {
+export type XThreadMedia =
+  | XThreadVideoMedia
+  | XThreadCasePreviewMedia;
+
+export type XThreadVideoMedia = {
   kind: "video";
   /* Poster image rendered as the still frame for the embedded video.
      Drop captures into `public/ai-operator/x-thread/`. */
@@ -1960,6 +1964,42 @@ export type XThreadMedia = {
   /* Width / height ratio for the player, defaulting to 9:16
      (mobile-vertical) which matches the original mockup recording. */
   ratio?: "9:16" | "16:9" | "1:1";
+};
+
+/* Minimalistic case-preview tile — replaces the X media image with a
+   designed teaser of the case shown further down the page. No
+   screenshot, just type and accent so the X thread reads as a quote
+   referencing the case rather than embedding a raw asset. */
+export type XThreadCasePreviewMedia = {
+  kind: "case-preview";
+  /* Mono caps strip across the top of the tile (e.g.
+     "PERSONAL · 2026" or "THOUGHTFORM · PERSONAL SUBSTRATE"). */
+  meta: string;
+  /* Optional second mono caps strip rendered on the right side of
+     the top row (e.g. team/lineage). */
+  team?: string;
+  /* Display title pair — `name` is rendered in the primary type
+     colour and `nameEm` is rendered in the accent (amber) italic,
+     matching the case-row heading on the page. */
+  name: string;
+  nameEm: string;
+  /* Optional codename treatment shown under the display title
+     ("Led" / "ger" → renders as "Ledger." with the second half in
+     accent italic). */
+  codename?: string;
+  codenameEm?: string;
+  /* Mono caps tagline shown above the subline (e.g.
+     "FINANCIAL SUBSTRATE"). */
+  tagline?: string;
+  /* Short editorial subline. Quiet, italic. */
+  subline?: string;
+  /* Click-through. Same role as the video href — opens the live
+     case landing page in a new tab. */
+  href?: string;
+  hrefLabel?: string;
+  /* Tile aspect ratio. Defaults to 16:9 to match the case row's
+     landscape format. */
+  ratio?: "16:9" | "1:1" | "9:16";
 };
 
 export type XThreadTweet = {
@@ -2032,22 +2072,27 @@ export const stripeXThread: {
         "put way too much time into this mockup, but I really think people would LOVE this",
       avatar: "/ai-operator/x-thread/vince.png",
       /* Media card now previews the Financial Command Center
-         (Ledger) case shown further down the page. Same first
-         screenshot the case `ScreenshotGallery` rotates through, so
+         (Ledger) case shown further down the page as a designed
+         mini teaser — type + accent only, no screenshot — so
          the visitor sees the Slack briefing here as a teaser and
          then the full case walkthrough below. Switched the ratio
          to 16:9 because the Ledger screenshots are landscape
-         (~929x504) — a 9:16 portrait crop cut off half the
-         briefing. The video chrome (play button + duration) stays
-         as X's native tweet attachment treatment; clicking the
-         card still opens the live `/link-to-collect.html` mockup. */
+         the X thread reads as a quote pointing at the case below,
+         not as a raw asset embed. Clicking the card opens the live
+         `/link-to-collect.html` mockup. */
       media: {
-        kind: "video",
-        poster: "/ai-operator/ledger-screenshot-1.png",
-        duration: "0:16",
+        kind: "case-preview",
+        meta: "PERSONAL \u00b7 2026",
+        team: "Thoughtform \u00b7 Personal substrate",
+        name: "Financial Command ",
+        nameEm: "Center",
+        codename: "Led",
+        codenameEm: "ger",
+        tagline: "Financial substrate",
+        subline: "The flywheel, applied to my own business.",
         href: "/link-to-collect.html",
         hrefLabel:
-          "Open the live Link / Collect mockup \u2014 Financial Command Center",
+          "Open the Financial Command Center case",
         ratio: "16:9",
       },
       stats: { replies: "1", reposts: "0", likes: "0", views: "59" },
@@ -2078,10 +2123,12 @@ export const stripeLedgerSection: {
   thread: typeof stripeXThread;
 } = {
   eyebrow: "From both sides of the rails",
-  title: "I built the workaround. Then I told Stripe.",
+  title: "Why I vibecoded my own accounting tool",
   body: [
-    "Every AI tool I onboard teams onto runs through Stripe. So does the consultancy underneath all of it. Daily use on both sides of the rails surfaces ideas constantly. The obvious one: an invoices tab inside Link, so I'd stop logging into a dozen portals to download them by hand every month.",
-    "I built the workaround anyway. Email forwarding for the invoices that still arrive that way. A browser automation for the Stripe-paid ones that don't. Slack reminders every two weeks because sometimes I just need the nudge. None of which I should have had to build in an age of headless AI.",
+    "The thing that kicked off my vibe coding journey last year was honestly just a frustration. Most of the SaaS we use at Loop and through my own consultancy runs on Stripe. But collecting invoices means logging into every single dashboard, multiple times a month, by hand.",
+    "I tried brute-forcing it with Puppeteer first. Got walled by security countermeasures pretty quickly. After a weekend of vibe coding I realized the actual answer wasn't on my side at all: Link already shows every transaction tied to my email and cards. Attaching the invoices would basically close the loop.",
+    "So, out of pure desperation I dumped my frustration on X to which Bryan from the Link team replied, which then kicked off an email chain. And now we're here.",
+    "I really looking forward to get started with Marketing, but being able to contribute on a Product level like this is what makes me even more excited.",
   ],
   thread: stripeXThread,
 };
