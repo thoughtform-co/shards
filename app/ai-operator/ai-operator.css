@@ -503,6 +503,48 @@
   box-shadow: 0 0 0 3px var(--aiop-gold-soft);
 }
 
+/* Video-walkthrough variant of the header CTA. The host class
+   `.aiop-header__cta` already carries the subtle cream-card fill,
+   strong rule border, polygon-clipped corner, and dark hover invert
+   we want; this modifier only:
+     - resets the <button> defaults the parent rule didn't cover so
+       the button looks identical to the previous <a> chassis,
+     - tightens the left padding because the play glyph sits visually
+       lighter than the old pulse dot did,
+     - exposes a focus-visible ring for keyboard users (the dot
+       variant inherited the anchor's default focus ring; the button
+       needs an explicit one). */
+.aiop-header__cta--video {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  padding-left: 13px;
+  font-style: normal;
+}
+
+.aiop-header__cta--video:focus-visible {
+  outline: 2px solid var(--aiop-ink);
+  outline-offset: 3px;
+}
+
+/* Small play triangle that replaces the pulse dot. Inherits the
+   button's currentColor so the glyph picks up the dark-on-light /
+   light-on-dark hover invert automatically; the inner gold-bright
+   tint is achieved by a subtle drop-shadow rather than a fill swap
+   so the glyph still inverts cleanly on hover. */
+.aiop-header__cta-play {
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+  color: var(--aiop-gold-bright);
+  display: block;
+  transition: color 120ms ease;
+}
+
+.aiop-header__cta--video:hover .aiop-header__cta-play {
+  color: var(--aiop-paper);
+}
+
 
 /* ═══════════════════════════════════════════════════════════════════════
  * 04 · Hero
@@ -13686,6 +13728,76 @@
   object-fit: contain;
   display: block;
   background: #050403;
+}
+
+/* Optional subline beneath the walkthrough modal hero. Used by the
+   header WalkthroughLauncher to describe what the video covers; the
+   case walkthroughs don't need it because the project chip already
+   carries the context. Sits as a quiet body line between the eyebrow
+   and the video frame. */
+.aiop-modal__hero-subline--walkthrough {
+  margin: 6px 0 0;
+  font-family: var(--aiop-body);
+  font-size: clamp(13px, 1.05vw, 15px);
+  line-height: 1.55;
+  color: var(--aiop-muted);
+}
+
+
+/* ─── 31.2b · Walkthrough video placeholder (no .mp4 yet) ─────────
+ *
+ * Renders inside `.aiop-modal__video` whenever the launcher has no
+ * `src` wired (see walkthroughSection in content.ts). Same 16:9
+ * footprint the <video> would occupy, dark-card register that rhymes
+ * with the video's natural backdrop, mono-caps eyebrow + one body
+ * line + a faint outline play-glyph at the top so the empty state
+ * reads as a deliberate "coming soon" card rather than a broken
+ * frame. Once a real .mp4 is dropped at /public/ai-operator/ and
+ * `walkthroughSection.src` is set, the launcher swaps this card for
+ * the live <video> element automatically. */
+.aiop-modal__video-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: clamp(20px, 3vw, 36px);
+  text-align: center;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--aiop-ink) 96%, var(--aiop-violet)) 0%,
+    #050403 100%
+  );
+  color: var(--aiop-paper);
+}
+
+.aiop-modal__video-placeholder-glyph {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 6px;
+  color: var(--aiop-gold-bright);
+  opacity: 0.78;
+}
+
+.aiop-modal__video-placeholder-eyebrow {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold-bright);
+}
+
+.aiop-modal__video-placeholder-line {
+  margin: 0;
+  max-width: 44ch;
+  font-family: var(--aiop-body);
+  font-size: clamp(13px, 1.05vw, 15px);
+  line-height: 1.55;
+  color: color-mix(in oklab, var(--aiop-paper) 80%, transparent);
 }
 
 

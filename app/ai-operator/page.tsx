@@ -25,6 +25,7 @@ import { SoftwareForFew } from "./software-for-few";
 import { StripeLedger } from "./stripe-ledger";
 import { StripeReflect } from "./stripe-reflect";
 import { StripeVideo } from "./stripe-video";
+import { WalkthroughLauncher } from "./walkthrough-launcher";
 
 /*
  * AI Operator — public landing page.
@@ -165,10 +166,7 @@ export default function AiOperatorPage() {
             ))}
           </nav>
 
-          <a className="aiop-header__cta" href={meta.cta.href}>
-            <span className="aiop-header__cta-pulse" aria-hidden="true" />
-            {meta.cta.label}
-          </a>
+          <WalkthroughLauncher />
         </div>
       </header>
 

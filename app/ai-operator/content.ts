@@ -45,7 +45,45 @@ export const meta = {
     { id: "cases", label: "Cases", href: "#cases" },
     { id: "headless", label: "Headless", href: "#substrate-map" },
   ],
+  /* Retained for the unlinked /ai-operator/v3 route which still
+     renders the older "Get in touch" anchor in its header. The live
+     v1 route at /ai-operator no longer consumes this — its nav now
+     hosts the WalkthroughLauncher button driven by walkthroughSection
+     below. */
   cta: { label: "Get in touch", href: "#cta" },
+} as const;
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Header video walkthrough
+ *
+ * Drives the WalkthroughLauncher button in the nav. Replaces the older
+ * "Get in touch" CTA — visitors still reach the contact section by
+ * scrolling to the page closer at #cta. The launcher renders a small
+ * play-glyph button in the header chassis and opens a wide
+ * OperatorModal hosting either a real <video> (when `src` is set) or a
+ * quiet "coming soon" placeholder card (until the .mp4 is uploaded).
+ *
+ * To swap from placeholder to live video later, drop the file at
+ * /public/ai-operator/walkthrough.mp4, optionally export a poster
+ * frame as walkthrough-poster.jpg, and set the two paths below.
+ * Nothing else needs to change; the launcher renderer is gated on
+ * `src` truthiness.
+ * ─────────────────────────────────────────────────────────────────── */
+
+export const walkthroughSection = {
+  buttonLabel: "Video walkthrough",
+  buttonAriaLabel:
+    "Open the AI operator video walkthrough in a fullscreen modal",
+  modalTitle: "AI Operator",
+  modalTitleEm: "video walkthrough",
+  modalSubline: "A guided tour of the page, the flywheel, and the cases.",
+  src: null as string | null,
+  poster: null as string | null,
+  placeholder: {
+    eyebrow: "Coming soon",
+    line:
+      "The walkthrough is being recorded. Drop me an email if you'd like a live walk-through in the meantime.",
+  },
 } as const;
 
 /* ─────────────────────────────────────────────────────────────────────
