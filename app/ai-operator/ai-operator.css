@@ -3751,17 +3751,16 @@
 /* Dark warm backdrop. The video frame is centered as the artefact;
    the section is no longer a full-bleed atmospheric video — it's a
    dedicated screen for the visitor to watch. */
-/* Video-background hero. The section now reads as a film opening
-   title card: the clip plays full-bleed behind everything, a
-   directional gradient overlay keeps the foreground copy legible,
-   and the content cluster (title + body + CTA) anchors to the
-   bottom-left of the page's editorial grid so the composition
-   never collapses into a generic centered SaaS hero.
+/* Video-background hero. The section reads as a film opening title
+   card: the clip plays full-bleed behind everything, the foreground
+   splits the section vertically (title pinned top-left, body + CTA
+   pinned bottom-left), and a directional gradient overlay anchors
+   both ends with a clear video band running through the middle.
 
    Stacking order:
      0  video element — `<video class="__bg">`
      1  gradient overlay — `<div class="__overlay">`
-     2  content cluster — `<div class="__content">`
+     2  content cluster — `<div class="__inner">` (title at top, body/CTA at bottom)
      3  audio toggle pill — top-right corner
 */
 .aiop-stripe-video {
@@ -3773,9 +3772,15 @@
      compressed on narrow viewports so the video doesn't feel
      overwhelming on phones. */
   min-height: calc(100dvh - var(--aiop-header-h));
+  /* Zero out the inherited `.aiop-section` `padding-block` so the
+     section's vertical space is governed entirely by the inner
+     flex container. Without this, the section's padding-block
+     (clamp 72-128px each side) eats most of the available height
+     and the title/cluster space-between collapses to a near-center
+     pair. */
+  padding-block: 0;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   background: #0a0806;
   color: var(--aiop-paper);
 }
@@ -3801,28 +3806,32 @@
   mask-image: linear-gradient(
     to top,
     transparent 0%,
-    transparent 38%,
-    rgba(0, 0, 0, 0.55) 52%,
-    rgba(0, 0, 0, 1) 70%,
+    transparent 14%,
+    rgba(0, 0, 0, 0.55) 24%,
+    rgba(0, 0, 0, 1) 36%,
     rgba(0, 0, 0, 1) 100%
   );
   -webkit-mask-image: linear-gradient(
     to top,
     transparent 0%,
-    transparent 38%,
-    rgba(0, 0, 0, 0.55) 52%,
-    rgba(0, 0, 0, 1) 70%,
+    transparent 14%,
+    rgba(0, 0, 0, 0.55) 24%,
+    rgba(0, 0, 0, 1) 36%,
     rgba(0, 0, 0, 1) 100%
   );
 }
 
-/* Directional overlay. The bottom ~22% of the section is a fully
-   opaque dark base — broadcast graphics, news tickers, and other
-   lower-thirds in the source video would otherwise bleed through
-   and fight the foreground copy. Fade from the solid base up
-   through softer tints so the upper half of the section keeps
-   the video legible. The radial pull from the bottom-left
-   reinforces the anchor point of the content cluster. */
+/* Directional overlay. Three layers stacked into one element:
+   - Bottom-up linear gradient: solid dark base on the bottom 14%
+     (matches the mask floor) so the body + CTA cluster sits on a
+     clean stage; tapers off above so the broadcast captions stay
+     readable as editorial context in the middle band.
+   - Top-down linear gradient: a soft dark band at the very top so
+     the title at top-left stays legible even when the video frame
+     underneath is bright. Fades to transparent by ~30%.
+   - Radial pull from the bottom-left reinforces the anchor point
+     of the body + CTA cluster.
+*/
 .aiop-stripe-video__overlay {
   position: absolute;
   inset: 0;
@@ -3832,45 +3841,63 @@
     linear-gradient(
       to top,
       #0a0806 0%,
-      #0a0806 22%,
-      rgba(10, 8, 6, 0.78) 38%,
-      rgba(10, 8, 6, 0.5) 56%,
-      rgba(10, 8, 6, 0.28) 74%,
-      rgba(10, 8, 6, 0.14) 90%,
-      rgba(10, 8, 6, 0.06) 100%
+      #0a0806 14%,
+      rgba(10, 8, 6, 0.62) 26%,
+      rgba(10, 8, 6, 0.34) 46%,
+      rgba(10, 8, 6, 0.18) 70%,
+      rgba(10, 8, 6, 0.08) 90%,
+      rgba(10, 8, 6, 0.04) 100%
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(10, 8, 6, 0.42) 0%,
+      rgba(10, 8, 6, 0.22) 14%,
+      rgba(10, 8, 6, 0.08) 26%,
+      transparent 38%
     ),
     radial-gradient(
-      ellipse 75% 85% at 0% 100%,
-      rgba(10, 8, 6, 0.4) 0%,
-      transparent 60%
+      ellipse 75% 70% at 0% 100%,
+      rgba(10, 8, 6, 0.42) 0%,
+      transparent 58%
     );
 }
 
-/* Foreground inner — anchors the content cluster to the page's
-   editorial left rail and pads it from the section bottom. */
+/* Foreground inner — fills the section vertically and pins the
+   title to the top while the body + CTA cluster anchors to the
+   bottom. `justify-content: space-between` opens the middle band
+   so the broadcast captions in the video can breathe through
+   without being covered by foreground copy. Both ends share the
+   page's editorial left rail. */
 .aiop-stripe-video__inner {
   position: relative;
   z-index: 2;
   width: 100%;
-  padding-bottom: clamp(56px, 8vh, 112px);
-  padding-top: clamp(120px, 18vh, 220px);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-top: clamp(40px, 6vh, 80px);
+  padding-bottom: clamp(28px, 4vh, 52px);
 }
 
-/* Content cluster — the only foreground element other than the
-   audio toggle. Stack of title → body → CTA, left-aligned. Max-
-   width keeps the title from running too wide on large viewports. */
-.aiop-stripe-video__content {
+/* Body + CTA cluster, anchored bottom-left. The title is a sibling
+   above this — it lives at the top of `__inner` thanks to
+   space-between. */
+.aiop-stripe-video__cluster {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: clamp(18px, 2.4vw, 32px);
-  max-width: 720px;
+  gap: clamp(14px, 1.8vw, 22px);
+  max-width: 640px;
 }
 
-/* Title — the hero's primary line. Body font, weight 600, tight
-   tracking. No italic anywhere; the entire phrase lands as one
-   declarative statement. Subtle text-shadow halo keeps the
-   characters readable against any video frame underneath. */
+/* Title — the hero's primary line. Pinned to the top-left of the
+   section by its parent's `justify-content: space-between`. Body
+   font, weight 600, tight tracking. No italic anywhere; the entire
+   phrase lands as one declarative statement. The text-shadow halo
+   plus the top-down overlay tint keep the title legible against
+   any frame the video happens to land on. */
 .aiop-stripe-video__title {
   margin: 0;
   font-family: var(--aiop-body);
@@ -3879,6 +3906,7 @@
   line-height: 1.02;
   letter-spacing: -0.045em;
   color: var(--aiop-paper);
+  max-width: 720px;
   text-wrap: balance;
   text-shadow: 0 2px 28px rgba(10, 8, 6, 0.55);
 }
@@ -3914,7 +3942,6 @@
   display: inline-flex;
   align-items: center;
   gap: 14px;
-  margin-top: clamp(4px, 0.6vw, 8px);
   padding: 13px 20px 13px 22px;
   font-family: var(--aiop-mono);
   font-size: 11.5px;
@@ -4050,12 +4077,12 @@
   }
 
   .aiop-stripe-video__inner {
-    padding-top: clamp(80px, 14vh, 140px);
-    padding-bottom: clamp(40px, 6vh, 64px);
+    padding-top: clamp(28px, 5vh, 56px);
+    padding-bottom: clamp(20px, 4vh, 40px);
   }
 
-  .aiop-stripe-video__content {
-    gap: 16px;
+  .aiop-stripe-video__cluster {
+    gap: 14px;
   }
 
   .aiop-stripe-video__title {

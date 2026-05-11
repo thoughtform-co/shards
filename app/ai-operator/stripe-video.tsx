@@ -202,22 +202,26 @@ export function StripeVideo() {
         </button>
       ) : null}
 
-      {/* Foreground content cluster. Anchors to the page's editorial
-          left rail at the bottom of the section so it reads as a
-          film opening title card overlay rather than a centered
-          SaaS hero. Title, body, CTA — nothing else. */}
+      {/* Foreground splits across the full height of the section.
+          The title anchors to the top-left of the page's editorial
+          grid so it reads as a chapter card; the body + CTA cluster
+          drops to the bottom-left where the dark mask gives them a
+          clean stage. The empty band between them lets the broadcast
+          captions (TBPN ribbon, speaker credit, auto-CC) show
+          through the video without competing with the foreground
+          copy. */}
       <div className="aiop-wrap aiop-stripe-video__inner">
-        <div className="aiop-stripe-video__content aiop-reveal">
-          <h2
-            id="aiop-stripe-video-title"
-            className="aiop-stripe-video__title"
-          >
-            {title.lead}{" "}
-            <span className="aiop-stripe-video__title-role">
-              {title.role}
-            </span>{" "}
-            {title.trail}
-          </h2>
+        <h2
+          id="aiop-stripe-video-title"
+          className="aiop-stripe-video__title aiop-reveal"
+        >
+          {title.lead}{" "}
+          <span className="aiop-stripe-video__title-role">
+            {title.role}
+          </span>{" "}
+          {title.trail}
+        </h2>
+        <div className="aiop-stripe-video__cluster aiop-reveal">
           <p className="aiop-stripe-video__body">{body}</p>
           <a className="aiop-stripe-video__cta" href={cta.href}>
             <span className="aiop-stripe-video__cta-label">{cta.label}</span>
