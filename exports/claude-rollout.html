@@ -407,7 +407,7 @@
     .f-why .stage { justify-content: space-between; }
     .f-why__head {
       margin-top: var(--s-7);
-      max-width: 1300px;
+      max-width: 1400px;
     }
     .f-why__display {
       font-family: var(--display);
@@ -419,11 +419,22 @@
       margin: 0;
     }
     .f-why__display .accent { color: var(--accent); font-weight: 500; }
+    .f-why__lead {
+      margin-top: var(--s-4);
+      max-width: 980px;
+      font-family: var(--display);
+      font-size: 30px;
+      line-height: 1.3;
+      color: var(--ink-soft);
+      font-weight: 500;
+    }
+    .f-why__lead .accent { color: var(--accent); font-weight: 600; }
     .f-why__cols {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--s-7);
-      max-width: 1200px;
+      grid-template-columns: 1fr 1fr 1.1fr;
+      gap: var(--s-5);
+      max-width: 1680px;
+      align-items: stretch;
     }
     .f-why__col {
       display: flex;
@@ -435,6 +446,71 @@
       border-top: 1px solid var(--rule-strong);
     }
     .f-why__col .body { max-width: 480px; }
+
+    /* Third column · the strategic bet on Skills · framed + warm gradient */
+    .f-why__col--feature {
+      position: relative;
+      padding: 24px var(--s-4) var(--s-4);
+      border: 1px solid var(--accent);
+      background: linear-gradient(160deg,
+        rgba(217, 119, 87, 0.10) 0%,
+        rgba(251, 229, 221, 0.45) 48%,
+        rgba(245, 239, 230, 0.18) 100%);
+      isolation: isolate;
+      overflow: hidden;
+      gap: 14px;
+    }
+    .f-why__col--feature::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      z-index: 1;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--ember-glow) 70%, var(--accent) 100%);
+    }
+    .f-why__col--feature::after {
+      content: "";
+      position: absolute;
+      top: 0; right: 0;
+      width: 240px;
+      height: 240px;
+      z-index: 0;
+      background: radial-gradient(circle at 80% 20%, rgba(242, 169, 92, 0.16) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .f-why__col--feature > * { position: relative; z-index: 2; }
+    .f-why__col--feature .f-why__col-label {
+      border-top: none;
+      padding-top: 0;
+      color: var(--accent);
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .f-why__col--feature .f-why__col-label::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(217, 119, 87, 0.18);
+    }
+    .f-why__col-title {
+      font-family: var(--display);
+      font-size: 28px;
+      font-weight: 500;
+      line-height: 1.12;
+      letter-spacing: -0.014em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .f-why__col-title .accent { color: var(--accent); font-weight: 500; }
+    .f-why__col--feature .body {
+      max-width: none;
+      font-size: 17px;
+    }
+    .f-why__col--feature .body .accent { color: var(--accent); font-weight: 700; }
 
     /* ──────────────────────────────────────────────────────────────────
      *  Frame 02 · TEN TEAMS · paper · 5-column timeline
@@ -668,10 +744,12 @@
      * ────────────────────────────────────────────────────────────────── */
 
     .f-signal .stage {
-      gap: var(--s-5);
+      padding-top: 64px;
+      padding-bottom: 72px;
+      gap: var(--s-3);
     }
     .f-signal__head {
-      margin-top: var(--s-7);
+      margin-top: var(--s-4);
       max-width: 1700px;
     }
     .f-signal__display {
@@ -1239,300 +1317,345 @@
     }
 
     /* ──────────────────────────────────────────────────────────────────
-     *  Frame 10 · WHERE THIS IS HEADING · ember · AI Operator port
+     *  Frame 10 · WHERE THIS IS HEADING · ember · full-width substrate map
+     *  Sources → Encoded substrate → Headless surfaces.
      * ────────────────────────────────────────────────────────────────── */
 
     .f-headless { background: var(--ember-base); }
     .f-headless::before {
       background:
-        radial-gradient(ellipse 60% 50% at 18% 28%, rgba(242, 169, 92, 0.28) 0%, transparent 58%),
-        radial-gradient(ellipse 80% 70% at 92% 90%, rgba(217, 119, 87, 0.16) 0%, transparent 65%) !important;
-    }
-    .f-headless__watermark {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      background-image: url("./claude-rollout-assets/mimir-system-map.jpg");
-      background-size: cover;
-      background-position: right center;
-      opacity: 0.04;
-      filter: brightness(0.4) saturate(1.4) hue-rotate(-12deg) blur(2px);
-      mix-blend-mode: screen;
-      mask-image: linear-gradient(105deg, transparent 0%, transparent 35%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.9) 100%);
-      -webkit-mask-image: linear-gradient(105deg, transparent 0%, transparent 35%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.9) 100%);
+        radial-gradient(ellipse 60% 50% at 18% 22%, rgba(242, 169, 92, 0.26) 0%, transparent 58%),
+        radial-gradient(ellipse 80% 70% at 82% 90%, rgba(217, 119, 87, 0.14) 0%, transparent 65%) !important;
     }
     .f-headless .stage {
-      display: grid;
-      grid-template-columns: 1fr 1.05fr;
-      gap: var(--s-7);
-      align-items: center;
+      gap: var(--s-5);
+      padding-top: 88px;
+      padding-bottom: 64px;
     }
-    .f-headless__copy {
-      display: flex;
-      flex-direction: column;
-      gap: var(--s-4);
+    .f-headless__head {
+      margin-top: var(--s-6);
+      max-width: 1500px;
     }
     .f-headless__display {
       font-family: var(--display);
-      font-size: var(--t-display-l);
+      font-size: var(--t-display-m);
       font-weight: 500;
-      line-height: 1.0;
-      letter-spacing: -0.022em;
+      line-height: 1.04;
+      letter-spacing: -0.02em;
       color: var(--ember-ink);
       margin: 0;
     }
     .f-headless__display .accent { color: var(--accent); font-weight: 500; }
-    .f-headless__copy .body { max-width: 620px; }
-    .f-headless__transition {
-      padding-top: var(--s-3);
-      border-top: 1px solid var(--ember-rule);
-      font-family: var(--display);
-      font-size: 22px;
-      font-weight: 500;
-      color: var(--ember-faint);
-      max-width: 620px;
-      margin: 0;
+    .f-headless__sub {
+      margin-top: var(--s-3);
+      max-width: 1100px;
+      font-family: var(--body);
+      font-size: var(--t-body);
+      line-height: 1.5;
+      color: var(--ember-soft);
+      font-weight: 450;
     }
+    .f-headless__sub strong { color: var(--ember-ink); font-weight: 700; }
 
-    .ai-card {
-      background: linear-gradient(160deg, rgba(50, 38, 25, 0.85) 0%, rgba(34, 26, 18, 0.92) 100%);
-      border: 1px solid var(--ember-rule-strong);
-      padding: 28px 32px 26px;
+    /* ── Substrate map · full-width card ───────────────────── */
+
+    .substrate-map {
+      position: relative;
+      flex: 1;
+      min-height: 0;
       display: flex;
       flex-direction: column;
-      gap: var(--s-3);
-      position: relative;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+      background: linear-gradient(160deg,
+        rgba(50, 38, 25, 0.55) 0%,
+        rgba(34, 26, 18, 0.75) 100%);
+      border: 1px solid var(--ember-rule-strong);
+      padding: 24px 28px 22px;
+      isolation: isolate;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
     }
-    .ai-card::before {
+    .substrate-map::before {
       content: "";
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 1px;
-      background: linear-gradient(90deg,
-        rgba(242, 169, 92, 0.45) 0%,
-        rgba(242, 169, 92, 0.18) 60%,
-        transparent 100%);
+      background: linear-gradient(90deg, var(--accent) 0%, rgba(217,119,87,0.4) 60%, transparent 100%);
     }
-    .ai-card__head {
+    .substrate-map__head {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding-bottom: var(--s-2);
+      padding-bottom: 14px;
+      margin-bottom: 18px;
       border-bottom: 1px solid var(--ember-rule);
     }
-    .ai-card__eyebrow {
+    .substrate-map__label {
       display: inline-flex;
       align-items: center;
       gap: 10px;
       font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: 0.14em;
-      color: var(--ember-soft);
-      font-weight: 500;
-    }
-    .ai-card__eyebrow .dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 8px rgba(242, 169, 92, 0.6);
-    }
-    .ai-card__badge {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border: 1px solid var(--ember-rule-strong);
-      color: var(--accent);
-      font-weight: 600;
-      clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
-    }
-    .ai-lane {
-      position: relative;
-      border: 1px solid var(--ember-rule);
-      padding: 22px 22px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: var(--s-2);
-    }
-    .ai-lane__pill {
-      position: absolute;
-      top: -11px;
-      left: 18px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--ember-base);
-      padding: 4px 14px;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.18em;
+      font-size: var(--t-tag);
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       font-weight: 700;
-      color: var(--accent);
-      clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+      color: var(--ember-soft);
     }
-    .ai-lane__pill .dot {
-      width: 6px; height: 6px;
+    .substrate-map__label .dot {
+      width: 8px; height: 8px;
       border-radius: 50%;
       background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(217, 119, 87, 0.18);
     }
-    .ai-lane--build .ai-lane__pill { color: var(--ember-ink); }
-    .ai-lane--build .ai-lane__pill .dot { background: var(--ember-glow); }
-    .ai-lane__label {
+    .substrate-map__flow {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--ember-soft);
+      padding: 6px 12px;
+      border: 1px solid var(--ember-rule);
+      background: rgba(0,0,0,0.18);
+    }
+    .substrate-map__flow .arrow { color: var(--accent); margin: 0 4px; }
+
+    .substrate-map__grid {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 1fr 56px 1.18fr 56px 1fr;
+      gap: 0;
+      align-items: stretch;
+    }
+    .substrate-col {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 18px 16px 16px;
+      position: relative;
+      border: 1px solid var(--ember-rule);
+      background: rgba(255, 255, 255, 0.012);
+      min-height: 0;
+    }
+    .substrate-col--substrate {
+      background: linear-gradient(160deg,
+        rgba(217, 119, 87, 0.14) 0%,
+        rgba(217, 119, 87, 0.04) 50%,
+        rgba(255, 255, 255, 0.01) 100%);
+      border-color: var(--accent);
+    }
+    .substrate-col--substrate::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--ember-glow) 70%, var(--accent) 100%);
+    }
+    .substrate-col__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .substrate-col__n {
       font-family: var(--mono);
       font-size: 10px;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--ember-faint);
-      font-weight: 600;
-      margin-top: 6px;
+      font-weight: 700;
     }
-    .ai-substrate {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .ai-substrate__row {
-      display: grid;
-      grid-template-columns: 88px 1fr;
-      gap: 18px;
-      padding: 12px 0;
-      border-top: 1px solid var(--ember-rule);
-    }
-    .ai-substrate__row:first-child { border-top: 0; padding-top: 4px; }
-    .ai-substrate__tag {
+    .substrate-col--substrate .substrate-col__n { color: var(--accent); }
+    .substrate-col__badge {
       font-family: var(--mono);
-      font-size: 11px;
+      font-size: 9px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--accent);
-      font-weight: 700;
-      padding-top: 4px;
+      color: var(--ember-soft);
+      font-weight: 600;
+      padding: 3px 8px;
+      border: 1px solid var(--ember-rule-strong);
+      background: var(--ember-base);
     }
-    .ai-substrate__name {
+    .substrate-col__layer {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ember-faint);
+      font-weight: 600;
+      padding-top: 10px;
+      border-top: 1px solid var(--ember-rule);
+    }
+    .substrate-col__title {
       font-family: var(--display);
       font-size: 22px;
       font-weight: 500;
-      line-height: 1.2;
+      line-height: 1.12;
+      letter-spacing: -0.012em;
       color: var(--ember-ink);
-      letter-spacing: -0.008em;
+      margin: 2px 0 6px;
     }
-    .ai-connector {
+    .substrate-col__items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
       display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 6px 0;
-    }
-    .ai-connector__line {
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--ember-rule-strong) 30%, var(--ember-rule-strong) 70%, transparent);
-    }
-    .ai-connector__label {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--ember-faint);
-      font-weight: 600;
-    }
-    .ai-tabs {
-      display: flex;
+      flex-direction: column;
       gap: 6px;
-      flex-wrap: wrap;
-      margin-top: 4px;
+      flex: 1;
     }
-    .ai-tab {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ember-faint);
-      font-weight: 600;
-      padding: 6px 12px;
-      border: 1px solid var(--ember-rule);
-      background: var(--ember-base);
-    }
-    .ai-tab.is-active {
-      color: var(--ember-base);
-      background: var(--ember-glow);
-      border-color: var(--ember-glow);
-      font-weight: 700;
-    }
-    .ai-snippet {
+    .substrate-col__item {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 12px 14px;
-      background: var(--ember-base);
+      gap: 10px;
+      padding: 8px 12px;
+      background: rgba(0, 0, 0, 0.20);
       border: 1px solid var(--ember-rule);
-      margin-top: 6px;
+      font-family: var(--body);
+      font-size: 13px;
+      color: var(--ember-soft);
+      font-weight: 500;
+      line-height: 1.3;
     }
-    .ai-snippet__label {
+    .substrate-col__item .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--ember-glow);
+      flex-shrink: 0;
+    }
+
+    /* Substrate column rows: tag + name format */
+    .substrate-col__items--substrate .substrate-col__item {
+      display: grid;
+      grid-template-columns: 76px 1fr;
+      gap: 12px;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.30);
+      border-color: var(--ember-rule-strong);
+    }
+    .substrate-col__items--substrate .row-tag {
       font-family: var(--mono);
       font-size: 10px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--ember-faint);
-      font-weight: 600;
+      color: var(--accent);
+      font-weight: 700;
     }
-    .ai-snippet__url {
-      font-family: var(--mono);
-      font-size: 14px;
-      letter-spacing: -0.005em;
-      color: var(--ember-glow);
+    .substrate-col__items--substrate .row-name {
+      font-family: var(--body);
+      font-size: 13px;
+      color: var(--ember-ink);
       font-weight: 500;
+      line-height: 1.3;
     }
-    .ai-surfaces {
+
+    .substrate-col__tags {
       list-style: none;
-      padding: 0;
-      margin: 4px 0 0;
+      padding: 8px 0 0;
+      margin: 0;
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 5px;
+      border-top: 1px dashed var(--ember-rule);
     }
-    .ai-surface {
+    .substrate-col__tags li {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ember-faint);
+      font-weight: 600;
+      padding: 4px 8px;
+      border: 1px solid var(--ember-rule);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .substrate-col__items--surfaces {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .substrate-col__items--surfaces .substrate-col__item {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 14px;
-      border: 1px solid var(--ember-rule);
-      background: rgba(255, 255, 255, 0.02);
+      color: var(--ember-ink);
+    }
+    .substrate-col__items--surfaces .surface-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px; height: 22px;
+      border-radius: 3px;
+      background: var(--accent);
+      color: var(--ember-base);
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* Vertical connector with rotated label between columns */
+    .substrate-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 0 6px;
+    }
+    .substrate-connector__line {
+      width: 1px;
+      flex: 1;
+      background: linear-gradient(180deg,
+        transparent 0%,
+        var(--ember-rule-strong) 25%,
+        var(--ember-rule-strong) 75%,
+        transparent 100%);
+      min-height: 40px;
+    }
+    .substrate-connector__label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ember-faint);
+      font-weight: 600;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      white-space: nowrap;
+    }
+    .substrate-connector__label .arrow {
+      color: var(--accent);
+      writing-mode: horizontal-tb;
+      display: inline-block;
+      transform: rotate(90deg);
+      margin: 4px 0;
+    }
+
+    .substrate-map__foot {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--ember-rule);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
       font-family: var(--mono);
       font-size: 11px;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--ember-soft);
       font-weight: 600;
     }
-    .ai-surface__icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 16px;
-      height: 16px;
-      border-radius: 3px;
-      background: var(--accent);
-      color: var(--ember-base);
-      font-family: var(--display);
-      font-size: 10px;
+    .substrate-map__foot .arrow {
+      color: var(--accent);
+      font-size: 14px;
+    }
+    .substrate-map__foot strong {
+      color: var(--ember-ink);
       font-weight: 700;
-    }
-    .ai-card__foot {
-      font-family: var(--display);
-      font-size: 16px;
-      color: var(--ember-faint);
-      padding-top: var(--s-2);
-      border-top: 1px solid var(--ember-rule);
-      font-weight: 500;
-      margin: 0;
-    }
-    .ai-lane__divider {
-      height: 1px;
-      background: var(--ember-rule);
-      margin: 6px 0;
     }
 
     /* ──────────────────────────────────────────────────────────────────
@@ -1794,15 +1917,21 @@
     <div class="stage">
       <div class="f-why__head">
         <h2 class="f-why__display" id="f01-title">Founders want you on the <span class="accent">best</span> frontier models. Not loyal to one.</h2>
+        <p class="f-why__lead">Same logic shapes how we encode our work. <span class="accent">Skills, not vendor-locked tools.</span></p>
       </div>
       <div class="f-why__cols">
         <div class="f-why__col">
-          <span class="label f-why__col-label">The principle</span>
+          <span class="label f-why__col-label">The model principle</span>
           <p class="body">ChatGPT and Gemini stay. Claude joins. We keep evaluating all three. The point is access to the frontier, not religion about a vendor.</p>
         </div>
         <div class="f-why__col">
           <span class="label f-why__col-label">Why Claude pulled ahead</span>
           <p class="body">Smarter on overarching, nuanced output. Sharper at judgment work. The interfaces just feel better. If something else takes the lead, we move.</p>
+        </div>
+        <div class="f-why__col f-why__col--feature">
+          <span class="label f-why__col-label">Why Skills · the portable bet</span>
+          <h3 class="f-why__col-title">Open standard. <span class="accent">Ours, not the vendor's.</span></h3>
+          <p class="body">Skills are an open format. <strong>Portable across LLMs and any agent</strong>: plug them into Claude today, into the next model tomorrow, into a Slack bot or an automation the day after. Encode the judgment once and it compounds. The substrate is ours.</p>
         </div>
       </div>
     </div>
@@ -2031,7 +2160,7 @@
         </article>
       </div>
 
-      <p class="f-signal__close"><strong>We do not need a Deployment Company.</strong> <span class="accent">We have been encoding judgment for years.</span></p>
+      <p class="f-signal__close"><strong>Make the layer real</strong> before the labs sell it back to us. <span class="accent">Loop has been encoding judgment for years.</span></p>
     </div>
   </section>
 
@@ -2077,7 +2206,7 @@
         </article>
       </div>
 
-      <p class="f-moat__close"><strong>We do not need a Deployment Company.</strong> <span class="accent">The substrate is ours.</span></p>
+      <p class="f-moat__close"><strong>The substrate is Loop's.</strong> <span class="accent">Encoded by Loopers, built on with the partners who already get how we work.</span></p>
     </div>
   </section>
 
@@ -2183,74 +2312,98 @@
   </section>
 
   <!-- ════════════════════════════════════════════════════════════════
-   *  FRAME 10 · WHERE THIS IS HEADING · ember · AI Operator port
+   *  FRAME 10 · WHERE THIS IS HEADING · ember · full-width substrate map
    * ══════════════════════════════════════════════════════════════ -->
   <section class="frame f-headless" data-slide-id="10-headless" data-mode="ember" aria-labelledby="f10-title">
-    <div class="f-headless__watermark" aria-hidden="true"></div>
     <span class="vignette" aria-hidden="true"></span>
     <span class="eyebrow eyebrow-anchor">10 · WHERE THIS IS HEADING</span>
     <div class="stage">
-      <div class="f-headless__copy">
-        <h2 class="f-headless__display" id="f10-title">No agents <span class="accent">without substrate</span>.</h2>
-        <p class="body">The interface no longer matters. Slack, Claude, Cursor, a REST API, an agent. <strong>The value is in the encoded judgment underneath.</strong></p>
-        <p class="body">That is what Skills are: substrate any surface can read. Headless by design.</p>
-        <p class="f-headless__transition">Built once. Inherited everywhere. The deck you are reading is one of the surfaces.</p>
+      <div class="f-headless__head">
+        <h2 class="f-headless__display" id="f10-title">The better you encode, <span class="accent">the more you can build</span>.</h2>
+        <p class="f-headless__sub">Substrate is the leverage. <strong>The interface bends around it.</strong> Slack today, Cursor tomorrow, an agent the day after. The work stays in place; the surfaces inherit it.</p>
       </div>
 
-      <aside class="ai-card" aria-label="Headless interface preview">
-        <header class="ai-card__head">
-          <span class="ai-card__eyebrow"><span class="dot"></span>mimir / skills / loop</span>
-          <span class="ai-card__badge">headless</span>
+      <article class="substrate-map" aria-label="The Loop substrate map">
+        <header class="substrate-map__head">
+          <span class="substrate-map__label"><span class="dot"></span>Loop substrate map</span>
+          <span class="substrate-map__flow">Sources <span class="arrow">→</span> Substrate <span class="arrow">→</span> Surfaces</span>
         </header>
 
-        <section class="ai-lane ai-lane--encode" aria-label="The substrate">
-          <span class="ai-lane__pill"><span class="dot"></span>Encode</span>
-          <span class="ai-lane__label">The substrate</span>
-          <ul class="ai-substrate">
-            <li class="ai-substrate__row"><span class="ai-substrate__tag">Voice</span><span class="ai-substrate__name">Paid social patterns</span></li>
-            <li class="ai-substrate__row"><span class="ai-substrate__tag">Judgment</span><span class="ai-substrate__name">Frame &amp; RAPID</span></li>
-            <li class="ai-substrate__row"><span class="ai-substrate__tag">Data</span><span class="ai-substrate__name">Snowflake schemas</span></li>
-            <li class="ai-substrate__row"><span class="ai-substrate__tag">Brand</span><span class="ai-substrate__name">CMF source of truth</span></li>
-          </ul>
-        </section>
+        <div class="substrate-map__grid">
+          <article class="substrate-col substrate-col--sources" aria-labelledby="sm-sources">
+            <header class="substrate-col__head">
+              <span class="substrate-col__n" id="sm-sources">01 · Trusted sources</span>
+            </header>
+            <span class="substrate-col__layer">Source layer</span>
+            <h3 class="substrate-col__title">Where Loop's truth already lives.</h3>
+            <ul class="substrate-col__items" role="list">
+              <li class="substrate-col__item"><span class="dot"></span>Loop ad library (295 winners)</li>
+              <li class="substrate-col__item"><span class="dot"></span>Frame &amp; RAPID docs</li>
+              <li class="substrate-col__item"><span class="dot"></span>Snowflake schemas</li>
+              <li class="substrate-col__item"><span class="dot"></span>CMF source of truth</li>
+              <li class="substrate-col__item"><span class="dot"></span>Customer research</li>
+              <li class="substrate-col__item"><span class="dot"></span>Reviewer notes</li>
+            </ul>
+          </article>
 
-        <div class="ai-connector" aria-hidden="true">
-          <span class="ai-connector__line"></span>
-          <span class="ai-connector__label">substrate flows into surfaces</span>
-          <span class="ai-connector__line"></span>
+          <span class="substrate-connector" aria-hidden="true">
+            <span class="substrate-connector__line"></span>
+            <span class="substrate-connector__label">Reads from <span class="arrow">→</span></span>
+            <span class="substrate-connector__line"></span>
+          </span>
+
+          <article class="substrate-col substrate-col--substrate" aria-labelledby="sm-substrate">
+            <header class="substrate-col__head">
+              <span class="substrate-col__n" id="sm-substrate">02 · Encoded substrate</span>
+              <span class="substrate-col__badge">Authority layer</span>
+            </header>
+            <span class="substrate-col__layer">The Skills</span>
+            <h3 class="substrate-col__title">What matters, how to decide, what to check.</h3>
+            <ul class="substrate-col__items substrate-col__items--substrate" role="list">
+              <li class="substrate-col__item"><span class="row-tag">Rules</span><span class="row-name">How the team decides</span></li>
+              <li class="substrate-col__item"><span class="row-tag">Examples</span><span class="row-name">What good looks like</span></li>
+              <li class="substrate-col__item"><span class="row-tag">Sources</span><span class="row-name">Data it can read</span></li>
+              <li class="substrate-col__item"><span class="row-tag">Loops</span><span class="row-name">Who confirms what</span></li>
+            </ul>
+            <ul class="substrate-col__tags" role="list">
+              <li>Owned by Loopers</li>
+              <li>Versioned</li>
+              <li>Model-portable</li>
+            </ul>
+          </article>
+
+          <span class="substrate-connector" aria-hidden="true">
+            <span class="substrate-connector__line"></span>
+            <span class="substrate-connector__label">Exposed as <span class="arrow">→</span></span>
+            <span class="substrate-connector__line"></span>
+          </span>
+
+          <article class="substrate-col substrate-col--surfaces" aria-labelledby="sm-surfaces">
+            <header class="substrate-col__head">
+              <span class="substrate-col__n" id="sm-surfaces">03 · Headless surfaces</span>
+              <span class="substrate-col__badge">Headless wrapper</span>
+            </header>
+            <span class="substrate-col__layer">Pick your interface</span>
+            <h3 class="substrate-col__title">Wherever a Looper wants to call it.</h3>
+            <ul class="substrate-col__items substrate-col__items--surfaces" role="list">
+              <li class="substrate-col__item"><span class="surface-icon">Cl</span>Claude</li>
+              <li class="substrate-col__item"><span class="surface-icon">#</span>Slack</li>
+              <li class="substrate-col__item"><span class="surface-icon">⌘</span>Cursor</li>
+              <li class="substrate-col__item"><span class="surface-icon">▲</span>Vesper</li>
+              <li class="substrate-col__item"><span class="surface-icon">◇</span>Cowork</li>
+              <li class="substrate-col__item"><span class="surface-icon">{}</span>REST</li>
+            </ul>
+          </article>
         </div>
 
-        <section class="ai-lane ai-lane--build" aria-label="The interface no longer matters">
-          <span class="ai-lane__pill"><span class="dot"></span>Build</span>
-          <span class="ai-lane__label">The interface no longer matters</span>
-
-          <div class="ai-tabs" role="tablist" aria-label="Surfaces">
-            <span class="ai-tab is-active" role="tab" aria-selected="true">Claude</span>
-            <span class="ai-tab" role="tab">Slack</span>
-            <span class="ai-tab" role="tab">Cursor</span>
-            <span class="ai-tab" role="tab">MCP</span>
-            <span class="ai-tab" role="tab">API</span>
-          </div>
-
-          <div class="ai-snippet" aria-label="Skill endpoint">
-            <span class="ai-snippet__label">read from</span>
-            <code class="ai-snippet__url">mimir.loop/skills/cmf</code>
-          </div>
-
-          <div class="ai-lane__divider" aria-hidden="true"></div>
-
-          <span class="ai-lane__label">Where it shows up</span>
-          <ul class="ai-surfaces" role="list">
-            <li class="ai-surface"><span class="ai-surface__icon">#</span>Slack</li>
-            <li class="ai-surface"><span class="ai-surface__icon">⌘</span>Cursor</li>
-            <li class="ai-surface"><span class="ai-surface__icon">◇</span>Cowork</li>
-            <li class="ai-surface"><span class="ai-surface__icon">▲</span>Vesper</li>
-            <li class="ai-surface"><span class="ai-surface__icon">{}</span>API</li>
-          </ul>
-        </section>
-
-        <p class="ai-card__foot">Built once. Inherited everywhere.</p>
-      </aside>
+        <footer class="substrate-map__foot">
+          <span><strong>Work stays in place</strong></span>
+          <span class="arrow">→</span>
+          <span>substrate adds judgment</span>
+          <span class="arrow">→</span>
+          <span><strong>any surface inherits it</strong></span>
+        </footer>
+      </article>
     </div>
   </section>
 
