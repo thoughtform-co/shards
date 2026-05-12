@@ -1,0 +1,2333 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=1920" />
+  <title>Claude rollout · Loop Earplugs · Gather Round, May 2026</title>
+  <meta name="description" content="Thirteen-frame story of Loop's Claude rollout. Designed for screenshot export into the master Gather Round deck." />
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ══════════════════════════════════════════════════════════════════
+     *  Claude rollout · Gather Round, May 2026
+     *  13 stacked 1920×1080 frames. Self-contained.
+     *  Aesthetic: "Gather Round by firelight" — cozy stop-motion warmth.
+     *  Two modes (ember-dark + paper-warm) sharing one rust ember accent.
+     *  No italics; emphasis is carried by weight + color.
+     * ══════════════════════════════════════════════════════════════════ */
+
+    :root {
+      /* Shared ember accent (carries across both modes) */
+      --accent: #D97757;
+      --accent-deep: #B6411E;
+      --accent-soft: #FBE5DD;
+      --ember-glow: #F2A95C;
+
+      /* Paper-warm */
+      --paper: #F5EFE6;
+      --paper-2: #EBE3D5;
+      --paper-3: #E0D5C0;
+      --card: #FAFAF7;
+      --card-2: #FFFFFF;
+      --ink: #1A1814;
+      --ink-soft: #2D2A24;
+      --muted: #6E6557;
+      --faint: #998F7E;
+      --rule: #DCD4C4;
+      --rule-strong: #B8AC93;
+
+      /* Ember-dark */
+      --ember-base: #1A130C;
+      --ember-base-2: #221A12;
+      --ember-shadow: #241B26;
+      --ember-card: #2A1F16;
+      --ember-card-2: #322619;
+      --ember-rule: #3A2C20;
+      --ember-rule-strong: #54402F;
+      --ember-ink: #F4E8D8;
+      --ember-soft: #C8B89E;
+      --ember-faint: #8A7A66;
+
+      /* Per-card brand hues (news cards & moat) */
+      --hue-stripe: #635BFF;
+      --hue-palantir: #4A5160;
+      --hue-openai: #10A37F;
+      --hue-anthropic: #D97757;
+
+      /* Type stack */
+      --display: "Source Serif 4", "GT Sectra Display", "Cormorant Garamond", Georgia, serif;
+      --body: "Avantt", "Plus Jakarta Sans", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+      /* Type scale (consistent across frames; layouts vary, sizes don't) */
+      --t-display-xl: 132px;   /* hero, single-statement key frames */
+      --t-display-l: 92px;     /* primary content headline */
+      --t-display-m: 72px;     /* dense or two-line content headline */
+      --t-display-s: 56px;     /* bridge quote, news-card-page headline */
+      --t-stat: 88px;          /* hero stat numbers */
+      --t-card-headline: 30px; /* news / moat card headline */
+      --t-list-item: 28px;     /* timeline team names, moat titles */
+      --t-lead: 22px;          /* subtitle / lead under display */
+      --t-body: 19px;          /* primary body */
+      --t-body-s: 17px;        /* secondary body */
+      --t-caption: 15px;       /* small notes */
+      --t-eyebrow: 13px;       /* mono eyebrow */
+      --t-tag: 11px;           /* mono small tag */
+
+      /* Spacing scale */
+      --s-1: 8px;
+      --s-2: 16px;
+      --s-3: 24px;
+      --s-4: 32px;
+      --s-5: 48px;
+      --s-6: 64px;
+      --s-7: 96px;
+      --s-8: 128px;
+
+      /* Layout */
+      --pad-x: 120px;
+      --pad-y: 96px;             /* uniform top/bottom padding for all frames */
+      --eyebrow-y: var(--pad-y); /* eyebrow Y is the SAME on every frame */
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    html { background: #0d0905; }
+    body {
+      font-family: var(--body);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-feature-settings: "kern", "liga", "ss01", "cv11";
+      letter-spacing: -0.005em;
+      text-rendering: optimizeLegibility;
+    }
+    a { color: inherit; }
+
+    /* Italics are a contemporary AI-design giveaway. Disable them
+       globally; emphasis comes through weight + color instead. */
+    em, i, cite, address { font-style: normal; }
+
+    .deck {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 64px;
+      padding: 64px 0;
+      width: 100vw;
+    }
+
+    /* ──────────────────────────────────────────────────────────────────
+     *  Frame mixin · 1920×1080 · atmosphere stack · mode tokens
+     * ────────────────────────────────────────────────────────────────── */
+
+    .frame {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      flex: none;
+      isolation: isolate;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+    }
+
+    .frame[data-mode="ember"] { background: var(--ember-base); color: var(--ember-ink); }
+    .frame[data-mode="paper"] { background: var(--paper); color: var(--ink); }
+
+    /* Atmosphere · firelight gradient */
+    .frame::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .frame[data-mode="ember"]::before {
+      background:
+        radial-gradient(ellipse 60% 50% at 28% 30%, rgba(242, 169, 92, 0.32) 0%, transparent 58%),
+        radial-gradient(ellipse 70% 60% at 88% 78%, rgba(217, 119, 87, 0.20) 0%, transparent 62%),
+        radial-gradient(ellipse 50% 40% at 50% 100%, rgba(60, 79, 76, 0.16) 0%, transparent 62%);
+    }
+    .frame[data-mode="paper"]::before {
+      background:
+        radial-gradient(ellipse 55% 45% at 22% 28%, rgba(217, 119, 87, 0.10) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 92% 88%, rgba(217, 119, 87, 0.06) 0%, transparent 65%);
+    }
+
+    /* Atmosphere · grain */
+    .frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+      mix-blend-mode: overlay;
+      opacity: 0.08;
+    }
+    .frame[data-mode="paper"]::after { opacity: 0.05; }
+
+    /* Atmosphere · vignette */
+    .vignette {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .frame[data-mode="ember"] .vignette {
+      box-shadow:
+        inset 0 0 200px 30px rgba(8, 4, 2, 0.55),
+        inset 0 0 600px 80px rgba(8, 4, 2, 0.30);
+    }
+    .frame[data-mode="paper"] .vignette {
+      box-shadow:
+        inset 0 0 240px 20px rgba(150, 130, 100, 0.16),
+        inset 0 0 720px 60px rgba(150, 130, 100, 0.08);
+    }
+
+    /* Stage — content sits above all atmosphere */
+    .stage {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      height: 100%;
+      padding: var(--pad-y) var(--pad-x);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ──────────────────────────────────────────────────────────────────
+     *  Shared primitives · used on every frame
+     * ────────────────────────────────────────────────────────────────── */
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--mono);
+      font-size: var(--t-eyebrow);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--ember-faint);
+    }
+    .frame[data-mode="paper"] .eyebrow { color: var(--muted); }
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .display {
+      font-family: var(--display);
+      font-weight: 500;
+      line-height: 1.04;
+      letter-spacing: -0.018em;
+      color: var(--ember-ink);
+      margin: 0;
+    }
+    .frame[data-mode="paper"] .display { color: var(--ink); }
+    .display .accent { color: var(--accent); font-weight: 500; }
+    .display .quiet  { color: var(--ember-faint); font-weight: 500; }
+    .frame[data-mode="paper"] .display .quiet { color: var(--faint); }
+
+    .lead {
+      font-family: var(--body);
+      font-size: var(--t-lead);
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--ember-soft);
+      margin: 0;
+    }
+    .frame[data-mode="paper"] .lead { color: var(--ink-soft); }
+
+    .body {
+      font-family: var(--body);
+      font-size: var(--t-body);
+      font-weight: 450;
+      line-height: 1.55;
+      color: var(--ember-soft);
+      margin: 0;
+    }
+    .frame[data-mode="paper"] .body { color: var(--ink-soft); }
+    .body strong { font-weight: 700; color: var(--ember-ink); }
+    .frame[data-mode="paper"] .body strong { color: var(--ink); font-weight: 700; }
+    .body .accent { color: var(--accent); font-weight: 700; }
+
+    .label {
+      font-family: var(--mono);
+      font-size: var(--t-tag);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--ember-faint);
+    }
+    .frame[data-mode="paper"] .label { color: var(--muted); }
+    .label.is-accent { color: var(--accent); }
+
+    .rule {
+      width: 100%;
+      height: 1px;
+      background: var(--ember-rule);
+      border: 0;
+    }
+    .frame[data-mode="paper"] .rule { background: var(--rule); }
+
+    .arrow {
+      color: var(--accent);
+      display: inline-block;
+      font-weight: 500;
+    }
+
+    /* The eyebrow lives at a FIXED Y on every frame so the viewer's
+       eye can anchor immediately when scrubbing through the deck. */
+    .eyebrow-anchor {
+      position: absolute;
+      top: var(--eyebrow-y);
+      left: var(--pad-x);
+      z-index: 4;
+    }
+
+    /* ──────────────────────────────────────────────────────────────────
+     *  Frame 00 · HERO · campfire image · ember
+     * ────────────────────────────────────────────────────────────────── */
+
+    .f-hero { background: var(--ember-base); }
+    .f-hero::before, .f-hero::after { content: none; }
+
+    .f-hero__bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .f-hero__bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 40%;
+      display: block;
+    }
+
+    .f-hero__overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg,
+          rgba(13, 10, 8, 0.88) 0%,
+          rgba(13, 10, 8, 0.55) 22%,
+          rgba(13, 10, 8, 0.10) 42%,
+          rgba(13, 10, 8, 0.10) 58%,
+          rgba(13, 10, 8, 0.78) 88%,
+          rgba(13, 10, 8, 0.95) 100%),
+        radial-gradient(ellipse 70% 55% at 18% 28%, rgba(13, 10, 8, 0.55) 0%, transparent 65%);
+    }
+    .f-hero__grain {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+      mix-blend-mode: overlay;
+      opacity: 0.10;
+    }
+
+    .f-hero .stage {
+      justify-content: space-between;
+    }
+
+    .f-hero__top {
+      max-width: 1200px;
+    }
+    .f-hero__display {
+      margin-top: var(--s-5);
+      font-family: var(--display);
+      font-size: var(--t-display-xl);
+      font-weight: 500;
+      line-height: 0.96;
+      letter-spacing: -0.025em;
+      color: var(--ember-ink);
+    }
+    .f-hero__display .accent-period { color: var(--accent); }
+    .f-hero__sub {
+      margin-top: var(--s-4);
+      max-width: 720px;
+      font-family: var(--body);
+      font-size: var(--t-lead);
+      line-height: 1.4;
+      color: var(--ember-soft);
+      font-weight: 500;
+    }
+    .f-hero__bottom {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+    }
+    .f-hero__rule {
+      width: 100%;
+      height: 1px;
+      background: rgba(244, 232, 216, 0.20);
+      border: 0;
+    }
+    .f-hero__stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: var(--s-7);
+    }
+    .f-hero__stat-num {
+      font-family: var(--display);
+      font-size: var(--t-stat);
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--ember-ink);
+    }
+    .f-hero__stat-num .accent { color: var(--accent); }
+    .f-hero__stat-cap {
+      margin-top: var(--s-2);
+      font-family: var(--body);
+      font-size: var(--t-body-s);
+      line-height: 1.4;
+      color: var(--ember-soft);
+      max-width: 320px;
+      font-weight: 450;
+    }
+
+    /* ──────────────────────────────────────────────────────────────────
+     *  Frame 01 · WHY CLAUDE · paper · two-column
+     * ────────────────────────────────────────────────────────────────── */
+
+    .f-why .stage { justify-content: space-between; }
+    .f-why__head {
+      margin-top: var(--s-7);
+      max-width: 1300px;
+    }
+    .f-why__display {
+      font-family: var(--display);
+      font-size: var(--t-display-l);
+      font-weight: 500;
+      line-height: 1.0;
+      letter-spacing: -0.022em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .f-why__display .accent { color: var(--accent); font-weight: 500; }
+    .f-why__cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-7);
+      max-width: 1200px;
+    }
+    .f-why__col {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-3);
+    }
+    .f-why__col-label {
+      padding-top: var(--s-2);
+      border-top: 1px solid var(--rule-strong);
+    }
+    .f-why__col .body { max-width: 480px; }
+
+    /* ──────────────────────────────────────────────────────────────────
+     *  Frame 02 · TEN TEAMS · paper · 5-column timeline
+     * ────────────────────────────────────────────────────────────────── */
+
+    .f-teams .stage { justify-content: space-between; }
+    .f-teams__head {
+      margin-top: var(--s-7);
+      max-width: 1500px;
+    }
+    .f-teams__display {
+      font-family: var(--display);
+      font-size: var(--t-display-l);
+      font-weight: 500;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .f-teams__lead {
+      margin-top: var(--s-3);
+      max-width: 980px;
+    }
+    .f-teams__weeks {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-top: 1px solid var(--rule-strong);
+      padding-top: var(--s-4);
+    }
+    .f-teams__week + .f-teams__week {
+      border-left: 1px solid var(--rule);
+      padding-left: var(--s-4);
+      margin-left: -1px;
+    }
+    .f-teams__week { padding-right: var(--s-4); }
+    .f-teams__week-tag {
+      font-family: var(--mono);
+      font-size: var(--t-tag);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .f-teams__week-date {
+      display: block;
+      margin-top: 6px;
+      font-family: var(--mono);
+      font-size: var(--t-tag);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .f-teams__week-list {
+      list-style: none;
+      padding: 0;
+      margin: var(--s-3) 0 0;
+    }
+    .f-teams__week-team {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 14px 0;
+      border-top: 1px solid var(--rule);
+    }
+    .f-teams__week-team:first-child { border-top: 0; padding-top: 0; }
+    .f-teams__team-name {
+      font-family: var(--display);
+      font-size: var(--t-list-item);
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+    }
+    .f-teams__team-lead {
+      font-family: var(--mono);
+      font-size: var(--t-tag);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .f-teams__week-team.is-live .f-teams__team-name { color: var(--accent); }
+    .f-teams__payoff {
+      margin-top: auto;
+      padding-top: var(--s-4);
+      border-top: 1px solid var(--rule-strong);
+      font-family: var(--display);
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.35;
+      margin-bottom: 0;
+    }
+    .f-teams__payoff .quiet { color: var(--muted); font-weight: 500; }
+
+    /* ──────────────────────────────────────────────────────────────────
+     *  Frame 03 · THE PRINCIPLE · ember · big single-statement
+     * ────────────────────────────────────────────────────────────────── */
+
+    .f-principle .stage { justify-content: space-between; }
+    .f-principle__head {
+      margin-top: var(--s-7);
+      max-width: 1700px;
+    }
+    .f-principle__display {
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: var(--t-display-xl);
+      line-height: 1.0;
+      letter-spacing: -0.022em;
+      color: var(--ember-ink);
+      margin: 0;
+    }
+    .f-principle__display .accent {
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .f-principle__line { display: block; }
+    .f-principle__foot {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-7);
+      max-width: 1500px;
+      padding-top: var(--s-4);
+      border-top: 1px solid var(--ember-rule);
+    }
+    .f-principle__foot p {
+      font-family: var(--body);
+      font-size: var(--t-body);
+      line-height: 1.55;
+      color: var(--ember-soft);
+      font-weight: 450;
+      margin: 0;
+      max-width: 580px;
+    }
+    .f-principle__foot p strong { color: var(--ember-ink); font-weight: 700; }
+
+    /* ──────────────────────────────────────────────────────────────────
+     *  Frame 04 · BRIDGE · paper · pull quote + diagram
+     * ────────────────────────────────────────────────────────────────── */
+
+    .f-bridge .stage { justify-content: space-between; }
+    .f-bridge__main {
+      margin-top: var(--s-6);
+      display: grid;
+      grid-template-columns: 1.55fr 1fr;
+      gap: var(--s-8);
+      align-items: start;
+    }
+    .f-bridge__quote-mark {
+      display: block;
+      font-family: var(--display);
+      font-size: 96px;
+      line-height: 1;
+      color: var(--accent);
+      margin-bottom: var(--s-3);
+      font-weight: 500;
+    }
+    .f-bridge__quote {
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: 64px;
+      line-height: 1.12;
+      letter-spacing: -0.018em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .f-bridge__quote .accent {
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .f-bridge__diagram {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid var(--rule-strong);
+    }
+    .f-bridge__row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-1);
+      padding: var(--s-3) 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .f-bridge__row:last-child {
+      border-bottom: 1px solid var(--rule-strong);
+    }
+    .f-bridge__row-label {
+      font-family: var(--mono);
+      font-size: var(--t-tag);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .f-bridge__row.is-skill .f-bridge__row-label { color: var(--accent); }
+    .f-bridge__row-name {
+      font-family: var(--display);
+      font-size: 32px;
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.014em;
+      color: var(--ink);
+    }
+    .f-bridge__row-cap {
+      font-family: var(--body);
+      font-size: var(--t-body-s);
+      line-height: 1.45;
+      color: var(--ink-soft);
+      font-weight: 450;
+      margin: 4px 0 0;
+    }
+    .f-bridge__transition {
+      padding-top: var(--s-4);
+      border-top: 1px solid var(--rule-strong);
+      font-family: var(--display);
+      font-size: 26px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      max-width: 1100px;
+      line-height: 1.4;
+      margin: 0;
+    }
+    .f-bridge__transition .accent {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* ──────────────────────────────────────────────────────────────────
+     *  Frame 05 · THE SIGNAL · ember · WSJ/Bloomberg-style news cards
+     * ────────────────────────────────────────────────────────────────── */
+
+    .f-signal .stage {
+      gap: var(--s-5);
+    }
+    .f-signal__head {
+      margin-top: var(--s-7);
+      max-width: 1700px;
+    }
+    .f-signal__display {
+      font-family: var(--display);
+      font-size: var(--t-display-m);
+      font-weight: 500;
+      line-height: 1.04;
+      letter-spacing: -0.018em;
+      color: var(--ember-ink);
+      margin: 0;
+    }
+    .f-signal__display .accent { color: var(--accent); font-weight: 500; }
+    .f-signal__sub {
+      margin-top: var(--s-3);
+      max-width: 1100px;
+      font-family: var(--body);
+      font-size: var(--t-body);
+      line-height: 1.45;
+      color: var(--ember-soft);
+      font-weight: 450;
+    }
+    .f-signal__masthead {
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      padding-bottom: var(--s-2);
+      border-bottom: 2px solid var(--ember-rule-strong);
+      font-family: var(--mono);
+      font-size: var(--t-tag);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ember-faint);
+      font-weight: 600;
+    }
+    .f-signal__masthead .ms-mark {
+      font-family: var(--display);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--ember-ink);
+      letter-spacing: 0.04em;
+      text-transform: none;
+    }
+    .f-signal__masthead .ms-spacer { flex: 1; }
+    .f-signal__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--s-3);
+    }
+    .news {
+      position: relative;
+      background: var(--ember-card);
+      color: var(--ember-ink);
+      border: 1px solid var(--ember-rule);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .news__thumb {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .news__thumb-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .news__thumb-grid {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mix-blend-mode: overlay;
+      opacity: 0.7;
+    }
+    .news__thumb-noise {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+      mix-blend-mode: overlay;
+      opacity: 0.18;
+    }
+    .news__thumb-mark {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--display);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 1px 0 rgba(0,0,0,0.20);
+    }
+    .news__thumb-tag {
+      position: absolute;
+      bottom: 14px;
+      left: 16px;
+      z-index: 4;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.75);
+      font-weight: 600;
+    }
+    .news__thumb-corner {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      z-index: 4;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.55);
+      font-weight: 500;
+    }
+
+    /* Per-card thumb backgrounds (WSJ/Bloomberg-style cover blocks) */
+    .news--stripe .news__thumb-bg {
+      background:
+        radial-gradient(ellipse at 20% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 55%),
+        linear-gradient(135deg, #635BFF 0%, #4B43D6 60%, #2E27A4 100%);
+    }
+    .news--stripe .news__thumb-mark {
+      font-size: 124px;
+      font-style: normal;
+    }
+    .news--palantir .news__thumb-bg {
+      background:
+        radial-gradient(ellipse at 80% 30%, rgba(255, 255, 255, 0.06) 0%, transparent 55%),
+        linear-gradient(160deg, #2C313A 0%, #1A1E25 60%, #0F1217 100%);
+    }
+    .news--palantir .news__thumb-mark {
+      font-size: 88px;
+    }
+    .news--openai .news__thumb-bg {
+      background:
+        radial-gradient(ellipse at 70% 30%, rgba(255, 255, 255, 0.10) 0%, transparent 55%),
+        linear-gradient(140deg, #10A37F 0%, #0B7C61 55%, #064B3A 100%);
+    }
+    .news--openai .news__thumb-mark {
+      font-size: 100px;
+    }
+    .news--anthropic .news__thumb-bg {
+      background:
+        radial-gradient(ellipse at 25% 30%, rgba(255, 255, 255, 0.10) 0%, transparent 55%),
+        linear-gradient(140deg, #D97757 0%, #B6411E 60%, #6E2A16 100%);
+    }
+    .news--anthropic .news__thumb-mark {
+      font-size: 100px;
+    }
+
+    .news__body {
+      padding: var(--s-3) 22px var(--s-3);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+      flex: 1;
+    }
+    .news__kicker {
+      font-family: var(--mono);
+      font-size: var(--t-tag);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .news__headline {
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: var(--t-card-headline);
+      line-height: 1.08;
+      letter-spacing: -0.014em;
+      color: var(--ember-ink);
+      margin: 0;
+    }
+    .news__dek {
+      font-family: var(--body);
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--ember-soft);
+      font-weight: 450;
+      flex: 1;
+      margin: 0;
+    }
+    .news__dek strong { color: var(--ember-ink); font-weight: 700; }
+    .news__byline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: var(--s-2);
+      border-top: 1px solid var(--ember-rule);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ember-faint);
+      font-weight: 600;
+    }
+    .news__byline .source { color: var(--ember-soft); }
+    .news__byline .date { color: var(--ember-faint); }
+
+    .f-signal__close {
+      padding-top: var(--s-3);
+      border-top: 1px solid var(--ember-rule);
+      font-family: var(--display);
+      font-size: 24px;
+      font-weight: 500;
+      color: var(--ember-soft);
+      line-height: 1.4;
+      margin: 0;
+    }
+    .f-signal__close strong {
+      font-weight: 700;
+      color: var(--ember-ink);
+    }
+    .f-signal__close .accent { color: var(--accent); font-weight: 700; }
+
+    /* ──────────────────────────────────────────────────────────────────
+     *  Frame 06 · THE MOAT · paper · 4-card substrate manifest
+     * ────────────────────────────────────────────────────────────────── */
+
+    .f-moat .stage {
+      justify-content: space-between;
+    }
+    .f-moat__head {
+      margin-top: var(--s-7);
+      max-width: 1700px;
+    }
+    .f-moat__display {
+      font-family: var(--display);
+      font-size: var(--t-display-l);
+      font-weight: 500;
+      line-height: 1.0;
+      letter-spacing: -0.022em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .f-moat__display .accent { color: var(--accent); font-weight: 500; }
+    .f-moat__sub {
+      margin-top: var(--s-3);
+      max-width: 1100px;
+    }
+    .f-moat__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--s-3);
+    }
+    .moat-card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--rule);
+      padding: 26px 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+      overflow: hidden;
+    }
+    .moat-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent) 0%, rgba(217,119,87,0.5) 60%, transparent 100%);
+    }
+    .moat-card__year {
+      font-family: var(--mono);
+      font-size: var(--t-tag);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .moat-card__title {
+      font-family: var(--display);
+      font-size: var(--t-list-item);
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -0.014em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .moat-card__what {
+      font-family: var(--body);
+      font-size: var(--t-body-s);
+      line-height: 1.5;
+      color: var(--ink-soft);
+      font-weight: 450;
+      flex: 1;
+      margin: 0;
+    }
+    .moat-card__author {
+      font-family: var(--mono);
+      font-size: var(--t-tag);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+      padding-top: var(--s-2);
+      border-top: 1px solid var(--rule);
+    }
+    .f-moat__close {
+      padding-top: var(--s-4);
+      border-top: 1px solid var(--rule-strong);
+      font-family: var(--display);
+      font-size: 30px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      line-height: 1.4;
+      margin: 0;
+    }
+    .f-moat__close strong { color: var(--ink); font-weight: 700; }
+    .f-moat__close .accent { color: var(--accent); font-weight: 700; }
+
+    /* ──────────────────────────────────────────────────────────────────
+     *  Frame 07 · THE FLYWHEEL · paper · 3 case studies
+     * ────────────────────────────────────────────────────────────────── */
+
+    .f-flywheel .stage { justify-content: space-between; }
+    .f-flywheel__head {
+      margin-top: var(--s-7);
+      max-width: 1700px;
+    }
+    .f-flywheel__display {
+      font-family: var(--display);
+      font-size: var(--t-display-l);
+      font-weight: 500;
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .f-flywheel__display .accent { color: var(--accent); font-weight: 500; }
+    .f-flywheel__sub {
+      margin-top: var(--s-3);
+      max-width: 1100px;
+    }
+    .f-flywheel__cases {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-6);
+    }
+    .case {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+      border-top: 1px solid var(--rule-strong);
+      padding-top: var(--s-3);
+    }
+    .case__cluster {
+      font-family: var(--mono);
+      font-size: var(--t-tag);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .case__title {
+      font-family: var(--display);
+      font-size: 38px;
+      font-weight: 500;
+      line-height: 1.05;
+      letter-spacing: -0.016em;
+      color: var(--ink);
+      margin: 4px 0 6px;
+    }
+    .case__owner {
+      font-family: var(--mono);
+      font-size: var(--t-tag);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-1);
+    }
+    .case__owner .arrow { color: var(--accent); margin: 0; }
+    .case__body {
+      font-family: var(--body);
+      font-size: var(--t-body-s);
+      line-height: 1.5;
+      color: var(--ink-soft);
+      font-weight: 450;
+      margin: var(--s-1) 0 0;
+    }
+    .f-flywheel__cta {
+      padding-top: var(--s-4);
+      border-top: 1px solid var(--rule-strong);
+      font-family: var(--display);
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      line-height: 1.4;
+      margin: 0;
+    }
+    .f-flywheel__cta .accent { color: var(--accent); font-weight: 700; }
+
+    /* ──────────────────────────────────────────────────────────────────
+     *  Frame 08 · VESPER × CMF · paper · two-column with image
+     * ────────────────────────────────────────────────────────────────── */
+
+    .f-vesper .stage {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: var(--s-7);
+      align-items: center;
+    }
+    .f-vesper__copy {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+    }
+    .f-vesper__display {
+      font-family: var(--display);
+      font-size: var(--t-display-m);
+      font-weight: 500;
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .f-vesper__display .accent { color: var(--accent); font-weight: 500; }
+    .f-vesper__copy .body { max-width: 580px; }
+    .f-vesper__chain {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 10px 6px;
+      align-items: center;
+      padding-top: var(--s-3);
+      border-top: 1px solid var(--rule);
+      font-family: var(--mono);
+      font-size: var(--t-tag);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .f-vesper__chain .pill {
+      padding: 6px 12px;
+      border: 1px solid var(--rule-strong);
+      border-radius: 999px;
+      background: var(--card);
+      color: var(--ink-soft);
+      font-weight: 600;
+    }
+    .f-vesper__chain .arrow { margin: 0 4px; }
+    .f-vesper__media {
+      position: relative;
+      background: var(--ember-base);
+      border: 1px solid var(--rule-strong);
+      box-shadow: 0 24px 60px rgba(60, 40, 20, 0.18);
+      overflow: hidden;
+    }
+    .f-vesper__media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(160deg,
+        rgba(217, 119, 87, 0.08) 0%,
+        transparent 35%,
+        transparent 65%,
+        rgba(217, 119, 87, 0.10) 100%);
+    }
+    .f-vesper__media img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .f-vesper__caption {
+      position: absolute;
+      bottom: 16px;
+      left: 18px;
+      z-index: 2;
+      font-family: var(--mono);
+      font-size: var(--t-tag);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(244, 232, 216, 0.65);
+      font-weight: 600;
+    }
+
+    /* ──────────────────────────────────────────────────────────────────
+     *  Frame 09 · THE REFRAME · ember · question/answer + 3 reframes
+     * ────────────────────────────────────────────────────────────────── */
+
+    .f-reframe .stage {
+      justify-content: space-between;
+    }
+    .f-reframe__head {
+      margin-top: var(--s-6);
+    }
+    .f-reframe__q {
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: 44px;
+      line-height: 1.15;
+      color: var(--ember-faint);
+      max-width: 1300px;
+      margin: 0;
+    }
+    .f-reframe__a {
+      margin: var(--s-3) 0 0;
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: var(--t-display-xl);
+      line-height: 0.98;
+      letter-spacing: -0.022em;
+      color: var(--ember-ink);
+      max-width: 1700px;
+    }
+    .f-reframe__a .accent { color: var(--accent); font-weight: 500; }
+    .f-reframe__cols {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--s-6);
+      padding-top: var(--s-4);
+      border-top: 1px solid var(--ember-rule);
+    }
+    .f-reframe__col {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+    }
+    .f-reframe__col-arrow {
+      font-family: var(--display);
+      font-size: 32px;
+      color: var(--accent);
+      font-weight: 500;
+      line-height: 1;
+    }
+    .f-reframe__col-title {
+      font-family: var(--display);
+      font-size: 30px;
+      font-weight: 500;
+      letter-spacing: -0.012em;
+      color: var(--ember-ink);
+      line-height: 1.15;
+    }
+    .f-reframe__col-body {
+      font-family: var(--body);
+      font-size: var(--t-body-s);
+      line-height: 1.5;
+      color: var(--ember-soft);
+      font-weight: 450;
+    }
+    .f-reframe__close {
+      padding-top: var(--s-3);
+      border-top: 1px solid var(--ember-rule);
+      font-family: var(--display);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--ember-soft);
+      margin: 0;
+    }
+
+    /* ──────────────────────────────────────────────────────────────────
+     *  Frame 10 · WHERE THIS IS HEADING · ember · AI Operator port
+     * ────────────────────────────────────────────────────────────────── */
+
+    .f-headless { background: var(--ember-base); }
+    .f-headless::before {
+      background:
+        radial-gradient(ellipse 60% 50% at 18% 28%, rgba(242, 169, 92, 0.28) 0%, transparent 58%),
+        radial-gradient(ellipse 80% 70% at 92% 90%, rgba(217, 119, 87, 0.16) 0%, transparent 65%) !important;
+    }
+    .f-headless__watermark {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image: url("./claude-rollout-assets/mimir-system-map.jpg");
+      background-size: cover;
+      background-position: right center;
+      opacity: 0.04;
+      filter: brightness(0.4) saturate(1.4) hue-rotate(-12deg) blur(2px);
+      mix-blend-mode: screen;
+      mask-image: linear-gradient(105deg, transparent 0%, transparent 35%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.9) 100%);
+      -webkit-mask-image: linear-gradient(105deg, transparent 0%, transparent 35%, rgba(0,0,0,0.6) 60%, rgba(0,0,0,0.9) 100%);
+    }
+    .f-headless .stage {
+      display: grid;
+      grid-template-columns: 1fr 1.05fr;
+      gap: var(--s-7);
+      align-items: center;
+    }
+    .f-headless__copy {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+    }
+    .f-headless__display {
+      font-family: var(--display);
+      font-size: var(--t-display-l);
+      font-weight: 500;
+      line-height: 1.0;
+      letter-spacing: -0.022em;
+      color: var(--ember-ink);
+      margin: 0;
+    }
+    .f-headless__display .accent { color: var(--accent); font-weight: 500; }
+    .f-headless__copy .body { max-width: 620px; }
+    .f-headless__transition {
+      padding-top: var(--s-3);
+      border-top: 1px solid var(--ember-rule);
+      font-family: var(--display);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--ember-faint);
+      max-width: 620px;
+      margin: 0;
+    }
+
+    .ai-card {
+      background: linear-gradient(160deg, rgba(50, 38, 25, 0.85) 0%, rgba(34, 26, 18, 0.92) 100%);
+      border: 1px solid var(--ember-rule-strong);
+      padding: 28px 32px 26px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-3);
+      position: relative;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+    }
+    .ai-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg,
+        rgba(242, 169, 92, 0.45) 0%,
+        rgba(242, 169, 92, 0.18) 60%,
+        transparent 100%);
+    }
+    .ai-card__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: var(--s-2);
+      border-bottom: 1px solid var(--ember-rule);
+    }
+    .ai-card__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      color: var(--ember-soft);
+      font-weight: 500;
+    }
+    .ai-card__eyebrow .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px rgba(242, 169, 92, 0.6);
+    }
+    .ai-card__badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 1px solid var(--ember-rule-strong);
+      color: var(--accent);
+      font-weight: 600;
+      clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    }
+    .ai-lane {
+      position: relative;
+      border: 1px solid var(--ember-rule);
+      padding: 22px 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+    }
+    .ai-lane__pill {
+      position: absolute;
+      top: -11px;
+      left: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--ember-base);
+      padding: 4px 14px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--accent);
+      clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    }
+    .ai-lane__pill .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .ai-lane--build .ai-lane__pill { color: var(--ember-ink); }
+    .ai-lane--build .ai-lane__pill .dot { background: var(--ember-glow); }
+    .ai-lane__label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ember-faint);
+      font-weight: 600;
+      margin-top: 6px;
+    }
+    .ai-substrate {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .ai-substrate__row {
+      display: grid;
+      grid-template-columns: 88px 1fr;
+      gap: 18px;
+      padding: 12px 0;
+      border-top: 1px solid var(--ember-rule);
+    }
+    .ai-substrate__row:first-child { border-top: 0; padding-top: 4px; }
+    .ai-substrate__tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+      padding-top: 4px;
+    }
+    .ai-substrate__name {
+      font-family: var(--display);
+      font-size: 22px;
+      font-weight: 500;
+      line-height: 1.2;
+      color: var(--ember-ink);
+      letter-spacing: -0.008em;
+    }
+    .ai-connector {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 6px 0;
+    }
+    .ai-connector__line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--ember-rule-strong) 30%, var(--ember-rule-strong) 70%, transparent);
+    }
+    .ai-connector__label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ember-faint);
+      font-weight: 600;
+    }
+    .ai-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .ai-tab {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ember-faint);
+      font-weight: 600;
+      padding: 6px 12px;
+      border: 1px solid var(--ember-rule);
+      background: var(--ember-base);
+    }
+    .ai-tab.is-active {
+      color: var(--ember-base);
+      background: var(--ember-glow);
+      border-color: var(--ember-glow);
+      font-weight: 700;
+    }
+    .ai-snippet {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 14px;
+      background: var(--ember-base);
+      border: 1px solid var(--ember-rule);
+      margin-top: 6px;
+    }
+    .ai-snippet__label {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ember-faint);
+      font-weight: 600;
+    }
+    .ai-snippet__url {
+      font-family: var(--mono);
+      font-size: 14px;
+      letter-spacing: -0.005em;
+      color: var(--ember-glow);
+      font-weight: 500;
+    }
+    .ai-surfaces {
+      list-style: none;
+      padding: 0;
+      margin: 4px 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .ai-surface {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border: 1px solid var(--ember-rule);
+      background: rgba(255, 255, 255, 0.02);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ember-soft);
+      font-weight: 600;
+    }
+    .ai-surface__icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      background: var(--accent);
+      color: var(--ember-base);
+      font-family: var(--display);
+      font-size: 10px;
+      font-weight: 700;
+    }
+    .ai-card__foot {
+      font-family: var(--display);
+      font-size: 16px;
+      color: var(--ember-faint);
+      padding-top: var(--s-2);
+      border-top: 1px solid var(--ember-rule);
+      font-weight: 500;
+      margin: 0;
+    }
+    .ai-lane__divider {
+      height: 1px;
+      background: var(--ember-rule);
+      margin: 6px 0;
+    }
+
+    /* ──────────────────────────────────────────────────────────────────
+     *  Frame 11 · THE PRACTICAL STUFF · paper · prominent gradient cards
+     * ────────────────────────────────────────────────────────────────── */
+
+    .f-practical .stage {
+      justify-content: space-between;
+    }
+    .f-practical__head {
+      margin-top: var(--s-7);
+      max-width: 1700px;
+    }
+    .f-practical__display {
+      font-family: var(--display);
+      font-size: var(--t-display-l);
+      font-weight: 500;
+      line-height: 1.0;
+      letter-spacing: -0.022em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .f-practical__display .accent { color: var(--accent); font-weight: 500; }
+    .f-practical__sub {
+      margin-top: var(--s-3);
+      max-width: 1100px;
+    }
+    .f-practical__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--s-3);
+    }
+    .practical-card {
+      position: relative;
+      padding: 36px 32px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-3);
+      overflow: hidden;
+      isolation: isolate;
+      border: 1px solid var(--rule);
+      min-height: 380px;
+    }
+    .practical-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: linear-gradient(160deg,
+        var(--card-2) 0%,
+        var(--paper) 55%,
+        var(--paper-2) 100%);
+    }
+    .practical-card::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      z-index: 2;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--ember-glow) 70%, transparent 100%);
+    }
+    .practical-card > * { position: relative; z-index: 1; }
+    .practical-card__num {
+      font-family: var(--display);
+      font-size: 88px;
+      font-weight: 500;
+      line-height: 0.9;
+      color: var(--accent);
+      opacity: 0.18;
+      letter-spacing: -0.02em;
+      margin: 0 0 -36px;
+      align-self: flex-end;
+    }
+    .practical-card__label {
+      font-family: var(--mono);
+      font-size: var(--t-eyebrow);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink);
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .practical-card__label .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .practical-card__title {
+      font-family: var(--display);
+      font-size: 26px;
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.012em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .practical-card__body {
+      font-family: var(--body);
+      font-size: 17px;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      font-weight: 450;
+      margin: 0;
+      flex: 1;
+    }
+    .practical-card__body strong { color: var(--ink); font-weight: 700; }
+    .practical-card__foot {
+      padding-top: var(--s-2);
+      border-top: 1px solid var(--rule);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .practical-card__foot .arrow { color: var(--accent); font-size: 14px; }
+
+    /* per-card subtle hue tint */
+    .practical-card.is-budget::after     { background: linear-gradient(90deg, #D97757 0%, #F2A95C 70%, transparent 100%); }
+    .practical-card.is-connectors::after { background: linear-gradient(90deg, #C8941F 0%, #E1B559 70%, transparent 100%); }
+    .practical-card.is-safety::after     { background: linear-gradient(90deg, #2D7A5F 0%, #4FA985 70%, transparent 100%); }
+    .practical-card.is-enablement::after { background: linear-gradient(90deg, #6243B9 0%, #8A6CD9 70%, transparent 100%); }
+
+    .practical-card.is-budget     .practical-card__label .dot { background: #D97757; }
+    .practical-card.is-connectors .practical-card__label .dot { background: #C8941F; }
+    .practical-card.is-safety     .practical-card__label .dot { background: #2D7A5F; }
+    .practical-card.is-enablement .practical-card__label .dot { background: #6243B9; }
+
+    .practical-card.is-budget     .practical-card__num { color: #D97757; }
+    .practical-card.is-connectors .practical-card__num { color: #C8941F; }
+    .practical-card.is-safety     .practical-card__num { color: #2D7A5F; }
+    .practical-card.is-enablement .practical-card__num { color: #6243B9; }
+
+    .f-practical__close {
+      padding-top: var(--s-4);
+      border-top: 1px solid var(--rule-strong);
+      font-family: var(--display);
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+    .f-practical__close .accent { color: var(--accent); font-weight: 700; }
+
+    /* ──────────────────────────────────────────────────────────────────
+     *  Frame 12 · CLOSER · ember · fireside sign-off
+     * ────────────────────────────────────────────────────────────────── */
+
+    .f-closer .stage {
+      justify-content: space-between;
+    }
+    .f-closer::before {
+      background:
+        radial-gradient(ellipse 70% 60% at 22% 88%, rgba(242, 169, 92, 0.30) 0%, transparent 62%),
+        radial-gradient(ellipse 60% 50% at 88% 22%, rgba(217, 119, 87, 0.14) 0%, transparent 60%) !important;
+    }
+    .f-closer__main {
+      margin-top: var(--s-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-5);
+      max-width: 1700px;
+    }
+    .f-closer__display {
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: var(--t-display-l);
+      line-height: 1.0;
+      letter-spacing: -0.022em;
+      color: var(--ember-ink);
+      margin: 0;
+    }
+    .f-closer__display .quiet {
+      color: var(--ember-faint);
+      font-weight: 500;
+    }
+    .f-closer__display .accent { color: var(--accent); font-weight: 500; }
+    .f-closer__spine {
+      padding-top: var(--s-5);
+      border-top: 1px solid var(--ember-rule);
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: 36px;
+      line-height: 1.3;
+      color: var(--ember-soft);
+      max-width: 1500px;
+      margin: 0;
+    }
+    .f-closer__spine .accent { color: var(--accent); font-weight: 700; }
+    .f-closer__foot {
+      display: flex;
+      align-items: center;
+      gap: var(--s-3);
+      padding-top: var(--s-4);
+      border-top: 1px solid var(--ember-rule);
+      font-family: var(--mono);
+      font-size: 14px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ember-faint);
+      font-weight: 600;
+    }
+    .f-closer__foot .arrow { color: var(--accent); font-size: 18px; }
+    .f-closer__foot .name { color: var(--ember-ink); font-weight: 700; }
+    .f-closer__foot .ask { margin-left: auto; }
+  </style>
+</head>
+<body>
+
+<div class="deck">
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 00 · HERO · ember · campfire image
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-hero" data-slide-id="00-hero" data-mode="ember" aria-labelledby="f00-title">
+    <div class="f-hero__bg" aria-hidden="true">
+      <img src="./claude-rollout-assets/hero-campfire.png" alt="Two stop-motion characters dance hand-in-hand around a campfire in a felt forest, fairy lights overhead." />
+    </div>
+    <div class="f-hero__overlay" aria-hidden="true"></div>
+    <div class="f-hero__grain" aria-hidden="true"></div>
+    <span class="eyebrow eyebrow-anchor">00 · LIVE</span>
+    <div class="stage">
+      <div class="f-hero__top">
+        <h1 class="f-hero__display" id="f00-title">Claude is live<span class="accent-period">.</span></h1>
+        <p class="f-hero__sub">Enterprise rollout, May 2026. The whole company on the same frontier model, with the substrate to make it useful.</p>
+      </div>
+      <div class="f-hero__bottom">
+        <hr class="f-hero__rule" />
+        <div class="f-hero__stats">
+          <div>
+            <div class="f-hero__stat-num">101</div>
+            <div class="f-hero__stat-cap">active seats, every department onboarded.</div>
+          </div>
+          <div>
+            <div class="f-hero__stat-num">10<span class="accent">+</span></div>
+            <div class="f-hero__stat-cap">Skills live today, from Studio to Legal.</div>
+          </div>
+          <div>
+            <div class="f-hero__stat-num">1wk <span class="accent">→</span> 2h</div>
+            <div class="f-hero__stat-cap">Finance FX workbook, rebuilt with Claude.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 01 · WHY CLAUDE · paper · two-column
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-why" data-slide-id="01-why-claude" data-mode="paper" aria-labelledby="f01-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">01 · THE POSITION</span>
+    <div class="stage">
+      <div class="f-why__head">
+        <h2 class="f-why__display" id="f01-title">Founders want you on the <span class="accent">best</span> frontier models. Not loyal to one.</h2>
+      </div>
+      <div class="f-why__cols">
+        <div class="f-why__col">
+          <span class="label f-why__col-label">The principle</span>
+          <p class="body">ChatGPT and Gemini stay. Claude joins. We keep evaluating all three. The point is access to the frontier, not religion about a vendor.</p>
+        </div>
+        <div class="f-why__col">
+          <span class="label f-why__col-label">Why Claude pulled ahead</span>
+          <p class="body">Smarter on overarching, nuanced output. Sharper at judgment work. The interfaces just feel better. If something else takes the lead, we move.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 02 · TEN TEAMS · paper · timeline grid
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-teams" data-slide-id="02-teams" data-mode="paper" aria-labelledby="f02-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">02 · THE TEAMS</span>
+    <div class="stage">
+      <div class="f-teams__head">
+        <h2 class="f-teams__display" id="f02-title">Ten teams. Five weeks.</h2>
+        <p class="lead f-teams__lead">Every session left the room with a Skill that works today. No demos, no certificates, no L&amp;D theatre.</p>
+      </div>
+
+      <div class="f-teams__weeks">
+        <div class="f-teams__week">
+          <span class="f-teams__week-tag">Week 1</span>
+          <span class="f-teams__week-date">Early April</span>
+          <ul class="f-teams__week-list">
+            <li class="f-teams__week-team"><span class="f-teams__team-name">Studio</span><span class="f-teams__team-lead">Intro</span></li>
+            <li class="f-teams__week-team"><span class="f-teams__team-name">Executives</span><span class="f-teams__team-lead">Intro</span></li>
+          </ul>
+        </div>
+
+        <div class="f-teams__week">
+          <span class="f-teams__week-tag">Week 2</span>
+          <span class="f-teams__week-date">April 24</span>
+          <ul class="f-teams__week-list">
+            <li class="f-teams__week-team"><span class="f-teams__team-name">Strategic Insights</span><span class="f-teams__team-lead">→ Friday</span></li>
+          </ul>
+        </div>
+
+        <div class="f-teams__week">
+          <span class="f-teams__week-tag">Week 3</span>
+          <span class="f-teams__week-date">April 30</span>
+          <ul class="f-teams__week-list">
+            <li class="f-teams__week-team"><span class="f-teams__team-name">Product Design</span><span class="f-teams__team-lead">→ Britta</span></li>
+            <li class="f-teams__week-team"><span class="f-teams__team-name">User Experience</span><span class="f-teams__team-lead">→ Louise</span></li>
+          </ul>
+        </div>
+
+        <div class="f-teams__week">
+          <span class="f-teams__week-tag">Week 4</span>
+          <span class="f-teams__week-date">May 7–8</span>
+          <ul class="f-teams__week-list">
+            <li class="f-teams__week-team"><span class="f-teams__team-name">People Ops</span><span class="f-teams__team-lead">→ Aline</span></li>
+            <li class="f-teams__week-team"><span class="f-teams__team-name">Finance</span><span class="f-teams__team-lead">→ Helen</span></li>
+            <li class="f-teams__week-team"><span class="f-teams__team-name">Shopify</span><span class="f-teams__team-lead">→ Nathan</span></li>
+          </ul>
+        </div>
+
+        <div class="f-teams__week">
+          <span class="f-teams__week-tag">Week 5 · today</span>
+          <span class="f-teams__week-date">May 11</span>
+          <ul class="f-teams__week-list">
+            <li class="f-teams__week-team is-live"><span class="f-teams__team-name">Product Engineering</span><span class="f-teams__team-lead">→ Jennifer</span></li>
+            <li class="f-teams__week-team is-live"><span class="f-teams__team-name">Legal</span><span class="f-teams__team-lead">→ Terese</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="f-teams__payoff"><strong>10 sessions. 10 Skills shipped.</strong> <span class="quiet">Every one inherited by another Looper.</span></p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 03 · THE PRINCIPLE · ember · big single statement
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-principle" data-slide-id="03-principle" data-mode="ember" aria-labelledby="f03-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">03 · THE PRINCIPLE</span>
+    <div class="stage">
+      <div class="f-principle__head">
+        <h2 class="f-principle__display" id="f03-title">
+          <span class="f-principle__line">Skills are the</span>
+          <span class="f-principle__line"><span class="accent">missing layer</span></span>
+          <span class="f-principle__line">between how you work</span>
+          <span class="f-principle__line">and what AI can do<span class="accent">.</span></span>
+        </h2>
+      </div>
+      <div class="f-principle__foot">
+        <p>AI is intelligence, not software. It is smart, but it does not know Loop.</p>
+        <p>A Skill is how you hand it the context. The way you would brief <strong>a sharp new colleague</strong>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 04 · BRIDGE · paper · pull quote + diagram
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-bridge" data-slide-id="04-bridge" data-mode="paper" aria-labelledby="f04-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">04 · BRIDGE</span>
+    <div class="stage">
+      <div class="f-bridge__main">
+        <div>
+          <span class="f-bridge__quote-mark">“</span>
+          <p class="f-bridge__quote" id="f04-title">We focus on Skills not because of the format, but because they are <span class="accent">the layer between how you work and what AI can do</span>.</p>
+        </div>
+        <div class="f-bridge__diagram">
+          <div class="f-bridge__row">
+            <span class="f-bridge__row-label">Prompt</span>
+            <span class="f-bridge__row-name">Asks once</span>
+            <p class="f-bridge__row-cap">Lives in a single chat. Vanishes when the tab closes.</p>
+          </div>
+          <div class="f-bridge__row is-skill">
+            <span class="f-bridge__row-label">Skill</span>
+            <span class="f-bridge__row-name">Encodes the layer</span>
+            <p class="f-bridge__row-cap">Names the role, the steps, the inputs, the output. Inherited by anyone who needs it.</p>
+          </div>
+          <div class="f-bridge__row">
+            <span class="f-bridge__row-label">Substrate</span>
+            <span class="f-bridge__row-name">Compounds across models</span>
+            <p class="f-bridge__row-cap">When Claude 5 lands, the work survives. The judgment carries forward.</p>
+          </div>
+        </div>
+      </div>
+      <p class="f-bridge__transition">We are not the only ones who saw this. <span class="accent">The labs just put their bet on the same layer.</span></p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 05 · THE SIGNAL · ember · WSJ-style news cards
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-signal" data-slide-id="05-signal" data-mode="ember" aria-labelledby="f05-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">05 · THE SIGNAL</span>
+    <div class="stage">
+      <div class="f-signal__head">
+        <h2 class="f-signal__display" id="f05-title">The labs just bet <span class="accent">billions</span> on the same layer.</h2>
+        <p class="f-signal__sub">It is not a model problem. It is a deployment problem. Both labs just said so out loud.</p>
+      </div>
+
+      <div class="f-signal__masthead" aria-hidden="true">
+        <span class="ms-mark">The Deployment Beat</span>
+        <span>·</span>
+        <span>VOL. I · NO. 1</span>
+        <span class="ms-spacer"></span>
+        <span>FRONTIER AI · ENTERPRISE</span>
+        <span>·</span>
+        <span>11 MAY 2026</span>
+      </div>
+
+      <div class="f-signal__grid">
+        <article class="news news--stripe">
+          <div class="news__thumb">
+            <span class="news__thumb-bg" aria-hidden="true"></span>
+            <span class="news__thumb-grid" aria-hidden="true"></span>
+            <span class="news__thumb-noise" aria-hidden="true"></span>
+            <span class="news__thumb-mark" aria-hidden="true">/stripe</span>
+            <span class="news__thumb-tag">Job listing · Marketing</span>
+            <span class="news__thumb-corner">2026</span>
+          </div>
+          <div class="news__body">
+            <span class="news__kicker">Hiring · Forward Deployed</span>
+            <h3 class="news__headline">Stripe creates a role that did not exist a year ago.</h3>
+            <p class="news__dek">Multiple six figures to embed AI-natives inside marketing. Each one assigned to <strong>20 marketers</strong> until they are self-sufficient. AI as default, not occasional tool.</p>
+            <div class="news__byline">
+              <span class="source">@andruyeung</span>
+              <span class="date">via X</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="news news--palantir">
+          <div class="news__thumb">
+            <span class="news__thumb-bg" aria-hidden="true"></span>
+            <span class="news__thumb-grid" aria-hidden="true"></span>
+            <span class="news__thumb-noise" aria-hidden="true"></span>
+            <span class="news__thumb-mark" aria-hidden="true">PALANTIR</span>
+            <span class="news__thumb-tag">Origin pattern · Enterprise</span>
+            <span class="news__thumb-corner">2010s</span>
+          </div>
+          <div class="news__body">
+            <span class="news__kicker">Origin · The FDE Pattern</span>
+            <h3 class="news__headline">The role every AI lab is now copying.</h3>
+            <p class="news__dek">Palantir invented the <strong>Forward Deployed Engineer</strong>: ship engineers into customer ops, encode the workflow, leave behind a working system. The shape that defined a decade of enterprise software.</p>
+            <div class="news__byline">
+              <span class="source">Palantir</span>
+              <span class="date">FDE program</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="news news--openai">
+          <div class="news__thumb">
+            <span class="news__thumb-bg" aria-hidden="true"></span>
+            <span class="news__thumb-grid" aria-hidden="true"></span>
+            <span class="news__thumb-noise" aria-hidden="true"></span>
+            <span class="news__thumb-mark" aria-hidden="true">OpenAI</span>
+            <span class="news__thumb-tag">Joint Venture · DeployCo</span>
+            <span class="news__thumb-corner">$10B</span>
+          </div>
+          <div class="news__body">
+            <span class="news__kicker">Press release · 11 May 2026</span>
+            <h3 class="news__headline">OpenAI launches the Deployment Company.</h3>
+            <p class="news__dek"><strong>$10B JV</strong>, 19 partners (TPG, Brookfield, Bain, Goldman, SoftBank…). Acquired Tomoro for ~150 Forward Deployed Engineers from day one.</p>
+            <div class="news__byline">
+              <span class="source">openai.com</span>
+              <span class="date">11 May 2026</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="news news--anthropic">
+          <div class="news__thumb">
+            <span class="news__thumb-bg" aria-hidden="true"></span>
+            <span class="news__thumb-grid" aria-hidden="true"></span>
+            <span class="news__thumb-noise" aria-hidden="true"></span>
+            <span class="news__thumb-mark" aria-hidden="true">Anthropic</span>
+            <span class="news__thumb-tag">Joint Venture · Claude Services</span>
+            <span class="news__thumb-corner">$1.5B</span>
+          </div>
+          <div class="news__body">
+            <span class="news__kicker">Bloomberg · enterprise</span>
+            <h3 class="news__headline">Anthropic's $1.5B answer.</h3>
+            <p class="news__dek">With Blackstone, Hellman &amp; Friedman, Goldman Sachs. Applied AI engineers deployed into PE portfolio companies to build custom Claude solutions. <strong>Zero consulting firms in the cap table.</strong></p>
+            <div class="news__byline">
+              <span class="source">Bloomberg</span>
+              <span class="date">enterprise track</span>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <p class="f-signal__close"><strong>We do not need a Deployment Company.</strong> <span class="accent">We have been encoding judgment for years.</span></p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 06 · THE MOAT · paper · 4 substrate cards
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-moat" data-slide-id="06-moat" data-mode="paper" aria-labelledby="f06-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">06 · THE MOAT</span>
+    <div class="stage">
+      <div class="f-moat__head">
+        <h2 class="f-moat__display" id="f06-title">What felt like overhead is the <span class="accent">moat</span>.</h2>
+        <p class="f-moat__sub body">We have been encoding judgment for years. We just did not call it substrate.</p>
+      </div>
+
+      <div class="f-moat__grid">
+        <article class="moat-card">
+          <span class="moat-card__year">Framework · live</span>
+          <h3 class="moat-card__title">Freedom in Frame</h3>
+          <p class="moat-card__what">How Loopers know which call is theirs to make and which to escalate. The decision rights playbook.</p>
+          <span class="moat-card__author">Loop · cross-team doctrine</span>
+        </article>
+
+        <article class="moat-card">
+          <span class="moat-card__year">Framework · live</span>
+          <h3 class="moat-card__title">RAPID</h3>
+          <p class="moat-card__what">Recommend, Agree, Perform, Input, Decide. Every project, every role, named in advance.</p>
+          <span class="moat-card__author">Loop · decision protocol</span>
+        </article>
+
+        <article class="moat-card">
+          <span class="moat-card__year">Framework · live</span>
+          <h3 class="moat-card__title">When to Involve Enabling Teams</h3>
+          <p class="moat-card__what">The bar for pulling Legal, IT, Brand, People into the room — and the bar for moving without them.</p>
+          <span class="moat-card__author">Loop · operating rule</span>
+        </article>
+
+        <article class="moat-card">
+          <span class="moat-card__year">Framework · live</span>
+          <h3 class="moat-card__title">Culture Model V3</h3>
+          <p class="moat-card__what">Loop's articulated way of working. Stewards, principles, rituals, written down, kept current.</p>
+          <span class="moat-card__author">Loop · cultural substrate</span>
+        </article>
+      </div>
+
+      <p class="f-moat__close"><strong>We do not need a Deployment Company.</strong> <span class="accent">The substrate is ours.</span></p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 07 · THE FLYWHEEL · paper · 3 cases
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-flywheel" data-slide-id="07-flywheel" data-mode="paper" aria-labelledby="f07-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">07 · THE FLYWHEEL</span>
+    <div class="stage">
+      <div class="f-flywheel__head">
+        <h2 class="f-flywheel__display" id="f07-title">Loopers building Skills <span class="accent">for other Loopers</span>.</h2>
+        <p class="f-flywheel__sub body">One person encodes their workflow once. The team inherits it. That is the unlock.</p>
+      </div>
+
+      <div class="f-flywheel__cases">
+        <article class="case">
+          <span class="case__cluster">Performance</span>
+          <h3 class="case__title">Paid social copy.</h3>
+          <span class="case__owner">Production workhorse <span class="arrow">→</span></span>
+          <p class="case__body">On-brand Meta ad copy grounded in 295 real Loop ads. Inherits tone of voice and the angles that actually convert. The flywheel started here.</p>
+        </article>
+
+        <article class="case">
+          <span class="case__cluster">Insights &amp; Analytics</span>
+          <h3 class="case__title">API integration.</h3>
+          <span class="case__owner">Built by Dimitri <span class="arrow">→</span></span>
+          <p class="case__body">Apps Script connector for Google Sheets, with the gnarly bits (6-min timeouts, data shaping) baked in. Dimitri then used it to deliver Charlotte's integration in about two hours.</p>
+        </article>
+
+        <article class="case">
+          <span class="case__cluster">Product Design</span>
+          <h3 class="case__title">CMF source of truth.</h3>
+          <span class="case__owner">Built by Damien <span class="arrow">→</span></span>
+          <p class="case__body">Excel schema for every Loop product. Materials, finishes, Pantone codes, Arena codes. Pairs with clown renders out of KeyShot. Becomes the input for the next slide.</p>
+        </article>
+      </div>
+
+      <p class="f-flywheel__cta">Built a Skill that works? Send it. <span class="accent">It becomes available org-wide.</span></p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 08 · VESPER × CMF · paper · two-column with image
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-vesper" data-slide-id="08-vesper-cmf" data-mode="paper" aria-labelledby="f08-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">08 · FROM SKILLS TO TOOLS · WITH DAMIEN</span>
+    <div class="stage">
+      <div class="f-vesper__copy">
+        <h2 class="f-vesper__display" id="f08-title">A Skill becomes <span class="accent">a tool</span>. Vesper × CMF.</h2>
+        <p class="body">Vesper is our image and video generation platform. After the Product Design workshop, we built a CMF flow inside it. <strong>Excel schema in, clown renders out, supplier-ready PDF at the end.</strong></p>
+        <p class="body">Nano Banana generates. The GenAI prompting Skill handles language. A Claude Skill orchestrates. Each piece is substrate the agent reads from.</p>
+        <div class="f-vesper__chain">
+          <span class="pill">Workbook</span>
+          <span class="arrow">→</span>
+          <span class="pill">References</span>
+          <span class="arrow">→</span>
+          <span class="pill">Render</span>
+          <span class="arrow">→</span>
+          <span class="pill">Packet PDF</span>
+        </div>
+      </div>
+      <div class="f-vesper__media">
+        <img src="./claude-rollout-assets/vesper-cmf-studio.jpg" alt="Vesper CMF Studio · workbook to packet PDF pipeline" />
+        <span class="f-vesper__caption">vesper.loop · cmf studio</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 09 · THE REFRAME · ember · question/answer + 3 columns
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-reframe" data-slide-id="09-reframe" data-mode="ember" aria-labelledby="f09-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">09 · THE REFRAME</span>
+    <div class="stage">
+      <div class="f-reframe__head">
+        <p class="f-reframe__q">Will I encode myself out of a job?</p>
+        <h2 class="f-reframe__a" id="f09-title">No. You will encode yourself into <span class="accent">better work</span>.</h2>
+      </div>
+
+      <div class="f-reframe__cols">
+        <div class="f-reframe__col">
+          <span class="f-reframe__col-arrow">→</span>
+          <span class="f-reframe__col-title">Automate the tedious.</span>
+          <p class="f-reframe__col-body">What you do not enjoy, you stop doing. What you are great at, you do more of.</p>
+        </div>
+        <div class="f-reframe__col">
+          <span class="f-reframe__col-arrow">→</span>
+          <span class="f-reframe__col-title">A brainstorm partner.</span>
+          <p class="f-reframe__col-body">Patterns you would never spot, surfaced. Counter-arguments you would not push yourself to make.</p>
+        </div>
+        <div class="f-reframe__col">
+          <span class="f-reframe__col-arrow">→</span>
+          <span class="f-reframe__col-title">Build your own tools.</span>
+          <p class="f-reframe__col-body">Once the substrate is there, the interface is yours. No queue, no ticket, no roadmap.</p>
+        </div>
+      </div>
+
+      <p class="f-reframe__close">Here is what that looks like in practice.</p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 10 · WHERE THIS IS HEADING · ember · AI Operator port
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-headless" data-slide-id="10-headless" data-mode="ember" aria-labelledby="f10-title">
+    <div class="f-headless__watermark" aria-hidden="true"></div>
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">10 · WHERE THIS IS HEADING</span>
+    <div class="stage">
+      <div class="f-headless__copy">
+        <h2 class="f-headless__display" id="f10-title">No agents <span class="accent">without substrate</span>.</h2>
+        <p class="body">The interface no longer matters. Slack, Claude, Cursor, a REST API, an agent. <strong>The value is in the encoded judgment underneath.</strong></p>
+        <p class="body">That is what Skills are: substrate any surface can read. Headless by design.</p>
+        <p class="f-headless__transition">Built once. Inherited everywhere. The deck you are reading is one of the surfaces.</p>
+      </div>
+
+      <aside class="ai-card" aria-label="Headless interface preview">
+        <header class="ai-card__head">
+          <span class="ai-card__eyebrow"><span class="dot"></span>mimir / skills / loop</span>
+          <span class="ai-card__badge">headless</span>
+        </header>
+
+        <section class="ai-lane ai-lane--encode" aria-label="The substrate">
+          <span class="ai-lane__pill"><span class="dot"></span>Encode</span>
+          <span class="ai-lane__label">The substrate</span>
+          <ul class="ai-substrate">
+            <li class="ai-substrate__row"><span class="ai-substrate__tag">Voice</span><span class="ai-substrate__name">Paid social patterns</span></li>
+            <li class="ai-substrate__row"><span class="ai-substrate__tag">Judgment</span><span class="ai-substrate__name">Frame &amp; RAPID</span></li>
+            <li class="ai-substrate__row"><span class="ai-substrate__tag">Data</span><span class="ai-substrate__name">Snowflake schemas</span></li>
+            <li class="ai-substrate__row"><span class="ai-substrate__tag">Brand</span><span class="ai-substrate__name">CMF source of truth</span></li>
+          </ul>
+        </section>
+
+        <div class="ai-connector" aria-hidden="true">
+          <span class="ai-connector__line"></span>
+          <span class="ai-connector__label">substrate flows into surfaces</span>
+          <span class="ai-connector__line"></span>
+        </div>
+
+        <section class="ai-lane ai-lane--build" aria-label="The interface no longer matters">
+          <span class="ai-lane__pill"><span class="dot"></span>Build</span>
+          <span class="ai-lane__label">The interface no longer matters</span>
+
+          <div class="ai-tabs" role="tablist" aria-label="Surfaces">
+            <span class="ai-tab is-active" role="tab" aria-selected="true">Claude</span>
+            <span class="ai-tab" role="tab">Slack</span>
+            <span class="ai-tab" role="tab">Cursor</span>
+            <span class="ai-tab" role="tab">MCP</span>
+            <span class="ai-tab" role="tab">API</span>
+          </div>
+
+          <div class="ai-snippet" aria-label="Skill endpoint">
+            <span class="ai-snippet__label">read from</span>
+            <code class="ai-snippet__url">mimir.loop/skills/cmf</code>
+          </div>
+
+          <div class="ai-lane__divider" aria-hidden="true"></div>
+
+          <span class="ai-lane__label">Where it shows up</span>
+          <ul class="ai-surfaces" role="list">
+            <li class="ai-surface"><span class="ai-surface__icon">#</span>Slack</li>
+            <li class="ai-surface"><span class="ai-surface__icon">⌘</span>Cursor</li>
+            <li class="ai-surface"><span class="ai-surface__icon">◇</span>Cowork</li>
+            <li class="ai-surface"><span class="ai-surface__icon">▲</span>Vesper</li>
+            <li class="ai-surface"><span class="ai-surface__icon">{}</span>API</li>
+          </ul>
+        </section>
+
+        <p class="ai-card__foot">Built once. Inherited everywhere.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 11 · THE PRACTICAL STUFF · paper · prominent gradient cards
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-practical" data-slide-id="11-practical" data-mode="paper" aria-labelledby="f11-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">11 · THE PRACTICAL STUFF</span>
+    <div class="stage">
+      <div class="f-practical__head">
+        <h2 class="f-practical__display" id="f11-title">What you need to know to <span class="accent">actually use it</span>.</h2>
+        <p class="f-practical__sub body">Four answers to the four questions that always come up first.</p>
+      </div>
+
+      <div class="f-practical__grid">
+        <article class="practical-card is-budget">
+          <span class="practical-card__num">01</span>
+          <span class="practical-card__label"><span class="dot"></span>Budget</span>
+          <h3 class="practical-card__title">Sized for heavy knowledge work.</h3>
+          <p class="practical-card__body">Per-Looper budget set for real use. Monitored weekly with <strong>Mano and Marloes</strong>. If we hit a company-wide ceiling, we will talk then. Not now.</p>
+          <span class="practical-card__foot"><span class="arrow">→</span> Mano · Marloes</span>
+        </article>
+
+        <article class="practical-card is-connectors">
+          <span class="practical-card__num">02</span>
+          <span class="practical-card__label"><span class="dot"></span>Connectors</span>
+          <h3 class="practical-card__title">Drive, Slack, Monday, Figma in review.</h3>
+          <p class="practical-card__body">The sensitive ones are gated until <strong>Legal and IT</strong> sign off. Snowflake becomes powerful once we encode how we read the data.</p>
+          <span class="practical-card__foot"><span class="arrow">→</span> Legal · IT review</span>
+        </article>
+
+        <article class="practical-card is-safety">
+          <span class="practical-card__num">03</span>
+          <span class="practical-card__label"><span class="dot"></span>Safety</span>
+          <h3 class="practical-card__title">Loop runs Claude for Business.</h3>
+          <p class="practical-card__body">Conversations are <strong>not used to train models</strong>. The Loop AI Playbook lives inside Claude. Common sense, but check it anyway.</p>
+          <span class="practical-card__foot"><span class="arrow">→</span> Loop AI Playbook</span>
+        </article>
+
+        <article class="practical-card is-enablement">
+          <span class="practical-card__num">04</span>
+          <span class="practical-card__label"><span class="dot"></span>Enablement</span>
+          <h3 class="practical-card__title">Stewards co-lead from here on.</h3>
+          <p class="practical-card__body">Astrid schedules, Vince delivers, <strong>Stewards inherit</strong>. Ask your Steward before you ask me.</p>
+          <span class="practical-card__foot"><span class="arrow">→</span> Ask your Steward</span>
+        </article>
+      </div>
+
+      <p class="f-practical__close">Anything not on this slide? <span class="accent">Ask in #ai-adoption.</span></p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 12 · CLOSER · ember · fireside sign-off
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-closer" data-slide-id="12-closer" data-mode="ember" aria-labelledby="f12-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">12 · CLOSER</span>
+    <div class="stage">
+      <div class="f-closer__main">
+        <h2 class="f-closer__display" id="f12-title">Making good Skills is what we have been training for, for years. <span class="quiet">We just did not call it that.</span></h2>
+        <p class="f-closer__spine">What used to be the end of the process is now <span class="accent">the beginning</span> of a new loop.</p>
+      </div>
+
+      <div class="f-closer__foot">
+        <span class="arrow">→</span>
+        <span class="name">Vince Buyssens</span>
+        <span>Creative Technology</span>
+        <span>·</span>
+        <span>vince@loopearplugs.com</span>
+        <span class="ask">Ask each other before you ask me.</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>
