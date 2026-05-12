@@ -585,15 +585,66 @@
       letter-spacing: -0.01em;
       color: var(--ink);
     }
-    .f-teams__team-lead {
+    .f-teams__week-team.is-live .f-teams__team-name { color: var(--accent); }
+    .f-teams__week-sub {
+      display: block;
+      margin: var(--s-3) 0 var(--s-2);
+      padding-top: var(--s-2);
+      border-top: 1px dashed var(--rule);
       font-family: var(--mono);
-      font-size: var(--t-tag);
-      letter-spacing: 0.14em;
+      font-size: 10px;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--muted);
-      font-weight: 500;
+      font-weight: 600;
     }
-    .f-teams__week-team.is-live .f-teams__team-name { color: var(--accent); }
+    .f-teams__week-list + .f-teams__week-sub { margin-top: var(--s-3); }
+    .f-teams__coming {
+      margin-top: var(--s-4);
+      padding-top: var(--s-3);
+      border-top: 1px dashed var(--rule-strong);
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+    }
+    .f-teams__coming-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--mono);
+      font-size: var(--t-tag);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .f-teams__coming-label::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.5;
+    }
+    .f-teams__coming-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 10px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .f-teams__coming-pill {
+      padding: 8px 14px;
+      border: 1px solid var(--rule-strong);
+      border-radius: 999px;
+      background: transparent;
+      font-family: var(--body);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      letter-spacing: -0.005em;
+    }
     .f-teams__payoff {
       margin-top: auto;
       padding-top: var(--s-4);
@@ -1243,7 +1294,7 @@
     }
 
     /* ──────────────────────────────────────────────────────────────────
-     *  Frame 09 · THE REFRAME · ember · question/answer + 3 reframes
+     *  Frame 08 · THE REFRAME · ember · question/answer + 3 reframes
      * ────────────────────────────────────────────────────────────────── */
 
     .f-reframe .stage {
@@ -1922,16 +1973,16 @@
       <div class="f-why__cols">
         <div class="f-why__col">
           <span class="label f-why__col-label">The model principle</span>
-          <p class="body">ChatGPT and Gemini stay. Claude joins. We keep evaluating all three. The point is access to the frontier, not religion about a vendor.</p>
+          <p class="body">ChatGPT and Gemini stay. Claude joins. We evaluate all three — the point is access to the frontier, not loyalty to a vendor.</p>
         </div>
         <div class="f-why__col">
           <span class="label f-why__col-label">Why Claude pulled ahead</span>
-          <p class="body">Smarter on overarching, nuanced output. Sharper at judgment work. The interfaces just feel better. If something else takes the lead, we move.</p>
+          <p class="body">Smarter on nuanced, overarching output. Sharper at judgment. The interface just feels better. If something else takes the lead, we move.</p>
         </div>
         <div class="f-why__col f-why__col--feature">
           <span class="label f-why__col-label">Why Skills · the portable bet</span>
           <h3 class="f-why__col-title">Open standard. <span class="accent">Ours, not the vendor's.</span></h3>
-          <p class="body">Skills are an open format. <strong>Portable across LLMs and any agent</strong>: plug them into Claude today, into the next model tomorrow, into a Slack bot or an automation the day after. Encode the judgment once and it compounds. The substrate is ours.</p>
+          <p class="body">Skills are an open format. <strong>Portable across any LLM or agent</strong> — plug them into Claude today, the next model tomorrow, a Slack bot the day after. Encode the judgment once; it compounds. The substrate is ours.</p>
         </div>
       </div>
     </div>
@@ -1954,8 +2005,8 @@
           <span class="f-teams__week-tag">Week 1</span>
           <span class="f-teams__week-date">Early April</span>
           <ul class="f-teams__week-list">
-            <li class="f-teams__week-team"><span class="f-teams__team-name">Studio</span><span class="f-teams__team-lead">Intro</span></li>
-            <li class="f-teams__week-team"><span class="f-teams__team-name">Executives</span><span class="f-teams__team-lead">Intro</span></li>
+            <li class="f-teams__week-team"><span class="f-teams__team-name">Studio</span></li>
+            <li class="f-teams__week-team"><span class="f-teams__team-name">Executives</span></li>
           </ul>
         </div>
 
@@ -1963,7 +2014,7 @@
           <span class="f-teams__week-tag">Week 2</span>
           <span class="f-teams__week-date">April 24</span>
           <ul class="f-teams__week-list">
-            <li class="f-teams__week-team"><span class="f-teams__team-name">Strategic Insights</span><span class="f-teams__team-lead">→ Friday</span></li>
+            <li class="f-teams__week-team"><span class="f-teams__team-name">Strategic Insights</span></li>
           </ul>
         </div>
 
@@ -1971,8 +2022,8 @@
           <span class="f-teams__week-tag">Week 3</span>
           <span class="f-teams__week-date">April 30</span>
           <ul class="f-teams__week-list">
-            <li class="f-teams__week-team"><span class="f-teams__team-name">Product Design</span><span class="f-teams__team-lead">→ Britta</span></li>
-            <li class="f-teams__week-team"><span class="f-teams__team-name">User Experience</span><span class="f-teams__team-lead">→ Louise</span></li>
+            <li class="f-teams__week-team"><span class="f-teams__team-name">Product Design</span></li>
+            <li class="f-teams__week-team"><span class="f-teams__team-name">User Experience</span></li>
           </ul>
         </div>
 
@@ -1980,20 +2031,46 @@
           <span class="f-teams__week-tag">Week 4</span>
           <span class="f-teams__week-date">May 7–8</span>
           <ul class="f-teams__week-list">
-            <li class="f-teams__week-team"><span class="f-teams__team-name">People Ops</span><span class="f-teams__team-lead">→ Aline</span></li>
-            <li class="f-teams__week-team"><span class="f-teams__team-name">Finance</span><span class="f-teams__team-lead">→ Helen</span></li>
-            <li class="f-teams__week-team"><span class="f-teams__team-name">Shopify</span><span class="f-teams__team-lead">→ Nathan</span></li>
+            <li class="f-teams__week-team"><span class="f-teams__team-name">People Ops</span></li>
+            <li class="f-teams__week-team"><span class="f-teams__team-name">Finance</span></li>
+            <li class="f-teams__week-team"><span class="f-teams__team-name">Shopify</span></li>
           </ul>
         </div>
 
         <div class="f-teams__week">
           <span class="f-teams__week-tag">Week 5 · today</span>
           <span class="f-teams__week-date">May 11</span>
+          <span class="f-teams__week-sub">Earlier this week</span>
           <ul class="f-teams__week-list">
-            <li class="f-teams__week-team is-live"><span class="f-teams__team-name">Product Engineering</span><span class="f-teams__team-lead">→ Jennifer</span></li>
-            <li class="f-teams__week-team is-live"><span class="f-teams__team-name">Legal</span><span class="f-teams__team-lead">→ Terese</span></li>
+            <li class="f-teams__week-team is-live"><span class="f-teams__team-name">Product Engineering</span></li>
+            <li class="f-teams__week-team is-live"><span class="f-teams__team-name">Legal</span></li>
+          </ul>
+          <span class="f-teams__week-sub">Still to come</span>
+          <ul class="f-teams__week-list">
+            <li class="f-teams__week-team is-live"><span class="f-teams__team-name">Product Marketing</span></li>
+            <li class="f-teams__week-team is-live"><span class="f-teams__team-name">Program Management Product</span></li>
+            <li class="f-teams__week-team is-live"><span class="f-teams__team-name">Talent Acquisition</span></li>
+            <li class="f-teams__week-team is-live"><span class="f-teams__team-name">Brand &amp; Partnerships</span></li>
           </ul>
         </div>
+      </div>
+
+      <div class="f-teams__coming">
+        <span class="f-teams__coming-label">Coming up</span>
+        <ul class="f-teams__coming-list" role="list">
+          <li class="f-teams__coming-pill">Sourcing</li>
+          <li class="f-teams__coming-pill">IT</li>
+          <li class="f-teams__coming-pill">User Experience</li>
+          <li class="f-teams__coming-pill">Manufacturing Programs</li>
+          <li class="f-teams__coming-pill">Finance FP&amp;A &amp; Tax</li>
+          <li class="f-teams__coming-pill">Paid Social</li>
+          <li class="f-teams__coming-pill">Paid Search &amp; CRO</li>
+          <li class="f-teams__coming-pill">Warehousing &amp; Customer Ops</li>
+          <li class="f-teams__coming-pill">Marketplaces</li>
+          <li class="f-teams__coming-pill">Creative Strategy</li>
+          <li class="f-teams__coming-pill">Supply Chain</li>
+          <li class="f-teams__coming-pill">Executive Assistance</li>
+        </ul>
       </div>
 
       <p class="f-teams__payoff"><strong>10 sessions. 10 Skills shipped.</strong> <span class="quiet">Every one inherited by another Looper.</span></p>
@@ -2250,39 +2327,11 @@
   </section>
 
   <!-- ════════════════════════════════════════════════════════════════
-   *  FRAME 08 · VESPER × CMF · paper · two-column with image
+   *  FRAME 08 · THE REFRAME · ember · question/answer + 3 columns
    * ══════════════════════════════════════════════════════════════ -->
-  <section class="frame f-vesper" data-slide-id="08-vesper-cmf" data-mode="paper" aria-labelledby="f08-title">
+  <section class="frame f-reframe" data-slide-id="08-reframe" data-mode="ember" aria-labelledby="f09-title">
     <span class="vignette" aria-hidden="true"></span>
-    <span class="eyebrow eyebrow-anchor">08 · FROM SKILLS TO TOOLS · WITH DAMIEN</span>
-    <div class="stage">
-      <div class="f-vesper__copy">
-        <h2 class="f-vesper__display" id="f08-title">A Skill becomes <span class="accent">a tool</span>. Vesper × CMF.</h2>
-        <p class="body">Vesper is our image and video generation platform. After the Product Design workshop, we built a CMF flow inside it. <strong>Excel schema in, clown renders out, supplier-ready PDF at the end.</strong></p>
-        <p class="body">Nano Banana generates. The GenAI prompting Skill handles language. A Claude Skill orchestrates. Each piece is substrate the agent reads from.</p>
-        <div class="f-vesper__chain">
-          <span class="pill">Workbook</span>
-          <span class="arrow">→</span>
-          <span class="pill">References</span>
-          <span class="arrow">→</span>
-          <span class="pill">Render</span>
-          <span class="arrow">→</span>
-          <span class="pill">Packet PDF</span>
-        </div>
-      </div>
-      <div class="f-vesper__media">
-        <img src="./claude-rollout-assets/vesper-cmf-studio.jpg" alt="Vesper CMF Studio · workbook to packet PDF pipeline" />
-        <span class="f-vesper__caption">vesper.loop · cmf studio</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ════════════════════════════════════════════════════════════════
-   *  FRAME 09 · THE REFRAME · ember · question/answer + 3 columns
-   * ══════════════════════════════════════════════════════════════ -->
-  <section class="frame f-reframe" data-slide-id="09-reframe" data-mode="ember" aria-labelledby="f09-title">
-    <span class="vignette" aria-hidden="true"></span>
-    <span class="eyebrow eyebrow-anchor">09 · THE REFRAME</span>
+    <span class="eyebrow eyebrow-anchor">08 · THE REFRAME</span>
     <div class="stage">
       <div class="f-reframe__head">
         <p class="f-reframe__q">Will I encode myself out of a job?</p>
@@ -2308,6 +2357,34 @@
       </div>
 
       <p class="f-reframe__close">Here is what that looks like in practice.</p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 09 · VESPER × CMF · paper · two-column with image
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-vesper" data-slide-id="09-vesper-cmf" data-mode="paper" aria-labelledby="f08-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">09 · FROM SKILLS TO TOOLS · WITH DAMIEN</span>
+    <div class="stage">
+      <div class="f-vesper__copy">
+        <h2 class="f-vesper__display" id="f08-title">A Skill becomes <span class="accent">a tool</span>. Vesper × CMF.</h2>
+        <p class="body">Vesper is our image and video generation platform. After the Product Design workshop, we built a CMF flow inside it. <strong>Excel schema in, clown renders out, supplier-ready PDF at the end.</strong></p>
+        <p class="body">Nano Banana generates. The GenAI prompting Skill handles language. A Claude Skill orchestrates. Each piece is substrate the agent reads from.</p>
+        <div class="f-vesper__chain">
+          <span class="pill">Workbook</span>
+          <span class="arrow">→</span>
+          <span class="pill">References</span>
+          <span class="arrow">→</span>
+          <span class="pill">Render</span>
+          <span class="arrow">→</span>
+          <span class="pill">Packet PDF</span>
+        </div>
+      </div>
+      <div class="f-vesper__media">
+        <img src="./claude-rollout-assets/vesper-cmf-studio.jpg" alt="Vesper CMF Studio · workbook to packet PDF pipeline" />
+        <span class="f-vesper__caption">vesper.loop · cmf studio</span>
+      </div>
     </div>
   </section>
 
@@ -2431,8 +2508,8 @@
         <article class="practical-card is-connectors">
           <span class="practical-card__num">02</span>
           <span class="practical-card__label"><span class="dot"></span>Connectors</span>
-          <h3 class="practical-card__title">Drive, Slack, Monday, Figma in review.</h3>
-          <p class="practical-card__body">The sensitive ones are gated until <strong>Legal and IT</strong> sign off. Snowflake becomes powerful once we encode how we read the data.</p>
+          <h3 class="practical-card__title">Drive, Slack, Monday, Figma — approved.</h3>
+          <p class="practical-card__body">The sensitive ones — like <strong>Hibob and Snowflake</strong> — are still under review with Legal and IT. Snowflake gets powerful once we encode how we read the data.</p>
           <span class="practical-card__foot"><span class="arrow">→</span> Legal · IT review</span>
         </article>
 
@@ -2447,9 +2524,9 @@
         <article class="practical-card is-enablement">
           <span class="practical-card__num">04</span>
           <span class="practical-card__label"><span class="dot"></span>Enablement</span>
-          <h3 class="practical-card__title">Stewards co-lead from here on.</h3>
-          <p class="practical-card__body">Astrid schedules, Vince delivers, <strong>Stewards inherit</strong>. Ask your Steward before you ask me.</p>
-          <span class="practical-card__foot"><span class="arrow">→</span> Ask your Steward</span>
+          <h3 class="practical-card__title">Loopers teaching Loopers.</h3>
+          <p class="practical-card__body">What's happening in the rooms: people teaching each other how to prompt and build Skills. <strong>Stewards co-lead</strong> from here. The practice spreads sideways.</p>
+          <span class="practical-card__foot"><span class="arrow">→</span> Ask each other</span>
         </article>
       </div>
 
