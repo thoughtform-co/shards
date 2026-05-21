@@ -1,26 +1,40 @@
 /* ────────────────────────────────────────────────────────────────────
- * Shards / landing.
+ * Shards · front door.
  *
- * Same Delaware-style scene composition as /login: full-bleed gradient
- * backdrop, top corner markers, bottom-left card. The card is text-only
- * (no form) and ends with a small "open dashboard" link. Tokens are
- * declared at the module root via `.scope` so the module doesn't pull
- * from shards' dark global palette.
+ * Fullscreen editorial pause. Same lane as `EncodingInterstitial` on
+ * the workshop fork — amber-top → paper-middle → violet-bottom, two
+ * soft radial washes (amber top-left, violet bottom-right), a quiet
+ * grid texture masked at the edges, and a fine vignette so the
+ * centre breathes. The composition is hand-tuned with rgba literals
+ * rather than inheriting from `--aiop-*` so this page is fully
+ * self-contained (the rest of shards uses its dark Sigil palette;
+ * we don't want the door colour to drift if those tokens change).
+ *
+ * The card composition that lived here before is intentionally
+ * removed — the front door is meant to be a thought, not a menu.
+ * Internal surfaces (showcase, dashboard, gated collections) are
+ * reached by direct URL once the site cookie is set.
  * ──────────────────────────────────────────────────────────────────── */
 
 .scope {
-  --paper:        #faf6ec;
-  --paper-2:      #f3ece0;
-  --paper-card:   #fbf6e8;
+  /* Tokens local to this module. None of these names collide with
+     anything in app/globals.css (which uses --void/--surface-0/
+     --gold for the dark Sigil shell) or operator.css (which uses
+     --aiop-*), so the door is fully sandboxed. */
+  --paper:        #f6efe0;
+  --paper-2:      #efe6d1;
+  --paper-3:      #e6dcc3;
   --ink:          #1a1612;
   --ink-soft:     #3a322a;
-  --ink-faint:    #8a7f70;
-  --rule:         rgba(26, 22, 18, 0.12);
-  --rule-soft:    rgba(26, 22, 18, 0.06);
+  --ink-faint:    #7a7164;
+  --amber:        #b8872c;
+  --amber-soft:   rgba(184, 135, 44, 0.16);
   --violet:       #6243b9;
-  --violet-deep:  #4d3399;
+  --violet-deep:  #4a3290;
+  --violet-soft:  rgba(98, 67, 185, 0.16);
+  --grid-ink:     rgba(26, 22, 18, 0.05);
 
-  --f-display: var(--font-display), "Bodoni Moda", Georgia, serif;
+  --f-display: var(--font-display), "Bodoni Moda", "Didot", Georgia, serif;
   --f-sans:    var(--font-body), "IBM Plex Sans", system-ui, sans-serif;
   --f-mono:    var(--font-mono), "IBM Plex Mono", ui-monospace, monospace;
 }
@@ -31,350 +45,189 @@
   width: 100%;
   height: 100dvh;
   overflow: hidden;
-  background: var(--paper-2);
+  background: var(--paper);
   isolation: isolate;
   font-family: var(--f-sans);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  padding: clamp(32px, 6vw, 96px);
 }
 
+/* Directional base gradient — amber top → paper middle → violet
+   bottom, echoing `.aiop-encoding__bleed` (operator.css ~7938)
+   but rebuilt with rgba so this module is self-contained. */
 .backdrop {
   position: absolute;
   inset: 0;
   z-index: 0;
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--amber) 22%, var(--paper)) 0%,
+    var(--paper) 48%,
+    color-mix(in oklab, var(--violet) 18%, var(--paper-2)) 100%
+  );
+  animation: drift 28s ease-in-out infinite alternate;
+}
+
+/* Soft radial washes — amber top-left and violet bottom-right.
+   Same diagonal pull as `.aiop-encoding__wash--a/--b` but scaled to
+   fullscreen rather than inset to a card. */
+.washA {
+  position: absolute;
+  z-index: 0;
+  width: 70vmax;
+  height: 70vmax;
+  top: -28vmax;
+  left: -22vmax;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--amber) 38%, transparent) 0%,
+    transparent 60%
+  );
+  filter: blur(8px);
+}
+
+.washB {
+  position: absolute;
+  z-index: 0;
+  width: 80vmax;
+  height: 80vmax;
+  right: -32vmax;
+  bottom: -36vmax;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--violet) 34%, transparent) 0%,
+    transparent 60%
+  );
+  filter: blur(8px);
+}
+
+/* Quiet grid texture, masked to a soft ellipse so the lines fade
+   at the edges. Reduces the otherwise floaty backdrop into
+   something with a faint sense of scale. */
+.grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--grid-ink) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-ink) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(
+    ellipse 70% 70% at 50% 50%,
+    black 0%,
+    rgba(0, 0, 0, 0.6) 55%,
+    transparent 92%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 70% at 50% 50%,
+    black 0%,
+    rgba(0, 0, 0, 0.6) 55%,
+    transparent 92%
+  );
+  opacity: 0.45;
+}
+
+/* Subtle corner vignette — pulls the gaze toward the centre.
+   Layered last so it sits above the washes but under the quote. */
+.vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
   background:
-    radial-gradient(60% 50% at 18% 12%, rgba(98, 67, 185, 0.16), transparent 65%),
-    radial-gradient(55% 45% at 85% 18%, rgba(202, 165, 84, 0.18), transparent 65%),
-    radial-gradient(70% 60% at 65% 92%, rgba(26, 22, 18, 0.20), transparent 70%),
-    radial-gradient(40% 35% at 12% 85%, rgba(91, 122, 78, 0.18), transparent 70%),
-    linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%);
-  animation: drift 22s ease-in-out infinite alternate;
+    radial-gradient(
+      ellipse 120% 90% at 50% 50%,
+      transparent 0%,
+      transparent 45%,
+      color-mix(in oklab, var(--ink) 14%, transparent) 100%
+    );
 }
 
 @keyframes drift {
   from { transform: scale(1.02) translate3d(0, 0, 0); }
-  to   { transform: scale(1.06) translate3d(-1.5%, -0.6%, 0); }
+  to   { transform: scale(1.05) translate3d(-0.8%, -0.4%, 0); }
 }
 
-.overlay {
-  position: absolute;
-  inset: 0;
+/* Centred editorial quote. Display serif for the line itself,
+   mono caps for the attribution. `text-wrap: balance` keeps the
+   line from collapsing into an ugly orphan on narrow viewports. */
+.quoteWrap {
+  position: relative;
   z-index: 1;
-  pointer-events: none;
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in oklab, #0A0A0A 6%, transparent) 0%,
-      color-mix(in oklab, #0A0A0A 0%, transparent) 28%,
-      color-mix(in oklab, #0A0A0A 0%, transparent) 60%,
-      color-mix(in oklab, #0A0A0A 26%, transparent) 100%
-    ),
-    radial-gradient(
-      120% 80% at 18% 95%,
-      color-mix(in oklab, #0A0A0A 32%, transparent) 0%,
-      transparent 55%
-    );
-}
-
-.markerTop {
-  position: absolute;
-  top: clamp(20px, 3vh, 32px);
-  left: clamp(20px, 4vw, 36px);
-  right: clamp(20px, 4vw, 36px);
-  z-index: 3;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-family: var(--f-mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: color-mix(in oklab, #FAFAF7 78%, transparent);
-  font-weight: 500;
-  pointer-events: none;
-}
-
-.markerLeft {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.markerLeft .markerDot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--violet);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--violet) 22%, transparent);
-}
-
-.markerRight {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: color-mix(in oklab, #FAFAF7 60%, transparent);
-}
-
-.markerSep {
-  color: color-mix(in oklab, #FAFAF7 36%, transparent);
-}
-
-.cardWrap {
-  position: absolute;
-  inset: auto auto clamp(28px, 5vh, 56px) clamp(28px, 5vw, 56px);
-  z-index: 2;
-  width: min(420px, calc(100% - clamp(40px, 8vw, 80px)));
-}
-
-.card {
+  margin: 0;
   display: flex;
   flex-direction: column;
-  background: var(--paper-card);
-  border: 1px solid color-mix(in oklab, var(--ink) 8%, var(--rule));
-  border-radius: 16px;
-  padding: clamp(26px, 3vw, 32px);
-  box-shadow:
-    0 1px 2px color-mix(in oklab, #0A0A0A 8%, transparent),
-    0 12px 32px color-mix(in oklab, #0A0A0A 18%, transparent),
-    0 32px 80px color-mix(in oklab, #0A0A0A 22%, transparent);
-  animation: cardIn 480ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
-}
-
-@keyframes cardIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.eyebrow {
-  font-family: var(--f-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  font-weight: 500;
-  display: inline-flex;
   align-items: center;
-  gap: 9px;
-  margin-bottom: 14px;
+  gap: clamp(24px, 3.5vh, 40px);
+  max-width: min(900px, 92vw);
+  text-align: center;
+  animation: quoteIn 720ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
-.eyebrow .bar {
-  width: 18px;
-  height: 1.5px;
-  background: var(--violet);
-  display: inline-block;
+.quote {
+  margin: 0;
 }
 
-.brand {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin-bottom: clamp(20px, 3vh, 26px);
+.quoteText {
+  margin: 0;
   font-family: var(--f-display);
-  font-weight: 500;
-  font-size: 32px;
-  letter-spacing: -0.025em;
-  color: var(--ink);
-  line-height: 1;
-}
-
-/* Stripe's 2025 identity gradient (violet -> magenta) applied to
-   exactly one glyph, so the brand moment lands without spreading
-   magenta into the platform palette. */
-.brandPeriod {
-  background: linear-gradient(120deg, var(--violet) 0%, #ec4899 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
-.headline {
-  font-family: var(--f-display);
-  font-weight: 500;
-  font-size: clamp(22px, 2.2vw, 26px);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(30px, 5.6vw, 64px);
   line-height: 1.18;
   letter-spacing: -0.022em;
   color: var(--ink);
   text-wrap: balance;
-  margin: 0;
 }
 
-.support {
-  margin: 12px 0 0;
-  font-size: 14.5px;
-  line-height: 1.55;
-  color: var(--ink-soft);
-  max-width: 40ch;
+.quoteMark {
+  color: color-mix(in oklab, var(--violet) 64%, var(--ink-faint));
+  font-style: normal;
+  margin-inline: 0.06em;
 }
 
-/* Three-motion trio · Navigate / Encode / Build.
-   Sits between the support lede and the showcase link, structured as
-   an editorial instrument panel: tight rows separated by hairline
-   rules so the trio reads as a coherent set without looking like a
-   bulleted feature list. Mono-caps phase label on the left, single
-   sentence body on the right. The first row drops its top border so
-   it sits flush under the support paragraph. */
-.phases {
-  margin: clamp(20px, 2.6vh, 26px) 0 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-}
-
-.phase {
-  display: grid;
-  grid-template-columns: 78px 1fr;
-  column-gap: 14px;
-  align-items: baseline;
-  padding: 11px 0;
-  border-top: 1px solid var(--rule-soft);
-}
-
-.phase:first-child {
-  border-top: none;
-  padding-top: 4px;
-}
-
-.phase:last-child {
-  padding-bottom: 0;
-}
-
-.phaseLabel {
+.attribution {
   font-family: var(--f-mono);
-  font-size: 10px;
+  font-size: clamp(11px, 1.1vw, 12.5px);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--violet);
-  font-weight: 600;
-}
-
-.phaseLine {
-  font-family: var(--f-sans);
-  font-size: 13.5px;
-  line-height: 1.45;
   color: var(--ink-soft);
-}
-
-@media (max-width: 480px) {
-  .phase {
-    grid-template-columns: 70px 1fr;
-    column-gap: 12px;
-    padding: 9px 0;
-  }
-
-  .phaseLabel {
-    font-size: 9.5px;
-    letter-spacing: 0.2em;
-  }
-
-  .phaseLine {
-    font-size: 12.5px;
-  }
-}
-
-/* Hairline link to the dashboard. Underline-on-hover (the
-   text-decoration is applied inline via the gap animation below)
-   keeps it quiet but reachable. */
-.link {
-  margin-top: clamp(22px, 3vh, 28px);
+  font-weight: 500;
   display: inline-flex;
   align-items: center;
-  align-self: flex-start;
-  gap: 10px;
-  padding: 10px 14px 10px 0;
-  font-family: var(--f-mono);
-  font-size: 11.5px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ink);
-  font-weight: 600;
-  text-decoration: none;
-  transition: gap 0.2s ease, color 0.2s ease;
-  position: relative;
-}
-
-.link::before {
-  content: "";
-  width: 24px;
-  height: 1px;
-  background: var(--violet);
-  display: inline-block;
-  transition: width 0.2s ease, background 0.2s ease;
-}
-
-.link:hover {
-  color: var(--violet-deep);
   gap: 14px;
 }
 
-.link:hover::before {
-  width: 36px;
-  background: var(--violet-deep);
+.attributionRule {
+  width: 28px;
+  height: 1px;
+  background: var(--violet);
+  display: inline-block;
 }
 
-.linkArrow {
-  font-size: 14px;
-  font-family: var(--f-sans);
-  letter-spacing: 0;
-  transition: transform 0.2s ease;
-}
-
-.link:hover .linkArrow {
-  transform: translateX(3px);
-}
-
-.foot {
-  margin-top: clamp(22px, 3vh, 28px);
-  padding-top: 16px;
-  border-top: 1px dashed var(--rule);
-  font-family: var(--f-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-}
-
-.footMark {
-  color: var(--ink-soft);
+@keyframes quoteIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .backdrop { animation: none; }
-  .card { animation: none; }
-  .link { transition: none; }
-}
-
-@media (max-width: 720px) {
-  .markerTop {
-    font-size: 10px;
-    letter-spacing: 0.14em;
-  }
-
-  .markerRight {
-    display: none;
-  }
-
-  .cardWrap {
-    inset: auto clamp(16px, 4vw, 24px) clamp(20px, 4vh, 32px) clamp(16px, 4vw, 24px);
-    width: auto;
-  }
+  .quoteWrap { animation: none; }
 }
 
 @media (max-width: 480px) {
-  .markerTop {
-    top: 16px;
-    left: 16px;
-    right: 16px;
+  .scene {
+    padding: 24px;
   }
-
-  .headline {
-    font-size: 21px;
+  .attribution {
+    gap: 10px;
   }
-
-  .support {
-    font-size: 13.5px;
+  .attributionRule {
+    width: 20px;
   }
 }
