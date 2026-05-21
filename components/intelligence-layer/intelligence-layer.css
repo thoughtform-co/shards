@@ -1,0 +1,1801 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+ * Loop Intelligence Layer — homepage-chrome route stylesheet.
+ *
+ * The top of `/intelligence-layer` (header, hero, diagnosis with role
+ * filter, substrate map, engine pattern, close) renders in the
+ * homepage's `aiop-*` chrome. The bottom of the page parks the
+ * existing `je-*` deep-dive sections (substrate gallery, the shift,
+ * degrees of freedom) for later reuse.
+ *
+ * What lives in this file:
+ *   1. Font remap so the parked `je-*` deep-dives inherit the
+ *      homepage typography (Bodoni Moda + Plex Sans + Plex Mono).
+ *   2. Small additions for the new homepage-chrome components on
+ *      this route only (role filter dropdown above Diagnosis,
+ *      substrate-map column captions + Knowledge Graph highlight,
+ *      Close section block).
+ *   3. All the existing `.je-*` rules for the parked deep-dives
+ *      (kept as-is so they reuse cleanly later).
+ *
+ * `app/globals.css` carries the base tokens; `components/operator/
+ * operator.css` carries the homepage `aiop-*` chrome; this file is
+ * the slim glue.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+/* ─── 0. Font remap for parked je-* deep-dives ─────────────────────────── */
+
+/*
+ * Inside `.aiop-shell` (the homepage wrapper, now also wrapping
+ * `/intelligence-layer`), forward `--font-*` to the homepage's
+ * `--aiop-*` variables. The parked deep-dive components below
+ * reference `var(--font-display)`, `var(--font-body)`,
+ * `var(--font-mono)` directly; this remap is what makes them pick up
+ * Bodoni Moda / Plex Sans / Plex Mono on this route without any
+ * `je-*` rewrites.
+ *
+ * Harmless on the homepage itself — the homepage uses `var(--aiop-*)`
+ * everywhere, not `var(--font-*)`, so this rule doesn't change a
+ * single rendered pixel there. The rest of Aether (`/process`,
+ * `/campaign-substrate`, etc.) doesn't wrap in `.aiop-shell`, so it
+ * keeps its Avantt typography untouched.
+ */
+.aiop-shell {
+  --font-display: var(--aiop-display);
+  --font-body: var(--aiop-body);
+  --font-mono: var(--aiop-mono);
+}
+
+/* ─── 0b. Aether legacy token + primitive bridge ────────────────────────
+ *
+ * The parked je-* deep-dives below (TheShift, DegreesOfFreedom,
+ * SubstrateGallery — both their markup and the `.je-shift` /
+ * `.je-freedom` / `.je-gallery` rules in this file) were written
+ * against Aether's `app/globals.css`. That stylesheet defines a
+ * parallel, unprefixed token lane (`--paper`, `--card-2`, `--ink`,
+ * `--violet`, `--line`, `--rule`, `--max`, `--gutter`, the `--radius-*`
+ * family, etc.) plus two layout primitives — `.section` and `.wrap`
+ * — that the components reach for directly via `className="section
+ * je-shift-section"` and `<div className="wrap">`.
+ *
+ * Shards's `app/globals.css` is a different design system entirely
+ * (dark Shards/Sigil theme with `--void`, `--surface-0`, `--gold`),
+ * so when the parked je-* components mount here they would otherwise
+ * find every legacy token undefined — `.je-shift` loses background +
+ * borders + radii, `.je-freedom` flattens, the SubstrateGallery
+ * console falls back to initial values — AND, more visibly, the
+ * unstyled `.section` / `.wrap` classes provide no padding or
+ * centering, so each affected section bleeds to the viewport edges
+ * and stacks with no breathing room (`je-shift__col` ends up at
+ * left=0 on a wide monitor).
+ *
+ * Fix: inside `.aiop-shell` only, re-declare the Aether legacy
+ * tokens at their canonical Aether values, then scope `.section` /
+ * `.wrap` to the same shell. Pages that don't wrap in `.aiop-shell`
+ * (anything under shards' own dark theme) are untouched.
+ *
+ * Values are copied verbatim from Aether's `globals.css` so the
+ * parked sections render with the palette and proportions they were
+ * designed against, rather than drifting toward the slightly warmer
+ * `--aiop-*` Operator palette around them. Visual delta vs. the
+ * surrounding `--aiop-paper` (#f3ece0) is intentional and sub-1%.
+ * ────────────────────────────────────────────────────────────────── */
+
+.aiop-shell {
+  /* Paper & ink */
+  --paper: #f3ebd9;
+  --paper-2: #ece2cc;
+  --paper-3: #e2d6bc;
+  --card: #fdf6e6;
+  --card-2: #fffaec;
+  --card-3: #f9f3e3;
+  --ink: #252427;
+  --ink-soft: #3a393e;
+  --ink-deep: #14141a;
+
+  /* Type colors */
+  --muted: #6c6970;
+  --faint: #95929b;
+  --rule: #d3c8b1;
+  --rule-soft: #e2d8c1;
+  --line: rgba(37, 36, 39, 0.10);
+  --line-soft: rgba(37, 36, 39, 0.06);
+
+  /* Loop signal — Violet C primary, emerald/gold/dusk accents.
+     `--violet` already exists in shards `:root`, but we re-declare
+     all five so the family is internally consistent on the shell. */
+  --violet: #6243b9;
+  --violet-deep: #4a3290;
+  --violet-soft: #ebe4f8;
+  --violet-edge: rgba(98, 67, 185, 0.22);
+  --violet-15: rgba(98, 67, 185, 0.15);
+
+  --emerald: #1a6a4a;
+  --emerald-deep: #0f4d33;
+  --emerald-soft: #cfe1d3;
+  --emerald-edge: rgba(26, 106, 74, 0.22);
+
+  --gold: #b88728;
+  --gold-deep: #87601a;
+  --gold-soft: #efddb4;
+  --gold-edge: rgba(184, 135, 40, 0.22);
+
+  --dusk: #50647a;
+  --dusk-deep: #354659;
+  --dusk-soft: #d4dde6;
+  --dusk-edge: rgba(80, 100, 122, 0.22);
+
+  /* Aliases so existing class hooks keep working. */
+  --blue: var(--dusk);
+  --blue-deep: var(--dusk-deep);
+  --blue-soft: var(--dusk-soft);
+  --blue-edge: var(--dusk-edge);
+  --green: var(--emerald);
+  --green-deep: var(--emerald-deep);
+  --green-soft: var(--emerald-soft);
+  --green-edge: var(--emerald-edge);
+
+  /* Layout */
+  --max: 1240px;
+  --gutter: clamp(20px, 4vw, 56px);
+
+  /* Radius — restrained Stripe-like rhythm. */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-xl: 22px;
+  --radius-pill: 999px;
+
+  /* Atmosphere */
+  --shadow-xs: 0 1px 2px rgba(37, 36, 39, 0.05);
+  --shadow-sm: 0 2px 8px rgba(37, 36, 39, 0.05);
+  --shadow-md: 0 14px 38px rgba(37, 36, 39, 0.08);
+  --shadow-lg: 0 28px 80px rgba(37, 36, 39, 0.14);
+  --shadow-xl: 0 40px 100px rgba(37, 36, 39, 0.18);
+}
+
+/* Aether layout primitives, scoped to the shell. The je-* parked
+   sections reach for these via plain `.section` / `.wrap` class
+   names; scoping under `.aiop-shell` keeps them off the rest of
+   shards. Values match Aether's `globals.css` exactly. */
+.aiop-shell .wrap {
+  width: min(var(--max), calc(100% - 2 * var(--gutter)));
+  margin: 0 auto;
+}
+
+.aiop-shell .section {
+  padding: clamp(112px, 14vh, 180px) 0;
+  border-top: 1px solid var(--line);
+  position: relative;
+}
+
+/* ─── 1. Hero hook ──────────────────────────────────────────────────────── */
+
+.je-hero {
+  /* Tighten the hero so the new sections downstream get visual weight. */
+  min-height: auto;
+  padding: clamp(96px, 13vh, 140px) 0 clamp(56px, 8vh, 88px);
+}
+
+/*
+ * Hero h1 — mirrors the homepage's `.aiop-hero__title--minimal` exactly
+ * (`clamp(44px, 6vw, 84px)`, `line-height: 0.98`, `letter-spacing:
+ * -0.035em`, `max-width: 18ch`, `text-wrap: balance`). Weight 620 is
+ * Plex Sans's product-page bold; the global `.hero h1` rule sets 500
+ * which is too light for Plex Sans at display size, so the override
+ * lives here.
+ */
+.je-hero h1 {
+  font-family: var(--font-body);
+  font-weight: 620;
+  font-size: clamp(44px, 6vw, 84px);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  max-width: 22ch;
+  text-wrap: balance;
+}
+
+.je-hero h1 em {
+  display: block;
+  font-weight: 620;
+}
+
+@media (min-width: 760px) {
+  .je-hero h1 em {
+    display: inline;
+  }
+}
+
+/* ─── 2. Diagnosis ──────────────────────────────────────────────────────── */
+
+.je-diag {
+  padding: clamp(64px, 9vh, 112px) 0 clamp(72px, 10vh, 120px);
+  background: var(--card-2);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.je-diag .wrap {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 6vh, 64px);
+}
+
+.je-diag__head {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 880px;
+}
+
+.je-diag__num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/*
+ * Section h2 — homepage `.aiop-section-title` spec: tight sans, Plex
+ * 620 weight, smaller scale than the previous Bodoni rule, and
+ * `letter-spacing: -0.045em` so the kerning lands in product-page
+ * range rather than editorial loose.
+ */
+.je-diag__title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(30px, 3.6vw, 48px);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+  font-weight: 620;
+  color: var(--ink);
+  max-width: 17ch;
+}
+
+.je-diag__title em {
+  font-style: normal;
+  font-weight: 620;
+  color: var(--violet);
+}
+
+.je-diag__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(20px, 3vh, 28px);
+}
+
+.je-diag__problems {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 24px);
+  width: 100%;
+  max-width: 1080px;
+}
+
+.je-diag__problem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--violet);
+  border-radius: var(--radius-md);
+  background: var(--paper);
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+
+.je-diag__problem:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+  border-left-color: var(--violet-deep);
+}
+
+.je-diag__problem-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--violet);
+  font-weight: 700;
+}
+
+.je-diag__problem-title {
+  font-family: var(--font-body);
+  font-size: clamp(18px, 1.6vw, 22px);
+  line-height: 1.25;
+  letter-spacing: -0.018em;
+  color: var(--ink);
+  font-weight: 620;
+}
+
+.je-diag__problem-evidence {
+  font-style: normal;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--muted);
+}
+
+.je-diag__arrow {
+  font-size: 22px;
+  line-height: 1;
+  color: var(--violet);
+  font-weight: 400;
+}
+
+.je-diag__gap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 36px;
+  background: var(--paper);
+  border: 1px solid var(--violet-edge);
+  box-shadow: 0 0 0 6px rgba(98, 67, 185, 0.06);
+  border-radius: var(--radius-md);
+  text-align: center;
+  min-width: 320px;
+  max-width: 520px;
+}
+
+.je-diag__gap-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--violet);
+  font-weight: 700;
+}
+
+.je-diag__gap-title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(22px, 2.6vw, 30px);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  font-weight: 620;
+}
+
+.je-diag__gap-title em {
+  font-style: normal;
+  font-weight: 620;
+  color: var(--violet);
+}
+
+.je-diag__gap-sub {
+  font-style: normal;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.je-diag__resolution {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.5;
+  color: var(--ink);
+  font-weight: 500;
+  text-align: center;
+}
+
+.je-diag__resolution strong {
+  color: var(--violet);
+  font-weight: 700;
+}
+
+.je-diag__flow {
+  display: grid;
+  grid-template-columns: minmax(180px, auto) 1fr;
+  gap: clamp(20px, 3vw, 36px);
+  align-items: center;
+  padding: clamp(20px, 3vh, 28px) clamp(20px, 3vw, 32px);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(243, 235, 217, 0.5);
+}
+
+.je-diag__flow-kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.je-diag__flow-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 20px);
+}
+
+.je-diag__flow-step {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  padding-left: 14px;
+  border-left: 2px solid var(--violet);
+}
+
+.je-diag__flow-step strong {
+  color: var(--ink);
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+@media (max-width: 880px) {
+  .je-diag__problems {
+    grid-template-columns: 1fr;
+  }
+  .je-diag__flow {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .je-diag__flow-steps {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+/* ─── 3. Tab strip (shared by sections 03 and 05) ───────────────────────── */
+
+.je-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: var(--radius-pill);
+  width: fit-content;
+  max-width: 100%;
+}
+
+.je-tabs__tab {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition:
+    background 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease,
+    transform 200ms ease;
+}
+
+.je-tabs__tab:hover {
+  background: rgba(98, 67, 185, 0.06);
+  color: var(--ink);
+}
+
+.je-tabs__tab[data-state="active"] {
+  background: var(--violet);
+  color: var(--paper);
+  border-color: var(--violet);
+  box-shadow: 0 4px 12px rgba(98, 67, 185, 0.22);
+}
+
+.je-tabs__tab[data-state="active"] .je-tabs__tab-num {
+  color: rgba(243, 235, 217, 0.62);
+}
+
+.je-tabs__tab-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.je-tabs__tab-name {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+@media (max-width: 760px) {
+  .je-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--radius-md);
+  }
+  .je-tabs__tab {
+    flex: 0 0 auto;
+  }
+}
+
+/* Cross-fade animation used by both panels when the active case
+   changes. We rely on `key={selectedId}` in the JSX so React re-mounts
+   the panel each time and triggers this animation from scratch. */
+@keyframes jePanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ─── 4. Substrate gallery ──────────────────────────────────────────────── */
+
+.je-gallery-section {
+  background: var(--paper);
+}
+
+.je-gallery {
+  margin-top: clamp(28px, 4vh, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vh, 28px);
+}
+
+.je-gallery__panel {
+  animation: jePanelIn 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.je-gallery__showcase {
+  display: grid;
+  grid-template-columns:
+    minmax(180px, 0.8fr)
+    minmax(0, 1.6fr)
+    auto
+    minmax(180px, 0.8fr);
+  gap: clamp(18px, 2.4vw, 32px);
+  align-items: stretch;
+  padding: clamp(20px, 3vh, 28px) clamp(20px, 3vw, 28px);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.je-gallery__flank {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.je-gallery__flank-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.je-gallery__systems,
+.je-gallery__interfaces {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.je-gallery__system,
+.je-gallery__interface {
+  display: grid;
+  grid-template-columns: 18px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: rgba(243, 235, 217, 0.5);
+  transition: background 180ms ease, border-color 180ms ease;
+}
+
+.je-gallery__system:hover,
+.je-gallery__interface:hover {
+  background: var(--paper);
+  border-color: var(--rule);
+}
+
+.je-gallery__system-glyph,
+.je-gallery__interface-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-sm);
+  background: rgba(98, 67, 185, 0.10);
+  border: 1px solid var(--violet-edge);
+  color: var(--violet);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.je-gallery__interface-glyph {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.je-gallery__system-name,
+.je-gallery__interface-name {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+}
+
+.je-gallery__system-kind {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.je-gallery__flank-note {
+  margin: 4px 0 0;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.je-gallery__console {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 22px;
+  background: #1a1814;
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(98, 67, 185, 0.10), transparent 55%),
+    radial-gradient(circle at 88% 90%, rgba(184, 135, 40, 0.08), transparent 55%);
+  border: 1px solid rgba(243, 235, 217, 0.10);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  color: var(--paper);
+}
+
+.je-gallery__console-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(243, 235, 217, 0.08);
+}
+
+.je-gallery__console-title {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 620;
+  letter-spacing: -0.015em;
+  color: var(--paper);
+}
+
+.je-gallery__console-badge {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 800;
+  padding: 4px 9px;
+  border-radius: var(--radius-pill);
+  background: rgba(184, 135, 40, 0.18);
+  color: var(--gold-soft);
+  border: 1px solid rgba(184, 135, 40, 0.45);
+}
+
+.je-gallery__console-framing,
+.je-gallery__console-caption {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgba(243, 235, 217, 0.66);
+}
+
+.je-gallery__console-caption {
+  font-style: normal;
+}
+
+.je-gallery__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.je-gallery__row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 14px;
+  align-items: start;
+  padding: 8px 12px;
+  border: 1px solid rgba(243, 235, 217, 0.08);
+  border-radius: var(--radius-sm);
+  background: rgba(243, 235, 217, 0.04);
+}
+
+.je-gallery__row[data-row="rules"] {
+  border-left: 3px solid var(--violet);
+}
+.je-gallery__row[data-row="examples"] {
+  border-left: 3px solid var(--gold);
+}
+.je-gallery__row[data-row="voice"] {
+  border-left: 3px solid var(--emerald);
+}
+.je-gallery__row[data-row="guards"] {
+  border-left: 3px solid #b85a30;
+}
+
+.je-gallery__row-tag {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 800;
+  padding-top: 2px;
+  color: var(--paper);
+  opacity: 0.8;
+}
+
+.je-gallery__row[data-row="rules"] .je-gallery__row-tag {
+  color: var(--violet-soft);
+}
+.je-gallery__row[data-row="examples"] .je-gallery__row-tag {
+  color: var(--gold-soft);
+}
+.je-gallery__row[data-row="voice"] .je-gallery__row-tag {
+  color: var(--emerald-soft);
+}
+.je-gallery__row[data-row="guards"] .je-gallery__row-tag {
+  color: #f3c8a8;
+}
+
+.je-gallery__row-sample {
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(243, 235, 217, 0.92);
+}
+
+.je-gallery__bridge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 60px;
+}
+
+.je-gallery__bridge-rail {
+  width: 1px;
+  flex: 0 0 30%;
+  background: var(--violet-edge);
+}
+
+.je-gallery__bridge-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--paper);
+  border: 1px solid var(--violet-edge);
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--violet);
+}
+
+.je-gallery__bridge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--violet);
+}
+
+.je-gallery__bridge-arrow {
+  font-size: 16px;
+  color: var(--violet);
+  font-weight: 700;
+}
+
+.je-gallery__bridge-caption {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  flex: 0 0 30%;
+}
+
+.je-gallery__promises {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 24px);
+  margin-top: clamp(28px, 4vh, 40px);
+}
+
+.je-gallery__promise {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 22px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--card);
+}
+
+.je-gallery__promise strong {
+  font-family: var(--font-body);
+  font-size: 17px;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  font-weight: 620;
+}
+
+.je-gallery__promise span {
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 1080px) {
+  .je-gallery__showcase {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+  .je-gallery__bridge {
+    width: 100%;
+    flex-direction: row;
+    justify-content: center;
+  }
+  .je-gallery__bridge-rail {
+    flex: 0 0 30%;
+    height: 1px;
+    width: auto;
+  }
+}
+
+@media (max-width: 760px) {
+  .je-gallery__promises {
+    grid-template-columns: 1fr;
+  }
+  .je-gallery__row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+/* ─── 5. The Shift ──────────────────────────────────────────────────────── */
+
+.je-shift-section {
+  background: var(--card-2);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.je-shift {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(18px, 2.4vw, 32px);
+  margin-top: clamp(28px, 4vh, 40px);
+}
+
+.je-shift__col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--paper);
+}
+
+.je-shift__col--new {
+  border-color: var(--violet-edge);
+  box-shadow: 0 0 0 6px rgba(98, 67, 185, 0.06);
+}
+
+.je-shift__col-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.je-shift__col--new .je-shift__col-label {
+  color: var(--violet);
+}
+
+.je-shift__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+.je-shift__caption {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.je-shift__strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 20px);
+  margin-top: clamp(24px, 3vh, 32px);
+  padding-top: clamp(24px, 3vh, 32px);
+  border-top: 1px dashed var(--line);
+}
+
+.je-shift__strip-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-left: 14px;
+  border-left: 2px solid var(--violet);
+}
+
+.je-shift__strip-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--violet);
+  font-weight: 800;
+}
+
+.je-shift__strip-body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+@media (max-width: 880px) {
+  .je-shift {
+    grid-template-columns: 1fr;
+  }
+  .je-shift__strip {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── 6. Degrees of freedom (Creative Strategy workstreams) ─────────────
+ *
+ * Section layout:
+ *
+ *   header        — title + sub via `.aiop-section-head`
+ *   tabs / eyebrow — `.je-freedom__tabs` strip when more than one
+ *                    workstream is defined; otherwise a quiet
+ *                    `WORKSTREAM 01 \u00b7 Creative Strategy` eyebrow
+ *   panel header  — one-line description for the active workstream
+ *   panel body    — three band cards laid out horizontally
+ *                   (Low / Medium / High), red rail on Low
+ *   caption       — `skillNote` for the active workstream
+ *
+ * Each band card is colour-coded:
+ *   - Low    · red rail    · locked foundations (highest signal)
+ *   - Medium · violet rail · guided choices
+ *   - High   · sage rail   · open / creative
+ *
+ * Earlier revisions of this section paired the band stack with a
+ * dark "skill.md, compressed" card on the right that mirrored the
+ * same content; it retired because the band cards already say it
+ * at a scan. The horizontal three-up keeps the contract readable
+ * in one pass.
+ * ────────────────────────────────────────────────────────────────── */
+
+.je-freedom-section {
+  background: var(--paper);
+}
+
+.je-freedom {
+  margin-top: clamp(28px, 4vh, 40px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vh, 28px);
+}
+
+.je-freedom__panel {
+  animation: jePanelIn 280ms cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vh, 28px);
+}
+
+.je-freedom__panel-description {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(14.5px, 1.1vw, 16px);
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 64ch;
+}
+
+/* Single-workstream eyebrow. Lands where the tab strip would sit
+ * when only one workstream is defined; signals "Workstream 01 ·
+ * Creative Strategy" so the section doesn't read as a lonely pill
+ * floating above the panel. Mono caps, violet accent, lightweight
+ * underline-style separation between the badge and the name. */
+.je-freedom__eyebrow {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.je-freedom__eyebrow-badge {
+  font-weight: 700;
+  color: var(--violet-deep);
+}
+
+.je-freedom__eyebrow-badge::after {
+  content: "\00b7";
+  margin-left: 10px;
+  color: color-mix(in oklab, var(--ink-soft) 50%, transparent);
+}
+
+.je-freedom__eyebrow-name {
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: 0.08em;
+}
+
+/* ─── Three band cards laid out horizontally (Low / Medium / High) ─── */
+
+.je-freedom__bands {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 1.6vw, 22px);
+  align-items: stretch;
+}
+
+@media (max-width: 980px) {
+  .je-freedom__bands {
+    grid-template-columns: 1fr;
+  }
+}
+
+.je-freedom__band {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: clamp(18px, 1.8vw, 24px);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  /* Left accent rail flips colour per band — set by the modifiers
+     below so the rail reads before the rest of the card. */
+  border-left: 3px solid var(--muted);
+  transition: transform 200ms ease, box-shadow 200ms ease;
+}
+
+.je-freedom__band:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Low — red. Locked foundations the model can't invent. */
+.je-freedom__band--low {
+  border-left-color: #b8392f;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(184, 57, 47, 0.07) 0%,
+      var(--card) 60%
+    );
+}
+
+/* Medium — violet. Judgment with context. */
+.je-freedom__band--medium {
+  border-left-color: var(--violet);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(98, 67, 185, 0.06) 0%,
+      var(--card) 60%
+    );
+}
+
+/* High — sage / emerald. Creative composition inside boundaries. */
+.je-freedom__band--high {
+  border-left-color: var(--emerald);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(26, 106, 74, 0.06) 0%,
+      var(--card) 60%
+    );
+}
+
+.je-freedom__band-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.je-freedom__band-level {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--muted);
+}
+
+.je-freedom__band--low .je-freedom__band-level {
+  border-color: rgba(184, 57, 47, 0.40);
+  color: #8b2a23;
+  background: rgba(184, 57, 47, 0.08);
+}
+
+.je-freedom__band--medium .je-freedom__band-level {
+  border-color: rgba(98, 67, 185, 0.40);
+  color: var(--violet-deep);
+  background: rgba(98, 67, 185, 0.08);
+}
+
+.je-freedom__band--high .je-freedom__band-level {
+  border-color: rgba(26, 106, 74, 0.40);
+  color: var(--emerald-deep);
+  background: rgba(26, 106, 74, 0.08);
+}
+
+.je-freedom__band-headline {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(15.5px, 1.35vw, 18px);
+  line-height: 1.28;
+  letter-spacing: -0.012em;
+  color: var(--ink);
+  font-weight: 620;
+}
+
+.je-freedom__band-examples {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.je-freedom__band-example {
+  position: relative;
+  padding-left: 18px;
+  font-family: var(--font-body);
+  font-size: clamp(13.5px, 1vw, 14.5px);
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.je-freedom__band-example::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.45;
+}
+
+.je-freedom__band--low .je-freedom__band-example::before {
+  background: #b8392f;
+  opacity: 0.85;
+}
+
+.je-freedom__band--medium .je-freedom__band-example::before {
+  background: var(--violet);
+  opacity: 0.85;
+}
+
+.je-freedom__band--high .je-freedom__band-example::before {
+  background: var(--emerald);
+  opacity: 0.85;
+}
+
+.je-freedom__caption {
+  margin: clamp(20px, 3vh, 28px) 0 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ─── 7. Close ──────────────────────────────────────────────────────────── */
+
+.je-close__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 40px;
+}
+
+/* ─── 8. Role selector ─────────────────────────────────────────────────── */
+
+/*
+ * Sits at the very top of the hero, above the eyebrow. Editorial
+ * register: small JetBrains Mono kicker ("Viewing as"), Fraunces value
+ * (the role label), violet accent on focus and on the active option in
+ * the menu. Built as a button + listbox (not a native <select>) so the
+ * trigger and the menu can match the rest of the page's type system.
+ */
+
+.je-role-selector {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: clamp(20px, 3vh, 28px);
+}
+
+.je-role-selector__label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.je-role-selector__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px 8px 16px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font: inherit;
+  color: var(--ink);
+  transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+  box-shadow: 0 1px 0 rgba(37, 36, 39, 0.04);
+}
+
+.je-role-selector__trigger:hover {
+  border-color: rgba(98, 67, 185, 0.55);
+  background: rgba(243, 235, 217, 0.7);
+}
+
+.je-role-selector__trigger:focus-visible {
+  outline: none;
+  border-color: var(--violet);
+  box-shadow: 0 0 0 3px rgba(98, 67, 185, 0.18);
+}
+
+.je-role-selector__trigger[data-state="open"] {
+  border-color: var(--violet);
+  background: rgba(98, 67, 185, 0.06);
+}
+
+.je-role-selector__value {
+  font-family: var(--font-body);
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.je-role-selector__caret {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--violet);
+  line-height: 1;
+  transition: transform 180ms ease;
+}
+
+.je-role-selector__trigger[data-state="open"] .je-role-selector__caret {
+  transform: translateY(1px) rotate(180deg);
+}
+
+.je-role-selector__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 20;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md, 0 12px 32px -8px rgba(37, 36, 39, 0.20));
+  animation: je-role-menu-in 180ms ease;
+}
+
+@keyframes je-role-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.je-role-selector__option {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 4px 12px;
+  padding: 10px 12px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+  color: var(--ink);
+  transition: background 140ms ease, color 140ms ease;
+}
+
+.je-role-selector__option:hover,
+.je-role-selector__option:focus-visible {
+  outline: none;
+  background: rgba(98, 67, 185, 0.08);
+}
+
+.je-role-selector__option[aria-selected="true"] {
+  background: rgba(98, 67, 185, 0.10);
+}
+
+.je-role-selector__option-name {
+  grid-column: 1;
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  letter-spacing: -0.005em;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.je-role-selector__option-kicker {
+  grid-column: 1;
+  grid-row: 2;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.je-role-selector__option-mark {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--violet);
+}
+
+@media (max-width: 640px) {
+  .je-role-selector {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .je-role-selector__menu {
+    min-width: min(320px, calc(100vw - 48px));
+  }
+}
+
+/* ─── 9. Surface thumbnails (Mímir screens in Creative Strategy) ────────── */
+
+/*
+ * For the Creative Strategy role the substrate-gallery interfaces column
+ * shows actual Mímir screenshots (Personas, Loop Ads, Customer Reviews,
+ * Briefing Flow). The thumbnail replaces the small letter glyph but
+ * preserves the row shape so the gallery's three-column grid still
+ * aligns. Falls back to the plain glyph for every other role.
+ */
+.je-gallery__interface--thumbnail {
+  /*
+   * Bumps the row to give the thumbnail breathing room. The thumb
+   * itself is square; the name still sits next to it with the same
+   * gap as the plain-glyph variant.
+   */
+  grid-template-columns: 48px 1fr auto;
+  padding: 10px 12px;
+  align-items: center;
+}
+
+.je-gallery__interface-thumb {
+  display: block;
+  width: 48px;
+  height: 32px;
+  background-color: var(--ink-deep, #14141a);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: 1px solid var(--violet-edge);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-xs);
+}
+
+.je-gallery__interface--thumbnail .je-gallery__interface-name {
+  font-weight: 600;
+}
+
+@media (max-width: 1080px) {
+  .je-gallery__interface--thumbnail {
+    grid-template-columns: 40px 1fr auto;
+  }
+  .je-gallery__interface-thumb {
+    width: 40px;
+    height: 28px;
+  }
+}
+
+/* ─── 10. Role filter dropdown (above the Diagnosis grid) ─────────────── */
+
+/*
+ * Sits between the Diagnosis section head and the four-card grid. The
+ * `<RoleSelector />` chassis (`.je-role-selector__*` rules elsewhere
+ * in this file) lives inside this wrapper, which only positions the
+ * dropdown horizontally and provides a small margin block. The
+ * dropdown's internal type already lines up with the homepage Plex
+ * register because `--font-body` and `--font-mono` are remapped to
+ * `--aiop-*` at the top of this file.
+ */
+/*
+ * Diagnosis section sizing — compress padding + margins so the whole
+ * section (header, role filter, four cards, gap line) lands inside
+ * one normal desktop viewport rather than scrolling. Only applies
+ * on `.ail-diagnosis` so the homepage's diagnosis is untouched.
+ */
+.ail-diagnosis {
+  padding-block: clamp(56px, 7vh, 88px);
+}
+
+.ail-diagnosis .aiop-diagnosis__bridge {
+  margin: clamp(12px, 1.6vw, 20px) 0;
+  height: 24px;
+}
+
+/*
+ * Gap pill — same pill chrome as the homepage engine-pattern bridge
+ * button (`.aiop-engine-pattern__bridge`): rounded 999px, soft tinted
+ * gradient, inset white highlight + outer glow shadow, hairline
+ * border. The difference is the colour family: the bridge is violet
+ * ("navigate to the engine running it"); the gap is amber ("here is
+ * the shared problem the four cards point at"). That keeps the two
+ * visually distinct while reading as the same family of editorial
+ * chip.
+ *
+ * Drops the diamond pseudo-elements the homepage renders on its
+ * boxed gap card. Lays out as a single horizontal row: eyebrow on
+ * the left, title on the right; wraps to two lines on narrow
+ * viewports so the pill still reads as one unit.
+ */
+.ail-diagnosis .aiop-diagnosis__gap {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  width: fit-content;
+  max-width: min(720px, 100%);
+  margin: clamp(20px, 3vh, 32px) auto 0;
+  padding: 12px 22px;
+  text-align: left;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--gold) 16%, var(--paper)) 0%,
+      color-mix(in oklab, var(--gold) 6%, var(--paper-2)) 100%
+    );
+  border: 1px solid
+    color-mix(in oklab, var(--gold) 30%, var(--rule));
+  border-radius: 999px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 6px 22px -10px color-mix(in oklab, var(--gold) 38%, transparent),
+    0 14px 30px -22px rgba(26, 22, 18, 0.16);
+}
+
+.ail-diagnosis .aiop-diagnosis__gap::before,
+.ail-diagnosis .aiop-diagnosis__gap::after {
+  content: none;
+  display: none;
+}
+
+.ail-diagnosis .aiop-diagnosis__gap-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--gold-deep);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ail-diagnosis .aiop-diagnosis__gap-title {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(14px, 1.1vw, 16px);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 1.4;
+  color: var(--ink);
+  min-width: 0;
+}
+
+/*
+ * `position: relative` + a high `z-index` create a stacking context
+ * for the filter wrapper that beats the diagnosis card grid below.
+ * Without it the absolute-positioned `.je-role-selector__menu`
+ * (z-index: 20 within its parent's stacking context) renders behind
+ * the cards because `.aiop-reveal` further up the tree applies
+ * `transform`/`opacity` during the intersection animation, which
+ * promotes the card grid into its own stacking context that wins
+ * the paint order otherwise.
+ */
+.ail-role-filter {
+  position: relative;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  margin: clamp(16px, 2.4vh, 28px) 0 clamp(18px, 2.4vh, 32px);
+}
+
+@media (max-width: 720px) {
+  .ail-role-filter {
+    justify-content: flex-start;
+  }
+}
+
+/*
+ * Belt-and-braces — bump the menu's own z-index well past anything
+ * else on the page so even if a future section also lifts into a
+ * stacking context, the open dropdown stays on top.
+ */
+.ail-role-filter .je-role-selector__menu {
+  z-index: 100;
+}
+
+/* ─── 11. Substrate map additions (column caption + KG highlight) ─────── */
+
+/*
+ * Small caption that sits between each substrate-map column title and
+ * its items list. Names what the column actually carries — including
+ * the call-out for the knowledge graph inside Trusted Sources.
+ */
+.ail-substrate-map__col-caption {
+  margin: 4px 0 14px;
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.aiop-substrate-map__col--surfaces .ail-substrate-map__col-caption,
+.aiop-substrate-map__col--substrate .ail-substrate-map__col-caption {
+  color: var(--ink-soft);
+}
+
+/*
+ * Trusted Sources column — quiet ontology caption + compact systems
+ * chip grid. The column's main caption already names the ontology
+ * concept, so the layer doesn't need a framed sub-card. Just a
+ * single mono line spelling out what the knowledge graph holds and
+ * a 2-column chip grid of the systems of record below.
+ *
+ *   Where the work already lives.
+ *   An ontology AI can read, built on the systems Loop already runs.
+ *
+ *   KNOWLEDGE GRAPH · Customer · Brief · Persona · Hook · Campaign
+ *
+ *   [Snowflake]    [ThoughtSpot]
+ *   [Frontify]     [Monday]
+ *   [Notion]       [SAP / Arena / CRM]
+ */
+
+.ail-ontology-line {
+  margin: clamp(10px, 1.8vh, 16px) 0 clamp(14px, 2.4vh, 20px);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  line-height: 1.65;
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.ail-ontology-line__kind {
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--violet);
+  font-size: 10px;
+}
+
+.ail-ontology-line__objects {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--ink-soft);
+}
+
+/* 2-column chip grid for the systems of record. Compresses six
+   system names into three rows so column 01 stays close in height
+   to columns 02 and 03 of the substrate map. */
+.ail-systems-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.ail-systems-grid__chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 10px;
+  background: rgba(243, 235, 217, 0.5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  text-align: center;
+  letter-spacing: -0.005em;
+}
+
+@media (max-width: 480px) {
+  .ail-systems-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/*
+ * Single-line closing under the substrate-map card. Lifted from the
+ * homepage's `substrateMapSection.closing`; rendered as a quiet
+ * editorial wrap so the card doesn't end on a chip row.
+ */
+.ail-substrate-map__closing {
+  margin: clamp(20px, 3vh, 28px) 0 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ─── 12. Close block (homepage chrome) ───────────────────────────────── */
+
+.ail-close {
+  border-top: 1px solid var(--line);
+}
+
+.ail-close__head {
+  text-align: left;
+}
+
+.ail-close__title {
+  max-width: 22ch;
+}
+
+.ail-close__body {
+  margin-top: 14px;
+  max-width: 56ch;
+}
+
+.ail-close__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: clamp(28px, 4vh, 40px);
+}
+
+/* ─── 13. Parked deep-dives — section dividers ────────────────────────── */
+
+/*
+ * Each parked deep-dive `.section` already paints a top border via
+ * globals.css; with the homepage `aiop-section` chrome above them the
+ * transition reads cleanly without extra rules here.
+ */
+
+/* ─── 14. Reduced motion ──────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .je-gallery__panel,
+  .je-freedom__panel {
+    animation: none !important;
+  }
+  .je-tabs__tab,
+  .je-diag__problem,
+  .je-freedom__band,
+  .je-gallery__system,
+  .je-gallery__interface,
+  .je-role-selector__trigger,
+  .je-role-selector__caret,
+  .je-role-selector__option {
+    transition: none !important;
+  }
+  .je-role-selector__menu {
+    animation: none !important;
+  }
+}
+
+/* ─── Body paragraph weight (global pass · `je-` namespace) ─────────
+ *
+ * Sibling of the body-weight block at the end of operator.css.
+ * The `je-` classes ship their own font tokens (`var(--font-body)`,
+ * `var(--ink-soft)`, `var(--muted)`) from `app/globals.css` rather
+ * than the aiop shell tokens, so the global lift has to be repeated
+ * here for those selectors. Headlines (`.je-freedom__band-headline`
+ * already weight 620) are left at their current weight; only the
+ * prose tiers pick up the 450-weight bump so the section reads
+ * denser without going bold.
+ * ─────────────────────────────────────────────────────────────────── */
+.je-freedom__panel-description,
+.je-freedom__band-example,
+.je-freedom__caption,
+.je-shift-section .aiop-section-head__sub {
+  font-weight: 450;
+}
+

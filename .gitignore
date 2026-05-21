@@ -40,6 +40,17 @@ yarn-error.log*
 # image sources (compressed derivatives are committed under public/images)
 /public/stripe-office.png
 
+# QA, working notes, browser session captures — kept local, never committed
+.cursor/plans/
+.playwright-mcp/
+qa-screenshots/
+
+# Root-level captures (QA screenshots dropped at repo root by various
+# scripts and browser-mcp sessions). Tracked images live under public/
+# or specific feature subdirs, never at the repo root.
+/*.png
+/*.txt
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

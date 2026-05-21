@@ -1,0 +1,519 @@
+/*
+ * skills-deck.css
+ *
+ * Styles for the SkillsDeck companion section. Each slide replays
+ * the EnginePattern's gradient-bleed grammar (violet → paper → sage
+ * + two radial washes + masked 32px grid) at slide scope, with a
+ * card grid inside instead of a horizontal rail.
+ *
+ * Tokens (defined in operator.css):
+ *   --aiop-violet  · --aiop-sage
+ *   --aiop-paper   · --aiop-paper-2  · --aiop-card-2
+ *   --aiop-ink     · --aiop-ink-2    · --aiop-ink-soft
+ *   --aiop-rule    · --aiop-rule-strong
+ *   --aiop-display (Bodoni Moda)
+ *   --aiop-body    (IBM Plex Sans)
+ *   --aiop-mono    (IBM Plex Mono)
+ *
+ * Receipt tones (live / committed / scoping) mirror the
+ * EnginePattern card pills so the two surfaces read as siblings.
+ */
+
+/* ─── 01 · Section shell ─────────────────────────────────────────── */
+
+.aiop-skills-deck {
+  padding-block: clamp(40px, 6vw, 88px);
+}
+
+.aiop-skills-deck__intro {
+  margin-bottom: clamp(28px, 4vw, 56px);
+}
+
+.aiop-skills-deck__head {
+  align-items: end;
+}
+
+.aiop-skills-deck__head-left {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.aiop-skills-deck__eyebrow {
+  color: var(--aiop-violet);
+}
+
+.aiop-skills-deck__eyebrow .aiop-slash {
+  background:
+    linear-gradient(
+      135deg,
+      transparent 0 6px,
+      var(--aiop-violet) 6px 7px,
+      transparent 7px 14px
+    ),
+    linear-gradient(
+      135deg,
+      transparent 0 12px,
+      var(--aiop-violet) 12px 13px,
+      transparent 13px 20px
+    );
+}
+
+.aiop-skills-deck__title {
+  color: var(--aiop-ink);
+  max-width: 22ch;
+}
+
+.aiop-skills-deck__title em {
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--aiop-violet);
+}
+
+.aiop-skills-deck__sub {
+  color: color-mix(in oklab, var(--aiop-ink) 64%, transparent);
+  max-width: 48ch;
+}
+
+/* ─── 02 · Slide rail (vertical stack of full-bleed slides) ──────── */
+
+.aiop-skills-deck__rail {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vw, 40px);
+}
+
+.aiop-skills-deck__slide-slot {
+  position: relative;
+  list-style: none;
+}
+
+/* ─── 03 · Single slide — the gradient panel ─────────────────────── */
+
+.aiop-skills-deck__slide {
+  position: relative;
+  isolation: isolate;
+  padding-block: clamp(48px, 6vw, 80px);
+  padding-inline: 0;
+  overflow: hidden;
+}
+
+@media (min-width: 960px) {
+  .aiop-skills-deck__slide {
+    /* Full-screen presentation feel: each slide claims at least
+       a viewport so the deck paginates predictably in the PDF
+       export (one slide ≈ one page). */
+    min-height: calc(100vh - var(--aiop-header-h));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+/* Gradient bleed — replays the EnginePattern recipe at slide scope. */
+.aiop-skills-deck__slide-bleed {
+  position: absolute;
+  inset: clamp(12px, 2vw, 28px) clamp(10px, 1.6vw, 24px);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-violet) 14%, var(--aiop-card-2)) 0%,
+      color-mix(in oklab, var(--aiop-violet) 8%, var(--aiop-paper)) 55%,
+      color-mix(in oklab, var(--aiop-sage) 12%, var(--aiop-paper-2)) 100%
+    );
+  border: 1px solid
+    color-mix(in oklab, var(--aiop-violet) 28%, var(--aiop-rule-strong));
+  box-shadow:
+    0 1px 2px rgba(26, 22, 18, 0.06),
+    0 32px 64px -38px rgba(26, 22, 18, 0.3);
+}
+
+.aiop-skills-deck__slide-wash {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(4px);
+  opacity: 1;
+}
+
+.aiop-skills-deck__slide-wash--a {
+  width: 60%;
+  aspect-ratio: 1 / 1;
+  left: -12%;
+  top: -22%;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--aiop-violet) 50%, transparent) 0%,
+    transparent 62%
+  );
+}
+
+.aiop-skills-deck__slide-wash--b {
+  width: 66%;
+  aspect-ratio: 1 / 1;
+  right: -18%;
+  bottom: -30%;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--aiop-sage) 44%, transparent) 0%,
+    transparent 62%
+  );
+}
+
+.aiop-skills-deck__slide-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26, 22, 18, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 22, 18, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(
+    ellipse 70% 75% at 50% 50%,
+    black 0%,
+    rgba(0, 0, 0, 0.55) 60%,
+    transparent 95%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 75% at 50% 50%,
+    black 0%,
+    rgba(0, 0, 0, 0.55) 60%,
+    transparent 95%
+  );
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* ─── 04 · Slide content shell ───────────────────────────────────── */
+
+.aiop-skills-deck__slide-shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 3.2vw, 44px);
+}
+
+.aiop-skills-deck__slide-head {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  max-width: 720px;
+}
+
+.aiop-skills-deck__slide-counter {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--aiop-ink) 48%, transparent);
+}
+
+.aiop-skills-deck__slide-kicker {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-violet);
+}
+
+.aiop-skills-deck__slide-title {
+  font-family: var(--aiop-body);
+  font-weight: 620;
+  font-size: clamp(28px, 3.4vw, 44px);
+  line-height: 1.06;
+  letter-spacing: -0.04em;
+  color: var(--aiop-ink);
+  margin: 4px 0 0;
+  max-width: 18ch;
+}
+
+.aiop-skills-deck__slide-title em {
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--aiop-violet);
+}
+
+.aiop-skills-deck__slide-lede {
+  font-family: var(--aiop-body);
+  font-size: clamp(15px, 1.1vw, 17px);
+  line-height: 1.55;
+  color: color-mix(in oklab, var(--aiop-ink) 70%, transparent);
+  max-width: 60ch;
+  margin: 6px 0 0;
+}
+
+/* ─── 05 · Card grid ─────────────────────────────────────────────── */
+
+.aiop-skills-deck__cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(14px, 1.4vw, 20px);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+@media (min-width: 960px) {
+  .aiop-skills-deck__cards--is-3up {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .aiop-skills-deck__cards--is-2up {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 880px;
+  }
+
+  .aiop-skills-deck__cards--is-2x2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .aiop-skills-deck__cards--is-2x2 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.aiop-skills-deck__card-slot {
+  list-style: none;
+  display: flex;
+}
+
+/* ─── 06 · Card itself ───────────────────────────────────────────── */
+
+.aiop-skills-deck__card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: clamp(18px, 1.6vw, 24px);
+  border-radius: 6px;
+  background: color-mix(in oklab, var(--aiop-card-2) 88%, transparent);
+  border: 1px solid
+    color-mix(in oklab, var(--aiop-violet) 16%, var(--aiop-rule-strong));
+  box-shadow:
+    0 1px 2px rgba(26, 22, 18, 0.04),
+    0 18px 32px -28px rgba(26, 22, 18, 0.22);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.aiop-skills-deck__card-head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.aiop-skills-deck__card-team {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--aiop-ink) 42%, transparent);
+}
+
+.aiop-skills-deck__card-title {
+  font-family: var(--aiop-body);
+  font-weight: 600;
+  font-size: clamp(17px, 1.35vw, 21px);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.aiop-skills-deck__card-body {
+  font-family: var(--aiop-body);
+  font-size: clamp(13.5px, 0.98vw, 15px);
+  line-height: 1.5;
+  color: color-mix(in oklab, var(--aiop-ink) 78%, transparent);
+  margin: 0;
+  flex: 1;
+}
+
+.aiop-skills-deck__card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-violet);
+  text-decoration: none;
+  margin: -2px 0 0;
+  width: max-content;
+  max-width: 100%;
+}
+
+.aiop-skills-deck__card-link:hover,
+.aiop-skills-deck__card-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.aiop-skills-deck__card-link-arrow {
+  display: inline-block;
+  transform: translateY(-1px);
+  font-size: 13px;
+}
+
+/* ─── 07 · Card footer + status pill ─────────────────────────────── */
+
+.aiop-skills-deck__card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px dashed
+    color-mix(in oklab, var(--aiop-ink) 14%, transparent);
+}
+
+.aiop-skills-deck__card-owners {
+  font-family: var(--aiop-body);
+  font-size: 12.5px;
+  font-weight: 400;
+  color: color-mix(in oklab, var(--aiop-ink) 60%, transparent);
+  margin: 0;
+  letter-spacing: 0.005em;
+}
+
+.aiop-skills-deck__card-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 8px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--aiop-paper) 80%, transparent);
+  border: 1px solid color-mix(in oklab, var(--aiop-ink) 16%, transparent);
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--aiop-ink) 78%, transparent);
+  white-space: nowrap;
+}
+
+.aiop-skills-deck__card-pill-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--aiop-ink);
+}
+
+/* Receipt tones */
+
+.aiop-skills-deck__card-pill--live {
+  border-color: color-mix(in oklab, var(--aiop-sage) 36%, transparent);
+  color: color-mix(in oklab, var(--aiop-sage) 78%, var(--aiop-ink));
+  background: color-mix(in oklab, var(--aiop-sage) 8%, var(--aiop-paper));
+}
+
+.aiop-skills-deck__card-pill--live .aiop-skills-deck__card-pill-dot {
+  background: var(--aiop-sage);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--aiop-sage) 22%, transparent);
+  animation: aiop-skills-deck-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes aiop-skills-deck-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px
+      color-mix(in oklab, var(--aiop-sage) 22%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 6px
+      color-mix(in oklab, var(--aiop-sage) 8%, transparent);
+  }
+}
+
+.aiop-skills-deck__card-pill--committed {
+  border-color: color-mix(in oklab, var(--aiop-violet) 36%, transparent);
+  color: color-mix(in oklab, var(--aiop-violet) 80%, var(--aiop-ink));
+  background: color-mix(in oklab, var(--aiop-violet) 8%, var(--aiop-paper));
+}
+
+.aiop-skills-deck__card-pill--committed .aiop-skills-deck__card-pill-dot {
+  background: var(--aiop-violet);
+}
+
+.aiop-skills-deck__card-pill--scoping {
+  border-color: color-mix(in oklab, var(--aiop-ink) 24%, transparent);
+  color: color-mix(in oklab, var(--aiop-ink) 60%, transparent);
+  background: color-mix(in oklab, var(--aiop-ink) 4%, var(--aiop-paper));
+}
+
+.aiop-skills-deck__card-pill--scoping .aiop-skills-deck__card-pill-dot {
+  background: color-mix(in oklab, var(--aiop-ink) 42%, transparent);
+}
+
+/* ─── 08 · Status-driven card accent (left edge rail) ────────────── */
+
+.aiop-skills-deck__card {
+  position: relative;
+}
+
+.aiop-skills-deck__card::before {
+  content: "";
+  position: absolute;
+  inset: 12px auto 12px 0;
+  width: 2px;
+  border-radius: 2px;
+  background: color-mix(in oklab, var(--aiop-ink) 18%, transparent);
+}
+
+.aiop-skills-deck__card--in-use::before,
+.aiop-skills-deck__card--built::before {
+  background: var(--aiop-sage);
+}
+
+.aiop-skills-deck__card--in-build::before,
+.aiop-skills-deck__card--in-flight::before {
+  background: var(--aiop-violet);
+}
+
+.aiop-skills-deck__card--scoping::before {
+  background: color-mix(in oklab, var(--aiop-ink) 28%, transparent);
+}
+
+/* ─── 09 · Mobile fallback ───────────────────────────────────────── */
+
+@media (max-width: 720px) {
+  .aiop-skills-deck__slide-head {
+    gap: 10px;
+  }
+
+  .aiop-skills-deck__cards {
+    grid-template-columns: 1fr;
+  }
+
+  .aiop-skills-deck__card-foot {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+/* ─── 10 · Reduced motion ────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .aiop-skills-deck__card-pill--live .aiop-skills-deck__card-pill-dot {
+    animation: none;
+  }
+}

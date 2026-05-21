@@ -1,0 +1,780 @@
+/* ═════════════════════════════════════════════════════════════════════
+ * 00 · Workshop-wide overrides
+ * ═══════════════════════════════════════════════════════════════════
+ *
+ * Two route-level rules that apply to the entire `/claude-workshop-v1`
+ * page (the root wrapper carries `.aiop-workshop-v1`):
+ *
+ *   - All italic glyphs render upright. The Bodoni Moda italic
+ *     emphasis used throughout Aether (em pivots in section titles,
+ *     editorial blockquotes, italic card labels, etc.) is
+ *     deliberately flattened so this fork reads with a single
+ *     typographic register. The italic font file still loads via
+ *     next/font (cheap; it's already in the cache), but every
+ *     element renders in the upright weight. `!important` is used
+ *     because individual rules across operator.css set
+ *     `font-style: italic` directly and we want a blanket override
+ *     without retouching each one.
+ *
+ *   - `.aiop-encoding-pair` is the parallax wrapper the workshop
+ *     fork puts around the Anthropic chapter + EncodingInterstitial.
+ *     Mirrors the `.aiop-approach-and-encoding` rules in operator.css
+ *     so EncodingInterstitial's JS can freeze the first sibling
+ *     while the interstitial slides up over it. */
+
+.aiop-workshop-v1,
+.aiop-workshop-v1 *,
+.aiop-workshop-v1 *::before,
+.aiop-workshop-v1 *::after {
+  font-style: normal !important;
+}
+
+.aiop-encoding-pair {
+  position: relative;
+  width: 100%;
+}
+
+.aiop-encoding-pair > .aiop-claude-zone,
+.aiop-encoding-pair > .aiop-approach,
+.aiop-encoding-pair > .aiop-section {
+  position: relative;
+  /* `encoding-interstitial.tsx` writes a translate3d transform
+     here during the slide-over phase to keep this block visually
+     frozen while the encoding section rises over it. */
+  will-change: transform;
+}
+
+.aiop-encoding-pair > .aiop-encoding {
+  position: relative;
+  will-change: transform;
+}
+
+
+/*
+ * Claude Workshop v1 — scoped Anthropic palette + new section
+ * structures.
+ *
+ * Two responsibilities, kept in one file for easy editing:
+ *
+ *   1. `.aiop-claude-zone` — wrapper class on the route page that
+ *      overrides the Aether `--aiop-*` colour tokens to Anthropic
+ *      values (Ivory / Slate / Clay) from the Refero spec. Every
+ *      section rendered inside the zone (ClaudeBridge,
+ *      ClaudeSettings, ClaudeModels, ClaudeConnectors) inherits
+ *      the new palette without naming any colour itself, so the
+ *      existing Aether components stay untouched. Once the visitor
+ *      scrolls past the zone the original Aether tokens resume.
+ *
+ *   2. New component selectors — `.aiop-question-bridge--claude`
+ *      retints the three washes from violet/amber/sage to
+ *      clay/ivory/oat; `.aiop-claude-stack` carries the new
+ *      Settings/Models pane chrome; `.aiop-claude-connectors`
+ *      carries the grouped connector grid; `.aiop-claude-skill-
+ *      anatomy` and `.aiop-claude-skills-at-loop` are the two
+ *      sections folded into the Aether-paletted encode deep-dive
+ *      that follows the zone.
+ *
+ * No global rules. No edits to operator.css or globals.css.
+ */
+
+/* ═════════════════════════════════════════════════════════════════════
+ * 01 · Anthropic palette scope — overrides Aether tokens
+ * ═══════════════════════════════════════════════════════════════════ */
+
+/* Per the Refero Anthropic spec:
+ *
+ *   --aiop-paper          #faf9f5  Ivory Light  (page base)
+ *   --aiop-paper-2        #f0eee6  Ivory Medium (nav/elevated light)
+ *   --aiop-paper-3        #e3dacc  Oat          (tertiary surface)
+ *   --aiop-card           #f0eee6  Ivory Medium (card surface)
+ *   --aiop-card-2         #faf9f5  Ivory Light  (raised card)
+ *   --aiop-card-soft      #e3dacc  Oat          (soft container)
+ *   --aiop-ink            #141413  Slate Dark   (primary text)
+ *   --aiop-ink-2          #3d3d3a  Slate Medium (mid borders)
+ *   --aiop-ink-soft       #5e5d59  Slate Light  (tertiary text)
+ *   --aiop-muted          #87867f  Cloud Dark   (secondary text)
+ *   --aiop-muted-2        #b0aea5  Cloud Medium (muted borders)
+ *   --aiop-violet         #d97757  Clay         (replaces violet)
+ *   --aiop-gold           #d97757  Clay         (replaces gold)
+ *   --aiop-amber          #c6613f  Ember        (deeper clay state)
+ *   --aiop-sage           #788c5d  Olive        (status / live)
+ *   --aiop-slate          #6a9bcc  Sky          (cool counterpoint)
+ *
+ * Rule tints are derived from Slate Dark at low alpha so they read
+ * as Anthropic hairlines (the Refero spec uses pure typographic
+ * hierarchy and explicit borders rather than tinted rules). */
+.aiop-claude-zone {
+  --aiop-paper: #faf9f5;
+  --aiop-paper-2: #f0eee6;
+  --aiop-paper-3: #e3dacc;
+  --aiop-card: #f0eee6;
+  --aiop-card-2: #faf9f5;
+  --aiop-card-soft: #e3dacc;
+  --aiop-ink: #141413;
+  --aiop-ink-2: #3d3d3a;
+  --aiop-ink-soft: #5e5d59;
+  --aiop-muted: #87867f;
+  --aiop-muted-2: #b0aea5;
+  --aiop-rule: rgba(20, 20, 19, 0.14);
+  --aiop-rule-soft: rgba(20, 20, 19, 0.1);
+  --aiop-rule-strong: rgba(20, 20, 19, 0.22);
+  --aiop-violet: #d97757;
+  --aiop-violet-soft: rgba(217, 119, 87, 0.18);
+  --aiop-gold: #d97757;
+  --aiop-gold-bright: #c6613f;
+  --aiop-gold-soft: rgba(217, 119, 87, 0.16);
+  --aiop-gold-edge: rgba(217, 119, 87, 0.32);
+  --aiop-amber: #c6613f;
+  --aiop-amber-soft: rgba(198, 97, 63, 0.16);
+  --aiop-amber-edge: rgba(198, 97, 63, 0.34);
+  --aiop-sage: #788c5d;
+  --aiop-sage-soft: rgba(120, 140, 93, 0.18);
+  --aiop-sage-edge: rgba(120, 140, 93, 0.36);
+  --aiop-slate: #6a9bcc;
+  --aiop-slate-soft: rgba(106, 155, 204, 0.16);
+  --aiop-slate-edge: rgba(106, 155, 204, 0.34);
+
+  background: var(--aiop-paper);
+}
+
+
+/* ═════════════════════════════════════════════════════════════════════
+ * 02 · ClaudeBridge — Anthropic-tinted QuestionInterstitial
+ * ═══════════════════════════════════════════════════════════════════ */
+
+/* The base `.aiop-question-bridge` chrome (full-viewport flex,
+ * figure typography, mobile fallbacks) carries through from
+ * operator.css. We only need to recolour the three washes and the
+ * grid overlay so the Refero "warm parchment with a single clay
+ * accent held in reserve" character lands.
+ *
+ * Wash --a leans clay (the single Anthropic accent), --b leans a
+ * warm ivory peek (low-saturation oat tint), --c stays clay at the
+ * lower half so the question sits on a faint clay halo. The grid
+ * overlay drops to a near-zero alpha so the parchment reads cleanly
+ * instead of feeling overlaid. */
+.aiop-question-bridge--claude {
+  background: linear-gradient(
+    180deg,
+    #faf9f5 0%,
+    #f0eee6 100%
+  );
+}
+
+.aiop-question-bridge--claude .aiop-question-bridge__wash--a {
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--aiop-violet) 28%, transparent) 0%,
+    transparent 64%
+  );
+  opacity: 0.55;
+}
+
+.aiop-question-bridge--claude .aiop-question-bridge__wash--b {
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--aiop-paper-3) 70%, transparent) 0%,
+    transparent 64%
+  );
+  opacity: 0.6;
+}
+
+.aiop-question-bridge--claude .aiop-question-bridge__wash--c {
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--aiop-violet) 22%, transparent) 0%,
+    transparent 66%
+  );
+  opacity: 0.45;
+}
+
+/* Quieter grid — Anthropic's surfaces are flat parchment, so the
+ * 40px grid that reads as `paper texture` on the Aether interlude
+ * needs to dim almost to invisibility here. */
+.aiop-question-bridge--claude .aiop-question-bridge__grid {
+  background-image:
+    linear-gradient(rgba(20, 20, 19, 0.025) 1px, transparent 1px),
+    linear-gradient(
+      90deg,
+      rgba(20, 20, 19, 0.025) 1px,
+      transparent 1px
+    );
+  opacity: 0.4;
+}
+
+/* The italic display question feels more at home in the upright
+ * Anthropic Sans register at heavier weight, but we deliberately
+ * keep Bodoni here so the section still rhymes with the Aether
+ * interludes the visitor saw earlier on the page. Only the colour
+ * shifts to slate-dark to lock the contrast against the warmer
+ * parchment base. */
+.aiop-question-bridge--claude .aiop-question-bridge__pull {
+  color: var(--aiop-ink);
+}
+
+.aiop-question-bridge--claude .aiop-question-bridge__subline {
+  color: var(--aiop-ink-2);
+}
+
+.aiop-question-bridge--claude .aiop-question-bridge__eyebrow {
+  color: var(--aiop-violet);
+  font-weight: 600;
+}
+
+
+/* ═════════════════════════════════════════════════════════════════════
+ * 03 · ClaudeStack — Settings & Models panes
+ * ═══════════════════════════════════════════════════════════════════ */
+
+.aiop-claude-stack {
+  position: relative;
+  padding-block: clamp(72px, 9vw, 120px);
+  background: var(--aiop-paper);
+}
+
+.aiop-claude-stack__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(36px, 4vw, 52px);
+}
+
+/* Header inherits the canonical `.aiop-section-head` two-column
+ * grid from operator.css (title left, sub right at >=800px,
+ * single column below). We only override the typography of the
+ * title and sub so they read in the Anthropic register — colour,
+ * weight, max-width — without re-establishing the layout. */
+.aiop-claude-stack__title {
+  font-family: var(--aiop-display);
+  font-style: normal;
+  font-weight: 460;
+  line-height: 1.1;
+  letter-spacing: -0.018em;
+  color: var(--aiop-ink);
+}
+
+.aiop-claude-stack__title em {
+  font-style: italic;
+  color: var(--aiop-ink);
+}
+
+.aiop-claude-stack__sub {
+  color: var(--aiop-ink-2);
+}
+
+/* Three-card grid that collapses 3 -> 2 -> 1 like the approach
+ * outcome achievements grid, but on the Anthropic surface system:
+ * Ivory Medium cards on the Ivory Light page, hairline borders at
+ * the slate-dark low alpha rather than tinted rules. */
+.aiop-claude-stack__cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(14px, 1.4vw, 20px);
+}
+
+.aiop-claude-stack__card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: clamp(22px, 2.4vw, 28px) clamp(22px, 2.4vw, 28px)
+    clamp(24px, 2.6vw, 30px);
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-soft);
+  border-radius: 8px;
+}
+
+.aiop-claude-stack__card-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.aiop-claude-stack__card-n {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--aiop-violet);
+}
+
+.aiop-claude-stack__card-label {
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.18;
+  color: var(--aiop-ink);
+}
+
+.aiop-claude-stack__card-body {
+  margin: 0;
+  font-family: var(--aiop-body);
+  font-size: clamp(14.5px, 1.1vw, 16px);
+  line-height: 1.55;
+  color: var(--aiop-ink-2);
+}
+
+/* Two-tip strip below the card grid. No chrome, no border — pure
+ * typographic structure with a mono-caps tag and a body line. Maps
+ * to the Refero "metadata label as pure typographic structure"
+ * guideline. */
+.aiop-claude-stack__tips {
+  list-style: none;
+  margin: 0;
+  padding: clamp(20px, 2.4vw, 28px) 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(20px, 2.4vw, 28px);
+  border-top: 1px solid var(--aiop-rule);
+}
+
+.aiop-claude-stack__tip {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.aiop-claude-stack__tip-tag {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-claude-stack__tip-body {
+  font-family: var(--aiop-body);
+  font-size: clamp(14px, 1.05vw, 15.5px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-claude-stack__receipt {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-violet);
+}
+
+@media (max-width: 1040px) {
+  .aiop-claude-stack__cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .aiop-claude-stack__cards,
+  .aiop-claude-stack__tips {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ═════════════════════════════════════════════════════════════════════
+ * 04 · ClaudeConnectors — three named sub-groups
+ * ═══════════════════════════════════════════════════════════════════ */
+
+.aiop-claude-connectors {
+  position: relative;
+  padding-block: clamp(72px, 9vw, 120px);
+  background: var(--aiop-paper);
+  border-top: 1px solid var(--aiop-rule-soft);
+}
+
+.aiop-claude-connectors__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(36px, 4vw, 52px);
+}
+
+/* Same approach as ClaudeStack — inherit the two-column header
+ * grid from `.aiop-section-head`, only override the type colour
+ * and weight so the Anthropic register lands. */
+.aiop-claude-connectors__title {
+  font-family: var(--aiop-display);
+  font-style: normal;
+  font-weight: 460;
+  line-height: 1.1;
+  letter-spacing: -0.018em;
+  color: var(--aiop-ink);
+}
+
+.aiop-claude-connectors__title em {
+  font-style: italic;
+  color: var(--aiop-ink);
+}
+
+.aiop-claude-connectors__sub {
+  color: var(--aiop-ink-2);
+}
+
+.aiop-claude-connectors__groups {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 3vw, 40px);
+}
+
+.aiop-claude-connectors__group {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 2.15fr);
+  gap: clamp(20px, 2.4vw, 32px);
+  align-items: start;
+  padding-top: clamp(20px, 2.4vw, 28px);
+  border-top: 1px solid var(--aiop-rule);
+}
+
+.aiop-claude-connectors__group-head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 4px;
+}
+
+.aiop-claude-connectors__group-label {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
+}
+
+.aiop-claude-connectors__group--live .aiop-claude-connectors__group-label {
+  color: var(--aiop-sage);
+}
+
+.aiop-claude-connectors__group--wip .aiop-claude-connectors__group-label {
+  color: var(--aiop-violet);
+}
+
+.aiop-claude-connectors__group--gap .aiop-claude-connectors__group-label {
+  color: var(--aiop-muted);
+}
+
+.aiop-claude-connectors__group-blurb {
+  margin: 0;
+  font-family: var(--aiop-body);
+  font-size: clamp(14px, 1.05vw, 15.5px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  max-width: 24ch;
+}
+
+.aiop-claude-connectors__cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(14px, 1.4vw, 20px);
+}
+
+.aiop-claude-connectors__card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: clamp(18px, 2vw, 24px);
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-soft);
+  border-radius: 8px;
+}
+
+.aiop-claude-connectors__group--wip .aiop-claude-connectors__card {
+  background: color-mix(in oklab, var(--aiop-violet) 8%, var(--aiop-card-2));
+  border-color: color-mix(in oklab, var(--aiop-violet) 22%, var(--aiop-rule));
+}
+
+.aiop-claude-connectors__group--gap .aiop-claude-connectors__card {
+  background: var(--aiop-card-2);
+  border-color: var(--aiop-rule-soft);
+  opacity: 0.92;
+}
+
+.aiop-claude-connectors__card-name {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: clamp(17px, 1.5vw, 20px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.18;
+  color: var(--aiop-ink);
+}
+
+.aiop-claude-connectors__card-body {
+  margin: 0;
+  font-family: var(--aiop-body);
+  font-size: clamp(14px, 1.05vw, 15.5px);
+  line-height: 1.55;
+  color: var(--aiop-ink-2);
+}
+
+@media (max-width: 900px) {
+  .aiop-claude-connectors__group {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .aiop-claude-connectors__group-blurb {
+    max-width: 48ch;
+  }
+}
+
+@media (max-width: 560px) {
+  .aiop-claude-connectors__cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ═════════════════════════════════════════════════════════════════════
+ * 05 · ClaudeSkillAnatomy — Aether palette, single Clay accent
+ * ═══════════════════════════════════════════════════════════════════ */
+
+/* Sits OUTSIDE `.aiop-claude-zone`, so the surrounding Aether
+ * tokens apply (cream paper, slate ink). The one Clay accent on
+ * the top-left badge signals the Claude origin without flipping
+ * the section's overall palette. The Clay value is hardcoded here
+ * because the surrounding scope has Aether `--aiop-violet` set to
+ * Stripe purple, and we want the Anthropic accent specifically. */
+.aiop-claude-skill-anatomy {
+  position: relative;
+  padding-block: clamp(60px, 7vw, 96px);
+  background: var(--aiop-paper);
+}
+
+.aiop-claude-skill-anatomy__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 3vw, 40px);
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: clamp(32px, 4vw, 56px) clamp(28px, 3.5vw, 56px);
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+  border-radius: 12px;
+}
+
+/* Header inherits `.aiop-section-head` two-column grid. The
+ * Clay-tinted badge spans both columns above the title/body pair,
+ * mirroring how `.aiop-section-head > .eyebrow` is set on the
+ * je-shift / je-freedom blocks in operator.css. */
+.aiop-claude-skill-anatomy__badge {
+  grid-column: 1 / -1;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 10px;
+  background: rgba(217, 119, 87, 0.12);
+  color: #c6613f;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  border: 1px solid rgba(217, 119, 87, 0.32);
+  border-radius: 999px;
+}
+
+.aiop-claude-skill-anatomy__badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #d97757;
+}
+
+.aiop-claude-skill-anatomy__title {
+  font-family: var(--aiop-display);
+  font-style: normal;
+  font-weight: 480;
+  line-height: 1.15;
+  letter-spacing: -0.018em;
+  color: var(--aiop-ink);
+}
+
+.aiop-claude-skill-anatomy__title em {
+  font-style: italic;
+  color: var(--aiop-ink);
+}
+
+.aiop-claude-skill-anatomy__body {
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-claude-skill-anatomy__rows {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 2.3fr);
+  gap: clamp(14px, 1.6vw, 22px) clamp(24px, 3vw, 40px);
+  margin: 0;
+}
+
+.aiop-claude-skill-anatomy__row {
+  display: contents;
+}
+
+.aiop-claude-skill-anatomy__row-label {
+  margin: 0;
+  padding-top: 2px;
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: clamp(17px, 1.4vw, 20px);
+  font-weight: 500;
+  letter-spacing: -0.008em;
+  color: var(--aiop-ink);
+  border-top: 1px solid var(--aiop-rule);
+  padding-top: clamp(14px, 1.6vw, 20px);
+}
+
+.aiop-claude-skill-anatomy__row-body {
+  margin: 0;
+  padding-top: clamp(14px, 1.6vw, 20px);
+  font-family: var(--aiop-body);
+  font-size: clamp(14.5px, 1.1vw, 16px);
+  line-height: 1.6;
+  color: var(--aiop-ink-soft);
+  border-top: 1px solid var(--aiop-rule);
+}
+
+@media (max-width: 760px) {
+  .aiop-claude-skill-anatomy__rows {
+    grid-template-columns: 1fr;
+    gap: clamp(8px, 1.4vw, 12px);
+  }
+
+  .aiop-claude-skill-anatomy__row-label {
+    border-top: 1px solid var(--aiop-rule);
+    padding-top: clamp(14px, 1.6vw, 18px);
+  }
+
+  .aiop-claude-skill-anatomy__row-body {
+    border-top: 0;
+    padding-top: 2px;
+  }
+}
+
+
+/* ═════════════════════════════════════════════════════════════════════
+ * 06 · ClaudeSkillsAtLoop — five named-skill cards
+ * ═══════════════════════════════════════════════════════════════════ */
+
+.aiop-claude-skills-at-loop {
+  position: relative;
+  padding-block: clamp(60px, 7vw, 96px);
+  background: var(--aiop-paper);
+}
+
+.aiop-claude-skills-at-loop__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 3.4vw, 44px);
+}
+
+/* Header inherits the `.aiop-section-head` two-column grid; we
+ * only retint the typography to the Aether ink scale and lift the
+ * weight so the deep-dive close has a touch more presence than the
+ * stacked panes above. */
+.aiop-claude-skills-at-loop__title {
+  font-family: var(--aiop-display);
+  font-style: normal;
+  font-weight: 480;
+  line-height: 1.1;
+  letter-spacing: -0.018em;
+  color: var(--aiop-ink);
+}
+
+.aiop-claude-skills-at-loop__title em {
+  font-style: italic;
+  color: var(--aiop-ink);
+}
+
+.aiop-claude-skills-at-loop__sub {
+  color: var(--aiop-ink-soft);
+}
+
+/* Five cards. Desktop reads as a 5-up row that collapses to a
+ * 3-up grid first (last two wrap), then 2-up, then 1-up. The
+ * `minmax(0, 1fr)` baseline keeps the cards equal-width inside
+ * each row without overflow. */
+.aiop-claude-skills-at-loop__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(12px, 1.2vw, 18px);
+}
+
+.aiop-claude-skills-at-loop__card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(20px, 2vw, 26px);
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-soft);
+  border-radius: 10px;
+}
+
+.aiop-claude-skills-at-loop__card-title {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: clamp(18px, 1.5vw, 21px);
+  font-weight: 500;
+  letter-spacing: -0.008em;
+  line-height: 1.18;
+  color: var(--aiop-ink);
+}
+
+.aiop-claude-skills-at-loop__card-owner {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #c6613f;
+}
+
+.aiop-claude-skills-at-loop__card-body {
+  margin: 0;
+  font-family: var(--aiop-body);
+  font-size: clamp(13.5px, 1vw, 15px);
+  line-height: 1.5;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-claude-skills-at-loop__footnote {
+  margin: 0;
+  font-family: var(--aiop-body);
+  font-style: italic;
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.5;
+  color: var(--aiop-muted-2);
+  max-width: 62ch;
+}
+
+@media (max-width: 1180px) {
+  .aiop-claude-skills-at-loop__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .aiop-claude-skills-at-loop__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .aiop-claude-skills-at-loop__grid {
+    grid-template-columns: 1fr;
+  }
+}

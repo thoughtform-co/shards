@@ -1,0 +1,3462 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+ * Landing-specific styles — v12 (public Aether homepage).
+ *
+ * Layout primitives (wrap, eyebrow, kicker, section, card, btn) live in
+ * globals.css. This file holds compositional pieces specific to the
+ * homepage and the /process operating-model page.
+ *
+ * Homepage v12 artefacts:
+ *   .hero-panel          — instrument frame around the hero orbit visual.
+ *   .hero-orbit          — substrate core + four orbiting motions.
+ *   .why-grid            — "Why now": problem list + same-question viz.
+ *   .layer-flow          — "The layer": raw inputs → encoded substrate.
+ *   .section--bridge     — dark interstitial between layer + method.
+ *   .method, .mock, .*   — Navigate / Encode / Build alternating sections
+ *                          plus per-phase mocks (field notes, code,
+ *                          chat).
+ *   .headless            — interactive substrate / surface selector.
+ *   .proof               — proof carousel with three case visuals.
+ *   .role, .lineage      — embedded operator pitch + lineage panel.
+ *   .section--cta, .cta  — final close on ink.
+ *
+ * /process artefacts (kept verbatim from the existing operating-model
+ * page):
+ *   .flywheel            — linear three-step rail.
+ *   .anatomy-grid        — four-up "what's in a Skill" grid.
+ *   .trust-row           — governance checks + review-queue mock.
+ *   .problem-row         — why-now block.
+ *   .tools-matrix        — production tools table.
+ *   .arch-stack          — Engine / Protocol / Surfaces architecture.
+ *   .close-cta           — shared CTA action group used on /process and
+ *                          /campaign-substrate.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * HOMEPAGE — Hero panel and substrate orbit
+ *
+ * The right column of the split hero. The panel hosts an instrument
+ * head (status dot · "Working motion" label · live pill), a substrate
+ * orbit visual underneath, and nothing else. The visual is built from
+ * concentric rings, four label pills positioned around the perimeter,
+ * and a centred core pill carrying the substrate label.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.hero-panel {
+  position: relative;
+  display: grid;
+  gap: 22px;
+  padding: 24px 24px 32px;
+  background: linear-gradient(180deg, var(--card-2) 0%, var(--card) 100%);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow:
+    0 30px 60px -24px rgba(37, 36, 39, 0.20),
+    0 12px 28px -10px rgba(37, 36, 39, 0.10);
+  overflow: hidden;
+}
+
+.hero-panel__halo {
+  position: absolute;
+  inset: -30% -30% auto -30%;
+  height: 80%;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 50%, rgba(98, 67, 185, 0.18), transparent 60%),
+    radial-gradient(ellipse 40% 35% at 25% 80%, rgba(184, 135, 40, 0.10), transparent 60%),
+    radial-gradient(ellipse 40% 35% at 80% 75%, rgba(26, 106, 74, 0.10), transparent 60%);
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.hero-panel__head {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line-soft);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hero-panel__head-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--emerald);
+  flex-shrink: 0;
+}
+
+.hero-panel__head-label {
+  flex: 1;
+}
+
+.hero-panel__live {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--emerald-soft);
+  color: var(--emerald-deep);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+}
+
+/* Orbit visual — square aspect, layered concentric rings, four floating
+   pills positioned by the data-driven `--{position}` modifiers, and a
+   centred substrate core. The visual is decorative; it carries no
+   interaction surface, so it sits behind the head and below it in the
+   layout. */
+.hero-orbit {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 380px;
+  margin: 8px auto 0;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+}
+
+.hero-orbit__ring {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-orbit__ring--outer {
+  inset: 8%;
+  border: 1px dashed var(--violet-edge);
+}
+
+.hero-orbit__ring--inner {
+  inset: 24%;
+  border: 1px solid var(--line);
+}
+
+.hero-orbit__pill {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  box-shadow: 0 4px 14px rgba(37, 36, 39, 0.06);
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.hero-orbit__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+}
+
+.hero-orbit__pill--navigate .hero-orbit__dot { background: var(--violet); }
+.hero-orbit__pill--encode   .hero-orbit__dot { background: var(--dusk); }
+.hero-orbit__pill--build    .hero-orbit__dot { background: var(--emerald); }
+.hero-orbit__pill--learn    .hero-orbit__dot { background: var(--gold); }
+
+.hero-orbit__pill--top {
+  top: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.hero-orbit__pill--right {
+  top: 44%;
+  right: 0;
+}
+
+.hero-orbit__pill--bottom-left {
+  bottom: 4%;
+  left: 12%;
+}
+
+.hero-orbit__pill--bottom-right {
+  bottom: 24%;
+  right: 4%;
+}
+
+.hero-orbit__core {
+  position: relative;
+  z-index: 2;
+  width: 46%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: linear-gradient(160deg, var(--card-2), var(--card-3));
+  border: 1px solid var(--line);
+  box-shadow: 0 8px 24px rgba(37, 36, 39, 0.10);
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 14px;
+}
+
+.hero-orbit__core strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.hero-orbit__core span {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-body);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+@media (max-width: 760px) {
+  .hero-panel {
+    padding: 20px 18px 26px;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * HOMEPAGE — Why now
+ *
+ * Two-column section. Left renders the four named problems as a dense
+ * list with a quiet "x" mark. Right renders a single panel with two
+ * zones, separated by a thin divider:
+ *
+ *   1. Tools rolled out      — a tidy row of small pills, same shape,
+ *                              same size. Reads as "multiplying / uniform".
+ *   2. Expertise scattered   — six tiles laid across a 12-column grid
+ *                              at varying widths and horizontal offsets.
+ *                              Reads as "scattered" at a glance.
+ *
+ * No comparison required: the asymmetry of form (tidy vs scattered) is
+ * the argument. The substrate section that follows is the resolution.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.why-grid {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(36px, 6vw, 64px);
+  align-items: start;
+}
+
+/* Left column wrapper. The bullet list sits naturally at the top with
+   the closing thesis line below; both columns end at roughly the same
+   Y because the right-side visual was tuned (compact 3-row scatter)
+   to land near the same height. No auto-margin trickery — the column
+   heights match by content design. */
+.why-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.why-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 24px;
+}
+
+.why-list__item {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.why-list__x {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(184, 71, 59, 0.12);
+  color: #b8473b;
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.why-list__copy {
+  display: grid;
+  gap: 4px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.why-list__copy strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* Closing thesis line — sits naturally below the bullets, separated
+   by a quiet rule. Same role as the section foot, but lives in the
+   left column so the column has matching weight to the right visual. */
+.why-thesis {
+  margin: 32px 0 0;
+  padding-top: 22px;
+  border-top: 1px solid var(--line-soft);
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink);
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+
+/* ─── Right column: tidy-on-top, scattered-below frame ─── */
+
+.why-frame {
+  display: grid;
+  gap: 0;
+  padding: 22px 24px 20px;
+  background: var(--card-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.why-frame__zone {
+  padding: 2px 0;
+}
+
+.why-frame__zone-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.why-frame__zone-label {
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.why-frame__zone-meta {
+  font-family: var(--font-body);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+  font-weight: 600;
+}
+
+.why-frame__zone-meta--em {
+  color: var(--violet);
+}
+
+.why-frame__zone-note {
+  margin: 12px 0 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.why-frame__divider {
+  margin: 18px 0;
+  border: 0;
+  height: 1px;
+  background: var(--line-soft);
+}
+
+/* Stronger divider — used to break the two tidy rails (data sources +
+   AI tools) from the scattered-expertise grid below. The shift in
+   weight is the visual claim: tidy infrastructure on top, scattered
+   interpretation underneath. */
+.why-frame__divider--strong {
+  margin: 22px 0 20px;
+  background: var(--line);
+}
+
+/* Both rails (data sources, AI tools + interfaces) share one chip
+   pattern: a clean row of pills tinted by Loop accents. Uniform shape
+   and rhythm carries the visual claim — "infrastructure exists" and
+   "tools exist". */
+.why-frame__chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.why-frame__chip {
+  padding: 7px 14px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.why-frame__chip::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+  flex-shrink: 0;
+}
+
+.why-frame__chip--violet::before  { background: var(--violet); }
+.why-frame__chip--emerald::before { background: var(--emerald); }
+.why-frame__chip--gold::before    { background: var(--gold); }
+.why-frame__chip--dusk::before    { background: var(--dusk); }
+.why-frame__chip--ink::before     { background: var(--ink-deep); }
+
+/* Bottom zone: scattered expertise tiles on a 12-column grid. Each
+   tile takes its own row but starts at a varying col-start with a
+   varying span, so the eye reads "off-grid mess" rather than a tidy
+   list. The unbalanced rhythm is the visual claim — "scattered". */
+.why-frame__scatter {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 8px;
+}
+
+/* Each tile shares geometry with `.layer-input` in the next section:
+   a fixed-size colored letter marker, then a label + location stack.
+   Same component family across both sections, so the eye recognises
+   the elements moving from "scattered" to "encoded". */
+.why-frame__source {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-xs);
+  min-width: 0;
+}
+
+.why-frame__source-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-sm);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--paper);
+  letter-spacing: 0.02em;
+}
+
+.why-frame__source-icon--ink     { background: var(--ink-deep); }
+.why-frame__source-icon--violet  { background: var(--violet); }
+.why-frame__source-icon--emerald { background: var(--emerald); }
+.why-frame__source-icon--gold    { background: var(--gold); }
+.why-frame__source-icon--dusk    { background: var(--dusk); }
+
+.why-frame__source-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.why-frame__source-copy strong {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+}
+
+.why-frame__source-copy span {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* Per-tile placement on the 12-col grid. Five tiles in a 2-2-1
+   arrangement: pairs of asymmetric widths in rows one and two, then a
+   single wider tile in row three offset to the right so the bottom
+   row visibly breaks the pair rhythm. The scatter feel comes from
+   irregular widths (5/6/7 cols) plus the lone bottom tile. */
+.why-frame__source[data-pos="1"] { grid-column: 1 / span 7; }   /* row 1: left wide       */
+.why-frame__source[data-pos="2"] { grid-column: 8 / span 5; }   /* row 1: right narrow    */
+.why-frame__source[data-pos="3"] { grid-column: 1 / span 5; }   /* row 2: left narrow     */
+.why-frame__source[data-pos="4"] { grid-column: 7 / span 6; }   /* row 2: right wide      */
+.why-frame__source[data-pos="5"] { grid-column: 4 / span 7; }   /* row 3: lone, indented  */
+
+@media (max-width: 880px) {
+  .why-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    align-items: start;
+  }
+  /* When the columns stack on narrower viewports, the thesis no longer
+     needs to be pushed to the bottom — it sits naturally below the
+     bullets. Reset the auto margin so the spacing is predictable. */
+  .why-thesis {
+    margin-top: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .why-frame {
+    padding: 20px 18px 18px;
+  }
+  .why-frame__divider {
+    margin: 18px 0;
+  }
+  /* On narrow viewports the scatter collapses to a single column —
+     stagger has no room to breathe and would feel cramped. */
+  .why-frame__scatter {
+    grid-template-columns: 1fr;
+  }
+  .why-frame__source[data-pos="1"],
+  .why-frame__source[data-pos="2"],
+  .why-frame__source[data-pos="3"],
+  .why-frame__source[data-pos="4"],
+  .why-frame__source[data-pos="5"] {
+    grid-column: 1 / -1;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * HOMEPAGE — The layer (data sources → encoded substrate → AI tools + interfaces)
+ *
+ * Single artefact, three regions. Two quiet flanks of named chips on the
+ * left and right (Snowflake, Claude, etc.) frame the dark substrate
+ * panel in the middle. The substrate is the only dominant object; the
+ * flanks deliberately stay restrained so the eye reads "the substrate
+ * sits between two existing realities".
+ *
+ * The flanks are joined to the centre by a thin horizontal connector
+ * line (no arrow heads — direction is implicit through reading order
+ * and the flank labels). The footer renders three short "captured /
+ * owned / portable" promises beneath the divider.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.layer-flow {
+  margin-top: 56px;
+  position: relative;
+  padding: clamp(36px, 5vw, 56px) clamp(28px, 4.5vw, 56px);
+  background: var(--card-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.layer-flow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 400px 200px at 12% 50%, var(--card-3), transparent 70%),
+    radial-gradient(ellipse 400px 200px at 88% 50%, var(--card-3), transparent 70%);
+  opacity: 0.5;
+}
+
+.layer-flow__head,
+.layer-flow__grid,
+.layer-flow__foot {
+  position: relative;
+  z-index: 1;
+}
+
+.layer-flow__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 22px;
+  margin-bottom: 36px;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.layer-flow__head-l {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.layer-flow__head-r {
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--violet-soft);
+  color: var(--violet-deep);
+  font-weight: 700;
+}
+
+/* Three regions + two connector slots = five columns. The centre column
+   gets the most weight so the substrate dominates the diagram; the
+   flanks are narrow rails of named chips. */
+.layer-flow__grid {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 0.7fr) 24px minmax(0, 1.4fr) 24px minmax(0, 0.7fr);
+  gap: 0;
+  align-items: start;
+}
+
+.layer-flow__col {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+/* Flank columns (data sources, AI tools + interfaces). The chip rail
+   is a single vertical stack; the flank header and note frame it. */
+.layer-flow__col--flank {
+  padding-top: 4px;
+}
+
+.layer-flow__col-h {
+  margin: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--line);
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+  text-align: center;
+  font-weight: 600;
+}
+
+.layer-flow__col-note {
+  margin: 6px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-soft);
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--muted);
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
+/* Vertical chip rail used by both flanks. Shares the dot-prefix
+   geometry with `.why-frame__chip` so the eye recognises the same
+   element family across sections. */
+.layer-flow__chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.layer-chip {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.layer-chip::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: var(--ink);
+  flex-shrink: 0;
+}
+
+.layer-chip--violet::before  { background: var(--violet); }
+.layer-chip--emerald::before { background: var(--emerald); }
+.layer-chip--gold::before    { background: var(--gold); }
+.layer-chip--dusk::before    { background: var(--dusk); }
+.layer-chip--ink::before     { background: var(--ink-deep); }
+
+/* Connector line between the substrate and each flank. A single thin
+   horizontal rule with a subtle gradient fade towards the substrate;
+   no arrow heads (direction is implicit). Sits at the optical centre
+   of the chip rail, not the substrate panel, so the eye treats both
+   sides symmetrically. */
+.layer-flow__connector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 78px;
+}
+
+.layer-flow__connector-line {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    var(--rule),
+    var(--violet-soft) 70%,
+    var(--violet-soft)
+  );
+  opacity: 0.7;
+}
+
+.layer-stack {
+  background: var(--ink-deep);
+  border-radius: var(--radius-lg);
+  padding: 8px;
+  box-shadow:
+    0 0 0 6px var(--violet-soft),
+    0 12px 32px rgba(37, 36, 39, 0.14);
+}
+
+.layer-stack__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px 10px;
+  font-family: var(--font-body);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.layer-stack__head strong {
+  color: var(--paper);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.layer-stack__head span {
+  color: var(--violet-soft);
+  font-weight: 600;
+}
+
+.layer-stack__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.layer-stack__row {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 16px;
+  background: #1a1a1f;
+  border-radius: var(--radius-md);
+  border-left: 3px solid;
+  transition: background 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.layer-stack__row:hover { background: #20202a; }
+
+.layer-stack__row--rules    { border-left-color: var(--violet); }
+.layer-stack__row--examples { border-left-color: var(--emerald); }
+.layer-stack__row--sources  { border-left-color: var(--dusk); }
+.layer-stack__row--loops    { border-left-color: var(--gold); }
+
+/* "What gets encoded" rail inside the dark panel — names the team
+   expertise that becomes substrate (brand book, lead's judgment, past
+   work, regs, feedback). Quiet, monospace, dot-prefixed pills so the
+   reader sees the source material without it competing with the four
+   strata rows above. */
+.layer-stack__inputs {
+  margin: 8px 4px 0;
+  padding: 12px 8px 6px;
+  border-top: 1px solid rgba(243, 235, 217, 0.10);
+}
+
+.layer-stack__inputs-h {
+  margin: 0 0 8px;
+  font-family: var(--font-body);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(243, 235, 217, 0.5);
+  font-weight: 600;
+  text-align: center;
+}
+
+.layer-stack__inputs-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.layer-stack__input {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border: 1px solid rgba(243, 235, 217, 0.12);
+  border-radius: var(--radius-pill);
+  background: rgba(243, 235, 217, 0.04);
+  color: rgba(243, 235, 217, 0.78);
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.layer-stack__input-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--paper);
+  flex-shrink: 0;
+}
+
+.layer-stack__input--violet  .layer-stack__input-dot { background: #c5a8ff; }
+.layer-stack__input--emerald .layer-stack__input-dot { background: #8fcaa8; }
+.layer-stack__input--gold    .layer-stack__input-dot { background: #e5c476; }
+.layer-stack__input--dusk    .layer-stack__input-dot { background: #a3b8cc; }
+.layer-stack__input--ink     .layer-stack__input-dot { background: rgba(243, 235, 217, 0.65); }
+
+/* Closing caption inside the dark panel — names the substrate's
+   relationship to existing data systems so the reader doesn't read
+   "Sources" as "we'll consolidate your databases". Sits below the
+   inputs rail, separated by a thin rule, light-on-dark italic. */
+.layer-stack__connects {
+  margin: 10px 4px 4px;
+  padding: 12px 12px 4px;
+  border-top: 1px solid rgba(243, 235, 217, 0.08);
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  color: rgba(243, 235, 217, 0.62);
+  font-style: italic;
+  font-weight: 500;
+  text-align: center;
+}
+
+.layer-stack__tag {
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--paper);
+  font-weight: 700;
+}
+
+.layer-stack__name {
+  font-size: 13px;
+  color: rgba(243, 235, 217, 0.78);
+  font-family: var(--font-body);
+}
+
+.layer-stack__meta {
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  text-transform: uppercase;
+}
+
+.layer-flow__foot {
+  list-style: none;
+  margin: 32px 0 0;
+  padding-top: 22px;
+  border-top: 1px solid var(--line-soft);
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+  text-align: center;
+}
+
+.layer-promise {
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.layer-promise strong {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+
+/* Tablet — collapse to a 3-row stack: data sources, substrate, AI tools.
+   Connectors hide because direction is implicit in the reading order.
+   The flank chip rail flips to a horizontal wrap so the column doesn't
+   leave a tall, sparse gutter. */
+@media (max-width: 1024px) {
+  .layer-flow__grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .layer-flow__connector {
+    display: none;
+  }
+
+  .layer-flow__col-h {
+    margin-bottom: 4px;
+  }
+
+  .layer-flow__chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .layer-flow__col-note {
+    text-align: center;
+  }
+}
+
+@media (max-width: 880px) {
+  .layer-stack__row {
+    grid-template-columns: 80px minmax(0, 1fr);
+  }
+
+  .layer-stack__meta {
+    display: none;
+  }
+
+  .layer-flow__foot {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * HOMEPAGE — Bridge interstitial
+ *
+ * Dark band that pivots the page from "the layer" (artefact) to
+ * "method" (motion). Centered headline + mono sub-line, no chrome.
+ * Sized to feel like a full-viewport pause so the executive read has
+ * a moment to land before Method begins.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.section--bridge {
+  padding: clamp(120px, 16vh, 200px) 0;
+  min-height: 80dvh;
+  display: flex;
+  align-items: center;
+}
+
+.section--bridge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 700px 240px at 30% 50%, rgba(98, 67, 185, 0.20), transparent 70%),
+    radial-gradient(ellipse 500px 200px at 80% 50%, rgba(26, 106, 74, 0.14), transparent 70%);
+}
+
+.bridge {
+  position: relative;
+  z-index: 1;
+  max-width: 920px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.bridge__title {
+  margin: 0 0 24px;
+  font-family: var(--font-display);
+  font-size: clamp(34px, 5.4vw, 60px);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  font-weight: 500;
+  color: var(--paper);
+}
+
+.bridge__title em {
+  font-style: italic;
+  color: #c5a8ff;
+}
+
+.bridge__sub {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+  font-weight: 600;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * HOMEPAGE — Method (Navigate, Encode, Build)
+ *
+ * Three alternating rows. Each row pairs a copy column with a phase-
+ * specific mock. The reverse modifier flips the column order at desktop
+ * widths to keep the rhythm asymmetric. Each row is divided from the
+ * next by a hairline, so the progression reads as a sequence.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.method {
+  list-style: none;
+  margin: 56px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+}
+
+.method-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(40px, 6vw, 80px);
+  align-items: center;
+  padding: 64px 0;
+}
+
+.method-row + .method-row {
+  border-top: 1px solid var(--line-soft);
+}
+
+.method-row--reverse > .method-row__copy {
+  order: 2;
+}
+
+.method-row__num {
+  margin: 0 0 22px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.method-row__num::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--violet);
+}
+
+.method-row--encode .method-row__num::before { background: var(--dusk); }
+.method-row--build  .method-row__num::before { background: var(--emerald); }
+
+.method-row__title {
+  margin: 0 0 18px;
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.4vw, 38px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.method-row__verb {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.method-row--navigate .method-row__verb { color: var(--violet); }
+.method-row--encode   .method-row__verb { color: var(--dusk); }
+.method-row--build    .method-row__verb { color: var(--emerald); }
+
+.method-row__body {
+  margin: 0 0 26px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  max-width: 480px;
+}
+
+.method-row__list {
+  list-style: none;
+  margin: 0;
+  padding-top: 22px;
+  border-top: 1px solid var(--line-soft);
+  display: grid;
+  gap: 10px;
+  max-width: 480px;
+}
+
+.method-row__list li {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.method-row__list li::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-top: 8px;
+  background: var(--rule);
+}
+
+.method-row--navigate .method-row__list li::before { background: var(--violet); }
+.method-row--encode   .method-row__list li::before { background: var(--dusk); }
+.method-row--build    .method-row__list li::before { background: var(--emerald); }
+
+
+/* ─── Mock chassis (shared) ─── */
+
+.mock {
+  position: relative;
+  background: var(--card-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.mock__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line-soft);
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.mock__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+
+.mock__status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.mock__status-dot--navigate { background: var(--emerald); }
+.mock__status-dot--encode   { background: var(--violet); }
+.mock__status-dot--build    { background: var(--gold); }
+
+.mock__body {
+  padding: 24px 28px;
+}
+
+
+/* ─── Mock 1: field notes (Navigate) ─── */
+
+.field-entry + .field-entry {
+  margin-top: 18px;
+}
+
+.field-entry__date {
+  margin: 0 0 8px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  font-weight: 600;
+}
+
+.field-entry__body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--ink-soft);
+}
+
+.field-entry__body mark {
+  background: var(--violet-soft);
+  color: var(--violet-deep);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 500;
+}
+
+.field-pattern {
+  margin-top: 22px;
+  padding: 16px 18px;
+  background: var(--violet-soft);
+  border-left: 3px solid var(--violet);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.field-pattern__head {
+  margin: 0 0 6px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--violet-deep);
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.field-pattern__bullet {
+  font-size: 13px;
+}
+
+.field-pattern__body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--violet-deep);
+  font-weight: 500;
+}
+
+
+/* ─── Mock 2: substrate file (Encode) ─── */
+
+.mock--encode {
+  background: var(--ink-deep);
+  border-color: transparent;
+}
+
+.mock--encode .mock__head {
+  color: var(--faint);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.code-mock {
+  margin: 0;
+  padding: 24px 28px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: rgba(243, 235, 217, 0.78);
+  white-space: pre;
+}
+
+.code-mock__line {
+  display: block;
+}
+
+.code-mock__line--sep {
+  color: var(--faint);
+  opacity: 0.5;
+}
+
+.code-mock__line--comment {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.code-mock__sep {
+  color: var(--faint);
+  opacity: 0.5;
+}
+
+.code-mock__k {
+  color: var(--violet-soft);
+}
+
+.code-mock__v {
+  color: var(--paper);
+}
+
+.code-mock__tag {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+  margin-right: 4px;
+  color: var(--paper);
+  font-weight: 700;
+}
+
+.code-mock__tag--rules    { background: var(--violet); }
+.code-mock__tag--examples { background: var(--emerald); }
+.code-mock__tag--sources  { background: var(--dusk); }
+.code-mock__tag--loops    { background: var(--gold); }
+
+
+/* ─── Mock 3: chat (Build) ─── */
+
+.mock--build .mock__body {
+  padding: 0;
+}
+
+.chat-mock {
+  display: flex;
+  flex-direction: column;
+  height: 360px;
+}
+
+.chat-mock__msgs {
+  flex: 1;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: hidden;
+}
+
+.chat-mock__msg {
+  display: flex;
+  gap: 10px;
+  max-width: 85%;
+}
+
+.chat-mock__msg--user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.chat-mock__avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--paper);
+}
+
+.chat-mock__avatar--user { background: var(--ink-deep); }
+.chat-mock__avatar--ai   { background: var(--violet); }
+
+.chat-mock__bubble {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.chat-mock__bubble--user {
+  background: var(--ink-deep);
+  color: var(--paper);
+  border-color: var(--ink-deep);
+}
+
+.chat-mock__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.chat-mock__list li strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.chat-mock__check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--line);
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--emerald-deep);
+  font-weight: 600;
+}
+
+.chat-mock__check::before {
+  content: "✓";
+  font-weight: 700;
+}
+
+.chat-mock__bar {
+  border-top: 1px solid var(--line-soft);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card);
+}
+
+.chat-mock__input {
+  flex: 1;
+  font-size: 13px;
+  color: var(--faint);
+  font-family: var(--font-body);
+}
+
+.chat-mock__send {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--violet);
+  color: var(--paper);
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+}
+
+@media (max-width: 880px) {
+  .method-row {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 40px 0;
+  }
+  .method-row--reverse > .method-row__copy {
+    order: 0;
+  }
+  .chat-mock { height: 320px; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * HOMEPAGE — Headless interactive
+ *
+ * Dark interactive panel split into substrate (left) and surfaces +
+ * detail (right). Surfaces are buttons with `aria-selected`; the
+ * detail tabpanel updates from local state. Substrate layers fade
+ * unless the active surface reads from them.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.headless {
+  position: relative;
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
+  gap: clamp(36px, 4vw, 56px);
+  padding: clamp(36px, 5vw, 56px);
+  background: var(--ink-deep);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.headless::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 360px 200px at 18% 50%, rgba(98, 67, 185, 0.22), transparent 60%),
+    radial-gradient(ellipse 280px 200px at 90% 20%, rgba(26, 106, 74, 0.18), transparent 60%);
+}
+
+.headless__substrate {
+  position: relative;
+  z-index: 1;
+  background: #1a1a1f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 18px;
+}
+
+.headless__substrate-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.headless__substrate-head strong {
+  color: var(--paper);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.headless__substrate-head span {
+  color: var(--violet-soft);
+  font-weight: 600;
+}
+
+.headless__layers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.headless-layer {
+  display: grid;
+  grid-template-columns: 80px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  background: var(--ink-deep);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  border-left: 3px solid;
+  transition: opacity 280ms cubic-bezier(0.4, 0, 0.2, 1),
+              background 280ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.35;
+}
+
+.headless-layer.is-active {
+  opacity: 1;
+  background: #20202a;
+  box-shadow: 0 0 0 1px currentColor inset;
+}
+
+.headless-layer--rules    { border-left-color: var(--violet);  color: var(--violet); }
+.headless-layer--examples { border-left-color: var(--emerald); color: var(--emerald); }
+.headless-layer--sources  { border-left-color: var(--dusk);    color: var(--dusk); }
+.headless-layer--loops    { border-left-color: var(--gold);    color: var(--gold); }
+
+.headless-layer__tag {
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.headless-layer--rules    .headless-layer__tag { color: #c5a8ff; }
+.headless-layer--examples .headless-layer__tag { color: #8fcaa8; }
+.headless-layer--sources  .headless-layer__tag { color: #a3b8cc; }
+.headless-layer--loops    .headless-layer__tag { color: #e5c476; }
+
+.headless-layer__name {
+  font-size: 12px;
+  color: rgba(243, 235, 217, 0.78);
+  font-family: var(--font-body);
+}
+
+.headless__right {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 18px;
+}
+
+.headless__rule {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headless__rule::before {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.headless__surfaces {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.headless-surface {
+  background: #1a1a1f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 16px 12px;
+  text-align: center;
+  cursor: pointer;
+  color: var(--paper);
+  font-family: var(--font-body);
+  display: grid;
+  gap: 6px;
+  transition:
+    background 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.headless-surface:hover {
+  background: #20202a;
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.headless-surface:focus-visible {
+  outline: 2px solid var(--violet-soft);
+  outline-offset: 2px;
+}
+
+.headless-surface.is-active {
+  background: var(--violet);
+  border-color: var(--violet);
+  box-shadow: 0 12px 24px rgba(98, 67, 185, 0.32);
+}
+
+.headless-surface__icon {
+  width: 32px;
+  height: 32px;
+  margin: 0 auto 4px;
+  border-radius: var(--radius-sm);
+  background: var(--ink-deep);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--paper);
+  transition: background 220ms ease, border-color 220ms ease;
+}
+
+.headless-surface.is-active .headless-surface__icon {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.headless-surface__name {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--paper);
+}
+
+.headless-surface__verb {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  font-weight: 500;
+}
+
+.headless-surface.is-active .headless-surface__verb {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.headless__detail {
+  background: var(--ink-deep);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 22px 24px;
+  min-height: 200px;
+}
+
+.headless__detail-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.headless__detail-head strong {
+  color: var(--paper);
+  font-weight: 700;
+}
+
+.headless__detail-body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: rgba(243, 235, 217, 0.78);
+  white-space: pre-wrap;
+}
+
+.headless__detail-c { color: var(--muted); font-style: italic; }
+.headless__detail-k { color: var(--violet-soft); }
+.headless__detail-v { color: var(--paper); }
+
+.headless__foot {
+  list-style: none;
+  margin: 56px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 32px;
+}
+
+.headless-point h3 {
+  margin: 0 0 12px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.headless-point p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 880px) {
+  .headless {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 28px 22px;
+  }
+  .headless__surfaces {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .headless__foot {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * HOMEPAGE — Proof carousel
+ *
+ * Three case slides in a horizontal track. Track translation is driven
+ * by inline transform style. Each slide is a 2-column composition
+ * (copy + visual), with three different visuals (gen queue, loc
+ * pipeline, timeline). Nav row underneath carries dots, counter and
+ * arrow buttons.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.proof {
+  position: relative;
+  margin-top: 56px;
+  outline: none;
+}
+
+.proof__viewport {
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+}
+
+.proof__track {
+  display: flex;
+  transition: transform 480ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.proof-slide {
+  min-width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: clamp(36px, 5vw, 64px);
+  padding: clamp(36px, 5vw, 56px) clamp(28px, 5vw, 60px);
+  background: var(--card-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  align-items: center;
+}
+
+.proof-slide__copy {
+  display: flex;
+  flex-direction: column;
+}
+
+.proof-slide__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 22px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.proof-slide__eyebrow-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.proof-slide__eyebrow--violet  .proof-slide__eyebrow-dot { background: var(--violet); }
+.proof-slide__eyebrow--emerald .proof-slide__eyebrow-dot { background: var(--emerald); }
+.proof-slide__eyebrow--gold    .proof-slide__eyebrow-dot { background: var(--gold); }
+
+.proof-slide__title {
+  margin: 0 0 18px;
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3vw, 34px);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.proof-slide__body {
+  margin: 0 0 26px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.proof-slide__metrics {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.proof-metric {
+  display: grid;
+  gap: 4px;
+}
+
+.proof-metric dt {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  order: 2;
+  line-height: 1.3;
+}
+
+.proof-metric dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ink-deep);
+  order: 1;
+}
+
+.proof-slide__visual {
+  position: relative;
+}
+
+
+/* ─── Proof mock 1: generation queue ─── */
+
+.proof-gen {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.proof-gen__head {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--line-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.proof-gen__body {
+  list-style: none;
+  margin: 0;
+  padding: 18px 20px;
+  display: grid;
+  gap: 10px;
+}
+
+.proof-gen__card {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--card-2);
+}
+
+.proof-gen__card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.proof-gen__status {
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.proof-gen__status--approved {
+  background: var(--emerald-soft);
+  color: var(--emerald-deep);
+}
+
+.proof-gen__status--review {
+  background: var(--gold-soft);
+  color: var(--gold-deep);
+}
+
+.proof-gen__card-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.proof-gen__check {
+  list-style: none;
+  margin: 0;
+  padding-top: 8px;
+  border-top: 1px dashed var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.proof-gen__check li {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.proof-gen__check li::before {
+  content: "✓";
+  color: var(--emerald-deep);
+  font-weight: 700;
+}
+
+
+/* ─── Proof mock 2: localization pipeline ─── */
+
+.proof-loc {
+  background: var(--ink-deep);
+  border-radius: var(--radius-md);
+  padding: 22px;
+}
+
+.proof-loc__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 14px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+  font-weight: 600;
+}
+
+.proof-loc__head strong {
+  color: var(--paper);
+  font-weight: 700;
+}
+
+.proof-loc__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.proof-loc__row {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  background: #1a1a1f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 10px 14px;
+}
+
+.proof-loc__flag {
+  width: 28px;
+  height: 20px;
+  border-radius: 3px;
+}
+
+.proof-loc__flag--be { background: linear-gradient(to right, #000 33%, #fae042 33% 66%, #ed2939 66%); }
+.proof-loc__flag--fr { background: linear-gradient(to right, #002395 33%, #fff 33% 66%, #ed2939 66%); }
+.proof-loc__flag--de { background: linear-gradient(to bottom, #000 33%, #dd0000 33% 66%, #ffce00 66%); }
+.proof-loc__flag--it { background: linear-gradient(to right, #009246 33%, #fff 33% 66%, #ce2b37 66%); }
+.proof-loc__flag--es { background: linear-gradient(to bottom, #aa151b 25%, #f1bf00 25% 75%, #aa151b 75%); }
+.proof-loc__flag--nl { background: linear-gradient(to bottom, #ae1c28 33%, #fff 33% 66%, #21468b 66%); }
+.proof-loc__flag--pl { background: linear-gradient(to bottom, #fff 50%, #dc143c 50%); }
+
+.proof-loc__market {
+  display: grid;
+  gap: 2px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: rgba(243, 235, 217, 0.78);
+  min-width: 0;
+}
+
+.proof-loc__market span:last-child {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.proof-loc__status {
+  font-family: var(--font-body);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: right;
+  padding: 3px 8px;
+  border-radius: 3px;
+  font-weight: 700;
+}
+
+.proof-loc__status--ok  { background: rgba(26, 106, 74, 0.30); color: #8fcaa8; }
+.proof-loc__status--rev { background: rgba(184, 135, 40, 0.30); color: #e5c476; }
+
+.proof-loc__more {
+  margin: 10px 0 0;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+
+/* ─── Proof mock 3: timeline ─── */
+
+.proof-time {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 24px;
+}
+
+.proof-time__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.proof-time__rail {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 22px;
+  position: relative;
+}
+
+.proof-time__rail::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: var(--rule);
+}
+
+.proof-time__step {
+  position: relative;
+  padding-bottom: 18px;
+}
+
+.proof-time__step:last-child {
+  padding-bottom: 0;
+}
+
+.proof-time__step::before {
+  content: "";
+  position: absolute;
+  left: -22px;
+  top: 4px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 2px solid var(--rule);
+}
+
+.proof-time__step--done::before {
+  background: var(--emerald);
+  border-color: var(--emerald);
+}
+
+.proof-time__step--active::before {
+  background: var(--gold);
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px var(--gold-soft);
+}
+
+.proof-time__week {
+  margin: 0 0 4px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.proof-time__title {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.4;
+}
+
+.proof-time__title span {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+
+
+/* ─── Carousel controls ─── */
+
+.proof__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.proof__dots {
+  display: flex;
+  gap: 10px;
+}
+
+.proof__dot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  transition: 220ms ease;
+}
+
+.proof__dot:hover {
+  border-color: var(--ink-soft);
+}
+
+.proof__dot.is-active {
+  background: var(--ink-deep);
+  border-color: var(--ink-deep);
+  width: 28px;
+  border-radius: 5px;
+}
+
+.proof__counter {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.proof__counter strong {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.proof__arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.proof__arrow {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--card);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  color: var(--ink);
+  transition: 180ms ease;
+}
+
+.proof__arrow:hover {
+  background: var(--ink-deep);
+  color: var(--paper);
+  border-color: var(--ink-deep);
+}
+
+.proof__arrow:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.proof__arrow:disabled:hover {
+  background: var(--card);
+  color: var(--ink);
+  border-color: var(--line);
+}
+
+@media (max-width: 880px) {
+  .proof-slide {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .proof-slide__metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .proof__nav {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * HOMEPAGE — Operator (bridge quote + section head + engagement ladder)
+ *
+ * Editorial bridge sentence at the top, then a centered section head,
+ * then a row of three engagement cards (Workshop, Strategy, Program).
+ * The Program card is the headline action; Workshop and Strategy are
+ * lower-commitment entry points. Each card names duration, the work,
+ * the outcome, and a single CTA button.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.section--operator {
+  padding: clamp(112px, 14vh, 180px) 0;
+}
+
+.bridge-quote {
+  position: relative;
+  max-width: 760px;
+  margin: 0 auto 60px;
+  padding: 40px 24px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.4vw, 26px);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 1.4;
+  color: var(--paper);
+}
+
+.bridge-quote::before,
+.bridge-quote::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 1px;
+  background: rgba(243, 235, 217, 0.32);
+}
+
+.bridge-quote::before { top: 0; }
+.bridge-quote::after  { bottom: 0; }
+
+.bridge-quote em {
+  color: #c5a8ff;
+  font-style: italic;
+}
+
+.operator-head {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 56px;
+}
+
+.operator-head .eyebrow {
+  justify-content: center;
+}
+
+.operator-head__title {
+  margin: 0 0 22px;
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 50px);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  font-weight: 500;
+  color: var(--paper);
+}
+
+.operator-head__framing {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.55;
+  color: rgba(243, 235, 217, 0.78);
+}
+
+.engagements {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 22px);
+}
+
+.engagement {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: clamp(28px, 3vw, 36px) clamp(24px, 2.6vw, 32px);
+  background: #1a1a1f;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  position: relative;
+  overflow: hidden;
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 220ms ease,
+              box-shadow 220ms ease;
+}
+
+.engagement::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--rule);
+  opacity: 0.5;
+}
+
+.engagement--workshop::before { background: var(--dusk); opacity: 0.85; }
+.engagement--strategy::before { background: var(--gold); opacity: 0.85; }
+.engagement--program::before { background: linear-gradient(90deg, var(--violet), var(--gold)); opacity: 1; height: 4px; }
+
+.engagement:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 24px 60px -24px rgba(0, 0, 0, 0.4);
+}
+
+.engagement--primary {
+  background: linear-gradient(180deg, #20202a 0%, #161620 100%);
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 24px 60px -24px rgba(98, 67, 185, 0.32),
+    0 8px 22px -10px rgba(0, 0, 0, 0.4);
+}
+
+.engagement--primary:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow:
+    0 32px 70px -24px rgba(98, 67, 185, 0.44),
+    0 12px 28px -10px rgba(0, 0, 0, 0.5);
+}
+
+.engagement__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.engagement__tag {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--paper);
+  font-weight: 700;
+}
+
+.engagement--primary .engagement__tag {
+  color: var(--violet-soft);
+}
+
+.engagement__duration {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--faint);
+  font-weight: 600;
+  padding: 3px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-pill);
+}
+
+.engagement--primary .engagement__duration {
+  color: rgba(243, 235, 217, 0.85);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.engagement__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2vw, 24px);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+  color: var(--paper);
+}
+
+.engagement__body {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: rgba(243, 235, 217, 0.78);
+}
+
+.engagement__outcome {
+  margin: 0;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border-left: 2px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgba(243, 235, 217, 0.85);
+  font-weight: 500;
+}
+
+.engagement--workshop .engagement__outcome { border-left-color: var(--dusk); }
+.engagement--strategy .engagement__outcome { border-left-color: var(--gold); }
+.engagement--program .engagement__outcome {
+  border-left-color: var(--violet);
+  background: rgba(98, 67, 185, 0.10);
+}
+
+.engagement .btn {
+  margin-top: auto;
+  align-self: flex-start;
+}
+
+
+/* Paper-on-ink button used inside the operator engagements + final CTA. */
+.btn--paper {
+  background: var(--paper);
+  border-color: var(--paper);
+  color: var(--ink-deep);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+.btn--paper:hover {
+  background: #fff;
+  border-color: #fff;
+  color: var(--ink-deep);
+}
+
+@media (max-width: 980px) {
+  .engagements { grid-template-columns: 1fr; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * HOMEPAGE — Final CTA
+ *
+ * Centered ink section. Sized to fill the viewport so the close has the
+ * visual weight of a chapter end.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.section--cta {
+  padding: clamp(120px, 16vh, 200px) 0;
+  min-height: 90dvh;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.cta {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.cta .eyebrow {
+  margin-bottom: 24px;
+  display: inline-flex;
+}
+
+.eyebrow--paper {
+  color: rgba(243, 235, 217, 0.7);
+}
+
+.eyebrow--paper::before {
+  background: var(--paper);
+}
+
+.cta__title {
+  margin: 0 0 22px;
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4.6vw, 56px);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  font-weight: 500;
+  color: var(--paper);
+}
+
+.cta__lede {
+  margin: 0 0 36px;
+  font-size: 17px;
+  line-height: 1.55;
+  color: rgba(243, 235, 217, 0.78);
+}
+
+.cta__actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta__fine {
+  margin: 28px auto 0;
+  max-width: 520px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--faint);
+}
+
+/*
+ * On the dark CTA the secondary CTA needs a paper-tinted ghost. Without
+ * this override it picks up the light-section ghost styles from
+ * globals.css and blends into the ink background.
+ */
+.btn--ghost-on-ink {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--paper);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: none;
+}
+
+.btn--ghost-on-ink:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--paper);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * HOMEPAGE — Hero text column hooks
+ *
+ * The `.hero-text` grid keeps reveal animations aligned with the
+ * artefact column at every viewport. Vertical rhythm: the pill sits
+ * above the h1 with deliberate space; the h1 → lede → actions cadence
+ * is set by per-element margins so the executive read has room to
+ * breathe.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.hero-text {
+  display: grid;
+  align-content: center;
+  gap: 0;
+}
+
+.hero-text > .eyebrow-pill {
+  margin-bottom: 32px;
+  justify-self: start;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * /process — Flywheel rail (kept verbatim — used by /process Flywheel)
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.flywheel {
+  margin-top: 40px;
+  position: relative;
+}
+
+.flywheel__rail {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--ink-soft);
+}
+
+.flywheel__step {
+  background: var(--card);
+  padding: 36px 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  border-right: 1px solid var(--line-soft);
+}
+
+.flywheel__step:last-child {
+  border-right: 0;
+}
+
+.flywheel__step:nth-child(1) {
+  --step-color: var(--violet);
+  --step-soft: var(--violet-soft);
+}
+.flywheel__step:nth-child(2) {
+  --step-color: var(--dusk);
+  --step-soft: var(--dusk-soft);
+}
+.flywheel__step:nth-child(3) {
+  --step-color: var(--emerald);
+  --step-soft: var(--emerald-soft);
+}
+
+.flywheel__step::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: var(--step-color);
+}
+
+.flywheel__num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--step-color);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.flywheel__label {
+  font-family: var(--font-display);
+  font-size: 36px;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+  margin: 0;
+  color: var(--ink);
+}
+
+.flywheel__title {
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.35;
+  letter-spacing: -0.012em;
+  font-weight: 600;
+  margin: 0;
+  color: var(--ink);
+}
+
+.flywheel__body {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.flywheel__signal {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--line-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.flywheel__signal-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--step-color);
+  font-weight: 700;
+}
+
+.flywheel__signal-note {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.flywheel__close {
+  margin: 32px 0 0;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 800px;
+}
+
+@media (max-width: 920px) {
+  .flywheel__rail {
+    grid-template-columns: 1fr;
+  }
+  .flywheel__step {
+    border-right: 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .flywheel__step:last-child {
+    border-bottom: 0;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * /process — Anatomy grid (kept verbatim)
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.anatomy-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 40px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--line);
+  gap: 1px;
+}
+
+.anatomy-card {
+  background: var(--card);
+  padding: 32px 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+.anatomy-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--violet);
+  opacity: 0.7;
+}
+
+.anatomy-card:nth-child(2)::before { background: var(--gold); }
+.anatomy-card:nth-child(3)::before { background: var(--dusk); }
+.anatomy-card:nth-child(4)::before { background: var(--emerald); }
+
+.anatomy-card__num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--violet);
+  font-weight: 700;
+}
+
+.anatomy-card:nth-child(2) .anatomy-card__num { color: var(--gold-deep); }
+.anatomy-card:nth-child(3) .anatomy-card__num { color: var(--dusk); }
+.anatomy-card:nth-child(4) .anatomy-card__num { color: var(--emerald-deep); }
+
+.anatomy-card__title {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.anatomy-card__body {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+.anatomy-card__snippet {
+  margin-top: auto;
+  padding: 12px 14px;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-md);
+  background: var(--paper);
+  font: 11.5px/1.55 var(--font-body);
+  font-weight: 500;
+  color: var(--ink-soft);
+  display: grid;
+  gap: 4px;
+}
+
+.anatomy-card__snippet-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.anatomy-card__snippet-key {
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+.anatomy-card__snippet-val {
+  color: var(--ink);
+  font-weight: 600;
+  text-align: right;
+}
+
+@media (max-width: 1080px) {
+  .anatomy-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .anatomy-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * /process — Trust row (kept verbatim)
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.trust-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(36px, 6vw, 72px);
+  align-items: center;
+  margin-top: 40px;
+}
+
+.trust-checks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.trust-checks li {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 14px;
+  align-items: flex-start;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  font-size: 15px;
+}
+
+.trust-checks__mark {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-pill);
+  background: var(--emerald-soft);
+  color: var(--emerald-deep);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.trust-checks strong {
+  display: block;
+  color: var(--ink);
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.review-mock {
+  padding: 24px;
+  background: var(--card-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  display: grid;
+  gap: 4px;
+}
+
+.review-mock__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line-soft);
+  margin-bottom: 6px;
+}
+
+.review-mock__title {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.005em;
+}
+
+.review-mock__title small {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 11.5px;
+  letter-spacing: 0;
+}
+
+.review-mock__count {
+  padding: 4px 11px;
+  border-radius: var(--radius-pill);
+  background: var(--violet-soft);
+  color: var(--violet-deep);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.review-mock__row {
+  display: grid;
+  grid-template-columns: 22px 1fr auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 4px;
+  font-size: 13px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.review-mock__row:first-of-type {
+  border-top: 0;
+}
+
+.review-mock__check {
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--rule);
+}
+
+.review-mock__check--on {
+  background: var(--emerald-deep);
+  border-color: var(--emerald-deep);
+  position: relative;
+}
+
+.review-mock__check--on::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 5px;
+  height: 9px;
+  border: solid var(--paper);
+  border-width: 0 1.6px 1.6px 0;
+  transform: rotate(45deg);
+}
+
+.review-mock__row strong {
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.review-mock__row small {
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 500;
+  margin-left: 4px;
+}
+
+.review-mock__amount {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.review-mock__action {
+  padding: 4px 11px;
+  border-radius: var(--radius-pill);
+  background: var(--violet-soft);
+  color: var(--violet-deep);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.review-mock__action--approved {
+  background: var(--emerald-soft);
+  color: var(--emerald-deep);
+}
+
+@media (max-width: 980px) {
+  .trust-row {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * /process — Why-now / problem row (kept verbatim)
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.problem-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: clamp(36px, 6vw, 80px);
+  align-items: center;
+  margin-top: 8px;
+}
+
+.pain {
+  list-style: none;
+  margin: 28px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.pain li {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 14px;
+  align-items: flex-start;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+.pain__x {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-pill);
+  background: var(--violet-soft);
+  color: var(--violet);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+}
+
+.pain strong {
+  display: block;
+  color: var(--ink);
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.heads-stack {
+  padding: 22px;
+  background: var(--card-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  display: grid;
+  gap: 12px;
+}
+
+.heads-row {
+  display: grid;
+  grid-template-columns: 36px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: var(--paper);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.heads-row strong {
+  display: block;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 13.5px;
+}
+
+.heads-row small {
+  color: var(--muted);
+  font-size: 11.5px;
+}
+
+.heads-row__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--ink), var(--ink-soft));
+  color: var(--paper);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.heads-row__icon--violet { background: linear-gradient(135deg, var(--violet-deep), var(--violet)); }
+.heads-row__icon--gold    { background: linear-gradient(135deg, var(--gold-deep), var(--gold)); }
+.heads-row__icon--emerald { background: linear-gradient(135deg, var(--emerald-deep), var(--emerald)); }
+.heads-row__icon--dusk    { background: linear-gradient(135deg, var(--dusk-deep), var(--dusk)); }
+
+.heads-row__tag {
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--paper-2);
+  color: var(--ink-soft);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.heads-row__tag--warn {
+  background: var(--gold-soft);
+  color: var(--gold-deep);
+}
+
+.problem-row__caption {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+@media (max-width: 980px) {
+  .problem-row {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * /process — Production tools matrix (kept verbatim)
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.tools-matrix {
+  margin-top: 40px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.tool-row {
+  display: grid;
+  grid-template-columns: minmax(140px, 1fr) auto minmax(220px, 2fr) minmax(220px, 2fr);
+  gap: 24px;
+  padding: 22px 28px;
+  border-bottom: 1px solid var(--line-soft);
+  align-items: center;
+  transition: background 160ms ease;
+}
+
+.tool-row:hover {
+  background: var(--card-2);
+}
+
+.tool-row:last-child {
+  border-bottom: 0;
+}
+
+.tool-row__name {
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.tool-row__name em {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.tool-row__tier {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+
+.tool-row__tier--Production {
+  color: var(--emerald-deep);
+  background: var(--emerald-soft);
+  border-color: var(--emerald-edge);
+}
+
+.tool-row__tier--WIP {
+  color: var(--gold-deep);
+  background: var(--gold-soft);
+  border-color: var(--gold-edge);
+}
+
+.tool-row__tier--External {
+  color: var(--muted);
+  background: var(--paper-2);
+  border-color: var(--line);
+}
+
+.tool-row__function {
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+.tool-row__surface {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 860px) {
+  .tool-row {
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: start;
+  }
+  .tool-row__function,
+  .tool-row__surface {
+    grid-column: 1 / -1;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * /process — Architecture stack (kept verbatim)
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.arch-stack {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin-top: 40px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--card);
+}
+
+.arch-layer {
+  display: grid;
+  grid-template-columns: minmax(60px, 90px) 1fr;
+  gap: 32px;
+  padding: 28px 32px;
+  border-bottom: 1px solid var(--line-soft);
+  align-items: start;
+  position: relative;
+  transition: background 160ms ease;
+}
+
+.arch-layer:hover {
+  background: var(--card-2);
+}
+
+.arch-layer:last-child {
+  border-bottom: 0;
+}
+
+.arch-layer:nth-child(1) { --arch-color: var(--violet); }
+.arch-layer:nth-child(2) { --arch-color: var(--dusk); }
+.arch-layer:nth-child(3) { --arch-color: var(--emerald); }
+
+.arch-layer::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: var(--arch-color);
+}
+
+.arch-layer__num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--arch-color);
+  font-weight: 700;
+  text-transform: uppercase;
+  padding-top: 4px;
+}
+
+.arch-layer__num small {
+  display: block;
+  font-size: 11px;
+  margin-top: 4px;
+  color: var(--muted);
+  letter-spacing: 0.16em;
+}
+
+.arch-layer__title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  margin: 0 0 6px;
+  color: var(--ink);
+}
+
+.arch-layer__body {
+  margin: 0 0 14px;
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.arch-layer__examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.arch-layer__example {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  background: var(--paper);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+@media (max-width: 720px) {
+  .arch-layer {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * Shared — close CTA action group
+ *
+ * Used by /process Cta and /campaign-substrate Handoff. Inherits from
+ * `.btn` in globals.css and just lays the actions out.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.close-cta {
+  margin-top: 48px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.close-cta .btn {
+  background: var(--violet);
+  border-color: var(--violet);
+  color: var(--paper);
+  box-shadow: 0 12px 28px rgba(98, 67, 185, 0.28);
+}
+
+.close-cta .btn:hover {
+  background: var(--violet-deep);
+  border-color: var(--violet-deep);
+}
+
+.close-cta .btn--ghost {
+  background: rgba(255, 250, 236, 0.62);
+  color: var(--ink);
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+.close-cta .btn--ghost:hover {
+  background: var(--card);
+  border-color: var(--ink);
+}
+
+.section--ink .close-cta .btn--ghost {
+  background: rgba(243, 235, 217, 0.06);
+  color: var(--paper);
+  border-color: rgba(243, 235, 217, 0.20);
+}
+
+.section--ink .close-cta .btn--ghost:hover {
+  background: rgba(243, 235, 217, 0.12);
+}
