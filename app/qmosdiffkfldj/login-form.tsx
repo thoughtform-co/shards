@@ -46,7 +46,7 @@ export function LoginForm({ next }: LoginFormProps) {
         const destination =
           next && next.startsWith("/") && !next.startsWith("//")
             ? next
-            : "/stripe";
+            : "/qmosdiffkfldj";
         router.replace(destination);
         router.refresh();
         return;

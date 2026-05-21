@@ -7,8 +7,12 @@ import { NextResponse, type NextRequest } from "next/server";
  *
  *  1. Stripe collection gate — `/link-to-collect/*` requires the
  *     `stripe_unlock` cookie. Locked visitors get redirected to
- *     `/stripe?next=...`, which renders its own form. Independent of
- *     the site gate below.
+ *     `/qmosdiffkfldj?next=...`, which renders its own form.
+ *     Independent of the site gate below. The path is intentionally
+ *     opaque so the Stripe collection isn't trivially discoverable
+ *     via the URL bar — the underlying APIs still live at
+ *     `/api/stripe/*` because they're only addressable from inside
+ *     the gated form, not from a sitemap or path-guessing.
  *
  *  2. Site-wide gate — anything that is not in the public allowlist
  *     requires the `shards_unlock` cookie. Locked visitors get
@@ -24,14 +28,21 @@ import { NextResponse, type NextRequest } from "next/server";
 const SITE_COOKIE = "shards_unlock";
 const STRIPE_COOKIE = "stripe_unlock";
 
+/* Opaque path for the Stripe collection gate. Kept in one place so
+   the proxy and the post-unlock redirect in app/qmosdiffkfldj/
+   login-form.tsx can never drift. If you ever rotate the slug,
+   change it here and in that one client file. */
+const STRIPE_GATE_PATH = "/qmosdiffkfldj";
+
 const PUBLIC_PATHS = [
   "/login",
   "/api/unlock",
   "/api/lock",
-  /* The Stripe gate hosts its own form at /stripe and unlock/lock APIs
-     under /api/stripe/*. They have to stay reachable without the site
-     cookie so the redirect from the Stripe gate handler can land. */
-  "/stripe",
+  /* The Stripe gate hosts its own form at STRIPE_GATE_PATH and
+     unlock/lock APIs under /api/stripe/*. They have to stay
+     reachable without the site cookie so the redirect from the
+     Stripe gate handler can land. */
+  STRIPE_GATE_PATH,
   "/api/stripe/unlock",
   "/api/stripe/lock",
 ];
@@ -53,7 +64,7 @@ export function proxy(req: NextRequest) {
     const isStripeUnlocked = req.cookies.get(STRIPE_COOKIE)?.value === "1";
     if (!isStripeUnlocked) {
       const url = req.nextUrl.clone();
-      url.pathname = "/stripe";
+      url.pathname = STRIPE_GATE_PATH;
       url.search = "";
       url.searchParams.set(
         "next",
