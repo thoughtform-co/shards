@@ -11,14 +11,21 @@ import { claudeSkillsAtLoopSection } from "@/content/claude-workshop";
  *   ClaudeSkillAnatomy     What a Skill is.
  *   TheShift               Rules engineered to context encoded.
  *   DegreesOfFreedom       One Skill, three degrees of freedom.
- *   ClaudeSkillsAtLoop     What's already running.
+ *   ClaudeSkillsAtLoop     Four Skills to take home (downloadable).
  *   SoftwareForFew         Tools the team builds for itself.
  *
- * This section lands the receipts: five Skills already in use at
- * Loop, each with the owner credit where it applies. The footnote
- * stitches back to the 15-skill carousel earlier on the page so
- * the visitor reads these five as the same shape as the fifteen,
- * just on a different team.
+ * This section lands the take-home: four `.skill` bundles
+ * attendees can drop into Claude.ai or `~/.claude/skills/`
+ * straight from the page. Two are public (Anthropic's
+ * frontend-design plugin and b1rdmania's plain-english audit
+ * pass); two are Loop-grown (presentations builder + the adoption
+ * playbook itself).
+ *
+ * Each card renders a download affordance under the body. The
+ * `href` lands on the gated `/api/skills/[name]` route handler,
+ * which streams the matching `.skill` archive from
+ * `data/skills/`. Auth comes from the site-wide proxy gate; no
+ * per-route check needed.
  *
  * Posture matches Aether: ivory card surfaces, Bodoni titles,
  * mono-caps owners. No Anthropic re-tint — the page has already
@@ -70,6 +77,47 @@ export function ClaudeSkillsAtLoop() {
               <p className="aiop-claude-skills-at-loop__card-body">
                 {skill.body}
               </p>
+
+              {skill.download ? (
+                <div className="aiop-claude-skills-at-loop__card-download">
+                  <a
+                    className="aiop-claude-skills-at-loop__download-btn"
+                    href={skill.download.href}
+                    download={skill.download.filename}
+                    aria-label={`Download ${skill.title} as a .skill bundle (${skill.download.size})`}
+                  >
+                    <span
+                      className="aiop-claude-skills-at-loop__download-icon"
+                      aria-hidden="true"
+                    >
+                      ↓
+                    </span>
+                    <span className="aiop-claude-skills-at-loop__download-label">
+                      Download
+                      <span className="aiop-claude-skills-at-loop__download-filename">
+                        {skill.download.filename}
+                      </span>
+                    </span>
+                    <span className="aiop-claude-skills-at-loop__download-size">
+                      {skill.download.size}
+                    </span>
+                  </a>
+                  <p className="aiop-claude-skills-at-loop__download-source">
+                    Source:{" "}
+                    {skill.download.sourceHref ? (
+                      <a
+                        href={skill.download.sourceHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {skill.download.source}
+                      </a>
+                    ) : (
+                      <span>{skill.download.source}</span>
+                    )}
+                  </p>
+                </div>
+              ) : null}
             </li>
           ))}
         </ul>

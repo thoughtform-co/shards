@@ -127,15 +127,37 @@ export type ClaudeAnatomySection = {
   rows: readonly ClaudeAnatomyRow[];
 };
 
+export type ClaudeSkillDownload = {
+  /* Path that hits the gated /api/skills/[name] route handler.
+     The route streams the matching `.skill` bundle from
+     `data/skills/` and the proxy gates it behind the site cookie. */
+  href: string;
+  /* Filename the browser uses on save (with `.skill` extension so
+     Claude.ai accepts it directly on upload). */
+  filename: string;
+  /* Pre-computed size hint (e.g. "63 KB", "2.1 MB"). Shown on the
+     download button so attendees know what they're pulling. */
+  size: string;
+  /* Source attribution shown next to the download. Names the
+     upstream author so the bundle's origin is visible. */
+  source: string;
+  /* Optional URL the source attribution links to. Empty string
+     suppresses the link and renders the source as plain text. */
+  sourceHref: string;
+};
+
 export type ClaudeSkillEntry = {
   id: string;
-  /* Skill title (e.g. "Loop Legal Risk"). */
+  /* Skill title (e.g. "Frontend Design"). */
   title: string;
-  /* Single-line owner credit ("by Olga"). Empty string when the
-     owner credit doesn't apply. */
+  /* Single-line owner credit ("by Anthropic"). Empty string when
+     the owner credit doesn't apply. */
   owner: string;
   /* One-sentence description of what the Skill does. */
   body: string;
+  /* Optional download bundle. Renders a download affordance under
+     the body when set. */
+  download?: ClaudeSkillDownload;
 };
 
 export type ClaudeSkillsAtLoopSection = {
@@ -354,45 +376,74 @@ export const claudeSkillAnatomySection: ClaudeAnatomySection = {
 
 /* ─── Section 6 · Skills at Loop ─────────────────────────────────── */
 
+/* Four Skills to take home from the workshop. Two come from
+   outside (Anthropic's frontend-design plugin and b1rdmania's
+   plain-english audit pass); two are Loop-grown (the
+   presentations builder and the adoption playbook itself). Each
+   card carries a download so attendees can drop the bundle
+   straight into ~/.claude/skills/ or upload it to Claude.ai. */
 export const claudeSkillsAtLoopSection: ClaudeSkillsAtLoopSection = {
   id: "claude-skills-at-loop",
-  ariaLabel: "Claude Skills already in use at Loop",
-  title: "What\u2019s already running",
-  titleEm: "inside Loop\u2019s Claude",
+  ariaLabel: "Claude Skills to take home from the workshop",
+  title: "Four Skills",
+  titleEm: "to take home",
   titleAfter: ".",
-  sub: "Five Skills already encode a way of working across legal, brand, marketing, and adoption. They show up in the chats the team is having today.",
+  sub: "Two encoded inside Loop, two pulled in from outside. Each one is a single bundle you can drop into Claude today: download, upload to Claude.ai, run.",
   skills: [
     {
-      id: "loop-legal-risk",
-      title: "Loop Legal Risk",
-      owner: "by Olga",
-      body: "Reads a draft, a clause, or a NDA and flags risk against the way Loop\u2019s legal team thinks.",
-    },
-    {
-      id: "founder-voice",
-      title: "Founder Voice",
-      owner: "by Serrazo, Martin & Dimitri",
-      body: "The founders\u2019 written voice encoded. Drafts emails, posts, and statements that land as them, not as Claude.",
+      id: "frontend-design",
+      title: "Frontend Design",
+      owner: "by Anthropic",
+      body: "Builds distinctive, production-grade frontend code instead of generic AI slop. Pairs bold aesthetic direction with seven references covering typography, color, motion, spatial composition, and UX writing.",
+      download: {
+        href: "/api/skills/frontend-design",
+        filename: "frontend-design.skill",
+        size: "21 KB",
+        source: "anthropics/claude-code",
+        sourceHref:
+          "https://github.com/anthropics/claude-code/tree/main/plugins/frontend-design/skills/frontend-design",
+      },
     },
     {
       id: "creating-presentations",
       title: "Creating Presentations",
-      owner: "",
-      body: "Turns a brief into a deck with a clear arc and slide rhythm, ready to drop into .pptx.",
+      owner: "by Vince",
+      body: "Turns a brief into a slide deck with a clear arc and rhythm. Carries Loop\u2019s editorial templates, brand assets, and a render script so the output drops straight into .pptx or HTML.",
+      download: {
+        href: "/api/skills/creating-presentations",
+        filename: "creating-presentations.skill",
+        size: "2.1 MB",
+        source: "Loop \u00b7 internal",
+        sourceHref: "",
+      },
     },
     {
-      id: "tone-of-voice",
-      title: "Tone of Voice",
-      owner: "for paid social, Amazon, marketplaces, CRM",
-      body: "Loop\u2019s register for each surface, so copy lands as Loop wherever it shows up.",
+      id: "ai-adoption-loop",
+      title: "AI Adoption \u00b7 Loop",
+      owner: "by Vince",
+      body: "The way Loop runs its own Claude rollout: how to read a team, prep a workshop, write the recap, log Skills on Monday. Ships with the exec comms cadence and stakeholder map as references.",
+      download: {
+        href: "/api/skills/ai-adoption-loop",
+        filename: "ai-adoption-loop.skill",
+        size: "64 KB",
+        source: "Loop \u00b7 internal",
+        sourceHref: "",
+      },
     },
     {
-      id: "ai-adoption-strategy",
-      title: "AI Adoption Strategy",
-      owner: "",
-      body: "Encodes the way Loop runs the AI program: how to read a team, where to start, what to encode next.",
+      id: "plain-english",
+      title: "Plain English",
+      owner: "by b1rdmania",
+      body: "Two-pass prose audit. First pass strips classical bloat (Orwell, Gowers); second pass strips AI tics (em-dash overuse, banned vocabulary, preamble openers, reflex rule-of-three). Run it on Claude\u2019s output before you ship.",
+      download: {
+        href: "/api/skills/plain-english",
+        filename: "plain-english.skill",
+        size: "6 KB",
+        source: "b1rdmania/claude-plain-english-skill",
+        sourceHref: "https://github.com/b1rdmania/claude-plain-english-skill",
+      },
     },
   ],
   footnote:
-    "These sit alongside the fifteen Skills shown earlier on this page. Same shape, same contract, different teams.",
+    "Each bundle ships as a `.skill` archive Claude.ai accepts directly. Two are public (frontend-design, plain-english). Two are Loop-grown and shared with the team via this page only.",
 };

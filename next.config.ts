@@ -44,6 +44,24 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  /*
+   * The /api/skills/[name] route reads `.skill` bundles from
+   * `data/skills/` via `fs.readFile`. Because the path is
+   * constructed dynamically from `process.cwd()`, Next.js's
+   * automatic output file tracer can't follow it, so on Vercel
+   * those files would be missing from the serverless bundle and
+   * every download would 500.
+   *
+   * Explicitly include the bundles in the route's traced files so
+   * the deployment carries them.
+   *
+   * Route keys are matched against the route path; the brackets in
+   * `[name]` must be escaped with double-backslashes per the
+   * Next.js 16 output config docs.
+   */
+  outputFileTracingIncludes: {
+    "/api/skills/\\[name\\]": ["./data/skills/**/*"],
+  },
   async headers() {
     return [
       {
