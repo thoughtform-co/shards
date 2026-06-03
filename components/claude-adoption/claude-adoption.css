@@ -1,0 +1,4467 @@
+/*
+ * Claude Adoption subpage — scoped styles.
+ *
+ * Mirrors the approach the v3 stylesheet takes: reuses canonical
+ * Aether tokens (`--aiop-card`, `--aiop-ink`, `--aiop-violet`, etc.)
+ * from `operator.css` / `intelligence-layer.css`, never declares
+ * new ones except for a single brand-accent override (below).
+ *
+ * Brand-accent override:
+ *   The page swaps the Aether violet accent for Claude Clay
+ *   (#d97757, the Anthropic primary, per geist.co). The swap
+ *   is scoped to `.aiop-claude-adoption` so every component
+ *   inside the page (FlywheelOrbit, SubstrateMapV3, reach
+ *   callout, bridge band, workshop-approach mono counter,
+ *   phase strip "Navigate" label) flips together while `/`,
+ *   `/intelligence-layer-v3`, and `/claude-workshop-v1` stay
+ *   on their canonical palettes.
+ *
+ * Order:
+ *   0 · Brand-accent override
+ *   1 · Numbers section
+ *   2 · Flywheel phase strip
+ *   3 · Workshop approach (three-card row)
+ *   4 · Skills, by team (team blocks + cards + reach callout)
+ *   5 · Layer tie-back (lead-in + bridge band)
+ *   6 · Close section
+ */
+
+/* ─── 0 · Brand-accent override (Claude Clay) + corner standard ─── */
+
+/* `--aiop-radius` is the page-wide corner standard. Sits between the
+   chamfered/flat operator chassis (≤4px or clip-path notch) and the
+   full-pill engine bridge (999px). 12px is rounded enough to read as
+   friendly, well short of pill so it doesn't feel like a tag. The
+   smaller `--aiop-radius-sm` is for nested controls (tab buttons
+   inside a tab group, small chips) so they don't fight the outer
+   container's rounding. */
+.aiop-claude-adoption {
+  --aiop-violet: #d97757;
+  --aiop-violet-soft: rgba(217, 119, 87, 0.18);
+  --aiop-radius: 12px;
+  --aiop-radius-sm: 7px;
+
+  /* Phase color system — Navigate / Encode / Build identity carried
+     across the page (Approach stage pills + datum dots, Flywheel
+     orbit pills + motion cards + SVG connectors, Skills build pill,
+     Tools section phase pill). Three tokens, three jobs:
+
+       --aiop-phase-navigate: the original homepage purple, from
+       operator.css before this page bends `--aiop-violet` to Clay.
+       Anchors Stage 01 / Navigate everywhere on /claude-adoption.
+
+       --aiop-phase-encode: the Clay/terracotta that is also the
+       page's primary accent. Equal to `--aiop-violet` so any
+       legacy violet reference inside an Encode-tagged element
+       (e.g. Stage 02's Monday rail, pipeline arrows) keeps
+       reading as the right phase colour.
+
+       --aiop-phase-build: the same sage that the Surfaces lane on
+       the Intelligence Layer card carries, and that the existing
+       `.ca-tools__phase` pill on the Mímir / Vesper tool blocks
+       already uses. Build = green across every surface.
+
+     Per-stage cascading is done via subtree overrides of
+     `--aiop-violet` below — one rule per stage that points violet
+     at the right phase token, so every violet reference inside
+     that subtree (pill border, halo, dot, internal arrows, etc.)
+     auto-paints in the phase colour without per-element rules. */
+  --aiop-phase-navigate: #6243b9;
+  --aiop-phase-encode: var(--aiop-violet);
+  --aiop-phase-build: var(--aiop-sage);
+}
+
+/* Buttons — primary clay-filled and ghost variants both pick up the
+   page corner standard. Drops the inherited bottom-right chamfer:
+   the parent `clip-path` polygon is reset, and the `::after`
+   diagonal-hairline that draws across the cut is hidden, so the
+   button reads as a clean rounded rectangle. */
+.aiop-claude-adoption .aiop-button {
+  clip-path: none;
+  border-radius: var(--aiop-radius);
+}
+
+.aiop-claude-adoption .aiop-button::after {
+  content: none;
+}
+
+.aiop-claude-adoption .aiop-button:not(.aiop-button--ghost):not(.aiop-button--gold):not(.aiop-button--video) {
+  background: var(--aiop-violet);
+  border-color: var(--aiop-violet);
+}
+
+.aiop-claude-adoption .aiop-button:not(.aiop-button--ghost):not(.aiop-button--gold):not(.aiop-button--video):hover {
+  background: color-mix(in oklab, var(--aiop-violet) 88%, black);
+  border-color: color-mix(in oklab, var(--aiop-violet) 88%, black);
+}
+
+/* Engine-pattern bridge ("And this is the engine") — was a full
+   pill (999px). Steps down to the page corner standard so it sits
+   in the same family as the hero buttons. */
+.aiop-claude-adoption .aiop-engine-pattern__bridge {
+  border-radius: var(--aiop-radius);
+}
+
+/* Major surfaces on the page adopt the same corner standard so the
+   buttons don't read as the only rounded thing in a sea of sharp
+   chassis. Each rule is page-scoped so it doesn't bleed onto other
+   routes that use the same operator chrome. */
+.aiop-claude-adoption .aiop-hero__panel,
+.aiop-claude-adoption .aiop-substrate-map__card,
+.aiop-claude-adoption .ca-numbers__panel,
+.aiop-claude-adoption .ca-numbers__momentum-tile {
+  border-radius: var(--aiop-radius);
+}
+
+/* Nested controls — keep the smaller radius so they nest cleanly
+   inside their rounded containers. */
+.aiop-claude-adoption .ca-axis-tabs__group {
+  border-radius: var(--aiop-radius-sm);
+}
+
+.aiop-claude-adoption .ca-axis-tabs__btn {
+  border-radius: calc(var(--aiop-radius-sm) - 3px);
+}
+
+/* ─── 0b · Hero quote ticker + runway scroll cue ───────────────────
+   Replaces the hero CTA button row with a slow teammate-quote
+   marquee (same duplicated-track pattern as the function-impact
+   ticker on the ai-operator route). The runway link anchors to
+   #numbers with three staggered chevrons pulsing like approach
+   lights. Scoped to `.aiop-claude-adoption` only. */
+
+.aiop-claude-adoption .aiop-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Fill the viewport band so the ticker can sit centered between the
+   title/orbit row and the runway scroll cue (absolute at the bottom). */
+.aiop-claude-adoption .aiop-hero.aiop-hero--minimal {
+  min-height: calc(100dvh - var(--aiop-header-h));
+  padding-bottom: clamp(72px, 8vw, 96px);
+}
+
+/* Title + orbit use the full `.aiop-wrap` width; copy column no longer
+   caps the grid when the ticker lives on its own row below. */
+.aiop-claude-adoption .aiop-hero__inner--minimal .aiop-hero__copy {
+  max-width: none;
+}
+
+.ca-hero-ticker {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  margin-block: 0;
+  min-height: clamp(100px, 14vh, 180px);
+}
+
+.ca-hero-ticker__marquee {
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 6%,
+    black 94%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 6%,
+    black 94%,
+    transparent 100%
+  );
+}
+
+.ca-hero-ticker__track {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: clamp(40px, 5vw, 72px);
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: ca-hero-ticker 56s linear infinite;
+  will-change: transform;
+}
+
+.ca-hero-ticker__marquee:hover .ca-hero-ticker__track,
+.ca-hero-ticker__marquee:focus-within .ca-hero-ticker__track {
+  animation-play-state: paused;
+}
+
+.ca-hero-ticker__item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+  max-width: min(52ch, 420px);
+  padding-block: 4px;
+}
+
+.ca-hero-ticker__quote {
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: clamp(15px, 1.15vw, 17px);
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--aiop-ink-soft);
+  text-wrap: pretty;
+}
+
+.ca-hero-ticker__by {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 7px;
+  font-family: var(--aiop-mono);
+  font-size: clamp(11.5px, 0.95vw, 13px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 600;
+}
+
+.ca-hero-ticker__name {
+  font-size: clamp(12px, 1vw, 14px);
+  font-weight: 700;
+  color: color-mix(in oklab, var(--aiop-violet) 72%, var(--aiop-muted));
+}
+
+.ca-hero-ticker__role {
+  font-weight: 500;
+  font-size: clamp(11.5px, 0.95vw, 13px);
+}
+
+.ca-hero-ticker__sep {
+  opacity: 0.55;
+}
+
+@keyframes ca-hero-ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ca-hero-ticker__marquee {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .ca-hero-ticker__track {
+    animation: none;
+    transform: none;
+  }
+}
+
+.ca-hero__runway {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(20px, 2.4vw, 32px);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  color: var(--aiop-violet);
+  text-decoration: none;
+  z-index: 2;
+  transition: transform 0.2s ease;
+}
+
+.ca-hero__runway:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--aiop-violet) 32%, transparent);
+  border-radius: 4px;
+}
+
+.ca-hero__runway:hover .ca-hero__runway-chevron,
+.ca-hero__runway:focus-visible .ca-hero__runway-chevron {
+  opacity: 1;
+}
+
+.ca-hero__runway:hover,
+.ca-hero__runway:focus-visible {
+  transform: translateX(-50%) translateY(2px);
+}
+
+.ca-hero__runway-chevron {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  opacity: 0.25;
+  animation: ca-hero__runway-pulse 1.8s ease-in-out infinite;
+}
+
+.ca-hero__runway-chevron:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.ca-hero__runway-chevron:nth-child(2) {
+  animation-delay: 0.25s;
+}
+
+.ca-hero__runway-chevron:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+@keyframes ca-hero__runway-pulse {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: rotate(45deg) translateY(-2px);
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(45deg) translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ca-hero__runway-chevron {
+    animation: none;
+    opacity: 0.55;
+  }
+}
+
+/* --- 1 Numbers (2x2 panels) --- */
+
+.ca-numbers__head {
+  margin-bottom: clamp(28px, 3.4vw, 44px);
+}
+
+.ca-numbers__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(14px, 1.6vw, 18px);
+  margin-bottom: clamp(16px, 1.8vw, 22px);
+}
+
+@media (min-width: 720px) {
+  .ca-numbers__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.ca-numbers__panel {
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-strong);
+  padding: clamp(18px, 2vw, 24px) clamp(20px, 2.2vw, 28px);
+  min-height: 0;
+}
+
+.ca-numbers__panel-kicker {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
+  font-weight: 700;
+  margin: 0 0 clamp(14px, 1.6vw, 18px);
+  padding-bottom: clamp(10px, 1.2vw, 14px);
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+.ca-numbers__momentum {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(12px, 1.4vw, 16px);
+}
+
+.ca-numbers__momentum-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: clamp(12px, 1.4vw, 16px);
+  background: var(--aiop-card-2);
+  border: 1px solid var(--aiop-rule);
+}
+
+/* Featured momentum tile — Workshops Run is the highest-signal
+   count, so it gets a soft terracotta-pink wash (built from the
+   clay accent that --aiop-violet resolves to inside the
+   claude-adoption scope) plus a larger headline value. All tiles
+   share the same DOM order (value → label) now; the featured one
+   stands out via gradient + size, not by an inverted layout. */
+.ca-numbers__momentum-tile--featured {
+  background: linear-gradient(
+    140deg,
+    color-mix(in oklab, var(--aiop-violet) 22%, var(--aiop-card-2)) 0%,
+    color-mix(in oklab, var(--aiop-violet) 10%, var(--aiop-card-2)) 55%,
+    color-mix(in oklab, var(--aiop-violet) 4%, var(--aiop-card-2)) 100%
+  );
+  border-color: color-mix(in oklab, var(--aiop-violet) 42%, var(--aiop-rule));
+  box-shadow: 0 10px 24px -22px color-mix(in oklab, var(--aiop-violet) 60%, transparent);
+  gap: 6px;
+}
+
+.ca-numbers__momentum-label {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.ca-numbers__momentum-tile--featured .ca-numbers__momentum-label {
+  color: color-mix(in oklab, var(--aiop-violet) 72%, var(--aiop-muted));
+  font-weight: 700;
+}
+
+.ca-numbers__momentum-value {
+  display: flex;
+  align-items: flex-end;
+  /* Reserve the height of the largest tile (featured) so all four
+     labels below the number line up on the same baseline. The
+     number bottom-aligns within the reserved box so the featured
+     tile's bigger number still reads as bigger while the regular
+     tiles keep their smaller value glyph anchored to the same
+     baseline as the featured one. */
+  min-height: clamp(40px, 5vw, 56px);
+  font-family: var(--aiop-display);
+  font-size: clamp(32px, 4vw, 44px);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--aiop-ink);
+}
+
+.ca-numbers__momentum-tile--featured .ca-numbers__momentum-value {
+  font-size: clamp(40px, 5vw, 56px);
+  color: color-mix(in oklab, var(--aiop-violet) 70%, var(--aiop-ink));
+}
+
+.ca-numbers__momentum-sub {
+  font-family: var(--aiop-body);
+  font-size: 12px;
+  color: var(--aiop-ink-soft);
+  line-height: 1.4;
+}
+
+.ca-numbers__momentum-tile--featured .ca-numbers__momentum-sub {
+  color: color-mix(in oklab, var(--aiop-ink) 78%, var(--aiop-violet));
+}
+
+.ca-numbers__footnote {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  margin: 0;
+}
+
+/* Usage sparkline */
+.ca-usage-sparkline__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+  margin-bottom: clamp(10px, 1.2vw, 14px);
+}
+
+.ca-usage-sparkline__window {
+  flex-shrink: 0;
+}
+
+/* Compact metric toggle (Onboarded / WAU) in the sparkline header */
+.ca-sparkline-tabs {
+  flex-shrink: 0;
+}
+
+.ca-sparkline-tabs__group {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 2px;
+  background: var(--aiop-card-2);
+  border: 1px solid var(--aiop-rule);
+  border-radius: var(--aiop-radius-sm);
+}
+
+.ca-sparkline-tabs__btn {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 5px 10px 4px;
+  border-radius: calc(var(--aiop-radius-sm) - 2px);
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-ink-soft);
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.ca-sparkline-tabs__btn:hover {
+  color: var(--aiop-ink);
+}
+
+.ca-sparkline-tabs__btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--aiop-violet) 35%, transparent);
+}
+
+.ca-sparkline-tabs__btn[data-active="true"] {
+  background: var(--aiop-ink);
+  color: var(--aiop-paper);
+}
+
+.ca-usage-sparkline__kicker {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
+  font-weight: 700;
+}
+
+.ca-usage-sparkline__unit,
+.ca-usage-sparkline__window {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.ca-usage-sparkline__chart {
+  height: clamp(72px, 10vw, 96px);
+  margin-bottom: clamp(12px, 1.4vw, 16px);
+}
+
+.ca-usage-sparkline__svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.ca-usage-sparkline__grid {
+  stroke: var(--aiop-rule);
+  stroke-width: 0.35;
+}
+
+.ca-usage-sparkline__line {
+  fill: none;
+  stroke: var(--aiop-violet);
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+}
+
+.ca-usage-sparkline__dot {
+  fill: var(--aiop-violet);
+}
+
+.ca-usage-sparkline__value {
+  font-family: var(--aiop-display);
+  font-size: clamp(44px, 5.8vw, 64px);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--aiop-ink);
+  display: block;
+}
+
+.ca-usage-sparkline__delta {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--aiop-sage);
+  display: block;
+  margin-top: 6px;
+}
+
+/* Usage bars */
+.ca-usage-bars__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: clamp(12px, 1.4vw, 16px);
+}
+
+.ca-usage-bars__kicker {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
+  font-weight: 700;
+}
+
+.ca-usage-bars__window {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.ca-usage-bars__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ca-usage-bars__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 8px 12px;
+  align-items: center;
+}
+
+.ca-usage-bars__label {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ca-usage-bars__track {
+  position: relative;
+  height: 22px;
+  background: var(--aiop-card-2);
+  border: 1px solid var(--aiop-rule);
+}
+
+.ca-usage-bars__fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 0.55;
+  min-width: 2px;
+}
+
+.ca-usage-bars__value {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--aiop-ink);
+  z-index: 1;
+}
+
+.ca-usage-bars__tail {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  margin: 10px 0 0;
+}
+
+/* ─── 2 · Flywheel diagram (orbit + radial annotations) ───────────
+   Orbit + annotations share one coordinate space. The SVG overlay
+   uses the same orbit geometry as `.aiop-orbit--nested`, so each
+   connector line literally starts at its pill and extends out to
+   the text block pinned at the connector's outer endpoint. Mobile
+   bailout (< 880px) hides the SVG and stacks the text blocks below
+   the orbit as a normal column. */
+
+.ca-vision__diagram {
+  /* Margin-top reserves modest clear space above the orbit for
+     the Navigate annotation, which now sits just above the
+     frame's top edge (not far out into the top-left margin).
+     Padding-bottom protects against the Build / Encode tails
+     overlapping the next section's top edge. */
+  margin: clamp(72px, 9vw, 120px) auto 0;
+  padding-bottom: clamp(16px, 2.4vw, 32px);
+  width: 100%;
+  max-width: min(1080px, 100%);
+  display: flex;
+  justify-content: center;
+}
+
+/* The frame matches the orbit's bounding box (max 580px square)
+   so absolute positioning of text blocks shares the orbit's
+   coordinate system. `overflow: visible` lets text and connector
+   ends extend outside the box. */
+.ca-vision__diagram-frame {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  aspect-ratio: 1 / 1;
+  overflow: visible;
+}
+
+/* SVG overlay fills the frame and shares its coord system. The
+   viewBox is -30..130 on both axes so connector endpoints can
+   extend up to 30 units outside the orbit's 0..100 space. With
+   `preserveAspectRatio="none"` and a square viewBox + square
+   frame, this stays distortion-free. `overflow: visible` on the
+   SVG itself lets lines render past the viewBox bounds.
+
+   z-index sits between the orbit's dashed rings and the pills, so
+   the connector tails read as emerging from underneath each pill
+   rather than crossing over its label. */
+.ca-vision__connectors {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Stacking-order pin: by default the SVG (z-index 1) would paint
+   over the orbit pills (default auto = 0), so each connector
+   would render ON TOP of its pill rather than emerging from
+   underneath. Bumping pills + core above the SVG within this
+   page's scope only, no shared component edits. */
+.ca-vision__diagram-frame .aiop-orbit__pill {
+  z-index: 2;
+}
+
+.ca-vision__diagram-frame .aiop-orbit__core {
+  z-index: 3;
+}
+
+.ca-vision__connector {
+  stroke-width: 1;
+  fill: none;
+  /* Slightly higher opacity than before so the line reads as a
+     committed diagrammatic connection from pill into card,
+     instead of a faint filament. The matching anchor circle
+     below visually originates the line at the pill, and the
+     card's top accent stripe receives it at the other end. */
+  opacity: 0.7;
+  vector-effect: non-scaling-stroke;
+}
+
+.ca-vision__connector--navigate {
+  stroke: var(--aiop-phase-navigate);
+}
+
+.ca-vision__connector--encode {
+  stroke: var(--aiop-phase-encode);
+}
+
+.ca-vision__connector--build {
+  stroke: var(--aiop-phase-build);
+}
+
+/* Anchor circles on the pill ends of each connector. A small
+   filled disc that "originates" the line at the pill so the
+   annotation card on the other end reads as plugged in rather
+   than floating. `non-scaling-stroke` keeps the geometry stable
+   across viewport sizes. */
+.ca-vision__connector-anchor {
+  vector-effect: non-scaling-stroke;
+  opacity: 0.95;
+}
+
+.ca-vision__connector-anchor--navigate {
+  fill: var(--aiop-phase-navigate);
+}
+
+.ca-vision__connector-anchor--encode {
+  fill: var(--aiop-phase-encode);
+}
+
+.ca-vision__connector-anchor--build {
+  fill: var(--aiop-phase-build);
+}
+
+/* Motion callout cards — annotation blocks that visually plug into
+   the orbit pills via the SVG connector + anchor circles above.
+   Each card is a small paper card with a hairline border, a 2px
+   motion-color accent stripe across the top, and a tab-style mono
+   label notched into that stripe. The connector terminates at the
+   card's top corner closest to the orbit so the accent stripe
+   visually "receives" the line, and the tab label sits right at
+   that corner — the card reads as the labelled end of the
+   connection rather than as floating text.
+
+   Anchor strategy — `left + top` percentages move each card's
+   TOP corner (left or right, per-motion) to the connector's
+   outer endpoint in the orbit's 0..100 coordinate space.
+   `right` / `bottom` would have CSS compute negative available
+   width and shrink-to-fit each card to min-content; `left` +
+   `transform: translateX(-100%)` keeps the explicit width
+   intact and only shifts the box geometrically. */
+
+.ca-vision__motion-card {
+  position: absolute;
+  z-index: 4;
+  width: 224px;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-strong);
+  padding: 18px 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow:
+    0 1px 2px rgba(26, 22, 18, 0.05),
+    0 18px 32px -22px rgba(26, 22, 18, 0.22);
+}
+
+/* 2px top accent stripe in the motion color — the visual landing
+   pad for the connector line. Sits flush with the card's outer
+   border via the -1px insets. */
+.ca-vision__motion-card::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  height: 2px;
+}
+
+/* Top accent stripe — per-phase. Navigate purple, Encode Clay,
+   Build sage. Same palette as the SVG connectors that terminate on
+   these stripes, so each motion's wire + landing pad read as one
+   colour throughout the diagram. */
+.ca-vision__motion-card--navigate::before { background: var(--aiop-phase-navigate); }
+.ca-vision__motion-card--encode::before   { background: var(--aiop-phase-encode); }
+.ca-vision__motion-card--build::before    { background: var(--aiop-phase-build); }
+
+/* ─── FlywheelOrbit pill dots — phase-coloured on this page ────
+   The base rules in operator.css paint the orbit dots from the
+   default page accent tokens (--aiop-violet / --aiop-amber /
+   --aiop-sage). Those rules ship globally for every page that
+   uses the orbit, so we layer page-scoped overrides here without
+   touching the shared component. Navigate picks up the original
+   homepage purple via the phase token; Encode is Clay (default
+   --aiop-violet on this page); Build stays sage. */
+.aiop-claude-adoption .aiop-orbit__pill--navigate .aiop-orbit__dot {
+  background: var(--aiop-phase-navigate);
+}
+
+.aiop-claude-adoption .aiop-orbit__pill--encode .aiop-orbit__dot {
+  background: var(--aiop-phase-encode);
+}
+
+.aiop-claude-adoption .aiop-orbit__pill--build .aiop-orbit__dot {
+  background: var(--aiop-phase-build);
+}
+
+/* Tab-style mono label notched into the top edge of the card.
+   Phase kicker (NAVIGATE / ENCODE / BUILD) was removed — the
+   connected orbit pill already carries the label, so the card just
+   shows the one-sentence body. */
+.ca-vision__motion-body {
+  font-family: var(--aiop-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--aiop-ink);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Per-card positioning. Each TOP corner of the card sits at the
+   matching connector endpoint (viewBox coords inside the
+   diagram-frame's 0..100 space). */
+.ca-vision__motion-card--navigate {
+  /* Top-left corner anchored at viewBox (60, -12). Connector
+     arrives from the pill below-left and terminates on this
+     corner's accent stripe; the label tab sits on the same
+     corner so the connection reads as labelled. */
+  left: 60%;
+  top: -12%;
+  text-align: left;
+}
+
+.ca-vision__motion-card--build {
+  /* Top-right corner anchored at viewBox (-2, 75). translateX
+     shifts the box so its right edge lands at left:-2%. Label
+     tab is right-anchored to match. */
+  left: -2%;
+  top: 75%;
+  transform: translateX(-100%);
+  text-align: right;
+}
+
+.ca-vision__motion-card--encode {
+  /* Top-left corner anchored at viewBox (102, 75). */
+  left: 102%;
+  top: 75%;
+  text-align: left;
+}
+
+/* Narrower-viewport fallback — drop the diagram geometry and
+   stack the callout cards below the orbit as a normal vertical
+   list. Connectors hide because the radial endpoints no longer
+   make sense. Breakpoint is wider than the orbit's 580px + two
+   ~224px callout cards + side gaps so the layout never reads as
+   cramped at desktop sizes. */
+@media (max-width: 1040px) {
+  .ca-vision__connectors {
+    display: none;
+  }
+
+  .ca-vision__diagram {
+    margin-top: clamp(40px, 5vw, 72px);
+    padding-bottom: 0;
+  }
+
+  .ca-vision__motion-card {
+    position: static;
+    transform: none;
+    text-align: left;
+    width: min(100%, 320px);
+    margin: 22px auto 0;
+  }
+
+  .ca-vision__motion-card--navigate { order: 2; }
+  .ca-vision__motion-card--build    { order: 3; }
+  .ca-vision__motion-card--encode   { order: 4; }
+
+  .ca-vision__diagram-frame {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    aspect-ratio: auto;
+  }
+}
+
+/* ─── 2b · Flywheel — Clay-toned interstitial chapter break ───────
+   Bleed-card chapter break that sits between WorkshopApproach and
+   SkillsByTeam. Mirrors the homepage's encoding-interstitial /
+   engine-pattern bleed pattern (inset card, gradient bg, two
+   radial washes, soft 32px grid texture, radial mask) but in
+   Claude Clay tones rather than violet/sage. The page-scoped
+   `--aiop-violet` override means every "violet" token in the
+   orbit + connectors below resolves to Clay too, so the whole
+   section reads as one warm chapter card.
+
+   No JS, no parallax — the previous `.ca-numbers-and-vision`
+   freeze-and-rise pair is gone. Numbers stands on its own; the
+   flywheel reads as an editorial pause card. */
+
+.ca-flywheel {
+  position: relative;
+  isolation: isolate;
+  padding-block: clamp(64px, 8vw, 112px);
+}
+
+.ca-flywheel__bleed {
+  position: absolute;
+  inset: clamp(16px, 2.5vw, 36px) clamp(12px, 2vw, 32px);
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-violet) 16%, var(--aiop-card-2)) 0%,
+      color-mix(in oklab, var(--aiop-violet) 9%, var(--aiop-paper)) 55%,
+      color-mix(in oklab, var(--aiop-sage) 10%, var(--aiop-paper-2)) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--aiop-violet) 30%, var(--aiop-rule-strong));
+  box-shadow:
+    0 1px 2px rgba(26, 22, 18, 0.06),
+    0 32px 64px -38px rgba(26, 22, 18, 0.30);
+}
+
+.ca-flywheel__wash {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(4px);
+  opacity: 1;
+}
+
+.ca-flywheel__wash--a {
+  width: 62%;
+  aspect-ratio: 1 / 1;
+  left: -12%;
+  top: -20%;
+  background:
+    radial-gradient(
+      circle,
+      color-mix(in oklab, var(--aiop-violet) 54%, transparent) 0%,
+      transparent 62%
+    );
+}
+
+.ca-flywheel__wash--b {
+  width: 70%;
+  aspect-ratio: 1 / 1;
+  right: -18%;
+  bottom: -30%;
+  background:
+    radial-gradient(
+      circle,
+      color-mix(in oklab, var(--aiop-sage) 42%, transparent) 0%,
+      transparent 62%
+    );
+}
+
+.ca-flywheel__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(26, 22, 18, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(26, 22, 18, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(
+    ellipse 70% 75% at 50% 50%,
+    black 0%,
+    rgba(0, 0, 0, 0.55) 60%,
+    transparent 95%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 70% 75% at 50% 50%,
+    black 0%,
+    rgba(0, 0, 0, 0.55) 60%,
+    transparent 95%
+  );
+}
+
+.ca-flywheel__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.4vw, 32px);
+}
+
+/* "FLYWHEEL" pill sits on its own row above the 2-col header. The
+   header itself inherits the canonical `aiop-section-head` shape
+   (title left, sub right) — no per-section override. */
+.ca-flywheel__phase {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px 4px;
+  background: color-mix(in oklab, var(--aiop-violet) 14%, transparent);
+  border: 1px solid color-mix(in oklab, var(--aiop-violet) 30%, transparent);
+  border-radius: 999px;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--aiop-violet);
+  align-self: flex-start;
+}
+
+.ca-flywheel__phase-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--aiop-violet);
+  flex-shrink: 0;
+}
+
+/* Reset the canonical head's default bottom margin since the
+   flywheel inner column already owns vertical rhythm via `gap`. */
+.ca-flywheel__head {
+  margin-bottom: 0;
+}
+
+/* ─── 3 · Workshop approach (three-stage editorial sequence) ─────
+   Full-viewport section. Editorial header at top, a connecting
+   timeline rail across three labelled nodes, then three stage
+   cards each carrying a focused micro-visualization on top of
+   the body + receipt. Stages stack on narrow viewports; the rail
+   hides below 980px where the row-as-sequence reading breaks. */
+
+.ca-approach {
+  /* Pull above the .aiop-section default block padding so the
+     section can size to the viewport without doubling its
+     vertical breathing room. Header height is the sticky chrome
+     so the centered content clears the nav. */
+  padding-block: clamp(72px, 9vw, 112px);
+  min-height: calc(100dvh - var(--aiop-header-h));
+  display: flex;
+  align-items: center;
+}
+
+.ca-approach__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 3.4vw, 44px);
+  width: 100%;
+}
+
+/* Section head inherits the canonical `aiop-section-head` 2-col
+   pattern from operator.css: title left, sub right at >= 720px,
+   stacked below. No per-section overrides — every section head on
+   this page reads the same shape so the page has a steady rhythm.
+   The stages row stays inside the same 1240px page wrap as the
+   section head so both align to the same horizontal extent; the
+   tighter connector gutters (see `.ca-approach__connector-spine`
+   below) keep the three columns from feeling cramped. */
+
+/* ─── CTA row — bottom of Approach ─────────────────────────────
+   Holds the primary Engine pill (hands into the Flywheel chapter
+   below) and an optional secondary Monday-board pill that opens
+   the workshop-record board in a new tab. Both pills use the
+   shared `.aiop-engine-pattern__bridge` chrome — the second one
+   layers on `--monday` which locally overrides `--aiop-violet`
+   so the chrome repaints in Monday cobalt. `flex-wrap` lets the
+   pair stack on narrow viewports. */
+.ca-approach__cta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: clamp(12px, 1.6vw, 20px);
+  margin-top: clamp(8px, 1.2vw, 14px);
+}
+
+/* Monday-board variant of the engine pill. Inside this element
+   we override `--aiop-violet` to monday purple (#6161FF, Pantone
+   2725 C — the primary brand colour on brand-monday.com/colors).
+   Every inherited rule on `.aiop-engine-pattern__bridge` and its
+   arrow then auto-picks up the purple (gradient wash, border,
+   focus ring, arrow circle, hover state, the diagonal scan
+   highlight). No duplicated chrome rules. The override is scoped
+   to `.aiop-claude-adoption` so it can't bleed to other routes
+   that consume the same bridge class. */
+.aiop-claude-adoption .aiop-engine-pattern__bridge--monday {
+  --aiop-violet: #6161ff;
+}
+
+/* The Monday glyph sits in the right-side `.bridge-arrow` slot
+   (replacing the ArrowUpRight in the engine variant). Its three
+   capsules are bright red/yellow/green (Monday's Stuck/Working/
+   Done status colours), so we give the surrounding circle a
+   clean paper background instead of the inherited purple tint —
+   that keeps the tri-colour mark crisp instead of fighting the
+   wash. The Monday-purple border + halo from the inherited
+   chrome stay in place, so the slot still reads as part of the
+   pill. */
+.aiop-claude-adoption .aiop-engine-pattern__bridge--monday
+  .aiop-engine-pattern__bridge-arrow {
+  background: var(--aiop-paper);
+}
+
+.aiop-claude-adoption .aiop-engine-pattern__bridge--monday:hover
+  .aiop-engine-pattern__bridge-arrow,
+.aiop-claude-adoption .aiop-engine-pattern__bridge--monday:focus-visible
+  .aiop-engine-pattern__bridge-arrow {
+  background: var(--aiop-paper);
+}
+
+/* ─── Parallax wrapper · Approach + Flywheel ───────────────────
+   Mirrors the canonical `.aiop-cases-and-shift` pattern in
+   operator.css. Approach is the previous section; Flywheel sits
+   below it in normal flow and slides up over it as the page
+   scrolls. The `vision-flywheel.tsx` client component reads this
+   wrapper's geometry on scroll and writes `translateY` to both
+   children so Approach reads as visually frozen during the
+   slide-over phase, with a brief entry buffer holding Flywheel
+   in place so the Approach CTA gets a reading beat first.
+
+   Below 960px or under prefers-reduced-motion the JS bails and
+   the two sections read as a normal stack. */
+.ca-approach-and-vision {
+  position: relative;
+  width: 100%;
+}
+
+.ca-approach-and-vision > .ca-approach {
+  position: relative;
+  z-index: 1;
+  /* `vision-flywheel.tsx` writes a transform here during the
+     slide-over to keep this section visually frozen. */
+  will-change: transform;
+}
+
+.ca-approach-and-vision > .ca-flywheel {
+  position: relative;
+  z-index: 2;
+  /* Solid paper background so Flywheel cleanly masks Approach
+     during the slide-over (the bleed card inside it has an inset,
+     so without this the paper-coloured frame margins would let
+     Approach show through). The bleed gradient sits on top via
+     `.ca-flywheel__bleed`. */
+  background: var(--aiop-paper);
+  /* `vision-flywheel.tsx` writes a translateY here during the
+     entry-buffer phase so this section reads as held in place
+     while the Approach CTA gets a brief reading beat before the
+     slide-up begins. */
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ca-approach-and-vision > .ca-approach,
+  .ca-approach-and-vision > .ca-flywheel {
+    transform: none !important;
+    will-change: auto !important;
+  }
+}
+
+/* Timeline rail above the stages was removed — the cards already
+   carry their own "Stage 0X · <label>" headers so the rail just
+   restated them. Stage cards now follow the section head directly. */
+
+/* ─── Stages grid ────────────────────────────────────────────────
+   At >= 980px the row resolves to one wide annotated diagram with
+   a continuous datum line piercing all three stages. Architecture:
+
+       col 1        col 2         col 3        col 4         col 5
+       ─────────────────────────────────────────────────────────────────
+   row 1  italic label             italic label              italic label
+   row 2  ──●────────●────────────────●────────●────────●──────────  ← datum
+   row 3  ┌─STAGE 01─┐               ┌─STAGE 02─┐                ┌─STAGE 03─┐
+          │┌────────┐│               │┌────────┐│                │┌────────┐│
+          ││art-    ││               ││art-    ││                ││art-    ││
+          ││frame   ││               ││frame   ││                ││frame   ││
+          │└────────┘│               │└────────┘│                │└────────┘│
+          └──────────┘               └──────────┘                └──────────┘
+   row 4  caption                    caption                     caption
+
+   The stages render via CSS subgrid into the parent's 4 row
+   tracks, and each connector renders only into row 2. Adjacent
+   spine segments tile edge-to-edge so the datum line reads as one
+   continuous hairline rule.
+
+   The STAGE 0X tag renders as a pill clipped to the top edge of
+   the art-frame (mirrors `.aiop-substrate-map__col-head` from
+   operator.css). The pill is positioned ABSOLUTELY inside its
+   `.ca-approach__stage-art` container (which is `position:
+   relative` at this breakpoint) — it sits fully outside grid
+   flow so it cannot affect column sizing.
+
+   Below 980px the subgrid + spine + pill chrome all drop;
+   each stage becomes a normal vertical flex stack (tag → label →
+   art → caption) for the stacked layout. */
+
+.ca-approach__stages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(18px, 2vw, 24px);
+}
+
+/* ─── Per-phase colour cascade for Approach stages ──────────────
+   Each stage <li> overrides `--aiop-violet` for its subtree so the
+   stage pill, the datum dot, and any internal art-frame chrome
+   (pattern lines, target box, etc.) all paint in the right phase
+   colour without per-element rules. Stage 02 / Encode is the
+   default (page `--aiop-violet` is already Clay = Encode), so it
+   needs no override. Connector chevrons between stages get the
+   same treatment via `data-to` below. */
+.ca-approach__stages > .ca-approach__stage--same-start {
+  --aiop-violet: var(--aiop-phase-navigate);
+}
+
+.ca-approach__stages > .ca-approach__stage--patterns-become-tools {
+  --aiop-violet: var(--aiop-phase-build);
+}
+
+/* Connector chevrons inherit `--aiop-violet` from their own
+   subtree. The chevron points toward the NEXT stage, so the
+   chevron's colour belongs to the destination phase: the second
+   connector (verb "One layer") feeds Build, so override to sage.
+   The first connector (verb "One record") feeds Encode, which is
+   already Clay by default — no override needed. */
+.ca-approach__stages > .ca-approach__connector[data-to="patterns-become-tools"] {
+  --aiop-violet: var(--aiop-phase-build);
+}
+
+@media (min-width: 720px) {
+  .ca-approach__stages {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 980px) {
+  .ca-approach__stages {
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    /* Four explicit row tracks that every child (stages and
+       connectors) consumes via subgrid:
+         1: italic display label
+         2: datum line (spine + station dot)
+         3: art-frame (equalized); STAGE 0X pill sits ABSOLUTELY
+            positioned inside the art-frame's container, so it
+            never affects column sizing — that was the trap on
+            two previous attempts.
+         4: soft caption */
+    grid-template-rows: auto auto auto auto;
+    gap: 0;
+    row-gap: clamp(10px, 1.2vw, 14px);
+    column-gap: 0;
+    align-items: start;
+  }
+}
+
+/* Stage column — fully on the paper at all widths (no background,
+   no border, no outer padding). Below 980px it's a flex stack;
+   from 980px up it becomes a subgrid that pulls its sub-items
+   into the parent's row tracks so the row reads as one diagram. */
+.ca-approach__stage {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 1.4vw, 16px);
+  padding: 0;
+  background: transparent;
+  border: 0;
+  position: relative;
+}
+
+@media (min-width: 980px) {
+  .ca-approach__stage {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: 1 / span 4;
+    row-gap: 0;
+    align-items: start;
+  }
+
+  .ca-approach__stage > .ca-approach__stage-label {
+    grid-row: 1;
+  }
+
+  .ca-approach__stage > .ca-approach__spine {
+    grid-row: 2;
+  }
+
+  /* The art-frame container is the positioned anchor for the
+     STAGE 0X pill, which is rendered absolutely inside it (see
+     `.ca-approach__stage-tag--spine` below). The pill is fully
+     out of grid flow, so it cannot affect column sizing. */
+  .ca-approach__stage > .ca-approach__stage-art {
+    grid-row: 3;
+    align-self: stretch;
+    width: 100%;
+    position: relative;
+  }
+
+  .ca-approach__stage > .ca-approach__stage-body {
+    grid-row: 4;
+    align-self: start;
+  }
+}
+
+/* The stage tag exists in the DOM twice so each layout can use
+   the variant that belongs to it without messing with reading
+   order or rendering hidden duplicates in the accessibility tree:
+   - `--stacked` sits above the label and shows below 980px
+     (original mobile reading order: tag → label → art → caption).
+   - `--spine` sits below the datum dot and shows from 980px up
+     (transit-map station label under its dot).
+   `display: none` removes the inactive variant from the
+   accessibility tree, so screen readers get one tag per layout. */
+.ca-approach__stage-tag {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--aiop-violet);
+}
+
+.ca-approach__stage-tag--spine {
+  display: none;
+}
+
+@media (min-width: 980px) {
+  .ca-approach__stage-tag--stacked {
+    display: none;
+  }
+
+  /* Pill chrome inspired by `.aiop-substrate-map__col-head`
+     (operator.css:9666): rounded paper pill with a Clay-tinted
+     border + soft Clay halo ring, clipped to the top edge of
+     the art-frame.
+
+     CRITICAL: positioned absolutely against the .ca-approach__
+     stage-art container (which is `position: relative` at this
+     breakpoint and contains this pill as a child via the JSX).
+     This keeps the pill OUT of grid flow entirely, so it cannot
+     affect the parent grid's column sizing — which broke two
+     previous attempts at this pattern.
+
+     The dot on the datum line above still marks the station
+     globally; this pill names the card locally, so the two read
+     as "station marker → card identifier". */
+  .ca-approach__stage-tag--spine {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    padding: 4px 12px;
+    background: var(--aiop-card);
+    border: 1px solid color-mix(in oklab, var(--aiop-violet) 40%, var(--aiop-rule-strong));
+    border-radius: 999px;
+    box-shadow:
+      0 4px 14px rgba(26, 22, 18, 0.06),
+      0 0 0 3px color-mix(in oklab, var(--aiop-violet) 12%, transparent);
+    font-size: 9.5px;
+    letter-spacing: 0.22em;
+    font-weight: 700;
+    color: var(--aiop-violet);
+    white-space: nowrap;
+  }
+}
+
+.ca-approach__stage-label {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: clamp(20px, 1.8vw, 24px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--aiop-ink);
+  /* Labels are written to wrap to two lines so the three columns
+     stay the same height and the caption baseline sits at a
+     consistent Y across the row. */
+  text-wrap: balance;
+}
+
+@media (min-width: 980px) {
+  .ca-approach__stage-label {
+    /* Centered at the column axis so it lines up with the dot +
+       pill stack below. `margin-bottom` pushes the label up away
+       from the datum line so the two don't feel crowded — the
+       subgrid row-gap alone leaves them too close. */
+    text-align: center;
+    padding-inline: clamp(4px, 0.6vw, 10px);
+    margin-bottom: clamp(10px, 1.2vw, 16px);
+  }
+}
+
+/* Figure-caption sibling of the art-frame. Slightly heavier than
+   the original 12.5px @400 / 56% ink — bumped to 500 weight and
+   70% ink at the user's request so the annotation lands with
+   more presence without competing with the italic display label
+   above. The 32ch cap still keeps it visually subordinate to
+   the art-frame. At >= 980px it lands in row 5 of the subgrid
+   so all three captions share a baseline regardless of internal
+   art-frame content variation, and it centers along the column
+   axis to match the centered label. */
+.ca-approach__stage-body {
+  margin: 0;
+  font-family: var(--aiop-body);
+  font-size: 13px;
+  line-height: 1.5;
+  font-weight: 500;
+  letter-spacing: 0.005em;
+  color: color-mix(in oklab, var(--aiop-ink) 70%, transparent);
+  max-width: 32ch;
+}
+
+@media (min-width: 980px) {
+  .ca-approach__stage-body {
+    text-align: center;
+    margin-inline: auto;
+    padding-inline: clamp(8px, 1.2vw, 18px);
+    margin-top: clamp(4px, 0.6vw, 8px);
+  }
+}
+
+/* ─── Spine (the datum line over each stage) ─────────────────────
+   The signature element of the redesigned row. Each stage and
+   each connector renders its own ~14px-tall segment in row 2 of
+   the parent subgrid. A 1px hairline rule sits at the segment's
+   vertical center via ::before; a Clay station dot punctuates
+   the stage segments at column center. Placed edge-to-edge on
+   the same subgrid row, the segments tile into ONE continuous
+   datum line across the entire row.
+
+   The dot uses a paper-coloured box-shadow halo so the line
+   appears to pass BEHIND the dot, not through it — that punches
+   a clean negative space out of the line and turns the dot into
+   a station marker hanging in front of the rule.
+
+   Hidden below 980px — the datum is a wide-canvas device. */
+.ca-approach__spine {
+  display: none;
+}
+
+@media (min-width: 980px) {
+  .ca-approach__spine {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 14px;
+  }
+
+  .ca-approach__spine::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: var(--aiop-rule-strong);
+    z-index: 0;
+  }
+
+  .ca-approach__spine-dot {
+    position: relative;
+    z-index: 1;
+    width: 7px;
+    height: 7px;
+    background: var(--aiop-violet);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px var(--aiop-paper);
+  }
+}
+
+/* ─── Connectors between stages ─────────────────────────────────
+   At >= 980px each connector takes one auto-width column in the
+   parent grid and consumes the same 5 row tracks via subgrid,
+   but only renders content in row 2 (the spine row). Its spine
+   segment carries an uppercase mono verb kicker ("One record" /
+   "One layer") followed by a small Clay chevron, both wrapped in
+   a paper-coloured background so the verb BREAKS the datum line
+   behind it. The result reads like a transit map label sitting
+   on the track between two stations.
+
+   The connector item itself stays decorative — `aria-hidden` on
+   the `<li>` keeps it out of list semantics so screen readers
+   see a clean three-stage sequence. Hidden below 980px. */
+.ca-approach__connector {
+  display: none;
+}
+
+@media (min-width: 980px) {
+  .ca-approach__connector {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: 1 / span 4;
+    row-gap: 0;
+    align-items: stretch;
+    user-select: none;
+  }
+
+  .ca-approach__connector-spine {
+    grid-row: 2;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 14px;
+    /* Connector gutter sized so the whole stages row fits inside
+       the same 1240px page wrap as the section head above it.
+       At 1240px wrap with ~64px inline padding, the usable row
+       is ~1180px; with the gutter clamp resolving to ~72-100px
+       per side, each stage column gets ~325-345px — enough room
+       for the art-frame contents while keeping the row compact
+       enough to align with the header. */
+    min-width: clamp(64px, 6vw, 110px);
+  }
+
+  .ca-approach__connector-spine::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: var(--aiop-rule-strong);
+    z-index: 0;
+  }
+
+  .ca-approach__connector-kicker {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding-inline: 10px;
+    /* Paper background "erases" the rule behind the verb so the
+       line reads as broken by the label, not running through it. */
+    background: var(--aiop-paper);
+    font-family: var(--aiop-mono);
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--aiop-muted);
+    white-space: nowrap;
+  }
+
+  /* Small Clay right-chevron after the verb, built from two
+     border edges so it stays crisp at any pixel density. The
+     page-scoped `--aiop-violet` override resolves it to Claude
+     Clay #d97757, so the direction of flow reads warmly
+     accented against the neutral kicker text. */
+  .ca-approach__connector-chevron {
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-top: 1.5px solid var(--aiop-violet);
+    border-right: 1.5px solid var(--aiop-violet);
+    transform: rotate(45deg);
+    /* Optical centering against the cap-height of the verb text. */
+    margin-bottom: 1px;
+  }
+}
+
+/* The "In the wild" receipt block was removed from every stage
+   card so the three columns sit tighter vertically and the
+   Engine CTA reads sooner. Receipts now live in the prose
+   (Stage 03 names Mímir; Stage 02 names the Monday board id
+   inside its visualisation). */
+
+/* ─── Stage art (shared frame) ──────────────────────────────────
+   The three artifacts share one outer frame so the row reads at
+   one drawing weight. Each frame is a card-on-card with a soft
+   background, a label, and stage-specific contents. */
+
+.ca-approach__art {
+  margin: 0;
+  display: block;
+}
+
+.ca-approach__art-frame {
+  position: relative;
+  background: var(--aiop-card-2);
+  border: 1px solid var(--aiop-rule);
+  padding: clamp(12px, 1.4vw, 16px);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 180px;
+}
+
+/* Equalize art-frame heights across the row at >=980px so all
+   three bottoms align and the caption baseline below them sits
+   at the same Y across columns. The tallest natural content is
+   Stage 02 (Record pipeline + Monday board + GitHub card,
+   ~384px). This clamp gives all three frames that floor with a
+   touch of breathing room; the Stage 01 team-stack mask-fade is
+   bumped below to fill the new vertical space.
+
+   Top padding is bumped from the base ~12-16px to ~24-32px so
+   the inner FRAME LABEL ("22 WORKSHOPS" etc) clears the STAGE 0X
+   pill that half-overlaps the art-frame's top edge. The pill is
+   ~22px tall + a 3px halo ring; half of that (~14-15px) extends
+   below the art-frame's top edge into the content area, so the
+   label needs to start ~24px down to clear it with breathing
+   room. */
+@media (min-width: 980px) {
+  .ca-approach__art-frame {
+    min-height: clamp(360px, 32vw, 420px);
+    padding-top: clamp(24px, 2.4vw, 32px);
+  }
+}
+
+.ca-approach__art-frame-label,
+.ca-approach__art-subhead {
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.ca-approach__art-subhead {
+  margin-top: 2px;
+}
+
+.ca-approach__art-divider {
+  height: 1px;
+  background: var(--aiop-rule);
+}
+
+/* ─── Stage 01 · Same start — team stack ───────────────────── */
+
+.ca-approach__art--same-start .ca-approach__art-frame {
+  gap: 10px;
+}
+
+.ca-approach__art-team-stack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  /* Mask-faded stack of team rows. The max-height grew when the
+     art-frame was equalized to ~360-420px at >=980px so the stack
+     fills the new vertical room and the fade now resolves further
+     down the column. Below the breakpoint it stays at the
+     original 220px cap so the stacked mobile layout doesn't
+     blow up vertically. */
+  max-height: min(220px, 42dvh);
+  overflow: hidden;
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-rule);
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 72%,
+    transparent 100%
+  );
+}
+
+@media (min-width: 980px) {
+  .ca-approach__art-team-stack {
+    max-height: min(340px, 38dvh);
+  }
+}
+
+.ca-approach__art-team-row {
+  display: grid;
+  grid-template-columns: 10px 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 5px 10px;
+  background: var(--aiop-card);
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  color: var(--aiop-ink-soft);
+}
+
+.ca-approach__art-team-row--done {
+  color: var(--aiop-ink);
+}
+
+.ca-approach__art-team-row--queued {
+  background: color-mix(in oklab, var(--aiop-amber) 6%, var(--aiop-card));
+  color: var(--aiop-ink);
+  border-left: 2px solid var(--aiop-amber);
+  padding-left: 8px;
+}
+
+.ca-approach__art-team-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--aiop-rule-strong);
+}
+
+.ca-approach__art-team-row--done .ca-approach__art-team-dot {
+  background: var(--aiop-sage);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--aiop-sage) 18%, transparent);
+}
+
+.ca-approach__art-team-row--queued .ca-approach__art-team-dot {
+  background: var(--aiop-amber);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--aiop-amber) 20%, transparent);
+}
+
+.ca-approach__art-team-name {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ca-approach__art-team-status {
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.ca-approach__art-team-status--done {
+  color: var(--aiop-sage);
+}
+
+.ca-approach__art-team-status--queued {
+  color: var(--aiop-amber);
+}
+
+/* ─── Stage 02 · Every record — vertical pipeline → Monday ─────
+   Pipeline reads top-to-bottom: each step is a card row, with a
+   subtle down arrow on its own row in between. The third step
+   (the Monday board) is the board mock itself, so the explicit
+   "Monday · uniform doc" step is folded into the board card's
+   sub-label below. */
+
+.ca-approach__art--every-record .ca-approach__art-frame {
+  gap: 10px;
+}
+
+.ca-approach__art-pipeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.ca-approach__art-pipeline-step {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-card);
+}
+
+.ca-approach__art-pipeline-k {
+  font-family: var(--aiop-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.ca-approach__art-pipeline-v {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--aiop-ink);
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ca-approach__art-pipeline-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--aiop-violet);
+  opacity: 0.7;
+  padding: 0;
+  height: 14px;
+}
+
+.ca-approach__art-pipeline-arrow svg {
+  display: block;
+}
+
+/* Third pipeline step ("Monday · uniform doc") visually fuses
+   into the board card below it: no bottom border, shared violet
+   left-rail, soft violet wash. Reads as one continuous
+   "pipeline → destination" element rather than two stacked cards. */
+.ca-approach__art-pipeline-step--header {
+  border-bottom: 0;
+  border-left: 3px solid var(--aiop-violet);
+  padding-left: 9px;
+  background: color-mix(in oklab, var(--aiop-violet) 8%, var(--aiop-card));
+}
+
+.ca-approach__art-pipeline-step--header .ca-approach__art-pipeline-k {
+  color: var(--aiop-violet);
+}
+
+.ca-approach__art-monday--board {
+  margin-top: 0;
+  border-top: 0;
+}
+
+.ca-approach__art-pipeline-arrow + .ca-approach__art-pipeline-step--header {
+  margin-top: -2px;
+}
+
+/* GitHub mono-repo card — sibling to Monday board, distinct
+   chrome so the two read as two destinations on two different
+   surfaces (Monday for living records, GitHub for production
+   substrate). Slate-toned (--aiop-muted accent rail) instead of
+   the violet that ties the Monday card to the pipeline above, so
+   the second card visually belongs to a different lane. */
+.ca-approach__art-repo {
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+  border-left: 3px solid var(--aiop-muted);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ca-approach__art-repo-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ca-approach__art-repo-kicker {
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.ca-approach__art-repo-id {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--aiop-ink);
+  font-weight: 500;
+}
+
+.ca-approach__art-repo-body {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  color: var(--aiop-ink-soft);
+  line-height: 1.45;
+}
+
+/* ─── Stage 03 · Patterns — converge diagram ───────────────── */
+
+.ca-approach__art--patterns .ca-approach__art-frame {
+  gap: 10px;
+}
+
+.ca-approach__art-pattern-sources {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ca-approach__art-pattern-sources li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-card);
+}
+
+.ca-approach__art-pattern-chip {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--aiop-ink);
+}
+
+.ca-approach__art-pattern-verb {
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aiop-violet);
+}
+
+.ca-approach__art-pattern-converge {
+  position: relative;
+  height: 28px;
+  margin: 2px 0;
+}
+
+.ca-approach__art-pattern-line {
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--aiop-violet) 35%,
+    var(--aiop-violet) 100%
+  );
+  opacity: 0.55;
+}
+
+.ca-approach__art-pattern-line:nth-child(1) {
+  left: 18%;
+}
+
+.ca-approach__art-pattern-line:nth-child(2) {
+  left: 50%;
+}
+
+.ca-approach__art-pattern-line:nth-child(3) {
+  left: 82%;
+}
+
+.ca-approach__art-pattern-line::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 120%;
+  height: 1px;
+  transform: translateX(-50%);
+  background: repeating-linear-gradient(
+    to right,
+    var(--aiop-violet) 0,
+    var(--aiop-violet) 3px,
+    transparent 3px,
+    transparent 7px
+  );
+  opacity: 0.7;
+}
+
+.ca-approach__art-pattern-target {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in oklab, var(--aiop-violet) 35%, var(--aiop-rule));
+  background: color-mix(in oklab, var(--aiop-violet) 6%, var(--aiop-card));
+  text-align: center;
+}
+
+.ca-approach__art-pattern-target-kicker {
+  font-family: var(--aiop-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.ca-approach__art-pattern-target-name {
+  font-family: var(--aiop-display);
+  font-size: clamp(22px, 3vw, 28px);
+  font-weight: 500;
+  line-height: 1.1;
+  color: var(--aiop-ink);
+}
+
+.ca-approach__art-pattern-target-sub {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--aiop-ink-soft);
+}
+
+.ca-approach__art-monday {
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+  border-left: 3px solid var(--aiop-violet);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ca-approach__art-monday-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ca-approach__art-monday-kicker {
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.ca-approach__art-monday-id {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--aiop-ink);
+  font-weight: 500;
+}
+
+.ca-approach__art-monday-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ca-approach__art-monday-rows li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  color: var(--aiop-ink-soft);
+}
+
+.ca-approach__art-monday-pill {
+  font-family: var(--aiop-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 2px 5px 1px;
+  color: var(--aiop-sage);
+  background: color-mix(in oklab, var(--aiop-sage) 18%, transparent);
+  flex-shrink: 0;
+}
+
+.ca-approach__art-monday-pill--draft {
+  color: var(--aiop-amber);
+  background: color-mix(in oklab, var(--aiop-amber) 18%, transparent);
+}
+
+/* ─── Reduced viewport-fill on short screens ────────────────────
+   If the viewport is too short for the 100dvh layout to fit
+   without scrolling stages out of view, relax the min-height
+   so the content sets its own height. */
+@media (max-height: 760px) {
+  .ca-approach {
+    min-height: 0;
+  }
+}
+
+/* ─── 4 · Skills, by team ─────────────────────────────────────── */
+
+/* Header inherits the canonical `aiop-section-head` shape (title
+   left, sub right). Add a rule line under the section head and
+   spacing before the substrate legend below. */
+.ca-skills__head {
+  padding-bottom: clamp(14px, 1.6vw, 20px);
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+.ca-skills__teams {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(36px, 4vw, 52px);
+}
+
+/* ─── Team block ──────────────────────────────────────────────── */
+
+.ca-team {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 1.8vw, 22px);
+}
+
+.ca-team__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+.ca-team__name {
+  font-family: var(--aiop-display);
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 500;
+  letter-spacing: -0.008em;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.ca-team__name em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--aiop-ink-soft);
+}
+
+.ca-team__count-chip {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 600;
+}
+
+.ca-team__more-tail {
+  font-family: var(--aiop-body);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--aiop-muted);
+  margin: clamp(8px, 1vw, 12px) 0 0;
+}
+
+.ca-team__cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(14px, 1.6vw, 18px);
+}
+
+@media (min-width: 640px) {
+  .ca-team__cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1000px) {
+  .ca-team__cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ─── Skill card ──────────────────────────────────────────────── */
+
+.ca-skill {
+  background: var(--aiop-card-2);
+  border: 1px solid var(--aiop-rule);
+  padding: clamp(18px, 2vw, 22px) clamp(18px, 2vw, 22px) clamp(20px, 2.2vw, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.18s ease, transform 0.18s ease;
+}
+
+/* Sage-tinted highlight for Skills that compose a Build-phase tool
+   surface above (Mímir, Vesper). The wash is subtle on purpose —
+   the card still reads as a Skill card, just nudged toward the
+   sage palette so a reader scanning the Skills section sees the
+   green cluster in the bottom-most teams (Product Design + Studio
+   after the reorder) and feels the Build chapter cueing up before
+   they reach the section title. Mirrors the visual register of
+   `.aiop-substrate-map__col--surfaces` (the sage Surfaces lane on
+   the intelligence-layer card), so the same colour family carries
+   "this is build" across the page.
+
+   `position: relative` is the anchor for the edge-clipped
+   `.ca-skill__phase-pill` below; the bumped `padding-top` clears
+   the half-overlap so the card title doesn't crowd the pill. */
+.ca-skill--feeds-build {
+  position: relative;
+  padding-top: clamp(28px, 3vw, 36px);
+  background: color-mix(in oklab, var(--aiop-sage) 7%, var(--aiop-card-2));
+  border-color: color-mix(in oklab, var(--aiop-sage) 36%, var(--aiop-rule-strong));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 0 0 1px color-mix(in oklab, var(--aiop-sage) 10%, transparent);
+}
+
+.ca-skill--feeds-build:hover {
+  border-color: color-mix(in oklab, var(--aiop-sage) 55%, var(--aiop-rule-strong));
+}
+
+/* "03 · BUILD" pill clipped to the top edge of every build-feeding
+   Skill card. Mirrors `.ca-tools__phase` on the Mímir / Vesper
+   tool blocks below — same sage-tinted border, same paper-cream
+   background, same Clay-adjacent halo — so the BUILD pill reads
+   as one continuous chrome family from the Skills cards above
+   the section break down into the tool cards below. Hidden by
+   default; only the `--feeds-build` variant reveals it. */
+.ca-skill__phase-pill {
+  display: none;
+}
+
+.ca-skill--feeds-build .ca-skill__phase-pill {
+  position: absolute;
+  top: 0;
+  left: clamp(14px, 1.6vw, 22px);
+  transform: translateY(-50%);
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  background: var(--aiop-card);
+  border: 1px solid color-mix(in oklab, var(--aiop-sage) 48%, var(--aiop-rule-strong));
+  border-radius: 999px;
+  box-shadow:
+    0 4px 14px rgba(26, 22, 18, 0.06),
+    0 0 0 3px color-mix(in oklab, var(--aiop-sage) 14%, transparent);
+
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
+  white-space: nowrap;
+}
+
+/* Right-side cluster in the footer of a build-feeding card:
+   status pill + substrate tag sit side-by-side. The owner sits
+   on the opposite end via the existing `.ca-skill__foot
+   { justify-content: space-between }` — no footer change needed. */
+.ca-skill__foot-tags {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ca-skill:hover {
+  border-color: var(--aiop-ink-soft);
+  transform: translateY(-1px);
+}
+
+.ca-skill__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.ca-skill__owner {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.ca-skill__status {
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 4px 8px 3px;
+  border: none;
+  border-radius: 1px;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.ca-skill__status--in-use,
+.ca-skill__status--shipped {
+  color: var(--aiop-sage);
+  background: color-mix(in oklab, var(--aiop-sage) 14%, transparent);
+}
+
+.ca-skill__status--in-build {
+  color: var(--aiop-amber);
+  background: color-mix(in oklab, var(--aiop-amber) 14%, transparent);
+}
+
+.ca-skill__status--scoped {
+  color: var(--aiop-muted);
+  background: color-mix(in oklab, var(--aiop-muted) 14%, transparent);
+}
+
+.ca-skill__title {
+  font-family: var(--aiop-display);
+  font-size: clamp(20px, 1.9vw, 22px);
+  font-weight: 500;
+  color: var(--aiop-ink);
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  margin: 2px 0 0;
+}
+
+.ca-skill__body {
+  font-family: var(--aiop-body);
+  font-size: 14px;
+  color: var(--aiop-ink-soft);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.ca-skill__foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 8px;
+  margin-top: 4px;
+  border-top: 1px dashed var(--aiop-rule);
+}
+
+.ca-skill__footnote {
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: 12.5px;
+  color: var(--aiop-muted);
+  letter-spacing: 0;
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+}
+
+.ca-skill__substrate-tag {
+  font-family: var(--aiop-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 3px 6px 2px;
+  border-radius: 1px;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+.ca-skill__substrate-tag--judgment {
+  color: var(--aiop-violet);
+  background: color-mix(in oklab, var(--aiop-violet) 14%, transparent);
+}
+
+.ca-skill__substrate-tag--voice {
+  color: var(--aiop-amber);
+  background: color-mix(in oklab, var(--aiop-amber) 14%, transparent);
+}
+
+.ca-skill__substrate-tag--validation {
+  color: var(--aiop-sage);
+  background: color-mix(in oklab, var(--aiop-sage) 14%, transparent);
+}
+
+.ca-skill__substrate-tag--stakeholder {
+  color: var(--aiop-ink-soft);
+  background: color-mix(in oklab, var(--aiop-ink-soft) 12%, transparent);
+}
+
+.ca-skill__substrate-tag--pattern {
+  color: #7c6b9e;
+  background: color-mix(in oklab, #7c6b9e 14%, transparent);
+}
+
+/* Substrate legend */
+.ca-skills__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  margin-bottom: clamp(22px, 2.6vw, 32px);
+  padding-bottom: clamp(14px, 1.6vw, 18px);
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+.ca-skills__legend-kicker {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 700;
+}
+
+.ca-skills__legend-chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+
+.ca-skills__legend-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aiop-ink-soft);
+}
+
+.ca-skills__legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ca-skills__legend-chip--judgment .ca-skills__legend-dot {
+  background: var(--aiop-violet);
+}
+
+.ca-skills__legend-chip--voice .ca-skills__legend-dot {
+  background: var(--aiop-amber);
+}
+
+.ca-skills__legend-chip--validation .ca-skills__legend-dot {
+  background: var(--aiop-sage);
+}
+
+.ca-skills__legend-chip--stakeholder .ca-skills__legend-dot {
+  background: var(--aiop-ink-soft);
+}
+
+.ca-skills__legend-chip--pattern .ca-skills__legend-dot {
+  background: #7c6b9e;
+}
+
+/* ─── Substrate engines (skills section lead) ─────────────────── */
+
+.ca-engines {
+  margin-bottom: clamp(22px, 2.6vw, 32px);
+}
+
+.ca-engines__stat-strip {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 600;
+  margin: 0 0 clamp(18px, 2vw, 24px);
+  padding-bottom: clamp(14px, 1.6vw, 18px);
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+/* ─── Substrate Atlas (radial engines viz) ────────────────────── */
+
+/* The Skills section wrap gets a wider max-width than the standard
+   1240px page wrap so the atlas's outer chips have room to breathe
+   without crowding the team labels. The section head + axis tabs
+   stay at their normal width (44ch / 60ch / etc. caps from
+   `aiop-section-head`), only the atlas itself grows. We do this by
+   widening the wrap and letting the atlas size up to its content
+   width; on viewports narrower than the wider cap the wrap
+   collapses back to 100% and behaves exactly like a normal section.
+
+   The override is scoped to `.aiop-claude-adoption #skills` so it
+   doesn't bleed into `/intelligence-layer-v3` or any other route
+   that imports this stylesheet. */
+.aiop-claude-adoption #skills > .aiop-wrap {
+  max-width: 1440px;
+}
+
+.ca-atlas {
+  /* The atlas is the only component on the page that's allowed to
+     break the `.aiop-wrap` padding rhythm — edge chips and their
+     expanded detail cards need every horizontal pixel they can
+     reclaim, especially when a skill near 3 o'clock / 9 o'clock is
+     selected and its detail panel pops out next to it.
+     Negative side margins equal to `--aiop-page-pad` pull the atlas
+     back into the wrap padding on both sides; the size cap is then
+     lifted so the stage can grow into that reclaimed width.
+     `min(100%, …)` ensures we never overflow on narrow viewports. */
+  --ca-atlas-size: min(100%, 1280px);
+  margin-left: calc(var(--aiop-page-pad) * -1);
+  margin-right: calc(var(--aiop-page-pad) * -1);
+  margin-bottom: clamp(8px, 1vw, 12px);
+}
+
+.ca-atlas__stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: var(--ca-atlas-size);
+  margin: clamp(8px, 1vw, 16px) auto clamp(28px, 3vw, 40px);
+}
+
+.ca-atlas__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ca-atlas__ring {
+  fill: none;
+  stroke: var(--aiop-rule-soft);
+  stroke-width: 1;
+}
+
+.ca-atlas__sector {
+  cursor: pointer;
+  stroke-width: 1.5;
+  transition:
+    fill 0.2s ease,
+    stroke 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.ca-atlas__sector[data-substrate="judgment"] {
+  fill: color-mix(in oklab, var(--aiop-violet) 14%, var(--aiop-card-2));
+  stroke: var(--aiop-violet);
+}
+
+.ca-atlas__sector[data-substrate="voice"] {
+  fill: color-mix(in oklab, var(--aiop-amber) 14%, var(--aiop-card-2));
+  stroke: var(--aiop-amber);
+}
+
+.ca-atlas__sector[data-substrate="validation"] {
+  fill: color-mix(in oklab, var(--aiop-sage) 14%, var(--aiop-card-2));
+  stroke: var(--aiop-sage);
+}
+
+.ca-atlas__sector[data-substrate="stakeholder"] {
+  fill: color-mix(in oklab, var(--aiop-ink-soft) 12%, var(--aiop-card-2));
+  stroke: var(--aiop-ink-soft);
+}
+
+.ca-atlas__sector[data-substrate="pattern"] {
+  fill: color-mix(in oklab, #7c6b9e 14%, var(--aiop-card-2));
+  stroke: #7c6b9e;
+}
+
+.ca-atlas[data-ca-atlas-dim="on"]
+  .ca-atlas__sector[data-dimmed="true"],
+.ca-atlas[data-ca-atlas-dim="on"] .ca-atlas__tick[data-dimmed="true"],
+.ca-atlas[data-ca-atlas-dim="on"] .ca-atlas__sector-label[data-dimmed="true"],
+.ca-atlas[data-ca-atlas-dim="on"] .ca-atlas__chip[data-dimmed="true"] {
+  opacity: 0.55;
+}
+
+.ca-atlas[data-ca-atlas-sector="judgment"]
+  .ca-atlas__sector[data-substrate="judgment"],
+.ca-atlas[data-ca-atlas-sector="voice"] .ca-atlas__sector[data-substrate="voice"],
+.ca-atlas[data-ca-atlas-sector="validation"]
+  .ca-atlas__sector[data-substrate="validation"],
+.ca-atlas[data-ca-atlas-sector="stakeholder"]
+  .ca-atlas__sector[data-substrate="stakeholder"],
+.ca-atlas[data-ca-atlas-sector="pattern"]
+  .ca-atlas__sector[data-substrate="pattern"] {
+  fill-opacity: 1;
+}
+
+.ca-atlas__sector-label {
+  pointer-events: none;
+  font-family: var(--aiop-mono);
+  fill: var(--aiop-ink);
+  transition: opacity 0.2s ease;
+}
+
+.ca-atlas__sector-label-name {
+  /* Reduced from 10px to 9px when the team count crossed 13 teams
+     (Performance added Loop Creative Strategy as a real source
+     card). 14 teams shrinks each sector wedge from ~30° to ~25.7°,
+     so labels lose ~14% of their wedge width — the three label
+     sizes drop proportionally to keep the hierarchy intact: name
+     10 -> 9, count 8.5 -> 7.5, verb 7.5 -> 6.5. */
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.ca-atlas__sector-label-count {
+  font-size: 7.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  fill: var(--aiop-muted);
+  font-weight: 600;
+}
+
+/* Verb tspan rendered under "N skills" inside each sector slice when
+   the atlas is sliced by substrate. Smaller body type (not mono caps)
+   so the slice reads as: SUBSTRATE name, count, then a quiet
+   definition sentence in the substrate's own ink. */
+.ca-atlas__sector-label-verb {
+  font-family: var(--aiop-body);
+  font-size: 6.5px;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  font-weight: 500;
+  fill: color-mix(in oklab, var(--aiop-ink) 70%, transparent);
+}
+
+@media (max-width: 799px) {
+  .ca-atlas__sector-label-verb {
+    display: none;
+  }
+}
+
+.ca-atlas__tick {
+  stroke-width: 1;
+  transition: opacity 0.2s ease;
+}
+
+.ca-atlas__tick[data-substrate="judgment"] {
+  stroke: color-mix(in oklab, var(--aiop-violet) 35%, transparent);
+}
+
+.ca-atlas__tick[data-substrate="voice"] {
+  stroke: color-mix(in oklab, var(--aiop-amber) 35%, transparent);
+}
+
+.ca-atlas__tick[data-substrate="validation"] {
+  stroke: color-mix(in oklab, var(--aiop-sage) 35%, transparent);
+}
+
+.ca-atlas__tick[data-substrate="stakeholder"] {
+  stroke: color-mix(in oklab, var(--aiop-ink-soft) 30%, transparent);
+}
+
+.ca-atlas__tick[data-substrate="pattern"] {
+  stroke: color-mix(in oklab, #7c6b9e 35%, transparent);
+}
+
+.ca-atlas__core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(52%, 220px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--aiop-card-2);
+  border: 1px solid var(--aiop-rule);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-align: center;
+  padding: 12px;
+  pointer-events: none;
+  box-shadow: 0 0 0 8px color-mix(in oklab, var(--aiop-paper) 65%, transparent);
+}
+
+.ca-atlas__core-kicker {
+  font-family: var(--aiop-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 700;
+}
+
+.ca-atlas__core-count {
+  font-family: var(--aiop-display);
+  font-size: clamp(22px, 3.2vw, 28px);
+  font-weight: 500;
+  color: var(--aiop-ink);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+.ca-atlas__core-teams,
+.ca-atlas__core-untagged {
+  font-family: var(--aiop-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 600;
+}
+
+.ca-atlas__chips {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ca-atlas__chip-wrap {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.ca-atlas__chip-fallback {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.ca-atlas__chip-wrap[data-expanded="true"] {
+  z-index: 10;
+}
+
+.ca-atlas__chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Bumped from 148px to 168px so longer Skill titles
+     ("UX Foundations Evaluation", "Onboarding & POps Processes",
+     "Asset Brief Generator") don't truncate to ellipses on the
+     wider Skills-section wrap. Still capped at 22vw so the chips
+     stay readable on narrow viewports. */
+  max-width: min(168px, 22vw);
+  padding: 5px 10px 4px;
+  background: var(--aiop-card-2);
+  border: 1px solid var(--aiop-rule);
+  border-radius: 7px;
+  cursor: pointer;
+  font-family: var(--aiop-body);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--aiop-ink);
+  line-height: 1.25;
+  text-align: left;
+  box-shadow: 0 2px 8px color-mix(in oklab, var(--aiop-ink) 6%, transparent);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.25s ease,
+    opacity 0.2s ease,
+    max-width 0.28s ease,
+    padding 0.28s ease,
+    border-radius 0.28s ease;
+}
+
+.ca-atlas__chip-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ca-atlas__chip[data-active="true"]:not([data-expanded="true"]),
+.ca-atlas__chip:hover:not([data-expanded="true"]),
+.ca-atlas__chip:focus-visible:not([data-expanded="true"]) {
+  transform: scale(1.06);
+  border-color: var(--aiop-ink-soft);
+  box-shadow: 0 4px 14px color-mix(in oklab, var(--aiop-ink) 10%, transparent);
+  outline: none;
+  z-index: 3;
+}
+
+.ca-atlas__chip[data-substrate="judgment"][data-active="true"],
+.ca-atlas__chip[data-substrate="judgment"]:focus-visible {
+  border-color: var(--aiop-violet);
+}
+
+.ca-atlas__chip[data-substrate="voice"][data-active="true"],
+.ca-atlas__chip[data-substrate="voice"]:focus-visible {
+  border-color: var(--aiop-amber);
+}
+
+.ca-atlas__chip[data-substrate="validation"][data-active="true"],
+.ca-atlas__chip[data-substrate="validation"]:focus-visible {
+  border-color: var(--aiop-sage);
+}
+
+.ca-atlas__chip-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ca-atlas__chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ca-atlas__chip[data-status="in-use"] .ca-atlas__chip-dot,
+.ca-atlas__chip[data-status="shipped"] .ca-atlas__chip-dot {
+  background: var(--aiop-sage);
+}
+
+.ca-atlas__chip[data-status="in-build"] .ca-atlas__chip-dot {
+  background: var(--aiop-amber);
+}
+
+.ca-atlas__chip[data-status="scoped"] .ca-atlas__chip-dot {
+  background: var(--aiop-muted);
+}
+
+/* Expanded chip card */
+.ca-atlas__chip-details {
+  display: none;
+}
+
+.ca-atlas__chip[data-expanded="true"] {
+  max-width: min(320px, calc(100vw - 32px));
+  padding: 14px 16px 16px;
+  border-radius: 14px;
+  cursor: default;
+  box-shadow:
+    0 14px 36px color-mix(in oklab, var(--aiop-ink) 16%, transparent),
+    0 2px 6px color-mix(in oklab, var(--aiop-ink) 8%, transparent);
+  z-index: 10;
+}
+
+.ca-atlas__chip[data-expanded="true"][data-substrate="judgment"] {
+  border-color: var(--aiop-violet);
+}
+
+.ca-atlas__chip[data-expanded="true"][data-substrate="voice"] {
+  border-color: var(--aiop-amber);
+}
+
+.ca-atlas__chip[data-expanded="true"][data-substrate="validation"] {
+  border-color: var(--aiop-sage);
+}
+
+.ca-atlas__chip[data-expanded="true"][data-substrate="stakeholder"] {
+  border-color: var(--aiop-ink-soft);
+}
+
+.ca-atlas__chip[data-expanded="true"][data-substrate="pattern"] {
+  border-color: #7c6b9e;
+}
+
+.ca-atlas__chip[data-expanded="true"] .ca-atlas__chip-head {
+  display: none;
+}
+
+.ca-atlas__chip[data-expanded="true"] .ca-atlas__chip-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.ca-atlas__chip-detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ca-atlas__chip-substrate {
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 3px 8px 2px;
+  border-radius: 2px;
+}
+
+.ca-atlas__chip-substrate[data-substrate="judgment"] {
+  color: var(--aiop-violet);
+  background: color-mix(in oklab, var(--aiop-violet) 14%, transparent);
+}
+
+.ca-atlas__chip-substrate[data-substrate="voice"] {
+  color: var(--aiop-amber);
+  background: color-mix(in oklab, var(--aiop-amber) 14%, transparent);
+}
+
+.ca-atlas__chip-substrate[data-substrate="validation"] {
+  color: var(--aiop-sage);
+  background: color-mix(in oklab, var(--aiop-sage) 14%, transparent);
+}
+
+.ca-atlas__chip-substrate[data-substrate="stakeholder"] {
+  color: var(--aiop-ink-soft);
+  background: color-mix(in oklab, var(--aiop-ink-soft) 12%, transparent);
+}
+
+.ca-atlas__chip-substrate[data-substrate="pattern"] {
+  color: #7c6b9e;
+  background: color-mix(in oklab, #7c6b9e 14%, transparent);
+}
+
+.ca-atlas__chip-detail-status {
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 3px 8px 2px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+.ca-atlas__chip-detail-status[data-status="in-use"],
+.ca-atlas__chip-detail-status[data-status="shipped"] {
+  color: var(--aiop-sage);
+  background: color-mix(in oklab, var(--aiop-sage) 14%, transparent);
+}
+
+.ca-atlas__chip-detail-status[data-status="in-build"] {
+  color: var(--aiop-amber);
+  background: color-mix(in oklab, var(--aiop-amber) 14%, transparent);
+}
+
+.ca-atlas__chip-detail-status[data-status="scoped"] {
+  color: var(--aiop-muted);
+  background: color-mix(in oklab, var(--aiop-muted) 14%, transparent);
+}
+
+.ca-atlas__chip-team {
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 600;
+  display: block;
+}
+
+.ca-atlas__chip[data-expanded="true"] .ca-atlas__chip-title {
+  font-family: var(--aiop-display);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  line-height: 1.2;
+  white-space: normal;
+  overflow: visible;
+  display: block;
+  margin: 2px 0 0;
+  color: var(--aiop-ink);
+}
+
+.ca-atlas__chip[data-expanded="true"] .ca-atlas__chip-details .ca-atlas__chip-team
+  + .ca-atlas__chip-owner {
+  margin-top: -2px;
+}
+
+.ca-atlas__chip-owner {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  display: block;
+}
+
+.ca-atlas__chip-body {
+  font-family: var(--aiop-body);
+  font-size: 13px;
+  color: var(--aiop-ink-soft);
+  line-height: 1.5;
+  display: block;
+  white-space: normal;
+}
+
+.ca-atlas__chip-footnote {
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--aiop-muted);
+  line-height: 1.4;
+  display: block;
+  white-space: normal;
+}
+
+.ca-atlas__chip[data-expanded="true"] .ca-atlas__chip-details::before {
+  content: "";
+  display: block;
+  height: 1px;
+  background: var(--aiop-rule);
+  margin: 2px 0 4px;
+}
+
+.ca-atlas__chip-cta {
+  position: absolute;
+  left: 50%;
+  bottom: -38px;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--aiop-ink);
+  text-decoration: none;
+  padding: 6px 10px;
+  background: var(--aiop-card-2);
+  border: 1px solid var(--aiop-rule);
+  border-radius: 999px;
+  box-shadow: 0 6px 14px color-mix(in oklab, var(--aiop-ink) 10%, transparent);
+  z-index: 11;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.ca-atlas__chip-cta:hover {
+  color: var(--aiop-violet);
+  border-color: var(--aiop-violet);
+}
+
+/* Strong dim on other chips when one is expanded */
+.ca-atlas[data-ca-atlas-expanded="true"]
+  .ca-atlas__chip:not([data-expanded="true"]) {
+  opacity: 0.32;
+}
+
+.ca-atlas[data-ca-atlas-expanded="true"] .ca-atlas__tick {
+  opacity: 0.4;
+}
+
+.ca-atlas[data-ca-atlas-expanded="true"] .ca-atlas__sector {
+  opacity: 0.7;
+}
+
+.ca-atlas[data-ca-atlas-expanded="true"]
+  .ca-atlas__sector[data-substrate="judgment"][data-expanded-match="true"],
+.ca-atlas[data-ca-atlas-expanded="true"]
+  .ca-atlas__sector[data-substrate="voice"][data-expanded-match="true"],
+.ca-atlas[data-ca-atlas-expanded="true"]
+  .ca-atlas__sector[data-substrate="validation"][data-expanded-match="true"],
+.ca-atlas[data-ca-atlas-expanded="true"]
+  .ca-atlas__sector[data-substrate="stakeholder"][data-expanded-match="true"],
+.ca-atlas[data-ca-atlas-expanded="true"]
+  .ca-atlas__sector[data-substrate="pattern"][data-expanded-match="true"] {
+  opacity: 1;
+}
+
+.ca-atlas__tooltip {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 6px);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 8px;
+  background: var(--aiop-ink);
+  color: var(--aiop-paper);
+  font-family: var(--aiop-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* Substrate color key — its own row between the View tabs and the
+   atlas. See `.ca-substrate-legend` further down for the styles. */
+
+@media (max-width: 559px) {
+  .ca-atlas__chip {
+    max-width: min(120px, 28vw);
+    font-size: 10px;
+    padding: 4px 7px 3px;
+  }
+
+  .ca-atlas__sector-label {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ca-atlas__sector,
+  .ca-atlas__chip,
+  .ca-atlas__tick,
+  .ca-atlas__sector-label {
+    transition: none;
+  }
+
+  .ca-atlas__chip[data-active="true"],
+  .ca-atlas__chip:hover,
+  .ca-atlas__chip:focus-visible {
+    transform: none;
+  }
+}
+
+/* ─── Axis tabs (Engine / Team / Phase) ────────────────────────── */
+
+.ca-axis-tabs {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.4vw, 18px);
+  flex-wrap: wrap;
+  margin: 0 0 clamp(18px, 2vw, 26px);
+}
+
+/* Centered variant — used as the section's primary control on
+   /claude-adoption. Centers the View label + tab group as one
+   cluster so the affordance reads as a header control, not a
+   left-aligned setting. */
+.ca-axis-tabs--centered {
+  justify-content: center;
+}
+
+.ca-axis-tabs__label {
+  font-family: var(--aiop-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 700;
+}
+
+.ca-axis-tabs__group {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0;
+  padding: 3px;
+  background: var(--aiop-card-2);
+  border: 1px solid var(--aiop-rule);
+  border-radius: 4px;
+}
+
+.ca-axis-tabs__btn {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 7px 14px 6px;
+  border-radius: 2px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  color: var(--aiop-ink-soft);
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.ca-axis-tabs__btn:hover {
+  color: var(--aiop-ink);
+}
+
+.ca-axis-tabs__btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--aiop-ink) 18%, transparent);
+}
+
+.ca-axis-tabs__btn[data-active="true"] {
+  background: var(--aiop-ink);
+  color: var(--aiop-paper);
+}
+
+.ca-axis-tabs__btn-label {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 700;
+  line-height: 1;
+}
+
+@media (max-width: 559px) {
+  .ca-axis-tabs__btn {
+    padding: 6px 10px 5px;
+  }
+}
+
+/* Quiet hint under the tabs in the substrate view — points the
+   visitor to the donut center, where each substrate's definition
+   surfaces on hover. Mono, muted, centered, low contrast so it
+   reads as helper text rather than a section subtitle. */
+.ca-axis-tabs__hint {
+  margin: clamp(-10px, -0.8vw, -4px) auto clamp(20px, 2.2vw, 28px);
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Substrate color key — its own row between the View tabs and the
+   atlas. Was originally a band under the donut, then collapsed into
+   the tabs row as quiet chrome. Restored to a real legend with the
+   verb gloss visible per item so a first-time reader doesn't have to
+   hover to learn what JUDGMENT / VOICE / VALIDATION / STAKEHOLDER /
+   PATTERN actually mean. Centered horizontally, capped so the items
+   don't drift apart on a 1300px+ wrap. */
+/* Quiet annotation chrome: a 5-column grid of dot + name + gloss
+   sitting under the View tabs. No borders, no padding, no card
+   feel — the dot carries the substrate color and the text reads
+   as a one-line footnote per category. */
+.ca-substrate-legend {
+  list-style: none;
+  /* Top margin is 0 because the tabs above already carry their own
+     bottom margin. Bottom margin gives the atlas room to breathe. */
+  margin: 0 auto clamp(20px, 2.2vw, 28px);
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(8px, 1vw, 14px) clamp(20px, 2vw, 28px);
+  max-width: 1040px;
+}
+
+.ca-substrate-legend__item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.ca-substrate-legend__head {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ca-substrate-legend__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--aiop-muted);
+  flex-shrink: 0;
+}
+
+.ca-substrate-legend__name {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-ink-soft);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.ca-substrate-legend__gloss {
+  font-family: var(--aiop-body);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--aiop-muted);
+}
+
+/* Per-substrate dot color — matches the donut sector colors so the
+   legend reads as the same color system as the atlas it labels. */
+.ca-substrate-legend__item[data-substrate="judgment"] .ca-substrate-legend__dot {
+  background: var(--aiop-violet);
+}
+.ca-substrate-legend__item[data-substrate="voice"] .ca-substrate-legend__dot {
+  background: var(--aiop-amber);
+}
+.ca-substrate-legend__item[data-substrate="validation"] .ca-substrate-legend__dot {
+  background: var(--aiop-sage);
+}
+.ca-substrate-legend__item[data-substrate="stakeholder"] .ca-substrate-legend__dot {
+  background: var(--aiop-ink-soft);
+}
+.ca-substrate-legend__item[data-substrate="pattern"] .ca-substrate-legend__dot {
+  background: #7c6b9e;
+}
+
+@media (max-width: 980px) {
+  .ca-substrate-legend {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 559px) {
+  .ca-substrate-legend {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ─── Governance footer (Skills GitHub monorepo) ──────────────────
+   Sits at the very end of the Skills section as a quiet sign-off:
+   no frame, no kicker, the body and CTA stack centered as one
+   cluster so the eye reads "explanation → repo button" top-down
+   without the row sprawling to the section edges. */
+.ca-skills-repo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 1.4vw, 18px);
+  /* Negative top margin pulls the governance sign-off up under the
+     donut's natural bottom padding so the two read as one beat
+     (donut hands off to repo CTA) instead of as two stacked
+     sections separated by air. */
+  margin-top: clamp(-72px, -5vw, -32px);
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  text-align: center;
+}
+
+.ca-skills-repo__body {
+  margin: 0;
+  font-family: var(--aiop-body);
+  font-size: clamp(15px, 1.15vw, 16.5px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  max-width: 60ch;
+  text-wrap: pretty;
+}
+
+.ca-skills-repo__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px 10px 14px;
+  background: var(--aiop-ink);
+  color: var(--aiop-paper);
+  border: 1px solid var(--aiop-ink);
+  border-radius: var(--aiop-radius);
+  text-decoration: none;
+  font-family: var(--aiop-mono);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition:
+    background 160ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 160ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ca-skills-repo__cta:hover,
+.ca-skills-repo__cta:focus-visible {
+  background: color-mix(in oklab, var(--aiop-ink) 88%, var(--aiop-violet));
+  border-color: color-mix(in oklab, var(--aiop-ink) 88%, var(--aiop-violet));
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.ca-skills-repo__cta:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--aiop-violet) 28%, transparent);
+}
+
+.ca-skills-repo__cta-icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.ca-skills-repo__cta-text {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  line-height: 1;
+}
+
+.ca-skills-repo__cta-label {
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.ca-skills-repo__cta-path {
+  font-size: 9.5px;
+  letter-spacing: 0.04em;
+  color: color-mix(in oklab, var(--aiop-paper) 68%, transparent);
+}
+
+.ca-skills-repo__cta-arrow {
+  font-family: var(--aiop-body);
+  font-size: 15px;
+  line-height: 1;
+  transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ca-skills-repo__cta:hover .ca-skills-repo__cta-arrow,
+.ca-skills-repo__cta:focus-visible .ca-skills-repo__cta-arrow {
+  transform: translateX(3px);
+}
+
+/* ─── Sector fills, by axis ────────────────────────────────────── */
+
+/* Phase axis: three-step ramp Navigate → Encode → Build. */
+.ca-atlas__sector[data-axis="phase"][data-phase="navigate"] {
+  fill: color-mix(in oklab, var(--aiop-muted) 12%, var(--aiop-card-2));
+  stroke: var(--aiop-muted);
+}
+
+.ca-atlas__sector[data-axis="phase"][data-phase="encode"] {
+  fill: color-mix(in oklab, var(--aiop-ink-soft) 16%, var(--aiop-card-2));
+  stroke: var(--aiop-ink-soft);
+}
+
+.ca-atlas__sector[data-axis="phase"][data-phase="build"] {
+  fill: color-mix(in oklab, var(--aiop-ink) 18%, var(--aiop-card-2));
+  stroke: var(--aiop-ink);
+}
+
+.ca-atlas__sector-label[data-axis="phase"][data-phase="build"] {
+  fill: var(--aiop-ink);
+}
+
+.ca-atlas__sector-label[data-axis="phase"][data-phase="encode"] {
+  fill: var(--aiop-ink);
+}
+
+.ca-atlas__sector-label[data-axis="phase"][data-phase="navigate"] {
+  fill: var(--aiop-ink-soft);
+}
+
+/* Team axis: neutral fills. The skills inside still color the chips
+   by substrate, so the ring stays semantic without competing palettes. */
+.ca-atlas__sector[data-axis="team"] {
+  fill: color-mix(in oklab, var(--aiop-ink-soft) 9%, var(--aiop-card-2));
+  stroke: var(--aiop-rule);
+}
+
+.ca-atlas__sector[data-axis="team"]:nth-of-type(odd) {
+  fill: color-mix(in oklab, var(--aiop-ink-soft) 14%, var(--aiop-card-2));
+}
+
+/* ─── Cluster blocks (engine / phase breakdown) ────────────────── */
+
+.ca-skills__clusters {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(36px, 4vw, 52px);
+}
+
+.ca-cluster {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 1.8vw, 22px);
+  scroll-margin-top: 88px;
+}
+
+.ca-cluster__head {
+  display: grid;
+  grid-template-columns: 3px 1fr auto;
+  align-items: baseline;
+  gap: 8px 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+.ca-cluster__bar {
+  align-self: stretch;
+  width: 3px;
+  border-radius: 1px;
+  background: var(--aiop-muted);
+}
+
+.ca-cluster[data-substrate="judgment"] .ca-cluster__bar {
+  background: var(--aiop-violet);
+}
+
+.ca-cluster[data-substrate="voice"] .ca-cluster__bar {
+  background: var(--aiop-amber);
+}
+
+.ca-cluster[data-substrate="validation"] .ca-cluster__bar {
+  background: var(--aiop-sage);
+}
+
+.ca-cluster[data-substrate="stakeholder"] .ca-cluster__bar {
+  background: var(--aiop-ink-soft);
+}
+
+.ca-cluster[data-substrate="pattern"] .ca-cluster__bar {
+  background: #7c6b9e;
+}
+
+.ca-cluster[data-phase="navigate"] .ca-cluster__bar {
+  background: var(--aiop-muted);
+}
+
+.ca-cluster[data-phase="encode"] .ca-cluster__bar {
+  background: var(--aiop-ink-soft);
+}
+
+.ca-cluster[data-phase="build"] .ca-cluster__bar {
+  background: var(--aiop-ink);
+}
+
+.ca-cluster__head-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ca-cluster__name {
+  font-family: var(--aiop-display);
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 500;
+  letter-spacing: -0.008em;
+  line-height: 1.1;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.ca-cluster__verb {
+  font-family: var(--aiop-body);
+  font-size: 13px;
+  color: var(--aiop-ink-soft);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 60ch;
+}
+
+.ca-cluster__count {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 600;
+  white-space: nowrap;
+  align-self: center;
+}
+
+.ca-cluster__cards {
+  /* inherits .ca-team__cards grid */
+  gap: clamp(12px, 1.4vw, 16px);
+}
+
+.ca-cluster--phase .ca-cluster__teams {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 3.2vw, 40px);
+}
+
+.ca-cluster--phase .ca-team__name {
+  font-size: clamp(18px, 2vw, 24px);
+}
+
+.ca-cluster--phase .ca-team__cards {
+  gap: clamp(12px, 1.4vw, 16px);
+}
+
+/* Team caption inside engine cluster cards */
+.ca-skill__team-caption {
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+/* Team grid deep-dive — lighter weight below engines */
+.ca-skills__teams--deep-dive {
+  gap: clamp(28px, 3.2vw, 40px);
+}
+
+.ca-skills__teams--deep-dive .ca-team__name {
+  font-size: clamp(18px, 2vw, 24px);
+}
+
+.ca-skills__teams--deep-dive .ca-team__cards {
+  gap: clamp(12px, 1.4vw, 16px);
+}
+
+.ca-skills__teams--deep-dive .ca-skill {
+  border-color: color-mix(in oklab, var(--aiop-rule) 88%, transparent);
+}
+
+.ca-skills__teams--deep-dive .ca-skill:hover {
+  border-color: var(--aiop-rule);
+}
+
+.ca-skill__substrate-tag {
+  text-decoration: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.ca-skill__substrate-tag:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.ca-skill {
+  scroll-margin-top: 88px;
+}
+
+/* Build on Skills — header inherits the canonical `aiop-section-head`
+   2-col shape from operator.css. No per-section overrides. */
+
+.ca-build__cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(16px, 1.8vw, 22px);
+}
+
+@media (min-width: 900px) {
+  .ca-build__cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.ca-build__card {
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule-strong);
+  border-left: 3px solid var(--aiop-violet);
+  padding: clamp(22px, 2.4vw, 28px) clamp(22px, 2.4vw, 28px) clamp(24px, 2.6vw, 30px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ca-build__card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.ca-build__name {
+  font-family: var(--aiop-display);
+  font-size: clamp(24px, 2.4vw, 28px);
+  font-weight: 500;
+  margin: 0;
+  color: var(--aiop-ink);
+}
+
+.ca-build__tagline {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  display: block;
+  margin-top: 4px;
+}
+
+.ca-build__status {
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 4px 8px 3px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.ca-build__status--in-use,
+.ca-build__status--shipped {
+  color: var(--aiop-sage);
+  background: color-mix(in oklab, var(--aiop-sage) 14%, transparent);
+}
+
+.ca-build__body {
+  font-family: var(--aiop-body);
+  font-size: 14px;
+  color: var(--aiop-ink-soft);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.ca-build__block-kicker {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 700;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.ca-build__block-body {
+  font-family: var(--aiop-body);
+  font-size: 13px;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.ca-build__consumes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  color: var(--aiop-ink-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ─── 5 · Layer tie-back ──────────────────────────────────────── */
+
+/* Lead-in line printed just above the SubstrateMapV3 chrome. */
+.ca-layer__lead-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: clamp(-8px, -0.6vw, -2px);
+}
+
+.ca-layer__lead {
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-size: clamp(16px, 1.7vw, 20px);
+  color: var(--aiop-ink-soft);
+  line-height: 1.5;
+  text-align: center;
+  margin: 0;
+  max-width: 56ch;
+}
+
+/* Bridge band beneath the diagram. Hands the exec reader over to
+   the full v3 deck without re-arguing the case. */
+.ca-layer__bridge {
+  margin-top: clamp(28px, 3.4vw, 44px);
+  padding: clamp(20px, 2.4vw, 28px) clamp(22px, 2.6vw, 32px);
+  background: var(--aiop-card-2);
+  border: 1px solid var(--aiop-rule);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: clamp(14px, 2vw, 24px);
+  align-items: center;
+}
+
+@media (max-width: 720px) {
+  .ca-layer__bridge {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ca-layer__bridge-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ca-layer__bridge-kicker {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-violet);
+  font-weight: 700;
+}
+
+.ca-layer__bridge-body {
+  font-family: var(--aiop-body);
+  font-size: 14.5px;
+  color: var(--aiop-ink-soft);
+  line-height: 1.55;
+  margin: 0;
+  max-width: 64ch;
+}
+
+/* ─── 6 · Close section ───────────────────────────────────────── */
+
+.ca-close {
+  padding-block: clamp(64px, 8vw, 112px);
+}
+
+.ca-close__inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(20px, 2.4vw, 32px);
+  align-items: start;
+  padding-top: clamp(28px, 3.4vw, 44px);
+  border-top: 1px solid var(--aiop-rule);
+}
+
+@media (min-width: 820px) {
+  .ca-close__inner {
+    grid-template-columns: 1.6fr 1fr;
+    gap: 48px;
+  }
+}
+
+.ca-close__title {
+  font-family: var(--aiop-display);
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--aiop-ink);
+  margin: 0 0 16px;
+}
+
+.ca-close__title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--aiop-ink-soft);
+}
+
+.ca-close__body {
+  font-family: var(--aiop-display);
+  font-size: clamp(17px, 1.8vw, 20px);
+  color: var(--aiop-ink-soft);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.ca-close__action {
+  align-self: start;
+}
+
+/* ─── Skills + Scaling parallax pair ───────────────────────────
+   Skills (the donut + breakdown) freezes at the tail of its scroll
+   while the Scaling interlude rises up over it like a curtain.
+   Mirrors the homepage `.ca-approach-and-vision` choreography
+   (Approach freezes, Flywheel rises) — just applied to Skills →
+   Scaling. The JS in `scaling-question.tsx` writes:
+     - `transform: translateY(...)` on `.ca-skills` to pin its bottom
+       at the viewport bottom while the wrapper scrolls past;
+     - `transform: translateY(...)` on the scaling bridge as a
+       two-phase hold-then-release so Scaling stays put for an
+       entry buffer (visitor finishes the last Skills row) then
+       linearly rises to its natural position;
+     - `--aiop-question-progress` (0..1) on this wrapper so the
+       existing `aiop-question-bridge.is-animated` fade rules
+       cascade through. */
+.ca-tools-and-scaling {
+  position: relative;
+  width: 100%;
+}
+
+.ca-tools-and-scaling > .ca-tools {
+  position: relative;
+  /* `scaling-question.tsx` writes a transform here during the
+     freeze to pin the tail of Tools to the viewport bottom while
+     Scaling rises over it. */
+  will-change: transform;
+}
+
+.ca-tools-and-scaling > .aiop-question-bridge {
+  position: relative;
+  /* Opaque so Scaling's atmospheric bleed visibly occludes the
+     frozen Tools section underneath as it rises — without this,
+     Tools would show through the wash gradient and the curtain
+     effect would feel washed out. */
+  background: var(--aiop-paper);
+  /* `scaling-question.tsx` writes a two-phase hold-then-release
+     transform here so Scaling stays put briefly then rises into
+     its natural position over the frozen Tools. */
+  will-change: transform;
+}
+
+/* Intelligence layer — standalone section now (previously paired
+   with Scaling in `.ca-scaling-and-layer`). The opaque paper fill
+   stays as belt-and-braces against any future visual neighbor that
+   might bleed through `aiop-section--soft`'s top fade. */
+.ca-layer {
+  position: relative;
+  background: var(--aiop-paper);
+}
+
+/* Ownership tracks — rendered inside the substrate map card via the
+   `footer` prop on `<SubstrateMapV3>`, so they read as a subtle
+   footer band attached to the bottom of the card rather than as a
+   fresh pair of cards underneath. Two compact pill-style cards
+   sit side-by-side, separated from the closing strip above by a
+   hairline divider, with a quieter card-2 background that nests
+   inside the card-paper outer surface. */
+.ca-layer-tracks {
+  list-style: none;
+  margin: clamp(18px, 2vw, 24px) 0 0;
+  padding: clamp(16px, 1.8vw, 20px) 0 0;
+  border-top: 1px solid var(--aiop-rule);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(10px, 1.2vw, 14px);
+}
+
+.ca-layer-tracks__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: clamp(12px, 1.4vw, 16px) clamp(14px, 1.6vw, 18px);
+  background: var(--aiop-card-2);
+  border: 1px solid var(--aiop-rule);
+  border-radius: var(--aiop-radius-sm);
+}
+
+/* Subtle per-track gradient + matching border tint so the qualitative
+   (clay) / quantitative (sage) split is felt before it's read. Mix
+   values are deliberately lower than the featured Workshops tile
+   (~14% / 6% / 2% vs 22% / 10% / 4%) so the cards stay quiet enough
+   to nest inside the substrate map card without competing with it. */
+.ca-layer-tracks__card[data-track="adoption"] {
+  background: linear-gradient(
+    140deg,
+    color-mix(in oklab, var(--aiop-violet) 14%, var(--aiop-card-2)) 0%,
+    color-mix(in oklab, var(--aiop-violet) 6%, var(--aiop-card-2)) 55%,
+    color-mix(in oklab, var(--aiop-violet) 2%, var(--aiop-card-2)) 100%
+  );
+  border-color: color-mix(in oklab, var(--aiop-violet) 32%, var(--aiop-rule));
+}
+
+.ca-layer-tracks__card[data-track="data"] {
+  background: linear-gradient(
+    140deg,
+    color-mix(in oklab, var(--aiop-sage) 14%, var(--aiop-card-2)) 0%,
+    color-mix(in oklab, var(--aiop-sage) 6%, var(--aiop-card-2)) 55%,
+    color-mix(in oklab, var(--aiop-sage) 2%, var(--aiop-card-2)) 100%
+  );
+  border-color: color-mix(in oklab, var(--aiop-sage) 32%, var(--aiop-rule));
+}
+
+.ca-layer-tracks__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 2px;
+}
+
+.ca-layer-tracks__eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-ink-soft);
+}
+
+/* Status: dot + uppercase label, no pill chrome. Reads in the same
+   quiet mono register as the substrate-map column kickers above. */
+.ca-layer-tracks__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: var(--aiop-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.ca-layer-tracks__status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.ca-layer-tracks__status[data-status="running"] .ca-layer-tracks__status-dot {
+  background: var(--aiop-sage);
+}
+
+.ca-layer-tracks__status[data-status="scoping"] .ca-layer-tracks__status-dot {
+  background: var(--aiop-amber);
+}
+
+.ca-layer-tracks__kicker {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.ca-layer-tracks__title {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-size: clamp(16px, 1.4vw, 19px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.005em;
+  color: var(--aiop-ink);
+}
+
+.ca-layer-tracks__body {
+  margin: 2px 0 0;
+  font-family: var(--aiop-body);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--aiop-ink-soft);
+  max-width: 42ch;
+}
+
+.ca-layer-tracks__owner {
+  margin: 6px 0 0;
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--aiop-ink-soft);
+}
+
+@media (max-width: 720px) {
+  .ca-layer-tracks {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+}
+
+/* Reduced-motion / narrow viewport: skip the freeze-and-rise and
+   let Skills + Scaling stack as two normal sections. The JS in
+   `scaling-question.tsx` already bails on these conditions; the
+   CSS belt-and-braces clears any stale transforms / will-change
+   that might have leaked through from a prior run. */
+@media (prefers-reduced-motion: reduce) {
+  .ca-tools-and-scaling > .ca-tools,
+  .ca-tools-and-scaling > .aiop-question-bridge {
+    transform: none !important;
+    will-change: auto !important;
+  }
+}
+
+/* ─── Tools (Build layer) — Mímir + Vesper ──────────────────────
+   Simplified two-column section that closes the page. Each tool
+   block reads as a small card: name + status pill on the eyebrow
+   row, role one-liner, body paragraph, team caption, and a
+   "Runs on" chip list whose chips link to the corresponding
+   `#skill-${id}` anchors in the Skills-by-team section above.
+   Chip colour reuses the existing `.ca-skill__substrate-tag`
+   palette so the substrate atlas → tool surface visual chain is
+   continuous. */
+
+.ca-tools {
+  background: linear-gradient(
+    180deg,
+    var(--aiop-paper) 0%,
+    var(--aiop-paper-2) 100%
+  );
+  border-top: 1px solid var(--aiop-rule);
+}
+
+.ca-tools__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 3vw, 44px);
+}
+
+.ca-tools__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(18px, 2vw, 28px);
+}
+
+@media (min-width: 720px) {
+  .ca-tools__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Tool card chrome — mirrors `.aiop-substrate-map__col` from the
+   intelligence-layer block above, so the two chapters read as one
+   continuous "card surface" recipe (rounded corners, sage-tinted
+   gradient + border, soft inset highlight + ground shadow, pill
+   header overhanging the top edge). Build-phase tools live in the
+   Surfaces lane of the flywheel, so we use the same sage palette
+   that `.aiop-substrate-map__col--surfaces` uses on the Layer
+   card — keeps the visual language consistent without a custom
+   per-section colour. The pill is positioned absolutely against
+   this card; `position: relative` is what anchors it. */
+.ca-tools__block {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+  padding:
+    clamp(28px, 2.6vw, 36px)
+    clamp(20px, 2vw, 28px)
+    clamp(20px, 2vw, 28px);
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-sage) 7%, var(--aiop-card-2)) 0%,
+      color-mix(in oklab, var(--aiop-sage) 4%, var(--aiop-card)) 100%
+    );
+  border: 1px solid color-mix(in oklab, var(--aiop-sage) 38%, var(--aiop-rule-strong));
+  border-radius: 10px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    0 0 0 1px color-mix(in oklab, var(--aiop-sage) 12%, transparent),
+    0 16px 32px -24px color-mix(in oklab, var(--aiop-sage) 28%, rgba(26, 22, 18, 0.24));
+  height: 100%;
+}
+
+/* Phase pill — overhangs the top edge of the card the way
+   `.aiop-substrate-map__col-head` does on the Layer columns. Same
+   rounded-pill chrome, same sage glow ring, anchored to the left
+   so the eye reads `03 · BUILD` first and `Mímir` / `Vesper`
+   right below. */
+/* Phase pill now sits INLINE inside the title row (.ca-tools__
+   block-head) instead of edge-clipped to the card border. Reads
+   as a small identity label next to the tool name, not a pinned
+   tag at the top edge. Pared down to a subtler treatment:
+   no box-shadow halo, smaller padding, light-touch border in the
+   sage palette. The visual weight steps down so the tool name
+   stays the headline. */
+.ca-tools__phase {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px;
+  background: color-mix(in oklab, var(--aiop-sage) 6%, var(--aiop-card));
+  border: 1px solid color-mix(in oklab, var(--aiop-sage) 32%, var(--aiop-rule-strong));
+  border-radius: 999px;
+}
+
+.ca-tools__phase-n {
+  font-family: var(--aiop-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--aiop-ink) 78%, var(--aiop-muted));
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Title row — flows the phase pill, tool name, status pill, and
+   optional "See how it works" trigger across one horizontal line.
+   `align-items: center` (was `baseline`) so the pills + button
+   visually centre on the name's optical line; `flex-wrap` lets
+   the see-it button drop to a new line on narrow viewports
+   instead of overflowing. */
+.ca-tools__block-head {
+  display: flex;
+  align-items: center;
+  gap: 10px 14px;
+  flex-wrap: wrap;
+}
+
+.ca-tools__name {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-size: clamp(24px, 2.4vw, 32px);
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  line-height: 1.1;
+  color: var(--aiop-ink);
+}
+
+.ca-tools__status {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 4px 8px 3px;
+  border-radius: 1px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.ca-tools__status--in-use {
+  color: var(--aiop-sage);
+  background: color-mix(in oklab, var(--aiop-sage) 14%, transparent);
+}
+
+.ca-tools__status--in-build {
+  color: var(--aiop-amber);
+  background: color-mix(in oklab, var(--aiop-amber) 14%, transparent);
+}
+
+.ca-tools__status--scoped {
+  color: var(--aiop-ink-soft);
+  background: color-mix(in oklab, var(--aiop-ink-soft) 12%, transparent);
+}
+
+.ca-tools__role {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-size: clamp(15px, 1.4vw, 17px);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--aiop-ink);
+  line-height: 1.4;
+}
+
+.ca-tools__body {
+  margin: 0;
+  font-family: var(--aiop-body);
+  font-size: clamp(14px, 1.1vw, 15px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
+.ca-tools__teams {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 500;
+}
+
+.ca-tools__teams-sep {
+  color: color-mix(in oklab, var(--aiop-muted) 55%, transparent);
+}
+
+.ca-tools__runs-on {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 14px;
+  /* Hairline that picks up a hint of the card's sage tint so it
+     reads as part of the same surface, not as a stray rule. */
+  border-top: 1px solid color-mix(in oklab, var(--aiop-sage) 22%, var(--aiop-rule));
+  margin-top: 4px;
+}
+
+.ca-tools__runs-on-label {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 600;
+}
+
+.ca-tools__chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ca-tools__chip-item {
+  margin: 0;
+  padding: 0;
+}
+
+.ca-tools__chip {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 7px 11px 6px;
+  /* Crisp paper background so each chip pops cleanly off the
+     sage-tinted card surface; substrate accent lives on the left
+     border so the chip still ties back to the atlas legend. */
+  background: var(--aiop-paper);
+  border: 1px solid color-mix(in oklab, var(--aiop-sage) 18%, var(--aiop-rule));
+  border-left-width: 2px;
+  border-left-color: var(--aiop-rule);
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(26, 22, 18, 0.04);
+  text-decoration: none;
+  color: inherit;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.ca-tools__chip:hover {
+  transform: translateY(-1px);
+  background: #ffffff;
+  box-shadow: 0 4px 12px -6px rgba(26, 22, 18, 0.16);
+}
+
+/* Static (non-linking) chip variant — used for display-only
+   overrides like "Creative Strategy" before the underlying Skill
+   has a card in `caSkillsTeams`. Kills the hover lift so the chip
+   stops advertising itself as an interactive link, and dims it
+   slightly so it reads as "noted, not yet encoded". */
+.ca-tools__chip--static {
+  cursor: default;
+  background: color-mix(in oklab, var(--aiop-paper) 88%, var(--aiop-rule));
+}
+
+.ca-tools__chip--static:hover {
+  transform: none;
+  background: color-mix(in oklab, var(--aiop-paper) 88%, var(--aiop-rule));
+  box-shadow: 0 1px 2px rgba(26, 22, 18, 0.04);
+}
+
+.ca-tools__chip--judgment {
+  border-left-color: var(--aiop-violet);
+}
+.ca-tools__chip--voice {
+  border-left-color: var(--aiop-amber);
+}
+.ca-tools__chip--validation {
+  border-left-color: var(--aiop-sage);
+}
+.ca-tools__chip--stakeholder {
+  border-left-color: var(--aiop-ink-soft);
+}
+.ca-tools__chip--pattern {
+  border-left-color: #7c6b9e;
+}
+
+.ca-tools__chip-title {
+  font-family: var(--aiop-body);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--aiop-ink);
+  line-height: 1.25;
+}
+
+.ca-tools__chip-team {
+  font-family: var(--aiop-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 500;
+}
+
+/* Pill CTA at the bottom of each tool block ("Book a demo with X").
+   Sits below the "Runs on" chip list, separated by the same kind
+   of breath the other intra-card sections get. We rely on the
+   shared `aiop-engine-pattern__bridge` recipe for the visual
+   chrome (clay-tinted gradient pill with chevron arrow); this
+   rule only handles placement + a margin reset for the smaller
+   tool-card context. */
+.ca-tools__cta {
+  margin-top: auto;
+  padding-top: 4px;
+  /* Center the primary "Book a demo" CTA at the bottom of the
+     tool block. The "See how it works" button is rendered as an
+     edge-clipped pill at the top-right of the card, so the
+     bottom row holds only one button — centered, the way the
+     section's outro CTA was originally framed. */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ca-tools__bridge {
+  /* The shared bridge defaults to a clamped top margin tuned for
+     the homepage's hero-sized cards. Inside a tool block the
+     surrounding gap already provides the spacing we need, so
+     reset the inherited margin to keep the pill tight to the
+     `Runs on` chip list above. */
+  margin-block-start: 0;
+  font-size: clamp(13px, 1vw, 15px);
+  padding: 10px 14px 10px 16px;
+}
+
+/* "See how it works" variant — now sits INLINE on the title row
+   alongside the phase pill, tool name, and IN USE status. Pushed
+   to the right edge of the row via `margin-left: auto`. Same
+   "subtler" register as the phase pill across the row: paper
+   background, hairline Clay border, no halo by default. Hover
+   adds the standard Clay lift. The play-triangle glyph replaces
+   the external-link arrow used on the demo CTAs so the two
+   action types stay distinct (triangle = "open detail", arrow =
+   "leaves the page"). */
+.aiop-claude-adoption .ca-tools__bridge--see-it {
+  margin: 0 0 0 auto;
+  padding: 6px 10px 6px 12px;
+  background: var(--aiop-card);
+  border: 1px solid color-mix(in oklab, var(--aiop-violet) 40%, var(--aiop-rule-strong));
+  box-shadow: none;
+  font-size: clamp(12px, 0.92vw, 13.5px);
+  color: var(--aiop-ink);
+  cursor: pointer;
+}
+
+.aiop-claude-adoption .ca-tools__bridge--see-it:hover,
+.aiop-claude-adoption .ca-tools__bridge--see-it:focus-visible {
+  border-color: color-mix(in oklab, var(--aiop-violet) 60%, var(--aiop-rule-strong));
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--aiop-violet) 14%, transparent);
+  transform: translateY(-1px);
+}
+
+.aiop-claude-adoption .ca-tools__bridge--see-it .aiop-engine-pattern__bridge-arrow {
+  /* Smaller arrow circle than the bottom CTAs since the whole
+     top-right pill is compact. Soft Clay tint behind the play
+     triangle keeps the colour family consistent with the rest of
+     the page. */
+  width: 22px;
+  height: 22px;
+  background: color-mix(in oklab, var(--aiop-violet) 14%, transparent);
+  border-color: color-mix(in oklab, var(--aiop-violet) 28%, transparent);
+}
