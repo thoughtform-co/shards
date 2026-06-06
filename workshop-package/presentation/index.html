@@ -1,0 +1,1576 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Creative AI Workshop</title>
+  <meta name="description" content="A self-contained workshop deck for using AI across the creative process. Eleven full-viewport frames on the Navigate, Encode, Build flywheel." />
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600;6..96,700&family=IBM+Plex+Sans:wght@300;400;450;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ══════════════════════════════════════════════════════════════════
+     *  Creative AI Workshop · self-contained deck.
+     *  Eleven viewport-snapping frames that ride the Aether warm-paper
+     *  palette. Mode tokens swap atmospherics (paper / ember); shared
+     *  primitives keep the type rhythm consistent across frames.
+     * ══════════════════════════════════════════════════════════════════ */
+
+    :root {
+      --accent: #d97757;
+      --accent-deep: #b6411e;
+      --accent-soft: #fbe5dd;
+      --ember-glow: #f2a95c;
+      --violet: #6243b9;
+      --violet-soft: rgba(98, 67, 185, 0.16);
+
+      --paper: #f3ece0;
+      --paper-2: #ebe3d3;
+      --paper-3: #e0d5c0;
+      --card: #fbf6e8;
+      --card-2: #fefaf0;
+      --ink: #1a1612;
+      --ink-soft: #2c241a;
+      --muted: #6c6356;
+      --faint: #998f7e;
+      --rule: rgba(26, 22, 18, 0.12);
+      --rule-strong: rgba(26, 22, 18, 0.22);
+
+      --ember-base: #1a130c;
+      --ember-base-2: #221a12;
+      --ember-card: #2a1f16;
+      --ember-card-2: #322619;
+      --ember-rule: #3a2c20;
+      --ember-rule-strong: #54402f;
+      --ember-ink: #f4e8d8;
+      --ember-soft: #c8b89e;
+      --ember-faint: #8a7a66;
+
+      --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+      --body: "IBM Plex Sans", "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+      --pad-x: clamp(28px, 6vw, 120px);
+      --pad-y: clamp(56px, 8vh, 96px);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    html {
+      background: var(--ember-base);
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: var(--body);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-feature-settings: "kern", "liga", "ss01", "cv11";
+      letter-spacing: -0.005em;
+      text-rendering: optimizeLegibility;
+    }
+    a { color: inherit; }
+    em, i, cite, address { font-style: normal; }
+
+    /* ── Deck structure ──────────────────────────────────────────── */
+
+    .deck {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .frame {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      isolation: isolate;
+      overflow: hidden;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    .frame[data-mode="ember"] { background: var(--ember-base); color: var(--ember-ink); }
+    .frame[data-mode="paper"] { background: var(--paper); color: var(--ink); }
+
+    /* Atmospherics · firelight gradient ----------------------------- */
+    .frame::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .frame[data-mode="ember"]::before {
+      background:
+        radial-gradient(ellipse 60% 50% at 28% 30%, rgba(242, 169, 92, 0.32) 0%, transparent 58%),
+        radial-gradient(ellipse 70% 60% at 88% 78%, rgba(217, 119, 87, 0.20) 0%, transparent 62%);
+    }
+    .frame[data-mode="paper"]::before {
+      background:
+        radial-gradient(ellipse 55% 45% at 22% 28%, rgba(217, 119, 87, 0.10) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 92% 88%, rgba(217, 119, 87, 0.06) 0%, transparent 65%);
+    }
+
+    /* Atmospherics · grain ------------------------------------------ */
+    .frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+      background-size: 220px 220px;
+      mix-blend-mode: overlay;
+      opacity: 0.07;
+    }
+    .frame[data-mode="paper"]::after { opacity: 0.04; }
+
+    /* Vignette ------------------------------------------------------- */
+    .vignette {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .frame[data-mode="ember"] .vignette {
+      box-shadow:
+        inset 0 0 200px 30px rgba(8, 4, 2, 0.55),
+        inset 0 0 600px 80px rgba(8, 4, 2, 0.30);
+    }
+    .frame[data-mode="paper"] .vignette {
+      box-shadow:
+        inset 0 0 240px 20px rgba(150, 130, 100, 0.16),
+        inset 0 0 720px 60px rgba(150, 130, 100, 0.08);
+    }
+
+    /* Stage — content sits above all atmospherics ------------------- */
+    .stage {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      min-height: inherit;
+      padding: var(--pad-y) var(--pad-x);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Shared primitives ───────────────────────────────────────── */
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--mono);
+      font-size: clamp(11px, 1vw, 13px);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--muted);
+    }
+    .frame[data-mode="ember"] .eyebrow { color: var(--ember-faint); }
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: var(--accent);
+    }
+    .eyebrow-anchor {
+      position: absolute;
+      top: var(--pad-y);
+      left: var(--pad-x);
+      z-index: 4;
+    }
+
+    .display {
+      font-family: var(--display);
+      font-weight: 500;
+      line-height: 1.04;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .frame[data-mode="ember"] .display { color: var(--ember-ink); }
+    .display .accent { color: var(--accent); font-weight: 500; }
+    .display .quiet { color: var(--faint); font-weight: 500; }
+    .frame[data-mode="ember"] .display .quiet { color: var(--ember-faint); }
+
+    .lead {
+      font-family: var(--body);
+      font-size: clamp(17px, 1.6vw, 22px);
+      font-weight: 500;
+      line-height: 1.4;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+    .frame[data-mode="ember"] .lead { color: var(--ember-soft); }
+
+    .body {
+      font-family: var(--body);
+      font-size: clamp(15px, 1.3vw, 19px);
+      font-weight: 450;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+    .frame[data-mode="ember"] .body { color: var(--ember-soft); }
+    .body strong { font-weight: 700; color: var(--ink); }
+    .frame[data-mode="ember"] .body strong { color: var(--ember-ink); }
+    .body .accent { color: var(--accent); font-weight: 700; }
+
+    .label {
+      font-family: var(--mono);
+      font-size: clamp(10px, 0.8vw, 11px);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .frame[data-mode="ember"] .label { color: var(--ember-faint); }
+    .label.is-accent { color: var(--accent); }
+
+    .arrow { color: var(--accent); display: inline-block; font-weight: 500; }
+
+    .rule { width: 100%; height: 1px; background: var(--rule); border: 0; }
+    .frame[data-mode="ember"] .rule { background: var(--ember-rule); }
+
+    /* ── Frame 00 · Hero ─────────────────────────────────────────── */
+
+    .f-hero .stage { justify-content: space-between; gap: clamp(48px, 8vh, 96px); }
+    .f-hero__top { max-width: 1200px; }
+    .f-hero__display {
+      font-family: var(--display);
+      font-size: clamp(56px, 9vw, 132px);
+      font-weight: 500;
+      line-height: 0.96;
+      letter-spacing: -0.025em;
+      color: var(--ember-ink);
+      margin: clamp(32px, 4vh, 56px) 0 0;
+    }
+    .f-hero__display .accent { color: var(--accent); font-weight: 500; }
+    .f-hero__sub {
+      margin-top: clamp(20px, 3vh, 40px);
+      max-width: 720px;
+      font-family: var(--body);
+      font-size: clamp(17px, 1.6vw, 22px);
+      line-height: 1.4;
+      color: var(--ember-soft);
+      font-weight: 500;
+    }
+    .f-hero__bottom {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(20px, 3vh, 32px);
+    }
+    .f-hero__rule {
+      width: 100%;
+      height: 1px;
+      background: rgba(244, 232, 216, 0.20);
+      border: 0;
+    }
+    .f-hero__stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: clamp(32px, 5vw, 96px);
+      row-gap: 24px;
+    }
+    .f-hero__stat-num {
+      font-family: var(--display);
+      font-size: clamp(40px, 5.5vw, 80px);
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      color: var(--ember-ink);
+    }
+    .f-hero__stat-num .accent { color: var(--accent); }
+    .f-hero__stat-cap {
+      margin-top: 12px;
+      font-family: var(--body);
+      font-size: clamp(13px, 1.1vw, 17px);
+      line-height: 1.4;
+      color: var(--ember-soft);
+      max-width: 320px;
+      font-weight: 450;
+    }
+
+    /* ── Frame 01 · Reframe ──────────────────────────────────────── */
+
+    .f-reframe .stage { justify-content: space-between; gap: clamp(40px, 6vh, 64px); }
+    .f-reframe__head { margin-top: clamp(56px, 8vh, 96px); max-width: 1700px; }
+    .f-reframe__q {
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: clamp(28px, 3.2vw, 44px);
+      line-height: 1.15;
+      color: var(--faint);
+      max-width: 1300px;
+      margin: 0;
+    }
+    .f-reframe__a {
+      margin: clamp(16px, 2vh, 24px) 0 0;
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: clamp(48px, 7vw, 110px);
+      line-height: 1.0;
+      letter-spacing: -0.022em;
+      color: var(--ink);
+    }
+    .f-reframe__a .accent { color: var(--accent); font-weight: 500; }
+    .f-reframe__cols {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(32px, 4vw, 64px);
+      padding-top: clamp(24px, 3vh, 40px);
+      border-top: 1px solid var(--rule-strong);
+    }
+    .f-reframe__col { display: flex; flex-direction: column; gap: 12px; }
+    .f-reframe__col-arrow {
+      font-family: var(--display);
+      font-size: clamp(24px, 2.4vw, 32px);
+      color: var(--accent);
+      font-weight: 500;
+      line-height: 1;
+    }
+    .f-reframe__col-title {
+      font-family: var(--display);
+      font-size: clamp(22px, 2.2vw, 30px);
+      font-weight: 500;
+      letter-spacing: -0.012em;
+      color: var(--ink);
+      line-height: 1.15;
+    }
+    .f-reframe__col-body {
+      font-family: var(--body);
+      font-size: clamp(15px, 1.2vw, 17px);
+      line-height: 1.5;
+      color: var(--ink-soft);
+      font-weight: 450;
+    }
+
+    /* ── Frame 02 · Collapse ─────────────────────────────────────── */
+
+    .f-collapse .stage { justify-content: space-between; gap: clamp(40px, 6vh, 64px); }
+    .f-collapse__head { margin-top: clamp(56px, 8vh, 96px); max-width: 1700px; }
+    .f-collapse__display {
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: clamp(48px, 7vw, 120px);
+      line-height: 1.0;
+      letter-spacing: -0.022em;
+      color: var(--ember-ink);
+      margin: 0;
+    }
+    .f-collapse__display .accent { color: var(--accent); font-weight: 500; }
+    .f-collapse__line { display: block; }
+    .f-collapse__foot {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(40px, 5vw, 96px);
+      max-width: 1500px;
+      padding-top: clamp(24px, 3vh, 40px);
+      border-top: 1px solid var(--ember-rule);
+    }
+    .f-collapse__foot p {
+      font-family: var(--body);
+      font-size: clamp(15px, 1.3vw, 19px);
+      line-height: 1.55;
+      color: var(--ember-soft);
+      font-weight: 450;
+      margin: 0;
+      max-width: 580px;
+    }
+    .f-collapse__foot p strong { color: var(--ember-ink); font-weight: 700; }
+    .f-collapse__foot p .accent { color: var(--accent); font-weight: 700; }
+
+    /* ── Frame 03 · Flywheel ─────────────────────────────────────── */
+
+    .f-flywheel .stage { justify-content: space-between; gap: clamp(40px, 6vh, 64px); }
+    .f-flywheel__head { margin-top: clamp(56px, 8vh, 96px); max-width: 1700px; }
+    .f-flywheel__display {
+      font-family: var(--display);
+      font-size: clamp(44px, 6vw, 92px);
+      font-weight: 500;
+      line-height: 1.0;
+      letter-spacing: -0.022em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .f-flywheel__display .accent { color: var(--accent); font-weight: 500; }
+    .f-flywheel__sub { margin-top: clamp(16px, 2vh, 24px); max-width: 1100px; }
+    .f-flywheel__cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(20px, 2vw, 32px);
+    }
+    .phase-card {
+      position: relative;
+      background: var(--card);
+      border: 1px solid var(--rule);
+      padding: clamp(28px, 3vw, 40px) clamp(24px, 2.4vw, 36px);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow: hidden;
+      min-height: clamp(280px, 36vh, 380px);
+    }
+    .phase-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent) 0%, rgba(217,119,87,0.5) 60%, transparent 100%);
+    }
+    .phase-card__n {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .phase-card__title {
+      font-family: var(--display);
+      font-size: clamp(28px, 2.8vw, 40px);
+      font-weight: 500;
+      line-height: 1.05;
+      letter-spacing: -0.014em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .phase-card__title .accent { color: var(--accent); font-weight: 500; }
+    .phase-card__body {
+      font-family: var(--body);
+      font-size: clamp(15px, 1.2vw, 17px);
+      line-height: 1.55;
+      color: var(--ink-soft);
+      font-weight: 450;
+      margin: 0;
+      flex: 1;
+    }
+    .phase-card__verbs {
+      list-style: none;
+      padding: 12px 0 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      border-top: 1px dashed var(--rule);
+    }
+    .phase-card__verbs li {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+      padding: 4px 8px;
+      border: 1px solid var(--rule-strong);
+      background: rgba(255, 255, 255, 0.30);
+    }
+
+    /* ── Frame 04 · Navigate ─────────────────────────────────────── */
+
+    .f-navigate .stage { justify-content: space-between; gap: clamp(40px, 6vh, 64px); }
+    .f-navigate__head { margin-top: clamp(56px, 8vh, 96px); max-width: 1700px; }
+    .f-navigate__display {
+      font-family: var(--display);
+      font-size: clamp(44px, 6vw, 92px);
+      font-weight: 500;
+      line-height: 1.0;
+      letter-spacing: -0.022em;
+      color: var(--ember-ink);
+      margin: 0;
+    }
+    .f-navigate__display .accent { color: var(--accent); font-weight: 500; }
+    .f-navigate__sub {
+      margin-top: clamp(16px, 2vh, 24px);
+      max-width: 1100px;
+      color: var(--ember-soft);
+    }
+    .spectrum {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid var(--ember-rule-strong);
+    }
+    .spectrum__col {
+      padding: clamp(24px, 2.6vw, 36px);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .spectrum__col + .spectrum__col {
+      border-left: 1px solid var(--ember-rule-strong);
+    }
+    .spectrum__pole {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .spectrum__title {
+      font-family: var(--display);
+      font-size: clamp(28px, 2.6vw, 36px);
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.012em;
+      color: var(--ember-ink);
+      margin: 0;
+    }
+    .spectrum__body {
+      font-family: var(--body);
+      font-size: clamp(15px, 1.2vw, 17px);
+      line-height: 1.55;
+      color: var(--ember-soft);
+      font-weight: 450;
+      margin: 0;
+    }
+    .spectrum__list {
+      list-style: none;
+      padding: 12px 0 0;
+      margin: 0;
+      border-top: 1px solid var(--ember-rule);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .spectrum__list li {
+      font-family: var(--body);
+      font-size: clamp(13px, 1vw, 15px);
+      line-height: 1.5;
+      color: var(--ember-soft);
+      padding-left: 18px;
+      position: relative;
+    }
+    .spectrum__list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.65em;
+      width: 6px;
+      height: 1px;
+      background: var(--accent);
+    }
+    .f-navigate__close {
+      font-family: var(--display);
+      font-size: clamp(18px, 1.6vw, 24px);
+      font-weight: 500;
+      color: var(--ember-soft);
+      margin: 0;
+      padding-top: clamp(16px, 2vh, 24px);
+      border-top: 1px solid var(--ember-rule);
+    }
+    .f-navigate__close .accent { color: var(--accent); font-weight: 700; }
+
+    /* ── Frame 05 · Encode (anatomy) ─────────────────────────────── */
+
+    .f-encode .stage { justify-content: space-between; gap: clamp(40px, 6vh, 64px); }
+    .f-encode__head { margin-top: clamp(56px, 8vh, 96px); max-width: 1700px; }
+    .f-encode__display {
+      font-family: var(--display);
+      font-size: clamp(44px, 6vw, 92px);
+      font-weight: 500;
+      line-height: 1.0;
+      letter-spacing: -0.022em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .f-encode__display .accent { color: var(--accent); font-weight: 500; }
+    .f-encode__sub { margin-top: clamp(16px, 2vh, 24px); max-width: 1100px; }
+    .f-encode__diagram {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: clamp(40px, 5vw, 96px);
+      align-items: start;
+    }
+    .anatomy {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid var(--rule-strong);
+    }
+    .anatomy__row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: clamp(16px, 2vh, 24px) 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .anatomy__row:last-child { border-bottom: 1px solid var(--rule-strong); }
+    .anatomy__row-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .anatomy__row.is-skill .anatomy__row-label { color: var(--accent); }
+    .anatomy__row-name {
+      font-family: var(--display);
+      font-size: clamp(22px, 2vw, 32px);
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.014em;
+      color: var(--ink);
+    }
+    .anatomy__row-cap {
+      font-family: var(--body);
+      font-size: clamp(14px, 1.1vw, 17px);
+      line-height: 1.45;
+      color: var(--ink-soft);
+      font-weight: 450;
+      margin: 4px 0 0;
+    }
+    .file-mock {
+      background: var(--card);
+      border: 1px solid var(--rule);
+      padding: clamp(20px, 2vw, 28px);
+      font-family: var(--mono);
+      font-size: clamp(11px, 0.9vw, 13px);
+      line-height: 1.6;
+      color: var(--ink-soft);
+      box-shadow: 0 16px 32px rgba(60, 40, 20, 0.06);
+    }
+    .file-mock__head {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--rule);
+      font-weight: 700;
+    }
+    .file-mock__line { display: block; white-space: pre; }
+    .file-mock__line .key { color: var(--accent); font-weight: 700; }
+    .file-mock__line .quiet { color: var(--muted); }
+
+    /* ── Frame 06 · Encode live ──────────────────────────────────── */
+
+    .f-encode-live .stage { justify-content: space-between; gap: clamp(40px, 6vh, 64px); }
+    .f-encode-live__head { margin-top: clamp(56px, 8vh, 96px); max-width: 1700px; }
+    .f-encode-live__display {
+      font-family: var(--display);
+      font-size: clamp(44px, 6vw, 92px);
+      font-weight: 500;
+      line-height: 1.0;
+      letter-spacing: -0.022em;
+      color: var(--ember-ink);
+      margin: 0;
+    }
+    .f-encode-live__display .accent { color: var(--accent); font-weight: 500; }
+    .f-encode-live__sub {
+      margin-top: clamp(16px, 2vh, 24px);
+      max-width: 1100px;
+      color: var(--ember-soft);
+    }
+    .recipe {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(20px, 2vw, 28px);
+    }
+    .recipe__step {
+      position: relative;
+      background: var(--ember-card);
+      border: 1px solid var(--ember-rule-strong);
+      padding: clamp(24px, 2.4vw, 32px) clamp(20px, 2vw, 26px);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: clamp(260px, 32vh, 320px);
+    }
+    .recipe__step::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--ember-glow));
+    }
+    .recipe__n {
+      font-family: var(--display);
+      font-size: clamp(40px, 4vw, 64px);
+      font-weight: 500;
+      line-height: 1;
+      color: var(--accent);
+      opacity: 0.35;
+      letter-spacing: -0.02em;
+    }
+    .recipe__label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ember-faint);
+      font-weight: 700;
+    }
+    .recipe__title {
+      font-family: var(--display);
+      font-size: clamp(22px, 2vw, 28px);
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: -0.012em;
+      color: var(--ember-ink);
+      margin: 0;
+    }
+    .recipe__body {
+      font-family: var(--body);
+      font-size: clamp(13px, 1.1vw, 16px);
+      line-height: 1.55;
+      color: var(--ember-soft);
+      font-weight: 450;
+      margin: 0;
+      flex: 1;
+    }
+    .f-encode-live__close {
+      font-family: var(--display);
+      font-size: clamp(18px, 1.6vw, 24px);
+      font-weight: 500;
+      color: var(--ember-soft);
+      margin: 0;
+      padding-top: clamp(16px, 2vh, 24px);
+      border-top: 1px solid var(--ember-rule);
+    }
+    .f-encode-live__close .accent { color: var(--accent); font-weight: 700; }
+
+    /* ── Frame 07 · Build ────────────────────────────────────────── */
+
+    .f-build .stage { justify-content: space-between; gap: clamp(40px, 6vh, 64px); }
+    .f-build__head { margin-top: clamp(56px, 8vh, 96px); max-width: 1700px; }
+    .f-build__display {
+      font-family: var(--display);
+      font-size: clamp(44px, 6vw, 92px);
+      font-weight: 500;
+      line-height: 1.0;
+      letter-spacing: -0.022em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .f-build__display .accent { color: var(--accent); font-weight: 500; }
+    .f-build__sub { margin-top: clamp(16px, 2vh, 24px); max-width: 1100px; }
+    .f-build__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(20px, 2vw, 32px);
+    }
+    .demo-card {
+      position: relative;
+      background: linear-gradient(160deg, var(--card-2) 0%, var(--paper) 60%, var(--paper-2) 100%);
+      border: 1px solid var(--rule);
+      padding: clamp(28px, 3vw, 40px) clamp(24px, 2.4vw, 32px);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow: hidden;
+      min-height: clamp(280px, 36vh, 360px);
+    }
+    .demo-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--ember-glow) 70%, transparent 100%);
+    }
+    .demo-card__label {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .demo-card__title {
+      font-family: var(--display);
+      font-size: clamp(24px, 2.4vw, 32px);
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -0.014em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .demo-card__body {
+      font-family: var(--body);
+      font-size: clamp(14px, 1.2vw, 17px);
+      line-height: 1.55;
+      color: var(--ink-soft);
+      font-weight: 450;
+      flex: 1;
+      margin: 0;
+    }
+    .demo-card__chain {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      padding-top: 12px;
+      border-top: 1px solid var(--rule);
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .demo-card__chain .pill {
+      padding: 5px 10px;
+      border: 1px solid var(--rule-strong);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.50);
+      color: var(--ink-soft);
+      font-weight: 600;
+    }
+    .demo-card__chain .arrow { margin: 0 2px; }
+
+    /* ── Frame 08 · Starter kit ──────────────────────────────────── */
+
+    .f-kit .stage { justify-content: space-between; gap: clamp(40px, 6vh, 64px); }
+    .f-kit__head { margin-top: clamp(56px, 8vh, 96px); max-width: 1700px; }
+    .f-kit__display {
+      font-family: var(--display);
+      font-size: clamp(44px, 6vw, 92px);
+      font-weight: 500;
+      line-height: 1.0;
+      letter-spacing: -0.022em;
+      color: var(--ink);
+      margin: 0;
+    }
+    .f-kit__display .accent { color: var(--accent); font-weight: 500; }
+    .f-kit__sub { margin-top: clamp(16px, 2vh, 24px); max-width: 1100px; }
+    .f-kit__list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(16px, 2vh, 24px) clamp(40px, 5vw, 96px);
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .kit-row {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: clamp(20px, 2vw, 32px);
+      align-items: baseline;
+      padding: clamp(16px, 2vh, 24px) 0;
+      border-top: 1px solid var(--rule);
+    }
+    .kit-row:first-child,
+    .kit-row:nth-child(2) { border-top: 1px solid var(--rule-strong); }
+    .kit-row__path {
+      font-family: var(--mono);
+      font-size: clamp(13px, 1vw, 15px);
+      letter-spacing: 0.02em;
+      color: var(--accent);
+      font-weight: 600;
+      word-break: break-all;
+    }
+    .kit-row__what {
+      font-family: var(--body);
+      font-size: clamp(15px, 1.2vw, 18px);
+      line-height: 1.5;
+      color: var(--ink-soft);
+      font-weight: 450;
+    }
+    .kit-row__what strong { color: var(--ink); font-weight: 700; }
+    .f-kit__close {
+      font-family: var(--display);
+      font-size: clamp(18px, 1.6vw, 24px);
+      font-weight: 500;
+      color: var(--ink-soft);
+      margin: 0;
+      padding-top: clamp(16px, 2vh, 24px);
+      border-top: 1px solid var(--rule-strong);
+    }
+    .f-kit__close .accent { color: var(--accent); font-weight: 700; }
+
+    /* ── Frame 09 · Second brain (substrate map) ─────────────────── */
+
+    .f-brain .stage { justify-content: space-between; gap: clamp(40px, 6vh, 64px); }
+    .f-brain__head { margin-top: clamp(56px, 8vh, 96px); max-width: 1700px; }
+    .f-brain__display {
+      font-family: var(--display);
+      font-size: clamp(44px, 6vw, 92px);
+      font-weight: 500;
+      line-height: 1.0;
+      letter-spacing: -0.022em;
+      color: var(--ember-ink);
+      margin: 0;
+    }
+    .f-brain__display .accent { color: var(--accent); font-weight: 500; }
+    .f-brain__sub {
+      margin-top: clamp(16px, 2vh, 24px);
+      max-width: 1100px;
+      color: var(--ember-soft);
+    }
+    .f-brain__sub strong { color: var(--ember-ink); font-weight: 700; }
+    .substrate-map {
+      display: grid;
+      grid-template-columns: 1fr auto 1.15fr auto 1fr;
+      gap: 0;
+      align-items: stretch;
+      border: 1px solid var(--ember-rule-strong);
+      background: linear-gradient(160deg, rgba(50, 38, 25, 0.45) 0%, rgba(34, 26, 18, 0.65) 100%);
+    }
+    .substrate-col {
+      padding: clamp(20px, 2vw, 28px);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      min-height: 0;
+    }
+    .substrate-col + .substrate-connector + .substrate-col {
+      border-left: 0;
+    }
+    .substrate-col--substrate {
+      background: linear-gradient(160deg, rgba(217, 119, 87, 0.14) 0%, rgba(217, 119, 87, 0.04) 60%, transparent 100%);
+      border-left: 1px solid var(--accent);
+      border-right: 1px solid var(--accent);
+    }
+    .substrate-col--substrate::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--ember-glow) 70%, var(--accent) 100%);
+    }
+    .substrate-col__n {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ember-faint);
+      font-weight: 700;
+    }
+    .substrate-col--substrate .substrate-col__n { color: var(--accent); }
+    .substrate-col__title {
+      font-family: var(--display);
+      font-size: clamp(18px, 1.6vw, 22px);
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: -0.012em;
+      color: var(--ember-ink);
+      margin: 4px 0 6px;
+    }
+    .substrate-col__items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+    .substrate-col__item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: rgba(0, 0, 0, 0.20);
+      border: 1px solid var(--ember-rule);
+      font-family: var(--body);
+      font-size: clamp(12px, 0.95vw, 14px);
+      color: var(--ember-soft);
+      font-weight: 500;
+      line-height: 1.3;
+    }
+    .substrate-col__item .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--ember-glow);
+      flex-shrink: 0;
+    }
+    .substrate-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 14px;
+      min-width: 56px;
+    }
+    .substrate-connector__line {
+      width: 1px;
+      flex: 1;
+      background: linear-gradient(180deg, transparent 0%, var(--ember-rule-strong) 25%, var(--ember-rule-strong) 75%, transparent 100%);
+      min-height: 32px;
+    }
+    .substrate-connector__label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ember-faint);
+      font-weight: 600;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      white-space: nowrap;
+    }
+    .substrate-connector__label .arrow {
+      color: var(--accent);
+      writing-mode: horizontal-tb;
+      display: inline-block;
+      transform: rotate(90deg);
+      margin: 4px 0;
+    }
+
+    /* ── Frame 10 · Closer ───────────────────────────────────────── */
+
+    .f-closer .stage {
+      justify-content: space-between;
+      gap: clamp(40px, 6vh, 64px);
+    }
+    .f-closer::before {
+      background:
+        radial-gradient(ellipse 70% 60% at 22% 88%, rgba(242, 169, 92, 0.30) 0%, transparent 62%),
+        radial-gradient(ellipse 60% 50% at 88% 22%, rgba(217, 119, 87, 0.14) 0%, transparent 60%) !important;
+    }
+    .f-closer__main {
+      margin-top: clamp(56px, 8vh, 96px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(32px, 5vh, 56px);
+      max-width: 1700px;
+    }
+    .f-closer__display {
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: clamp(48px, 6.5vw, 110px);
+      line-height: 1.0;
+      letter-spacing: -0.022em;
+      color: var(--ember-ink);
+      margin: 0;
+    }
+    .f-closer__display .quiet { color: var(--ember-faint); font-weight: 500; }
+    .f-closer__display .accent { color: var(--accent); font-weight: 500; }
+    .f-closer__spine {
+      padding-top: clamp(24px, 3vh, 40px);
+      border-top: 1px solid var(--ember-rule);
+      font-family: var(--display);
+      font-weight: 500;
+      font-size: clamp(24px, 2.4vw, 36px);
+      line-height: 1.3;
+      color: var(--ember-soft);
+      max-width: 1500px;
+      margin: 0;
+    }
+    .f-closer__spine .accent { color: var(--accent); font-weight: 700; }
+    .f-closer__foot {
+      display: flex;
+      align-items: center;
+      gap: clamp(16px, 2vw, 24px);
+      flex-wrap: wrap;
+      padding-top: clamp(20px, 3vh, 32px);
+      border-top: 1px solid var(--ember-rule);
+      font-family: var(--mono);
+      font-size: clamp(11px, 1vw, 14px);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ember-faint);
+      font-weight: 600;
+    }
+    .f-closer__foot .arrow { color: var(--accent); font-size: clamp(14px, 1.4vw, 18px); }
+    .f-closer__foot .name { color: var(--ember-ink); font-weight: 700; }
+
+    /* ── Responsive ─────────────────────────────────────────────── */
+
+    @media (max-width: 900px) {
+      .f-hero__stats,
+      .f-reframe__cols,
+      .f-flywheel__cards,
+      .f-build__grid,
+      .f-kit__list { grid-template-columns: 1fr; }
+      .f-encode__diagram { grid-template-columns: 1fr; }
+      .recipe { grid-template-columns: 1fr 1fr; }
+      .substrate-map { grid-template-columns: 1fr; }
+      .substrate-col--substrate {
+        border-left: 1px solid var(--accent);
+        border-right: 1px solid var(--accent);
+        border-top: 1px solid var(--accent);
+        border-bottom: 1px solid var(--accent);
+      }
+      .substrate-connector {
+        flex-direction: row;
+        padding: 14px 0;
+        min-width: 0;
+        min-height: 56px;
+      }
+      .substrate-connector__line {
+        height: 1px;
+        width: auto;
+        flex: 1;
+        background: linear-gradient(90deg, transparent 0%, var(--ember-rule-strong) 25%, var(--ember-rule-strong) 75%, transparent 100%);
+        min-height: 0;
+      }
+      .substrate-connector__label {
+        writing-mode: horizontal-tb;
+        transform: none;
+      }
+      .substrate-connector__label .arrow {
+        transform: none;
+        margin: 0 0 0 6px;
+      }
+      .spectrum { grid-template-columns: 1fr; }
+      .spectrum__col + .spectrum__col {
+        border-left: 0;
+        border-top: 1px solid var(--ember-rule-strong);
+      }
+      .f-collapse__foot { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .recipe { grid-template-columns: 1fr; }
+      .kit-row { grid-template-columns: 1fr; gap: 6px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; scroll-snap-type: none; }
+    }
+
+    @media print {
+      html { scroll-snap-type: none; background: white; }
+      .frame {
+        min-height: auto;
+        page-break-after: always;
+        break-after: page;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="deck">
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 00 · HERO · ember
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-hero" data-slide-id="00-hero" data-mode="ember" aria-labelledby="f00-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">00 &middot; CREATIVE AI WORKSHOP</span>
+    <div class="stage">
+      <div class="f-hero__top">
+        <h1 class="f-hero__display" id="f00-title">A speed layer<br/>on the <span class="accent">creative process<span class="accent">.</span></span></h1>
+        <p class="f-hero__sub">Pure AI generation has hit its plateau. The real gains are around the work: faster turnaround, encoded judgment, tools that compound.</p>
+      </div>
+      <div class="f-hero__bottom">
+        <hr class="f-hero__rule" />
+        <div class="f-hero__stats">
+          <div>
+            <div class="f-hero__stat-num">3<span class="accent">x</span></div>
+            <div class="f-hero__stat-cap">faster on routine production work, week one.</div>
+          </div>
+          <div>
+            <div class="f-hero__stat-num">1 <span class="accent">file</span></div>
+            <div class="f-hero__stat-cap">a Skill encodes the way you think into one place.</div>
+          </div>
+          <div>
+            <div class="f-hero__stat-num">N <span class="accent">tools</span></div>
+            <div class="f-hero__stat-cap">built on the same substrate, by the people who use them.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 01 · THE REFRAME · paper
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-reframe" data-slide-id="01-reframe" data-mode="paper" aria-labelledby="f01-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">01 &middot; THE REFRAME</span>
+    <div class="stage">
+      <div class="f-reframe__head">
+        <p class="f-reframe__q">Where do AI gains actually come from now?</p>
+        <h2 class="f-reframe__a" id="f01-title">Not the output. <span class="accent">The process around it.</span></h2>
+      </div>
+      <div class="f-reframe__cols">
+        <div class="f-reframe__col">
+          <span class="f-reframe__col-arrow">&rarr;</span>
+          <span class="f-reframe__col-title">Speed up the routine.</span>
+          <p class="f-reframe__col-body">Briefing docs, transcripts, decks, shotlists, alt copy. The work that used to fill the day, done in minutes.</p>
+        </div>
+        <div class="f-reframe__col">
+          <span class="f-reframe__col-arrow">&rarr;</span>
+          <span class="f-reframe__col-title">Encode what good looks like.</span>
+          <p class="f-reframe__col-body">Tone, taste, the calls only seniors make. Written down once, available to anyone the next time the same kind of work shows up.</p>
+        </div>
+        <div class="f-reframe__col">
+          <span class="f-reframe__col-arrow">&rarr;</span>
+          <span class="f-reframe__col-title">Build tools on top of it.</span>
+          <p class="f-reframe__col-body">Landing pages from a video. A cut suggestion from an interview. A supporting visual from existing assets. The interface bends to the work, not the other way around.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 02 · THE COLLAPSE · ember
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-collapse" data-slide-id="02-collapse" data-mode="ember" aria-labelledby="f02-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">02 &middot; THE COLLAPSE</span>
+    <div class="stage">
+      <div class="f-collapse__head">
+        <h2 class="f-collapse__display" id="f02-title">
+          <span class="f-collapse__line">AI collapses the distance</span>
+          <span class="f-collapse__line">between <span class="accent">thought</span> and <span class="accent">form<span class="accent">.</span></span></span>
+        </h2>
+      </div>
+      <div class="f-collapse__foot">
+        <p>A deck, a video edit, a landing page, a brief used to be the <strong>end</strong> of a translation process.</p>
+        <p>Now it&rsquo;s the beginning of <span class="accent">a new loop</span>. Making is cheap. Knowing what to make, and whether it&rsquo;s any good, is the chokepoint.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 03 · THE FLYWHEEL · paper
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-flywheel" data-slide-id="03-flywheel" data-mode="paper" aria-labelledby="f03-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">03 &middot; THE FLYWHEEL</span>
+    <div class="stage">
+      <div class="f-flywheel__head">
+        <h2 class="f-flywheel__display" id="f03-title">Three motions, one team at a time. <span class="accent">Compounding.</span></h2>
+        <p class="f-flywheel__sub body">Navigate first. Then encode what works into something both you and the agents you build can reuse. Then build tools on top.</p>
+      </div>
+      <div class="f-flywheel__cards">
+        <article class="phase-card">
+          <span class="phase-card__n">01 &middot; NAVIGATE</span>
+          <h3 class="phase-card__title">Learn to work <span class="accent">with</span> the intelligence.</h3>
+          <p class="phase-card__body">Inside real work, not toy demos. Notice where AI makes the work better and where it flattens it. The skill is choosing where on the tool / collaborator spectrum the work belongs.</p>
+          <ul class="phase-card__verbs"><li>Try</li><li>Compare</li><li>Calibrate</li></ul>
+        </article>
+        <article class="phase-card">
+          <span class="phase-card__n">02 &middot; ENCODE</span>
+          <h3 class="phase-card__title">Capture the <span class="accent">judgment</span> as substrate.</h3>
+          <p class="phase-card__body">The taste, the rules, the examples, the way you brief. Turn it into one file the model can inherit. Stop starting from zero on every new chat.</p>
+          <ul class="phase-card__verbs"><li>Brief</li><li>Show</li><li>Refine</li></ul>
+        </article>
+        <article class="phase-card">
+          <span class="phase-card__n">03 &middot; BUILD</span>
+          <h3 class="phase-card__title">Turn substrate into <span class="accent">tools</span>.</h3>
+          <p class="phase-card__body">A workflow becomes a script becomes a small app. The interface bends to the work. Slack today, Cursor tomorrow, an agent the day after.</p>
+          <ul class="phase-card__verbs"><li>Compose</li><li>Wire</li><li>Ship</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 04 · NAVIGATE · ember
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-navigate" data-slide-id="04-navigate" data-mode="ember" aria-labelledby="f04-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">04 &middot; NAVIGATE</span>
+    <div class="stage">
+      <div class="f-navigate__head">
+        <h2 class="f-navigate__display" id="f04-title">Treat it as <span class="accent">intelligence</span>, not software.</h2>
+        <p class="f-navigate__sub body">Sometimes you use AI as a tool. Sometimes you work with it as a collaborator. The shift is choosing which one the task needs.</p>
+      </div>
+      <div class="spectrum">
+        <div class="spectrum__col">
+          <span class="spectrum__pole">&larr; AS A TOOL</span>
+          <h3 class="spectrum__title">Deterministic enough to automate.</h3>
+          <p class="spectrum__body">Use it for the routine: transcripts, decks, alt copy, briefing docs, batch renames, format conversions. Lock the freedom band down.</p>
+          <ul class="spectrum__list">
+            <li>Clear input, clear expected output</li>
+            <li>Same task, many times</li>
+            <li>Quality measured by accuracy, not taste</li>
+          </ul>
+        </div>
+        <div class="spectrum__col">
+          <span class="spectrum__pole">AS A COLLABORATOR &rarr;</span>
+          <h3 class="spectrum__title">Interpretive enough to think with.</h3>
+          <p class="spectrum__body">Brainstorm, critique, draft alternatives, surface counter-arguments. Open the freedom band up. Read the output as a colleague&rsquo;s draft, not a finished answer.</p>
+          <ul class="spectrum__list">
+            <li>Ambiguous input, multiple good outputs</li>
+            <li>One-off or shaping work</li>
+            <li>Quality measured by judgment, not pattern match</li>
+          </ul>
+        </div>
+      </div>
+      <p class="f-navigate__close">The mistake is asking it to make <span class="accent">a bad edit</span> good. AI is a speed layer, not a salvage operation.</p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 05 · ENCODE · paper · the anatomy of a Skill
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-encode" data-slide-id="05-encode" data-mode="paper" aria-labelledby="f05-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">05 &middot; ENCODE</span>
+    <div class="stage">
+      <div class="f-encode__head">
+        <h2 class="f-encode__display" id="f05-title">A Skill is one file <span class="accent">that hands the model your judgment</span>.</h2>
+        <p class="f-encode__sub body">A text file with instructions and reference materials that encodes the way you think about a specific kind of work. The model reads it the way a new colleague reads a notebook: rules, examples, and taste, then applies them.</p>
+      </div>
+
+      <div class="f-encode__diagram">
+        <div class="anatomy">
+          <div class="anatomy__row">
+            <span class="anatomy__row-label">Trigger</span>
+            <span class="anatomy__row-name">When this Skill applies</span>
+            <p class="anatomy__row-cap">The shape of the request that calls it: brief docs, video transcripts, asset audits, supplier briefs.</p>
+          </div>
+          <div class="anatomy__row is-skill">
+            <span class="anatomy__row-label">Rules + Examples</span>
+            <span class="anatomy__row-name">How the work gets done well</span>
+            <p class="anatomy__row-cap">The taste, the constraints, the calls only seniors make. With concrete examples of good and bad outcomes.</p>
+          </div>
+          <div class="anatomy__row">
+            <span class="anatomy__row-label">References</span>
+            <span class="anatomy__row-name">What it can read from</span>
+            <p class="anatomy__row-cap">Brand systems, reference documents, prior good work. Loaded only when needed (progressive disclosure).</p>
+          </div>
+          <div class="anatomy__row">
+            <span class="anatomy__row-label">Loops</span>
+            <span class="anatomy__row-name">Who confirms, who decides</span>
+            <p class="anatomy__row-cap">Hand-off back to a person at the right moment. Not every step is the model&rsquo;s call to make.</p>
+          </div>
+        </div>
+        <div class="file-mock" aria-label="A SKILL.md preview">
+          <div class="file-mock__head">SKILL.md</div>
+          <span class="file-mock__line"><span class="key">---</span></span>
+          <span class="file-mock__line"><span class="key">name:</span> Tone of Voice</span>
+          <span class="file-mock__line"><span class="key">description:</span> When the work is</span>
+          <span class="file-mock__line">  <span class="quiet">long-form copy, social posts,</span></span>
+          <span class="file-mock__line">  <span class="quiet">an interview write-up&hellip;</span></span>
+          <span class="file-mock__line"><span class="key">---</span></span>
+          <span class="file-mock__line"></span>
+          <span class="file-mock__line"><span class="key"># Tone of Voice</span></span>
+          <span class="file-mock__line"></span>
+          <span class="file-mock__line">## Voice rules</span>
+          <span class="file-mock__line">- no em dashes</span>
+          <span class="file-mock__line">- declarative sentences</span>
+          <span class="file-mock__line">- no forced rule-of-three</span>
+          <span class="file-mock__line"></span>
+          <span class="file-mock__line">## What good looks like</span>
+          <span class="file-mock__line"><span class="quiet">See references/examples.md</span></span>
+          <span class="file-mock__line"></span>
+          <span class="file-mock__line">## Routing</span>
+          <span class="file-mock__line"><span class="quiet">| Trigger | Reference |</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 06 · ENCODE LIVE · ember · build a Skill on the fly
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-encode-live" data-slide-id="06-encode-live" data-mode="ember" aria-labelledby="f06-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">06 &middot; ENCODE LIVE</span>
+    <div class="stage">
+      <div class="f-encode-live__head">
+        <h2 class="f-encode-live__display" id="f06-title">Build a Skill <span class="accent">on the fly</span>. Four steps.</h2>
+        <p class="f-encode-live__sub body">Pick one workflow you do often. Walk it through these four moves and you have a draft Skill the team can inherit by the end of the workshop.</p>
+      </div>
+      <div class="recipe">
+        <article class="recipe__step">
+          <span class="recipe__n">01</span>
+          <span class="recipe__label">PICK</span>
+          <h3 class="recipe__title">A workflow that repeats.</h3>
+          <p class="recipe__body">Something you do at least once a week and could explain to a new colleague in five minutes. Audit a video. Brief a designer. Format an interview.</p>
+        </article>
+        <article class="recipe__step">
+          <span class="recipe__n">02</span>
+          <span class="recipe__label">NARRATE</span>
+          <h3 class="recipe__title">Explain it out loud.</h3>
+          <p class="recipe__body">Drop three good past examples plus your spoken explanation into Claude. Use <span class="accent">/skill-creator</span> or just paste them in. Ask it to draft the Skill back.</p>
+        </article>
+        <article class="recipe__step">
+          <span class="recipe__n">03</span>
+          <span class="recipe__label">RUN</span>
+          <h3 class="recipe__title">Test on real work.</h3>
+          <p class="recipe__body">Try the Skill on a fresh task in the same shape. The first run will be wrong in interesting ways. Note where, then add the missing rule or example.</p>
+        </article>
+        <article class="recipe__step">
+          <span class="recipe__n">04</span>
+          <span class="recipe__label">SHARE</span>
+          <h3 class="recipe__title">Hand it to the team.</h3>
+          <p class="recipe__body">Export the bundle. Drop it into a shared folder, or upload to Claude.ai. The next person doesn&rsquo;t start from zero.</p>
+        </article>
+      </div>
+      <p class="f-encode-live__close">The first Skill takes the longest. <span class="accent">Every Skill after that compounds.</span></p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 07 · BUILD · paper · from skill to tool
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-build" data-slide-id="07-build" data-mode="paper" aria-labelledby="f07-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">07 &middot; BUILD</span>
+    <div class="stage">
+      <div class="f-build__head">
+        <h2 class="f-build__display" id="f07-title">A Skill becomes <span class="accent">a tool</span>.</h2>
+        <p class="f-build__sub body">Once the substrate is there, a workflow stops being a chat and becomes a thing the team can call. Three shapes worth knowing for video and creative production.</p>
+      </div>
+      <div class="f-build__grid">
+        <article class="demo-card">
+          <span class="demo-card__label">VIDEO &rarr; PAGE</span>
+          <h3 class="demo-card__title">Landing page from a recorded interview.</h3>
+          <p class="demo-card__body">Transcribe the interview, run the Skill that knows your tone and structure, draft a single-page site with quotes, key moments, and embedded clips. The substrate is the brand voice; the tool is the page generator.</p>
+          <div class="demo-card__chain">
+            <span class="pill">Video</span><span class="arrow">&rarr;</span>
+            <span class="pill">Transcript</span><span class="arrow">&rarr;</span>
+            <span class="pill">Skill</span><span class="arrow">&rarr;</span>
+            <span class="pill">HTML</span>
+          </div>
+        </article>
+        <article class="demo-card">
+          <span class="demo-card__label">EDIT ASSIST</span>
+          <h3 class="demo-card__title">Cut suggestions, not cuts.</h3>
+          <p class="demo-card__body">Send the transcript and the brief to a Skill that knows what a good edit looks like for the format. Get back marked-up suggestions, ranked. The editor still cuts. The thinking shortcut is the gain.</p>
+          <div class="demo-card__chain">
+            <span class="pill">Transcript</span><span class="arrow">&rarr;</span>
+            <span class="pill">Brief</span><span class="arrow">&rarr;</span>
+            <span class="pill">Skill</span><span class="arrow">&rarr;</span>
+            <span class="pill">Marked timeline</span>
+          </div>
+        </article>
+        <article class="demo-card">
+          <span class="demo-card__label">REPURPOSE</span>
+          <h3 class="demo-card__title">One piece, five formats.</h3>
+          <p class="demo-card__body">A long-form video becomes social cuts, an explainer page, a press one-pager, a recap newsletter. Same source, the Skills handle the format-specific judgment. The interface just collects them.</p>
+          <div class="demo-card__chain">
+            <span class="pill">Source</span><span class="arrow">&rarr;</span>
+            <span class="pill">Skills</span><span class="arrow">&rarr;</span>
+            <span class="pill">Format set</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 08 · STARTER KIT · paper
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-kit" data-slide-id="08-kit" data-mode="paper" aria-labelledby="f08-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">08 &middot; STARTER KIT</span>
+    <div class="stage">
+      <div class="f-kit__head">
+        <h2 class="f-kit__display" id="f08-title">What you just unpacked. <span class="accent">Use it as a seed.</span></h2>
+        <p class="f-kit__sub body">A second-brain starter. Not a finished system. Each piece below is a template you adapt to how your team actually works.</p>
+      </div>
+      <ul class="f-kit__list" role="list">
+        <li class="kit-row">
+          <span class="kit-row__path">presentation/index.html</span>
+          <p class="kit-row__what"><strong>This deck.</strong> The narrative and the run-of-show in one self-contained file. Open it offline. Project it. Edit it.</p>
+        </li>
+        <li class="kit-row">
+          <span class="kit-row__path">skills/strategy-template/</span>
+          <p class="kit-row__what"><strong>Skeleton for your own strategy Skill.</strong> A SKILL.md plus references/, ready to fill with your team&rsquo;s judgment.</p>
+        </li>
+        <li class="kit-row">
+          <span class="kit-row__path">skills/tone-of-voice/</span>
+          <p class="kit-row__what"><strong>A worked example.</strong> What a tone-of-voice Skill looks like once it&rsquo;s done. Copy the shape, swap the content.</p>
+        </li>
+        <li class="kit-row">
+          <span class="kit-row__path">skills/examples/*.skill</span>
+          <p class="kit-row__what"><strong>Installable bundles.</strong> Frontend Design, Plain English, Creating Presentations, AI Adoption. Drop into Claude.ai or ~/.claude/skills/.</p>
+        </li>
+        <li class="kit-row">
+          <span class="kit-row__path">docs/agenda.md</span>
+          <p class="kit-row__what"><strong>The session shape.</strong> A run-of-show you can adapt. Where to spend time, where to compress.</p>
+        </li>
+        <li class="kit-row">
+          <span class="kit-row__path">docs/build-a-skill.md</span>
+          <p class="kit-row__what"><strong>The tangible exercise.</strong> The four-step recipe in detail, with what to bring, where it goes wrong, how to fix it.</p>
+        </li>
+      </ul>
+      <p class="f-kit__close">Drop the whole folder into Claude Cowork. Ask it to <span class="accent">&ldquo;set me up&rdquo;</span> and it will install the Skills, open the deck, and walk you through the docs.</p>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 09 · SECOND BRAIN · ember · substrate map
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-brain" data-slide-id="09-brain" data-mode="ember" aria-labelledby="f09-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">09 &middot; THE SECOND BRAIN</span>
+    <div class="stage">
+      <div class="f-brain__head">
+        <h2 class="f-brain__display" id="f09-title">Encoded once. <span class="accent">Inherited everywhere.</span></h2>
+        <p class="f-brain__sub">Substrate is the leverage. <strong>The interface bends around it.</strong> Claude today, a script tomorrow, a small app the day after. The work stays in place; the surfaces inherit it.</p>
+      </div>
+
+      <article class="substrate-map" aria-label="From sources to surfaces">
+        <article class="substrate-col" aria-labelledby="sm-sources">
+          <span class="substrate-col__n" id="sm-sources">01 &middot; SOURCES</span>
+          <h3 class="substrate-col__title">Where your truth lives today.</h3>
+          <ul class="substrate-col__items" role="list">
+            <li class="substrate-col__item"><span class="dot"></span>Past good work, files</li>
+            <li class="substrate-col__item"><span class="dot"></span>Brand systems</li>
+            <li class="substrate-col__item"><span class="dot"></span>Reference docs</li>
+            <li class="substrate-col__item"><span class="dot"></span>Notes, transcripts</li>
+            <li class="substrate-col__item"><span class="dot"></span>Customer research</li>
+          </ul>
+        </article>
+
+        <span class="substrate-connector" aria-hidden="true">
+          <span class="substrate-connector__line"></span>
+          <span class="substrate-connector__label">Reads from <span class="arrow">&rarr;</span></span>
+          <span class="substrate-connector__line"></span>
+        </span>
+
+        <article class="substrate-col substrate-col--substrate" aria-labelledby="sm-substrate">
+          <span class="substrate-col__n" id="sm-substrate">02 &middot; ENCODED SUBSTRATE</span>
+          <h3 class="substrate-col__title">What matters, how to decide, what to check.</h3>
+          <ul class="substrate-col__items" role="list">
+            <li class="substrate-col__item"><span class="dot"></span>Rules &mdash; how the team decides</li>
+            <li class="substrate-col__item"><span class="dot"></span>Examples &mdash; what good looks like</li>
+            <li class="substrate-col__item"><span class="dot"></span>References &mdash; what it can read</li>
+            <li class="substrate-col__item"><span class="dot"></span>Loops &mdash; who confirms what</li>
+          </ul>
+        </article>
+
+        <span class="substrate-connector" aria-hidden="true">
+          <span class="substrate-connector__line"></span>
+          <span class="substrate-connector__label">Exposed as <span class="arrow">&rarr;</span></span>
+          <span class="substrate-connector__line"></span>
+        </span>
+
+        <article class="substrate-col" aria-labelledby="sm-surfaces">
+          <span class="substrate-col__n" id="sm-surfaces">03 &middot; SURFACES</span>
+          <h3 class="substrate-col__title">Wherever the work needs to land.</h3>
+          <ul class="substrate-col__items" role="list">
+            <li class="substrate-col__item"><span class="dot"></span>Claude / Cowork</li>
+            <li class="substrate-col__item"><span class="dot"></span>Slack, Notion, Drive</li>
+            <li class="substrate-col__item"><span class="dot"></span>Editor scripts (Cursor, code)</li>
+            <li class="substrate-col__item"><span class="dot"></span>Internal pages, dashboards</li>
+            <li class="substrate-col__item"><span class="dot"></span>Agents you build later</li>
+          </ul>
+        </article>
+      </article>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════════
+   *  FRAME 10 · CLOSER · ember · sign-off
+   * ══════════════════════════════════════════════════════════════ -->
+  <section class="frame f-closer" data-slide-id="10-closer" data-mode="ember" aria-labelledby="f10-title">
+    <span class="vignette" aria-hidden="true"></span>
+    <span class="eyebrow eyebrow-anchor">10 &middot; CLOSER</span>
+    <div class="stage">
+      <div class="f-closer__main">
+        <h2 class="f-closer__display" id="f10-title">What used to be the end of the work <span class="quiet">is now</span> <span class="accent">the start of a new loop</span>.</h2>
+        <p class="f-closer__spine">Navigate the intelligence inside real work. Encode what you learn into substrate. Build tools on top. Three motions, compounding.</p>
+      </div>
+      <div class="f-closer__foot">
+        <span class="arrow">&rarr;</span>
+        <span class="name">Vince Buyssens</span>
+        <span>Thoughtform</span>
+        <span>&middot;</span>
+        <span>vince@thoughtform.studio</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
