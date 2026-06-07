@@ -1,45 +1,45 @@
 /*
  * Creative AI Workshop · HUD telemetry rails.
  *
- * Decorative navigation chrome. Renders a fixed full-viewport
- * frame with three corner brackets (top-left, bottom-left,
- * bottom-right), two vertical rails (left + right) carrying 21
- * tick marks (every 5%; majors at 0 / 25 / 50 / 75 / 100), a
- * gold depth-diamond at the top of the left rail, and a
- * brandmark anchor at the bottom-left. Hidden below 960px.
+ * Pixel-perfect port of the Thoughtform.co v7 HUD. Markup
+ * mirrors `01_thoughtform/public/prototypes/v7/landing-v7-motion.html`
+ * (3 corner brackets, 2 rails with track + 21 ticks + labels at
+ * majors, gold depth diamond on the left rail, brandmark at the
+ * bottom-left anchor). Geometry tokens and colors come from
+ * `app/creative-ai-workshop/creative-ai-workshop.css` so the
+ * rails breathe with the rest of the route's light skin.
  *
- * Geometry is driven entirely by CSS custom properties defined
- * in `app/creative-ai-workshop/creative-ai-workshop.css` under
- * `.aiop-shell--tf-light`. Ticks are positioned inline by
- * percentage so the markup stays static and SSR-friendly.
+ * Tick gauge: 21 ticks at i = 0..20 (every 5%). Major every 5;
+ * labels at majors carry the depth-gauge values from v7
+ * (0 / 2 / 5 / 7 / 10). Both rails get the same labels.
  *
- * Brandmark SVG is inlined (not imported as <img>) so the paths
- * inherit `currentColor` from the wrapping `--aiop-gold` token.
+ * Brandmark glyph is inlined SVG so the paths inherit
+ * `currentColor` (set to `--aiop-gold` on the wrapper).
  *
  * No client hooks; this is a server component.
  */
 
-const TICK_COUNT = 21;
-const MAJOR_TICKS = new Set([0, 5, 10, 15, 20]);
-const MAJOR_LABELS: Record<number, string> = {
-  0: "00",
-  5: "25",
-  10: "50",
-  15: "75",
-  20: "100",
+const TICK_COUNT = 20;
+
+const TICK_LABELS: Record<number, string> = {
+  0: "0",
+  5: "2",
+  10: "5",
+  15: "7",
+  20: "10",
 };
 
-function buildTicks(): { y: number; major: boolean; label?: string }[] {
-  return Array.from({ length: TICK_COUNT }, (_, i) => {
-    const major = MAJOR_TICKS.has(i);
-    const y = (i / (TICK_COUNT - 1)) * 100;
-    return major
-      ? { y, major: true, label: MAJOR_LABELS[i] }
-      : { y, major: false };
-  });
-}
+type Tick = {
+  yPct: number;
+  major: boolean;
+  label?: string;
+};
 
-const TICKS = buildTicks();
+const TICKS: Tick[] = Array.from({ length: TICK_COUNT + 1 }, (_, i) => {
+  const major = i % 5 === 0;
+  const yPct = (i / TICK_COUNT) * 100;
+  return major ? { yPct, major, label: TICK_LABELS[i] } : { yPct, major };
+});
 
 function ThoughtformBrandmark() {
   return (
@@ -48,7 +48,6 @@ function ThoughtformBrandmark() {
       xmlns="http://www.w3.org/2000/svg"
       role="img"
       aria-label="Thoughtform"
-      style={{ width: "100%", height: "100%", display: "block" }}
     >
       <g fill="currentColor">
         <path d="M336.78,99.43c18.82,18.93,33.41,41.16,43.78,66.63,5.03,12.35,8.81,24.86,11.42,37.57h19.62c-1.91-18.99-6.54-37.52-13.79-55.54-10.01-24.71-24.56-46.73-43.78-66.02-19.17-19.29-41.16-33.97-65.92-43.99-7.9-3.24-15.9-5.92-23.95-8.1l-1.36,7.49-.9,4.91-1.41,7.49c2.87,1.11,5.79,2.28,8.65,3.54,25.51,10.99,48.06,26.33,67.63,46.02h.01Z" />
@@ -63,60 +62,61 @@ function ThoughtformBrandmark() {
   );
 }
 
+function RailTicks({ withLabels }: { withLabels: boolean }) {
+  return (
+    <>
+      {TICKS.map((tick, i) => (
+        <div
+          key={`tick-${i}`}
+          className={`cw-hud__tick${tick.major ? " cw-hud__tick--major" : ""}`}
+          style={{ top: `${tick.yPct}%` }}
+        />
+      ))}
+      {withLabels
+        ? TICKS.filter((t) => t.label !== undefined).map((tick, i) => (
+            <div
+              key={`label-${i}`}
+              className="cw-hud__tick-label"
+              style={{ top: `${tick.yPct}%`, transform: "translateY(-50%)" }}
+            >
+              {tick.label}
+            </div>
+          ))
+        : null}
+    </>
+  );
+}
+
 export function CreativeHud() {
   return (
     <div className="cw-hud" aria-hidden="true">
-      {/* Corner brackets */}
-      <span className="cw-hud__corner cw-hud__corner--tl" />
-      <span className="cw-hud__corner cw-hud__corner--bl" />
-      <span className="cw-hud__corner cw-hud__corner--br" />
+      {/* Three corner brackets — TL / BL / BR. TR intentionally
+          empty: the v7 site reserves that quadrant for the top
+          nav, which on this page is the sticky `.aiop-header`. */}
+      <div className="cw-hud__corner cw-hud__corner--tl" />
+      <div className="cw-hud__corner cw-hud__corner--bl" />
+      <div className="cw-hud__corner cw-hud__corner--br" />
 
-      {/* Left rail */}
+      {/* Left rail: track + ticks + labels + gold depth diamond */}
       <aside className="cw-hud__rail cw-hud__rail--l">
-        <span className="cw-hud__rail-track" />
-        <span className="cw-hud__depth" />
-        <div className="cw-hud__ticks">
-          {TICKS.map((tick, i) => (
-            <span
-              key={`l-${i}`}
-              className={`cw-hud__tick${tick.major ? " cw-hud__tick--major" : ""}`}
-              style={{ top: `${tick.y}%` }}
-            >
-              {tick.label ? (
-                <span className="cw-hud__tick-label" style={{ top: 0 }}>
-                  {tick.label}
-                </span>
-              ) : null}
-            </span>
-          ))}
-        </div>
+        <div className="cw-hud__rail-track" />
+        <RailTicks withLabels />
+        <div className="cw-hud__depth" />
       </aside>
 
-      {/* Right rail */}
+      {/* Right rail: track + ticks + labels (no depth chevron) */}
       <aside className="cw-hud__rail cw-hud__rail--r">
-        <span className="cw-hud__rail-track" />
-        <div className="cw-hud__ticks">
-          {TICKS.map((tick, i) => (
-            <span
-              key={`r-${i}`}
-              className={`cw-hud__tick${tick.major ? " cw-hud__tick--major" : ""}`}
-              style={{ top: `${tick.y}%` }}
-            />
-          ))}
-        </div>
+        <div className="cw-hud__rail-track" />
+        <RailTicks withLabels />
       </aside>
 
-      {/* Brandmark */}
-      <span
+      {/* Brandmark anchor — bottom-left corner glyph */}
+      <div
         className="cw-hud__brandmark"
         style={{ color: "var(--aiop-gold)" }}
       >
         <ThoughtformBrandmark />
-      </span>
-
-      {/* Mono readouts */}
-      <span className="cw-hud__readout cw-hud__readout--tr">TF · LIGHT</span>
-      <span className="cw-hud__readout cw-hud__readout--br">v0.1 · CET</span>
+      </div>
     </div>
   );
 }

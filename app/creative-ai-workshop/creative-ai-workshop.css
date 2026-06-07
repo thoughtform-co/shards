@@ -91,16 +91,24 @@
   --gold-soft: rgba(154, 122, 46, 0.18);
   --gold-edge: rgba(154, 122, 46, 0.32);
 
-  /* HUD layout tokens (thoughtform.co v7 geometry, fluid). The
-     content inset is what every section pushes itself off from
-     so the rails never overlap content. */
-  --hud-margin: clamp(20px, 3vw, 56px);
-  --hud-rail-width: clamp(28px, 2.6vw, 48px);
-  --hud-corner-zone: clamp(22px, 2.2vw, 32px);
-  --hud-rail-top: clamp(96px, 12vh, 144px); /* clears sticky header */
-  --hud-rail-bottom: clamp(36px, 5vh, 72px);
+  /* HUD layout tokens — canonical Thoughtform v7 geometry, lifted
+     verbatim from `01_thoughtform/components/landing/v7/landing.css`.
+     Used by the rails, ticks, corner brackets, and brandmark below
+     so the chrome reads as a Thoughtform instrument frame, not an
+     improvised facsimile. */
+  --hud-margin: clamp(16px, min(2.8125vw, 5vmin), 54px);
+  --hud-rail-width: clamp(48px, 4.27vw, 82px);
+  --hud-corner-zone: clamp(28px, 4.17vmin, 45px);
   --hud-rail-guide-inset: clamp(5px, 0.47vw, 9px);
-  --hud-content-inset: calc(var(--hud-margin) + var(--hud-rail-width) + clamp(16px, 2vw, 32px));
+  --hud-content-inset: calc(var(--hud-margin) + var(--hud-rail-width) + clamp(24px, 3vw, 56px));
+
+  /* Light-mode rail / tick colors. The dark v7 site uses dawn-30
+     (cream at 30% on void) for the track and gold-40 for minor
+     ticks. The light-mode equivalents are ink at 30% and Thoughtform
+     gold at 40% on parchment. The major-tick fill is full gold so
+     the 25/50/75% beats read as wayfinding. */
+  --cw-rail-line: rgba(17, 15, 9, 0.30);
+  --cw-tick-color: rgba(154, 122, 46, 0.40);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -148,15 +156,21 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
- * 4 · HUD telemetry rails
- *    Owned by components/creative-workshop/creative-hud.tsx.
+ * 4 · HUD telemetry rails — canonical Thoughtform v7 geometry
+ *    Owned by `components/creative-workshop/creative-hud.tsx`.
+ *    Markup mirrors `01_thoughtform/public/prototypes/v7/landing-v7-motion.html`
+ *    and CSS is lifted from `01_thoughtform/components/landing/v7/landing.css`.
  * ═══════════════════════════════════════════════════════════════════════ */
 
 .cw-hud {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 5;
+  /* Sit BELOW the sticky `.aiop-header` (z-index 30) so the
+     header naturally covers the TL corner band. The rest of the
+     chrome (rails, BL/BR corners, brandmark) sits well clear of
+     the header and reads in full. */
+  z-index: 4;
   display: none;
 }
 
@@ -166,9 +180,10 @@
   }
 }
 
-/* Corner brackets: thin 1px L-shapes in ink-at-low-opacity, three
-   anchors only (TL / BL / BR). The top-right is left empty to give
-   the sticky-header status pill room. */
+/* ── Corner brackets ─────────────────────────────────────────────
+   Thin 1px L-brackets at TL / BL / BR. TR is intentionally empty
+   to leave room for the top nav, matching the v7 site (whose top
+   bar lives in that quadrant). Borders, not pseudo-elements. */
 .cw-hud__corner {
   position: absolute;
   width: var(--hud-corner-zone);
@@ -177,77 +192,39 @@
 }
 
 .cw-hud__corner--tl {
-  top: var(--hud-rail-top);
+  top: var(--hud-margin);
   left: var(--hud-margin);
+  border-top: 1px solid var(--cw-rail-line);
+  border-left: 1px solid var(--cw-rail-line);
 }
 
 .cw-hud__corner--bl {
   bottom: var(--hud-margin);
   left: var(--hud-margin);
+  border-bottom: 1px solid var(--cw-rail-line);
+  border-left: 1px solid var(--cw-rail-line);
 }
 
 .cw-hud__corner--br {
   bottom: var(--hud-margin);
   right: var(--hud-margin);
+  border-bottom: 1px solid var(--cw-rail-line);
+  border-right: 1px solid var(--cw-rail-line);
 }
 
-.cw-hud__corner::before,
-.cw-hud__corner::after {
-  content: "";
-  position: absolute;
-  background: var(--aiop-rule-strong);
-}
-
-.cw-hud__corner--tl::before {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-}
-
-.cw-hud__corner--tl::after {
-  top: 0;
-  left: 0;
-  width: 1px;
-  height: 100%;
-}
-
-.cw-hud__corner--bl::before {
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 1px;
-}
-
-.cw-hud__corner--bl::after {
-  bottom: 0;
-  left: 0;
-  width: 1px;
-  height: 100%;
-}
-
-.cw-hud__corner--br::before {
-  bottom: 0;
-  right: 0;
-  width: 100%;
-  height: 1px;
-}
-
-.cw-hud__corner--br::after {
-  bottom: 0;
-  right: 0;
-  width: 1px;
-  height: 100%;
-}
-
-/* Rails: vertical guide lines with 21 evenly spaced ticks. Track
-   is a 1px gradient hairline that fades in at the top and bottom
-   so it does not visually collide with the corner brackets. */
+/* ── Rails ───────────────────────────────────────────────────────
+   Each rail is a vertical column anchored at the page margin. Its
+   track (the 1px hairline) sits on the OUTER edge of the rail
+   (left rail: track at left:0; right rail: track at right:0) so
+   the track frames the page like an instrument panel. Ticks and
+   labels then extend INWARD from the track. */
 .cw-hud__rail {
   position: absolute;
-  top: var(--hud-rail-top);
-  bottom: var(--hud-rail-bottom);
+  top: calc(var(--hud-margin) + var(--hud-corner-zone) + clamp(16px, 1.8vw, 32px));
+  bottom: calc(var(--hud-margin) + clamp(24px, 2.5vw, 40px) + clamp(16px, 1.8vw, 32px));
   width: var(--hud-rail-width);
+  display: flex;
+  flex-direction: column;
 }
 
 .cw-hud__rail--l {
@@ -262,113 +239,175 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 50%;
   width: 1px;
   background: linear-gradient(
     to bottom,
-    transparent 0%,
-    var(--aiop-rule-strong) 6%,
-    var(--aiop-rule-strong) 94%,
-    transparent 100%
+    transparent,
+    var(--cw-rail-line) 8%,
+    var(--cw-rail-line) 92%,
+    transparent
   );
-  transform: translateX(-0.5px);
 }
 
-.cw-hud__ticks {
-  position: absolute;
-  top: 0;
-  bottom: 0;
+.cw-hud__rail--l .cw-hud__rail-track {
   left: 0;
+}
+
+.cw-hud__rail--r .cw-hud__rail-track {
   right: 0;
 }
 
+/* Ticks — 21 across each rail (every 5%). Minor ticks are 10px,
+   majors 20px in full Thoughtform gold. Anchored to the OUTER
+   edge so they extend inward toward the page. */
 .cw-hud__tick {
   position: absolute;
-  left: 50%;
-  width: 8px;
   height: 1px;
-  background: var(--aiop-rule);
-  transform: translate(-50%, -50%);
+  background: var(--cw-tick-color);
 }
 
-.cw-hud__tick--major {
-  width: 16px;
-  background: var(--aiop-gold-soft);
+.cw-hud__rail--l .cw-hud__tick {
+  left: 0;
+  width: 10px;
 }
 
+.cw-hud__rail--l .cw-hud__tick--major {
+  width: 20px;
+  background: var(--aiop-gold);
+}
+
+.cw-hud__rail--r .cw-hud__tick {
+  right: 0;
+  width: 10px;
+}
+
+.cw-hud__rail--r .cw-hud__tick--major {
+  width: 20px;
+  background: var(--aiop-gold);
+}
+
+/* Tick labels — depth-gauge readouts at majors only (0/2/5/7/10).
+   Sit 28px inboard of the track so they ride between the ticks
+   and the rail edge. PT Mono 9px at letter-spacing 0.1em (the
+   `track-wider` token in v7), in light-muted ink. */
 .cw-hud__tick-label {
   position: absolute;
-  left: calc(50% + 14px);
   font-family: var(--aiop-mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  font-size: 9px;
+  letter-spacing: 0.1em;
   color: var(--aiop-muted);
-  transform: translateY(-50%);
-  white-space: nowrap;
+}
+
+.cw-hud__rail--l .cw-hud__tick-label {
+  left: 28px;
 }
 
 .cw-hud__rail--r .cw-hud__tick-label {
-  left: auto;
-  right: calc(50% + 14px);
+  right: 28px;
 }
 
-/* Depth diamond: gold rotated square at the top of the left rail
-   (decorative for now; later it can be scroll-driven). */
+/* ── Depth chevron ───────────────────────────────────────────────
+   Gold diamond at the top of the LEFT rail only. Sits 4px outside
+   the rail to the left, 17×17px. The breathe animation matches
+   v7's `hudBreathe` keyframes (3.6s ease-in-out, 0.75 to 1
+   opacity, 1 to 1.06 scale). */
 .cw-hud__depth {
   position: absolute;
   top: 4%;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  background: var(--aiop-gold);
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  transform: translate(-50%, -50%);
+  left: -4px;
+  width: 17px;
+  height: 17px;
 }
 
-/* Brandmark anchor: bottom-left, sits above the BL corner bracket
-   so the corner reads as a bracket and the brandmark sits inside
-   the framed area. */
+.cw-hud__depth::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--aiop-gold);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  opacity: 0.9;
+  animation: cwHudBreathe 3.6s ease-in-out infinite;
+}
+
+@keyframes cwHudBreathe {
+  0%, 100% {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cw-hud__depth::before {
+    animation: none;
+  }
+}
+
+/* ── Brandmark anchor ────────────────────────────────────────────
+   Sits at bottom-left, exactly at the page margin (overlapping
+   the BL corner bracket so the L-frame and the glyph share the
+   same anchor point). Sized to match v7's anchor (clamp 24-40px)
+   so it reads as the page's signature. */
 .cw-hud__brandmark {
   position: absolute;
-  bottom: calc(var(--hud-margin) + var(--hud-corner-zone) + 14px);
+  bottom: var(--hud-margin);
   left: var(--hud-margin);
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: clamp(24px, 2.5vw, 40px);
+  height: clamp(24px, 2.5vw, 40px);
+  display: block;
+  /* Sit above the BL corner bracket so the glyph paints on top of
+     the L-frame's intersection. */
+  z-index: 1;
 }
 
-.cw-hud__brandmark img {
+.cw-hud__brandmark svg {
   width: 100%;
   height: 100%;
   display: block;
 }
 
-/* Pagination / chapter readouts: small mono labels at the chrome
-   anchors so the rails feel populated without crowding. */
-.cw-hud__readout {
-  position: absolute;
-  font-family: var(--aiop-mono);
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--aiop-muted);
+/* ═══════════════════════════════════════════════════════════════════════
+ * 5 · Full-viewport sections
+ *
+ * Every top-level section under <main> stretches to at least the
+ * viewport height so the next section never bleeds into the
+ * current frame on scroll. Selector list enumerates the direct
+ * parents — Suspense and the React providers (RoleProvider,
+ * UseCasesProvider) don't render wrappers, so most sections are
+ * direct children of <main>. The named DIVs (`.aiop-encoding-pair`,
+ * `.aiop-evans-and-tool-collab`, `.aiop-claude-zone`,
+ * `.aiop-cases-and-shift`) wrap section pairs that also need to
+ * each stand alone at 100dvh.
+ *
+ * Nested sections inside SubstrateMap chambers and similar
+ * complex components are NOT targeted here (they are descendants
+ * of a top-level section, not a direct child).
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-shell--tf-light main > section,
+.aiop-shell--tf-light .aiop-evans-and-tool-collab > section,
+.aiop-shell--tf-light .aiop-encoding-pair > section,
+.aiop-shell--tf-light .aiop-claude-zone > section,
+.aiop-shell--tf-light .aiop-cases-and-shift > section {
+  min-height: 100dvh;
 }
 
-.cw-hud__readout--tr {
-  top: var(--hud-rail-top);
-  right: var(--hud-margin);
-}
-
-.cw-hud__readout--br {
-  bottom: calc(var(--hud-margin) + var(--hud-corner-zone) + 14px);
-  right: var(--hud-margin);
+/* The two new editorial sections (About, Agent Context) were
+   designed without a fixed-height target; center their content
+   vertically so the extra room from min-height reads as breathing
+   room rather than top-pinned content with empty padding. */
+.aiop-shell--tf-light .cw-about,
+.aiop-shell--tf-light .cw-context {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
- * 5 · Section overrides — light-mode polish
+ * 6 · Section overrides — light-mode polish
  *
  * A handful of shared rules lean on hardcoded warm-cream values
  * that read fine on the default Aether paper but go slightly muddy
