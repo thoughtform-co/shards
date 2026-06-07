@@ -19,8 +19,46 @@ import { pageSubstrateMap } from "@/content/intelligence-layer";
  *
  * The component renders server-side; no client state.
  */
-export function SubstrateMap() {
-  const { title, titleEm, body, columns, closing } = pageSubstrateMap;
+type SubstrateMapSection = {
+  title: string;
+  titleEm: string;
+  body: string;
+  columns: {
+    sources: {
+      n: string;
+      kicker: string;
+      title: string;
+      caption: string;
+      ontology: { kind: string; objects: readonly string[] };
+      systems: { items: readonly string[] };
+    };
+    substrate: {
+      n: string;
+      kicker: string;
+      badge?: string;
+      title: string;
+      caption: string;
+      items: readonly { tag: string; name: string }[];
+      tags: readonly string[];
+    };
+    surfaces: {
+      n: string;
+      kicker: string;
+      badge?: string;
+      title: string;
+      caption: string;
+      items: readonly { icon: string; name: string }[];
+    };
+  };
+  closing?: string;
+};
+
+export function SubstrateMap({
+  section = pageSubstrateMap,
+}: {
+  section?: SubstrateMapSection;
+} = {}) {
+  const { title, titleEm, body, columns, closing } = section;
 
   return (
     <section

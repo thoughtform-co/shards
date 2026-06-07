@@ -24,11 +24,9 @@ export function AboutVince() {
       <div className="aiop-wrap cw-about__inner">
         <header className="cw-about__head aiop-reveal">
           <span className="cw-about__eyebrow">About</span>
-          <h2 className="cw-about__title">
-            Vince Buyssens <em className="cw-about__alias">// Voidwalker.</em>
-          </h2>
+          <h2 className="cw-about__title">Vince Buyssens</h2>
           <p className="cw-about__role">
-            Founder &middot; Navigator &middot; Loop Earplugs AI Strategy
+            Founder, Thoughtform &middot; AI adoption lead, Loop Earplugs
           </p>
         </header>
 
@@ -45,19 +43,14 @@ export function AboutVince() {
 
           <div className="cw-about__copy">
             <p className="cw-about__bio">
-              <strong>Vince</strong> has spent a decade moving teams through
-              the tides of digital change &mdash; the web, mobile, creator
-              economies, and now <em>intelligence itself</em>.
+              Vince leads AI adoption at Loop Earplugs, and for other
+              companies through Thoughtform.
             </p>
             <p className="cw-about__bio">
-              Through <strong>Thoughtform</strong> he teaches organisations
-              how to think and build with AI: keynotes, intensives, and
-              embedded residencies with teams ready to ship.
-            </p>
-            <p className="cw-about__bio">
-              Inside <strong>Loop Earplugs</strong> he runs the same
-              practice from the inside &mdash; shaping AI strategy and
-              prototyping the tools that power the marketing engine.
+              In workshops and sprints he helps teams capture their
+              knowledge, taste, and ways of working in a form any AI can
+              use. Not to replace them, but to free them from the busywork
+              so they can build what they couldn&apos;t before.
             </p>
 
             <dl className="cw-about__meta" aria-label="Practice meta">

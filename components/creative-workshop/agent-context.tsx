@@ -28,7 +28,7 @@ const CARDS: readonly ContextCard[] = [
     id: "hype",
     kicker: "Hype \u00b7 the agent rush",
     headline: "Every team wants an agent. Most don\u2019t know where to start.",
-    dek: "Boards put \u201cAI agents\u201d on roadmaps without naming a workflow. Procurement and IT field requests for tools no one has briefed. The starting condition is FOMO, not problem definition.",
+    dek: "Boards put \u201cAI agents\u201d on the roadmap without naming a single task it should do. IT gets asked for tools nobody has briefed. It starts from FOMO, not a real problem.",
     source: "Industry signal",
     date: "Q2 2026",
     tone: "alert",
@@ -37,7 +37,7 @@ const CARDS: readonly ContextCard[] = [
     id: "miss-context",
     kicker: "Reality \u00b7 the gap",
     headline: "Pilots fail because the model never learned the work.",
-    dek: "Same pattern across early agent rollouts: clean enough on a demo, brittle on the third real task. The model is generic, the work isn\u2019t. Without encoded judgment, the agent flattens to the average.",
+    dek: "Same story across early rollouts: fine in a demo, falls apart on the third real task. The AI is generic, the work isn\u2019t. With nothing telling it how you work, it gives you the average.",
     source: "Field reports",
     date: "ongoing",
     tone: "neutral",
@@ -46,7 +46,7 @@ const CARDS: readonly ContextCard[] = [
     id: "missing-layer",
     kicker: "The reframe",
     headline: "The thing missing isn\u2019t the model. It\u2019s the layer.",
-    dek: "An intelligence layer carries the rules, examples, and decision patterns that make a team\u2019s output theirs. Trusted sources at the bottom, encoded substrate in the middle, headless surfaces on top. Agents inherit it.",
+    dek: "A layer that holds how your team works: your standards, your examples, the calls you make. Your sources feed in at the bottom, that knowledge sits in the middle, and every AI tool on top draws from it.",
     source: "Thoughtform",
     date: "the practice",
     tone: "ground",
@@ -67,8 +67,9 @@ export function AgentContext() {
             Everyone wants an agent. <em>Most miss the layer.</em>
           </h2>
           <p className="cw-context__sub">
-            The room you are in: hype on one side, brittle pilots on the
-            other. Three readouts, then we name what is actually missing.
+            The room you&apos;re in: hype on one side, pilots that fizzle on
+            the other. Three quick reads, then we name what&apos;s actually
+            missing.
           </p>
         </header>
 
@@ -91,9 +92,9 @@ export function AgentContext() {
         </ol>
 
         <p className="cw-context__close aiop-reveal">
-          The workshop sits exactly here. We meet the room, then we hand off
-          to the <em>solution and the method</em>: an intelligence layer,
-          built one team at a time.
+          The workshop sits right here. First we find where the gap costs you,
+          then we show the fix: a layer that holds how you work, built one
+          team at a time.
         </p>
       </div>
     </section>

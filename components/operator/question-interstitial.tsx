@@ -57,6 +57,15 @@ import { pageQuestionInterstitialSection } from "@/content/intelligence-layer";
  * line rather than preview the flywheel.
  */
 
+export type QuestionInterstitialSectionCopy = {
+  id?: string;
+  ariaLabel?: string;
+  eyebrow?: string;
+  question?: string;
+  subline?: string;
+  scrollNote?: string;
+};
+
 export type QuestionInterstitialProps = {
   /* Optional override for the delayed parenthetical. Defaults to
      `pageQuestionInterstitialSection.scrollNote`. Pass an empty
@@ -64,16 +73,29 @@ export type QuestionInterstitialProps = {
      `--aiop-question-progress`-driven CSS rule is a no-op because
      the target element isn't in the DOM. */
   scrollNote?: string;
+  section?: QuestionInterstitialSectionCopy;
 };
 
 export function QuestionInterstitial({
   scrollNote,
+  section,
 }: QuestionInterstitialProps = {}) {
   const sectionRef = useRef<HTMLElement>(null);
   const [animated, setAnimated] = useState(false);
 
+  const resolvedId = section?.id ?? pageQuestionInterstitialSection.id;
+  const resolvedAriaLabel =
+    section?.ariaLabel ?? pageQuestionInterstitialSection.ariaLabel;
+  const resolvedEyebrow =
+    section?.eyebrow ?? pageQuestionInterstitialSection.eyebrow;
+  const resolvedQuestion =
+    section?.question ?? pageQuestionInterstitialSection.question;
+  const resolvedSubline =
+    section?.subline ?? pageQuestionInterstitialSection.subline;
   const resolvedScrollNote =
-    scrollNote ?? pageQuestionInterstitialSection.scrollNote;
+    scrollNote ??
+    section?.scrollNote ??
+    pageQuestionInterstitialSection.scrollNote;
 
   useEffect(() => {
     const motionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -193,9 +215,9 @@ export function QuestionInterstitial({
     <section
       ref={sectionRef}
       className={`aiop-section aiop-question-bridge${animated ? " is-animated" : ""}`}
-      id={pageQuestionInterstitialSection.id}
+      id={resolvedId}
       aria-labelledby="aiop-question-bridge-q"
-      aria-label={pageQuestionInterstitialSection.ariaLabel}
+      aria-label={resolvedAriaLabel}
     >
       <div className="aiop-question-bridge__bleed" aria-hidden="true">
         <span className="aiop-question-bridge__wash aiop-question-bridge__wash--a" />
@@ -206,12 +228,12 @@ export function QuestionInterstitial({
 
       <div className="aiop-wrap aiop-question-bridge__inner">
         <figure className="aiop-question-bridge__figure aiop-reveal">
-          {pageQuestionInterstitialSection.eyebrow ? (
+          {resolvedEyebrow ? (
             <p
               className="aiop-question-bridge__eyebrow"
               aria-hidden="true"
             >
-              {pageQuestionInterstitialSection.eyebrow}
+              {resolvedEyebrow}
             </p>
           ) : null}
 
@@ -219,12 +241,12 @@ export function QuestionInterstitial({
             id="aiop-question-bridge-q"
             className="aiop-question-bridge__pull"
           >
-            {pageQuestionInterstitialSection.question}
+            {resolvedQuestion}
           </blockquote>
 
-          {pageQuestionInterstitialSection.subline ? (
+          {resolvedSubline ? (
             <p className="aiop-question-bridge__subline">
-              {pageQuestionInterstitialSection.subline}
+              {resolvedSubline}
             </p>
           ) : null}
 

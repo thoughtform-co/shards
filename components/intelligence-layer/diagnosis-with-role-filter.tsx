@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  type DiagnosisCard,
   pageDiagnosisByRole,
   pageDiagnosisHead,
 } from "@/content/intelligence-layer";
@@ -34,13 +35,26 @@ export type DiagnosisHeadCopy = {
   sub: string;
 };
 
+export type DiagnosisGapCopy = {
+  eyebrow: string;
+  title: string;
+};
+
+export type DiagnosisWithRoleFilterProps = {
+  head?: DiagnosisHeadCopy;
+  cards?: readonly DiagnosisCard[];
+  gap?: DiagnosisGapCopy;
+  hideRoleFilter?: boolean;
+};
+
 export function DiagnosisWithRoleFilter({
   head = pageDiagnosisHead,
-}: {
-  head?: DiagnosisHeadCopy;
-} = {}) {
+  cards: cardsOverride,
+  gap = pageDiagnosisHead.gap,
+  hideRoleFilter = false,
+}: DiagnosisWithRoleFilterProps = {}) {
   const { role } = useRole();
-  const cards = pageDiagnosisByRole[role.id];
+  const cards = cardsOverride ?? pageDiagnosisByRole[role.id];
 
   return (
     <section
@@ -57,9 +71,11 @@ export function DiagnosisWithRoleFilter({
           </p>
         </header>
 
-        <div className="ail-role-filter aiop-reveal">
-          <RoleSelector />
-        </div>
+        {hideRoleFilter ? null : (
+          <div className="ail-role-filter aiop-reveal">
+            <RoleSelector />
+          </div>
+        )}
 
         {/*
          * `key={role.id}` used to live on this <ul> to force a fresh
@@ -75,7 +91,11 @@ export function DiagnosisWithRoleFilter({
         <ul
           className="aiop-diagnosis__grid aiop-reveal"
           role="list"
-          aria-label={`Four ${role.label} pain points sharing the same missing layer`}
+          aria-label={
+            hideRoleFilter
+              ? "Four pain points sharing the same missing layer"
+              : `Four ${role.label} pain points sharing the same missing layer`
+          }
         >
           {cards.map((c) => (
             <li
@@ -105,12 +125,8 @@ export function DiagnosisWithRoleFilter({
         </div>
 
         <div className="aiop-diagnosis__gap aiop-reveal">
-          <span className="aiop-diagnosis__gap-eyebrow">
-            {pageDiagnosisHead.gap.eyebrow}
-          </span>
-          <p className="aiop-diagnosis__gap-title">
-            {pageDiagnosisHead.gap.title}
-          </p>
+          <span className="aiop-diagnosis__gap-eyebrow">{gap.eyebrow}</span>
+          <p className="aiop-diagnosis__gap-title">{gap.title}</p>
         </div>
       </div>
     </section>
