@@ -1,6 +1,9 @@
 import { Fragment } from "react";
 
-import { caWorkshopApproachSection } from "@/content/claude-adoption";
+import {
+  type CaWorkshopApproachSection,
+  caWorkshopApproachSection,
+} from "@/content/claude-adoption";
 
 /*
  * Workshop approach — operator machine (cross-team mechanics).
@@ -23,7 +26,17 @@ import { caWorkshopApproachSection } from "@/content/claude-adoption";
  *
  * Server component — no client hooks.
  */
-export function WorkshopApproach() {
+type WorkshopApproachProps = {
+  /* Optional content override. When set, the section's header copy
+     (title, titleEm, titleAfter, titleBreakBeforeEm, sub, ariaLabel,
+     id) is read from this object instead of the shared
+     `caWorkshopApproachSection` constant. The diagram body
+     (cards, connectors, CTAs) stays Loop-grown by default; pass
+     full `cards`/`connectors` to override those too. */
+  section?: CaWorkshopApproachSection;
+};
+
+export function WorkshopApproach({ section }: WorkshopApproachProps = {}) {
   const {
     id,
     ariaLabel,
@@ -36,7 +49,7 @@ export function WorkshopApproach() {
     connectors,
     engineCta,
     mondayCta,
-  } = caWorkshopApproachSection;
+  } = section ?? caWorkshopApproachSection;
 
   return (
     <section

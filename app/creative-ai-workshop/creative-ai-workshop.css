@@ -1,0 +1,827 @@
+/* ─────────────────────────────────────────────────────────────────────────
+ * Route-local stylesheet for /creative-ai-workshop.
+ *
+ * Re-skins the shared aiop chrome to a Thoughtform light look without
+ * touching the shared operator/intelligence-layer CSS that the Claude
+ * workshop also depends on. Scope is the route-only modifier
+ * `aiop-shell--tf-light` applied on the page wrapper.
+ *
+ * Three jobs:
+ *   1. Token remap. The aiop tokens (paper, ink, rules, gold, sage,
+ *      violet, amber, slate) are redefined on the modifier so any
+ *      descendant that reads `var(--aiop-*)` flips to Thoughtform
+ *      light values automatically.
+ *   2. Hardcoded chrome overrides. A few rules in operator.css use
+ *      literal rgba() values (the .aiop-header backdrop and the
+ *      .aiop-stage::before radial). They get a scoped override
+ *      under the modifier so the light skin lands cleanly.
+ *   3. Legacy bridge. TheShift / DegreesOfFreedom and the SiteFooter
+ *      read `--paper`, `--gold`, etc. from the intelligence-layer
+ *      bridge defined on `.aiop-shell`. Re-bridge those under the
+ *      modifier to keep them on-palette.
+ *
+ * The HUD telemetry rails (left + right rails, ticks, corner
+ * brackets, brandmark) are owned here as `.cw-hud__*` and rendered
+ * by `components/creative-workshop/creative-hud.tsx`. Rail geometry
+ * is ported from thoughtform.co v7 (clamp()-based, fluid).
+ *
+ * Shape law: Sigil-style zero-radius reset under the modifier, so
+ * any rounded element inherited from shared CSS hardens to corners
+ * for the Thoughtform feel.
+ * ──────────────────────────────────────────────────────────────────── */
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 1 · Tokens — Thoughtform light remap
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-shell--tf-light {
+  /* Paper / ink (Sigil :root.light) */
+  --aiop-paper: #ECE3D6;
+  --aiop-paper-2: #E4DAC9;
+  --aiop-paper-3: #DDD2C0;
+  --aiop-card: #F2EAE0;
+  --aiop-card-2: #FBF6E8;
+  --aiop-card-soft: #E4DAC9;
+  --aiop-ink: #110F09;
+  --aiop-ink-2: rgba(17, 15, 9, 0.88);
+  --aiop-ink-soft: rgba(17, 15, 9, 0.7);
+  --aiop-muted: rgba(17, 15, 9, 0.62);
+  --aiop-muted-2: rgba(17, 15, 9, 0.5);
+  --aiop-rule: rgba(17, 15, 9, 0.12);
+  --aiop-rule-soft: rgba(17, 15, 9, 0.06);
+  --aiop-rule-strong: rgba(17, 15, 9, 0.20);
+
+  /* Accents collapse to Thoughtform gold + Atreides green so the
+     full route reads as one palette. The aiop "violet" lane (used
+     as the primary accent across the layout) gets re-pointed at
+     gold; amber follows; sage stays as the secondary lane and
+     uses Atreides values. Slate stays neutral. */
+  --aiop-gold: #9A7A2E;
+  --aiop-gold-bright: #B89348;
+  --aiop-gold-soft: rgba(154, 122, 46, 0.16);
+  --aiop-gold-edge: rgba(154, 122, 46, 0.32);
+
+  --aiop-violet: #9A7A2E;
+  --aiop-violet-soft: rgba(154, 122, 46, 0.14);
+
+  --aiop-amber: #9A7A2E;
+  --aiop-amber-soft: rgba(154, 122, 46, 0.16);
+  --aiop-amber-edge: rgba(154, 122, 46, 0.32);
+
+  --aiop-sage: #5B7A4E;
+  --aiop-sage-soft: rgba(91, 122, 78, 0.16);
+  --aiop-sage-edge: rgba(91, 122, 78, 0.32);
+
+  --aiop-slate: #4f5b6b;
+  --aiop-slate-soft: rgba(79, 91, 107, 0.16);
+  --aiop-slate-edge: rgba(79, 91, 107, 0.32);
+
+  /* Shape law: zero notch + zero radius (Thoughtform / Sigil). */
+  --aiop-notch: 0;
+
+  /* Legacy bridge tokens (intelligence-layer.css inline-bridges
+     these on `.aiop-shell` with warm gold #b88728; we override
+     them here so TheShift / DegreesOfFreedom / SiteFooter pick
+     up the Thoughtform gold instead). */
+  --paper: #ECE3D6;
+  --paper-2: #E4DAC9;
+  --paper-3: #DDD2C0;
+  --gold: #9A7A2E;
+  --gold-deep: #6B5320;
+  --gold-soft: rgba(154, 122, 46, 0.18);
+  --gold-edge: rgba(154, 122, 46, 0.32);
+
+  /* HUD layout tokens (thoughtform.co v7 geometry, fluid). The
+     content inset is what every section pushes itself off from
+     so the rails never overlap content. */
+  --hud-margin: clamp(20px, 3vw, 56px);
+  --hud-rail-width: clamp(28px, 2.6vw, 48px);
+  --hud-corner-zone: clamp(22px, 2.2vw, 32px);
+  --hud-rail-top: clamp(96px, 12vh, 144px); /* clears sticky header */
+  --hud-rail-bottom: clamp(36px, 5vh, 72px);
+  --hud-rail-guide-inset: clamp(5px, 0.47vw, 9px);
+  --hud-content-inset: calc(var(--hud-margin) + var(--hud-rail-width) + clamp(16px, 2vw, 32px));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 2 · Hardcoded chrome overrides
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-shell--tf-light.aiop-shell {
+  background: var(--aiop-paper);
+  color: var(--aiop-ink);
+}
+
+.aiop-shell--tf-light .aiop-stage {
+  background: var(--aiop-paper);
+  color: var(--aiop-ink);
+}
+
+.aiop-shell--tf-light .aiop-stage::before {
+  background:
+    radial-gradient(ellipse 60% 45% at 12% 10%, rgba(154, 122, 46, 0.10), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 88% 6%, rgba(91, 122, 78, 0.06), transparent 60%),
+    linear-gradient(180deg, var(--aiop-paper) 0%, var(--aiop-paper-2) 100%);
+}
+
+/* Sticky header: paper-toned glass instead of the warm cream the
+   shared rule uses. */
+.aiop-shell--tf-light .aiop-header {
+  background: rgba(236, 227, 214, 0.88);
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+/* Light hero grid background: lift the hairline contrast a touch
+   so the soft grid still reads on warm parchment. */
+.aiop-shell--tf-light .aiop-grid-bg {
+  opacity: 0.5;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 3 · Shape law — zero radius across the route
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-shell--tf-light *,
+.aiop-shell--tf-light *::before,
+.aiop-shell--tf-light *::after {
+  border-radius: 0 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 4 · HUD telemetry rails
+ *    Owned by components/creative-workshop/creative-hud.tsx.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.cw-hud {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  display: none;
+}
+
+@media (min-width: 961px) {
+  .aiop-shell--tf-light .cw-hud {
+    display: block;
+  }
+}
+
+/* Corner brackets: thin 1px L-shapes in ink-at-low-opacity, three
+   anchors only (TL / BL / BR). The top-right is left empty to give
+   the sticky-header status pill room. */
+.cw-hud__corner {
+  position: absolute;
+  width: var(--hud-corner-zone);
+  height: var(--hud-corner-zone);
+  pointer-events: none;
+}
+
+.cw-hud__corner--tl {
+  top: var(--hud-rail-top);
+  left: var(--hud-margin);
+}
+
+.cw-hud__corner--bl {
+  bottom: var(--hud-margin);
+  left: var(--hud-margin);
+}
+
+.cw-hud__corner--br {
+  bottom: var(--hud-margin);
+  right: var(--hud-margin);
+}
+
+.cw-hud__corner::before,
+.cw-hud__corner::after {
+  content: "";
+  position: absolute;
+  background: var(--aiop-rule-strong);
+}
+
+.cw-hud__corner--tl::before {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+}
+
+.cw-hud__corner--tl::after {
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+}
+
+.cw-hud__corner--bl::before {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+}
+
+.cw-hud__corner--bl::after {
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+}
+
+.cw-hud__corner--br::before {
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 1px;
+}
+
+.cw-hud__corner--br::after {
+  bottom: 0;
+  right: 0;
+  width: 1px;
+  height: 100%;
+}
+
+/* Rails: vertical guide lines with 21 evenly spaced ticks. Track
+   is a 1px gradient hairline that fades in at the top and bottom
+   so it does not visually collide with the corner brackets. */
+.cw-hud__rail {
+  position: absolute;
+  top: var(--hud-rail-top);
+  bottom: var(--hud-rail-bottom);
+  width: var(--hud-rail-width);
+}
+
+.cw-hud__rail--l {
+  left: var(--hud-margin);
+}
+
+.cw-hud__rail--r {
+  right: var(--hud-margin);
+}
+
+.cw-hud__rail-track {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--aiop-rule-strong) 6%,
+    var(--aiop-rule-strong) 94%,
+    transparent 100%
+  );
+  transform: translateX(-0.5px);
+}
+
+.cw-hud__ticks {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.cw-hud__tick {
+  position: absolute;
+  left: 50%;
+  width: 8px;
+  height: 1px;
+  background: var(--aiop-rule);
+  transform: translate(-50%, -50%);
+}
+
+.cw-hud__tick--major {
+  width: 16px;
+  background: var(--aiop-gold-soft);
+}
+
+.cw-hud__tick-label {
+  position: absolute;
+  left: calc(50% + 14px);
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  transform: translateY(-50%);
+  white-space: nowrap;
+}
+
+.cw-hud__rail--r .cw-hud__tick-label {
+  left: auto;
+  right: calc(50% + 14px);
+}
+
+/* Depth diamond: gold rotated square at the top of the left rail
+   (decorative for now; later it can be scroll-driven). */
+.cw-hud__depth {
+  position: absolute;
+  top: 4%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: var(--aiop-gold);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  transform: translate(-50%, -50%);
+}
+
+/* Brandmark anchor: bottom-left, sits above the BL corner bracket
+   so the corner reads as a bracket and the brandmark sits inside
+   the framed area. */
+.cw-hud__brandmark {
+  position: absolute;
+  bottom: calc(var(--hud-margin) + var(--hud-corner-zone) + 14px);
+  left: var(--hud-margin);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cw-hud__brandmark img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Pagination / chapter readouts: small mono labels at the chrome
+   anchors so the rails feel populated without crowding. */
+.cw-hud__readout {
+  position: absolute;
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.cw-hud__readout--tr {
+  top: var(--hud-rail-top);
+  right: var(--hud-margin);
+}
+
+.cw-hud__readout--br {
+  bottom: calc(var(--hud-margin) + var(--hud-corner-zone) + 14px);
+  right: var(--hud-margin);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 5 · Section overrides — light-mode polish
+ *
+ * A handful of shared rules lean on hardcoded warm-cream values
+ * that read fine on the default Aether paper but go slightly muddy
+ * on the lighter Thoughtform parchment. Re-tone them under the
+ * modifier so the new sections (about, agent context, how-we-run-it)
+ * land cleanly without forking the shared component CSS.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+/* The hero diagonal grid uses a hardcoded ink alpha; nothing to
+   override. The hero title uses --aiop-ink which now resolves to
+   #110F09. Done. */
+
+/* ─── About Vince ─────────────────────────────────────────────── */
+
+.aiop-shell--tf-light .cw-about {
+  padding-block: var(--aiop-section-y);
+}
+
+.aiop-shell--tf-light .cw-about__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 6vw, 72px);
+}
+
+.aiop-shell--tf-light .cw-about__head {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 920px;
+}
+
+.aiop-shell--tf-light .cw-about__eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-about__title {
+  font-family: var(--aiop-display);
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.aiop-shell--tf-light .cw-about__alias {
+  display: inline;
+  font-family: var(--aiop-mono);
+  font-size: 0.5em;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 400;
+  font-style: normal;
+  margin-left: 0.4em;
+  vertical-align: 0.18em;
+}
+
+.aiop-shell--tf-light .cw-about__role {
+  font-family: var(--aiop-mono);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  margin: 0;
+}
+
+.aiop-shell--tf-light .cw-about__grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 320px) 1fr;
+  gap: clamp(36px, 5vw, 80px);
+  align-items: start;
+}
+
+@media (max-width: 720px) {
+  .aiop-shell--tf-light .cw-about__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aiop-shell--tf-light .cw-about__portrait {
+  margin: 0;
+  aspect-ratio: 4 / 5;
+}
+
+.aiop-shell--tf-light .cw-about__portrait-frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: var(--aiop-paper-2);
+  border: 1px solid var(--aiop-rule);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.aiop-shell--tf-light .cw-about__portrait-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+.aiop-shell--tf-light .cw-about__portrait-corner::before,
+.aiop-shell--tf-light .cw-about__portrait-corner::after {
+  content: "";
+  position: absolute;
+  background: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-about__portrait-corner--tl {
+  top: 8px;
+  left: 8px;
+}
+
+.aiop-shell--tf-light .cw-about__portrait-corner--tl::before {
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 1px;
+}
+
+.aiop-shell--tf-light .cw-about__portrait-corner--tl::after {
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 16px;
+}
+
+.aiop-shell--tf-light .cw-about__portrait-corner--tr {
+  top: 8px;
+  right: 8px;
+}
+
+.aiop-shell--tf-light .cw-about__portrait-corner--tr::before {
+  top: 0;
+  right: 0;
+  width: 16px;
+  height: 1px;
+}
+
+.aiop-shell--tf-light .cw-about__portrait-corner--tr::after {
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 16px;
+}
+
+.aiop-shell--tf-light .cw-about__portrait-corner--bl {
+  bottom: 8px;
+  left: 8px;
+}
+
+.aiop-shell--tf-light .cw-about__portrait-corner--bl::before {
+  bottom: 0;
+  left: 0;
+  width: 16px;
+  height: 1px;
+}
+
+.aiop-shell--tf-light .cw-about__portrait-corner--bl::after {
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  height: 16px;
+}
+
+.aiop-shell--tf-light .cw-about__portrait-corner--br {
+  bottom: 8px;
+  right: 8px;
+}
+
+.aiop-shell--tf-light .cw-about__portrait-corner--br::before {
+  bottom: 0;
+  right: 0;
+  width: 16px;
+  height: 1px;
+}
+
+.aiop-shell--tf-light .cw-about__portrait-corner--br::after {
+  bottom: 0;
+  right: 0;
+  width: 1px;
+  height: 16px;
+}
+
+.aiop-shell--tf-light .cw-about__portrait-label {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--aiop-muted-2);
+}
+
+.aiop-shell--tf-light .cw-about__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 640px;
+}
+
+.aiop-shell--tf-light .cw-about__bio {
+  font-family: var(--aiop-body);
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+  font-weight: 400;
+}
+
+.aiop-shell--tf-light .cw-about__bio strong {
+  color: var(--aiop-ink);
+  font-weight: 600;
+}
+
+.aiop-shell--tf-light .cw-about__bio em {
+  font-style: italic;
+  color: var(--aiop-gold);
+  font-weight: 500;
+}
+
+.aiop-shell--tf-light .cw-about__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 16px 0 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--aiop-rule);
+}
+
+.aiop-shell--tf-light .cw-about__meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+}
+
+.aiop-shell--tf-light .cw-about__meta dt {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-shell--tf-light .cw-about__meta dd {
+  font-family: var(--aiop-body);
+  font-size: 14px;
+  color: var(--aiop-ink);
+  font-weight: 500;
+  margin: 0;
+}
+
+/* ─── Agent context (news-flash cards) ───────────────────────── */
+
+.aiop-shell--tf-light .cw-context {
+  padding-block: var(--aiop-section-y);
+}
+
+.aiop-shell--tf-light .cw-context__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 6vw, 64px);
+}
+
+.aiop-shell--tf-light .cw-context__head {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 980px;
+}
+
+.aiop-shell--tf-light .cw-context__eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-context__title {
+  font-family: var(--aiop-display);
+  font-size: clamp(32px, 4.4vw, 56px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.aiop-shell--tf-light .cw-context__title em {
+  font-style: italic;
+  color: var(--aiop-gold);
+  font-weight: 600;
+}
+
+.aiop-shell--tf-light .cw-context__sub {
+  font-family: var(--aiop-body);
+  font-size: clamp(15px, 1.3vw, 18px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+  max-width: 720px;
+}
+
+.aiop-shell--tf-light .cw-context__cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(20px, 2vw, 28px);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .aiop-shell--tf-light .cw-context__cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aiop-shell--tf-light .cw-context__card {
+  position: relative;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+  padding: clamp(24px, 2.4vw, 32px) clamp(22px, 2vw, 28px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: clamp(280px, 36vh, 360px);
+}
+
+.aiop-shell--tf-light .cw-context__card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--aiop-rule-strong);
+}
+
+.aiop-shell--tf-light .cw-context__card--alert::before {
+  background: linear-gradient(
+    90deg,
+    var(--aiop-gold) 0%,
+    var(--aiop-gold-soft) 60%,
+    transparent 100%
+  );
+}
+
+.aiop-shell--tf-light .cw-context__card--neutral::before {
+  background: var(--aiop-rule-strong);
+}
+
+.aiop-shell--tf-light .cw-context__card--ground::before {
+  background: linear-gradient(
+    90deg,
+    var(--aiop-sage) 0%,
+    var(--aiop-sage-soft) 60%,
+    transparent 100%
+  );
+}
+
+.aiop-shell--tf-light .cw-context__kicker {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-context__card--ground .cw-context__kicker {
+  color: var(--aiop-sage);
+}
+
+.aiop-shell--tf-light .cw-context__card--neutral .cw-context__kicker {
+  color: var(--aiop-muted);
+}
+
+.aiop-shell--tf-light .cw-context__card-headline {
+  font-family: var(--aiop-display);
+  font-size: clamp(20px, 1.8vw, 26px);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.aiop-shell--tf-light .cw-context__card-dek {
+  font-family: var(--aiop-body);
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+  flex: 1;
+}
+
+.aiop-shell--tf-light .cw-context__byline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--aiop-rule);
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 500;
+}
+
+.aiop-shell--tf-light .cw-context__byline-sep {
+  color: var(--aiop-rule-strong);
+}
+
+.aiop-shell--tf-light .cw-context__close {
+  font-family: var(--aiop-display);
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+  padding-top: clamp(20px, 3vh, 32px);
+  border-top: 1px solid var(--aiop-rule);
+  max-width: 1100px;
+}
+
+.aiop-shell--tf-light .cw-context__close em {
+  font-style: italic;
+  color: var(--aiop-gold);
+  font-weight: 600;
+}
+
+/* ca-approach (How we run it) reads its accent from --aiop-violet
+   on the parent. We collapsed violet to gold above, so phase
+   colours land as gold/gold/sage rather than the original
+   violet/clay/sage. Re-spread them so each phase has its own tint
+   again, just on the Thoughtform palette. */
+.aiop-shell--tf-light .ca-approach__stages > .ca-approach__stage--same-start {
+  --aiop-violet: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .ca-approach__stages > .ca-approach__stage--every-record {
+  --aiop-violet: #6B5320;
+}
+
+.aiop-shell--tf-light .ca-approach__stages > .ca-approach__stage--patterns-become-tools {
+  --aiop-violet: var(--aiop-sage);
+}
