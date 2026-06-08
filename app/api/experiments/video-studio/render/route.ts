@@ -1,9 +1,12 @@
 import { randomUUID } from "node:crypto";
-import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { NextResponse } from "next/server";
 import { createJob, getJob, updateJob } from "@/experiments/video-studio/server/jobs";
-import { renderHyperframesTemplate } from "@/experiments/video-studio/server/renderHyperframes";
+import {
+  readDeckDraft,
+  renderDeckDraft,
+  renderHyperframesTemplate,
+} from "@/experiments/video-studio/server/renderHyperframes";
 import { renderRemotionTemplate } from "@/experiments/video-studio/server/renderRemotion";
 import { parseTemplateInput } from "@/experiments/video-studio/server/validateInput";
 import { parseDeckSeriesInput } from "@/experiments/video-studio/server/validateDeckSeries";
@@ -20,10 +23,15 @@ import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 export const runtime = "nodejs";
 export const maxDuration = 300;
 
+const DECK_TEMPLATE_ID = "deck-explainer-series";
+
 type RenderRequestBody = {
   templateId: string;
   input: Record<string, string | number>;
   uploadIds?: Record<string, string>;
+  /** Pptx mode: id of the agent-authored draft to render. Required when
+      templateId is deck-explainer-series. */
+  animationSessionId?: string;
 };
 
 export async function POST(request: Request) {
@@ -59,17 +67,45 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unknown template." }, { status: 404 });
     }
 
-    const parsedInput =
-      template.id === "deck-explainer-series"
-        ? parseDeckSeriesInput(body.input)
-        : parseTemplateInput(template, body.input);
+    // Pptx mode now renders the agent-authored draft, not the static
+    // Remotion composition. Require the sessionId from the animate step
+    // and engine-route to HyperFrames regardless of the template's
+    // declared engine.
+    const isDeckMode = template.id === DECK_TEMPLATE_ID;
+    if (isDeckMode) {
+      if (!body.animationSessionId) {
+        return NextResponse.json(
+          {
+            error:
+              "Animate the deck before rendering. The render uses the agent-authored composition.",
+          },
+          { status: 400 },
+        );
+      }
+
+      const draft = await readDeckDraft(body.animationSessionId);
+      if (!draft) {
+        return NextResponse.json(
+          {
+            error:
+              "No composition found for that session. Re-animate and try again.",
+          },
+          { status: 404 },
+        );
+      }
+    }
+
+    const parsedInput = isDeckMode
+      ? parseDeckSeriesInput(body.input)
+      : parseTemplateInput(template, body.input);
     const jobId = randomUUID();
 
     createJob({
       id: jobId,
       templateId: template.id,
-      engine: template.engine,
+      engine: isDeckMode ? "hyperframes" : template.engine,
       status: "queued",
+      sessionId: body.animationSessionId,
     });
 
     await ensureWorkspace();
@@ -101,7 +137,13 @@ export async function POST(request: Request) {
       updateJob(jobId, { progress, message, status: "rendering" });
     };
 
-    if (template.engine === "remotion") {
+    if (isDeckMode) {
+      await renderDeckDraft({
+        sessionId: body.animationSessionId!,
+        outputPath,
+        onProgress,
+      });
+    } else if (template.engine === "remotion") {
       await renderRemotionTemplate({
         templateId: template.id,
         input: parsedInput,

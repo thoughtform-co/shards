@@ -61,6 +61,10 @@ export type RenderJobRecord = {
   error?: string;
   createdAt: number;
   completedAt?: number;
+  /** Deck animator: id of the compiled-draft directory the agent wrote to. */
+  sessionId?: string;
+  /** Deck animator: which path produced the final HTML. */
+  source?: "agent" | "fallback";
 };
 
 export type UploadRecord = {

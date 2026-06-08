@@ -200,18 +200,246 @@
   border-top: 1px solid var(--aiop-rule);
 }
 
-/* Editor layout */
+/* Wide editor canvas */
 
-.aiop-shell--tf-light .cw-vs__layout {
-  display: grid;
-  gap: clamp(24px, 3vw, 40px);
+.aiop-shell--tf-light .cw-vs__canvas {
+  width: 100%;
+  max-width: 1680px;
+  margin-inline: auto;
+  padding-inline: var(--hud-content-inset);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2vw, 24px);
 }
 
-@media (min-width: 960px) {
-  .aiop-shell--tf-light .cw-vs__layout {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-    align-items: start;
+.aiop-shell--tf-light .cw-vs__toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 1.6vw, 18px);
+  padding-block: clamp(12px, 1.6vw, 18px);
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+/* Title cluster + contextual readout share one row; the tab strip
+   lives on its own row below. Keeping the variable-length readout out
+   of the tab row stops the tabs from jumping when the active mode's
+   summary text changes length. */
+.aiop-shell--tf-light .cw-vs__toolbar-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 6px 20px;
+  min-width: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__toolbar-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__toolbar-eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+  margin: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__toolbar-title {
+  font-family: var(--aiop-display);
+  font-size: clamp(18px, 2vw, 24px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__toolbar-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  margin: 0;
+}
+
+/* Editor layout.
+   - pptx mode: top row is `rail | stage`, bottom row is a full-width scene
+     timeline. Reads top-to-bottom: source/setup/animate (left), preview +
+     render (center), then the timeline (below) which IS the editable scene
+     plan that drives the agent.
+   - legacy mode (other tabs): single rail + stage. */
+
+.aiop-shell--tf-light .cw-vs__editor {
+  display: grid;
+  gap: clamp(12px, 1.4vw, 16px);
+  /* No min-height — let content drive vertical size so the studio
+     fits in one viewport on standard laptop displays. The viewer's
+     own max-height keeps the preview from collapsing. */
+}
+
+@media (min-width: 1200px) {
+  .aiop-shell--tf-light .cw-vs__editor--pptx {
+    grid-template-columns: minmax(300px, 340px) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "rail stage"
+      "timeline timeline";
+    align-items: stretch;
   }
+
+  .aiop-shell--tf-light .cw-vs__editor--legacy {
+    grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 1199px) and (min-width: 821px) {
+  .aiop-shell--tf-light .cw-vs__editor--pptx {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "stage"
+      "rail"
+      "timeline";
+  }
+
+  .aiop-shell--tf-light .cw-vs__editor--legacy {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "stage"
+      "rail";
+  }
+
+  .aiop-shell--tf-light .cw-vs__editor--legacy .cw-vs__stage {
+    grid-area: stage;
+  }
+
+  .aiop-shell--tf-light .cw-vs__editor--legacy .cw-vs__rail {
+    grid-area: rail;
+  }
+}
+
+@media (max-width: 820px) {
+  .aiop-shell--tf-light .cw-vs__editor--pptx,
+  .aiop-shell--tf-light .cw-vs__editor--legacy {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "stage"
+      "rail"
+      "timeline";
+  }
+}
+
+.aiop-shell--tf-light .cw-vs__editor--pptx .cw-vs__rail {
+  grid-area: rail;
+}
+
+.aiop-shell--tf-light .cw-vs__editor--pptx .cw-vs__stage {
+  grid-area: stage;
+}
+
+.aiop-shell--tf-light .cw-vs__editor--pptx .cw-vs__timeline-wrap {
+  grid-area: timeline;
+}
+
+.aiop-shell--tf-light .cw-vs__rail,
+.aiop-shell--tf-light .cw-vs__inspector {
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-card);
+  min-height: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__rail-inner,
+.aiop-shell--tf-light .cw-vs__inspector-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: clamp(12px, 1.2vw, 14px);
+  height: 100%;
+}
+
+.aiop-shell--tf-light .cw-vs__rail-head,
+.aiop-shell--tf-light .cw-vs__inspector-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+.aiop-shell--tf-light .cw-vs__rail-label {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-shell--tf-light .cw-vs__inspector {
+  display: flex;
+  flex-direction: column;
+  max-height: min(72vh, 820px);
+  overflow: hidden;
+}
+
+.aiop-shell--tf-light .cw-vs__inspector-inner {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.aiop-shell--tf-light .cw-vs__stage {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Slim topbar: no full border box, just an inline meta row that sits
+   above the preview. The "Live preview" label was removed since the
+   surface itself is obviously the preview; meta + engine carry all
+   the technical context. */
+.aiop-shell--tf-light .cw-vs__stage-topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 14px;
+  padding: 4px 0 8px;
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+.aiop-shell--tf-light .cw-vs__stage-meta {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-shell--tf-light .cw-vs__stage-viewer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__stage-footer {
+  padding-top: 8px;
+}
+
+.aiop-shell--tf-light .cw-vs__stage-footer .cw-vs__actions {
+  margin-top: 0;
 }
 
 .aiop-shell--tf-light .cw-vs__engine {
@@ -357,6 +585,10 @@
 .aiop-shell--tf-light .cw-vs__viewer {
   position: relative;
   width: 100%;
+  max-width: 100%;
+  /* Cap viewer to ~46vh so the rail, preview, and timeline all fit
+     in one viewport on standard laptop displays (768-900px tall). */
+  max-height: min(46vh, 480px);
   aspect-ratio: 16 / 9;
   background: var(--aiop-paper-2);
   border: 1px solid var(--aiop-rule);
@@ -365,99 +597,9 @@
 
 .aiop-shell--tf-light .cw-vs__viewer--vertical {
   aspect-ratio: 9 / 16;
-  max-width: 420px;
+  max-width: min(280px, 100%);
+  max-height: min(46vh, 480px);
   margin-inline: auto;
-}
-
-.aiop-shell--tf-light .cw-vs__viewer-corner {
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  pointer-events: none;
-  z-index: 2;
-}
-
-.aiop-shell--tf-light .cw-vs__viewer-corner::before,
-.aiop-shell--tf-light .cw-vs__viewer-corner::after {
-  content: "";
-  position: absolute;
-  background: var(--aiop-gold);
-}
-
-.aiop-shell--tf-light .cw-vs__viewer-corner--tl {
-  top: 8px;
-  left: 8px;
-}
-
-.aiop-shell--tf-light .cw-vs__viewer-corner--tl::before {
-  top: 0;
-  left: 0;
-  width: 16px;
-  height: 1px;
-}
-
-.aiop-shell--tf-light .cw-vs__viewer-corner--tl::after {
-  top: 0;
-  left: 0;
-  width: 1px;
-  height: 16px;
-}
-
-.aiop-shell--tf-light .cw-vs__viewer-corner--tr {
-  top: 8px;
-  right: 8px;
-}
-
-.aiop-shell--tf-light .cw-vs__viewer-corner--tr::before {
-  top: 0;
-  right: 0;
-  width: 16px;
-  height: 1px;
-}
-
-.aiop-shell--tf-light .cw-vs__viewer-corner--tr::after {
-  top: 0;
-  right: 0;
-  width: 1px;
-  height: 16px;
-}
-
-.aiop-shell--tf-light .cw-vs__viewer-corner--bl {
-  bottom: 8px;
-  left: 8px;
-}
-
-.aiop-shell--tf-light .cw-vs__viewer-corner--bl::before {
-  bottom: 0;
-  left: 0;
-  width: 16px;
-  height: 1px;
-}
-
-.aiop-shell--tf-light .cw-vs__viewer-corner--bl::after {
-  bottom: 0;
-  left: 0;
-  width: 1px;
-  height: 16px;
-}
-
-.aiop-shell--tf-light .cw-vs__viewer-corner--br {
-  bottom: 8px;
-  right: 8px;
-}
-
-.aiop-shell--tf-light .cw-vs__viewer-corner--br::before {
-  bottom: 0;
-  right: 0;
-  width: 16px;
-  height: 1px;
-}
-
-.aiop-shell--tf-light .cw-vs__viewer-corner--br::after {
-  bottom: 0;
-  right: 0;
-  width: 1px;
-  height: 16px;
 }
 
 .aiop-shell--tf-light .cw-vs__viewer-inner {
@@ -563,9 +705,31 @@
 .aiop-shell--tf-light .cw-vs__tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  border-bottom: 1px solid var(--aiop-rule);
-  padding-bottom: 12px;
+  gap: 6px;
+}
+
+.aiop-shell--tf-light .cw-vs__tabs--toolbar {
+  flex-shrink: 0;
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+/* The tab strip is a set of starting points, not a view switcher —
+   the leading label frames it that way. Label + tabs share one row
+   and wrap together, so the strip never jumps. */
+.aiop-shell--tf-light .cw-vs__modes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+}
+
+.aiop-shell--tf-light .cw-vs__modes-label {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
 }
 
 .aiop-shell--tf-light .cw-vs__tab {
@@ -573,10 +737,10 @@
   background: var(--aiop-paper-2);
   color: var(--aiop-muted);
   font-family: var(--aiop-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.16em;
+  font-size: 10px;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  padding: 10px 14px;
+  padding: 8px 12px;
   cursor: pointer;
   transition: border-color 140ms ease, color 140ms ease, background 140ms ease;
 }
@@ -608,48 +772,100 @@
   gap: 16px;
 }
 
-.aiop-shell--tf-light .cw-vs__pptx-actions {
+/* Source feedback + secondary action. The state line is a readout
+   (not a control) — it reports what loaded and how many scenes that
+   produced, mirroring the "Scenes · N" label in the inspector. The
+   text-action is a clearly subordinate alternative to the primary
+   gold Upload button. */
+.aiop-shell--tf-light .cw-vs__source-meta {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+}
+
+.aiop-shell--tf-light .cw-vs__source-state {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-}
-
-.aiop-shell--tf-light .cw-vs__source-badge {
+  gap: 8px;
+  margin: 0;
   font-family: var(--aiop-mono);
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  padding: 6px 10px;
-  border: 1px solid var(--aiop-rule);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+  color: var(--aiop-ink-soft);
+  min-width: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__source-state-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__text-action {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
   color: var(--aiop-muted);
+  cursor: pointer;
+  text-align: left;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: color 140ms ease;
 }
 
-.aiop-shell--tf-light .cw-vs__source-badge--live {
-  border-color: var(--aiop-gold);
+.aiop-shell--tf-light .cw-vs__text-action:hover {
   color: var(--aiop-gold);
-}
-
-.aiop-shell--tf-light .cw-vs__source-badge--sample {
-  border-color: var(--aiop-sage);
-  color: var(--aiop-sage);
 }
 
 .aiop-shell--tf-light .cw-vs__dropzone {
   display: grid;
-  gap: 12px;
+  gap: 10px;
   justify-items: start;
-  padding: clamp(20px, 2.4vw, 28px);
+  width: 100%;
+  padding: clamp(16px, 1.8vw, 22px);
   border: 1px dashed var(--aiop-rule-strong);
   background: var(--aiop-paper-2);
   cursor: pointer;
   transition: border-color 140ms ease, background 140ms ease;
 }
 
+/* Compact inline dropzone: a button + drop hint on a single row. The
+   whole row remains a drop target — dragging over highlights the
+   border. Used in the deck rail where vertical space is tight. */
+.aiop-shell--tf-light .cw-vs__dropzone--inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px dashed var(--aiop-rule-strong);
+  background: var(--aiop-paper-2);
+}
+
+.aiop-shell--tf-light .cw-vs__dropzone--inline .aiop-button {
+  flex-shrink: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__dropzone-hint {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--aiop-muted);
+}
+
 .aiop-shell--tf-light .cw-vs__dropzone--active,
 .aiop-shell--tf-light .cw-vs__dropzone:hover {
   border-color: var(--aiop-gold);
   background: var(--aiop-card);
+}
+
+.aiop-shell--tf-light .cw-vs__dropzone--active .cw-vs__dropzone-hint {
+  color: var(--aiop-gold);
 }
 
 .aiop-shell--tf-light .cw-vs__dropzone-title {
@@ -672,30 +888,46 @@
   gap: 12px;
 }
 
+.aiop-shell--tf-light .cw-vs__brand-grid--rail {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 @media (min-width: 720px) {
-  .aiop-shell--tf-light .cw-vs__brand-grid {
+  .aiop-shell--tf-light .cw-vs__brand-grid:not(.cw-vs__brand-grid--rail) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-.aiop-shell--tf-light .cw-vs__scene-list {
-  display: grid;
-  gap: 12px;
+.aiop-shell--tf-light .cw-vs__scene-bullets {
+  min-height: 84px;
+  font-size: 13px;
 }
 
-.aiop-shell--tf-light .cw-vs__scene-card {
+.aiop-shell--tf-light .cw-vs__field--inline input {
+  max-width: 80px;
+}
+
+.aiop-shell--tf-light .cw-vs__scene-add {
   border: 1px solid var(--aiop-rule);
-  background: var(--aiop-card);
-  padding: 16px;
-  display: grid;
-  gap: 12px;
+  background: transparent;
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-ink-soft);
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: border-color 140ms ease, color 140ms ease;
 }
 
-.aiop-shell--tf-light .cw-vs__scene-card-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+.aiop-shell--tf-light .cw-vs__scene-add:hover {
+  border-color: var(--aiop-gold);
+  color: var(--aiop-ink);
+}
+
+.aiop-shell--tf-light .cw-vs__scene-add:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .aiop-shell--tf-light .cw-vs__scene-index {
@@ -720,4 +952,615 @@
 
 .aiop-shell--tf-light .cw-vs__scene-remove:hover {
   color: var(--aiop-ink);
+}
+
+.aiop-shell--tf-light .cw-vs__scene-remove:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+/* Horizontal scene timeline (replaces the vertical scene inspector).
+   - The strip is a flex row of duration-weighted chips. Chip width grows
+     with `durationSeconds` so the strip reads as a real timeline, not a
+     uniform tab-bar.
+   - The editor below the strip edits the selected scene only — single-task
+     focus instead of an N-card stack. */
+
+.aiop-shell--tf-light .cw-vs__timeline-wrap {
+  min-width: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__timeline {
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-card);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px 12px;
+}
+
+.aiop-shell--tf-light .cw-vs__timeline-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+.aiop-shell--tf-light .cw-vs__timeline-total {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--aiop-muted);
+  margin-inline-start: auto;
+}
+
+.aiop-shell--tf-light .cw-vs__timeline-strip {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  overflow-x: auto;
+  /* Room for the active chip's underline so it isn't clipped. */
+  padding-block: 2px 6px;
+}
+
+.aiop-shell--tf-light .cw-vs__timeline-slot {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 120px;
+}
+
+.aiop-shell--tf-light .cw-vs__scene-chip {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto;
+  align-items: center;
+  gap: 6px 8px;
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-paper-2);
+  color: var(--aiop-ink);
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--aiop-body);
+  transition: border-color 140ms ease, background 140ms ease,
+    transform 140ms ease;
+}
+
+.aiop-shell--tf-light .cw-vs__scene-chip:hover {
+  border-color: var(--aiop-ink-soft);
+  background: var(--aiop-card);
+}
+
+.aiop-shell--tf-light .cw-vs__scene-chip--active {
+  border-color: var(--aiop-gold);
+  background: var(--aiop-card);
+}
+
+.aiop-shell--tf-light .cw-vs__scene-chip--active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -5px;
+  height: 2px;
+  background: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-vs__scene-chip-index {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-vs__scene-chip-headline {
+  font-size: 12.5px;
+  line-height: 1.3;
+  font-weight: 500;
+  color: var(--aiop-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aiop-shell--tf-light .cw-vs__scene-chip-duration {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: var(--aiop-muted);
+}
+
+/* Single-row scene editor: index · headline · duration · remove on one
+   line, bullets textarea below. Dense by design — the timeline is
+   secondary to the preview, so all controls collapse to one bar. */
+.aiop-shell--tf-light .cw-vs__timeline-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 2px;
+}
+
+.aiop-shell--tf-light .cw-vs__timeline-editor-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__timeline-headline {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 6px 10px;
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-paper-2);
+  color: var(--aiop-ink);
+  font-family: var(--aiop-body);
+  font-size: 13px;
+}
+
+.aiop-shell--tf-light .cw-vs__timeline-headline:focus {
+  outline: none;
+  border-color: var(--aiop-gold);
+  box-shadow: 0 0 0 1px var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-vs__timeline-duration {
+  width: 48px;
+  padding: 6px 8px;
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-paper-2);
+  color: var(--aiop-ink);
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  text-align: right;
+}
+
+.aiop-shell--tf-light .cw-vs__timeline-duration:focus {
+  outline: none;
+  border-color: var(--aiop-gold);
+  box-shadow: 0 0 0 1px var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-vs__timeline-duration-unit {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--aiop-muted);
+  margin-inline-start: -4px;
+}
+
+.aiop-shell--tf-light .cw-vs__timeline-bullets {
+  width: 100%;
+  min-height: 64px;
+  padding: 6px 10px;
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-paper-2);
+  color: var(--aiop-ink);
+  font-family: var(--aiop-body);
+  font-size: 13px;
+  line-height: 1.45;
+  resize: vertical;
+}
+
+.aiop-shell--tf-light .cw-vs__timeline-bullets:focus {
+  outline: none;
+  border-color: var(--aiop-gold);
+  box-shadow: 0 0 0 1px var(--aiop-gold);
+}
+
+/* Animate strip — the primary action that converts the scene plan into a
+   playable composition. Lives at the bottom of the left rail. */
+
+.aiop-shell--tf-light .cw-vs__rail-spacer {
+  flex: 1 0 0;
+}
+
+.aiop-shell--tf-light .cw-vs__animate {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--aiop-rule);
+}
+
+.aiop-shell--tf-light .cw-vs__rail-head--flush {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__rail-meta {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--aiop-muted);
+}
+
+/* Motion preset chips + inline "+ direction" toggle share one row so
+   the rail height stays shallow. */
+.aiop-shell--tf-light .cw-vs__motion-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.aiop-shell--tf-light .cw-vs__chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.aiop-shell--tf-light .cw-vs__chip {
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-paper-2);
+  color: var(--aiop-muted);
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: border-color 140ms ease, background 140ms ease, color 140ms ease;
+}
+
+.aiop-shell--tf-light .cw-vs__text-action--inline {
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.aiop-shell--tf-light .cw-vs__text-action--inline:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.aiop-shell--tf-light .cw-vs__style-intent {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-paper-2);
+  color: var(--aiop-ink);
+  font-family: var(--aiop-body);
+  font-size: 12.5px;
+  line-height: 1.4;
+  resize: vertical;
+  min-height: 48px;
+}
+
+.aiop-shell--tf-light .cw-vs__style-intent:focus {
+  outline: none;
+  border-color: var(--aiop-gold);
+  box-shadow: 0 0 0 1px var(--aiop-gold);
+}
+
+/* Collapsible disclosure (Brand summary). The summary is a button so
+   it's keyboard-accessible; the chevron rotates on open. */
+.aiop-shell--tf-light .cw-vs__collapse {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.aiop-shell--tf-light .cw-vs__collapse-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 6px 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  border-bottom: 1px solid var(--aiop-rule);
+  transition: border-color 140ms ease;
+}
+
+.aiop-shell--tf-light .cw-vs__collapse-summary:hover {
+  border-bottom-color: var(--aiop-ink-soft);
+}
+
+.aiop-shell--tf-light .cw-vs__collapse-summary[aria-expanded="true"] {
+  border-bottom-color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-vs__collapse-summary-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--aiop-body);
+  font-size: 12px;
+  color: var(--aiop-ink-soft);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.aiop-shell--tf-light .cw-vs__brand-tokens {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.aiop-shell--tf-light .cw-vs__brand-token {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--aiop-rule);
+  display: inline-block;
+}
+
+.aiop-shell--tf-light .cw-vs__chevron {
+  font-size: 10px;
+  color: var(--aiop-muted);
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__chevron--open {
+  transform: rotate(180deg);
+}
+
+.aiop-shell--tf-light .cw-vs__brand-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.aiop-shell--tf-light .cw-vs__brand-color-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.aiop-shell--tf-light .cw-vs__field--color .cw-vs__color {
+  gap: 6px;
+}
+
+.aiop-shell--tf-light .cw-vs__field--color .cw-vs__color-swatch {
+  width: 32px;
+  height: 32px;
+}
+
+.aiop-shell--tf-light .cw-vs__field--color input[type="text"] {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+.aiop-shell--tf-light .cw-vs__chip:hover {
+  border-color: var(--aiop-ink-soft);
+  color: var(--aiop-ink);
+}
+
+.aiop-shell--tf-light .cw-vs__chip--active {
+  border-color: var(--aiop-gold);
+  background: var(--aiop-card);
+  color: var(--aiop-ink);
+}
+
+.aiop-shell--tf-light .cw-vs__animate-progress {
+  position: relative;
+  height: 4px;
+  background: var(--aiop-rule);
+  overflow: hidden;
+}
+
+.aiop-shell--tf-light .cw-vs__animate-progress-bar {
+  display: block;
+  height: 100%;
+  background: var(--aiop-gold);
+  transition: width 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aiop-shell--tf-light .cw-vs__animate-status,
+.aiop-shell--tf-light .cw-vs__animate-stale,
+.aiop-shell--tf-light .cw-vs__animate-ready {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  line-height: 1.45;
+}
+
+.aiop-shell--tf-light .cw-vs__animate-status {
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-shell--tf-light .cw-vs__animate-stale {
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-vs__animate-ready {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--aiop-ink-soft);
+}
+
+/* Preview surface placeholders.
+   - Idle: prompts the user to click Animate (which is the new step 2).
+   - Animating: progress + status; same bar grammar as the rail strip. */
+
+.aiop-shell--tf-light .cw-vs__animate-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: clamp(16px, 3vw, 32px);
+  text-align: center;
+  background: linear-gradient(
+    180deg,
+    var(--aiop-paper-2) 0%,
+    var(--aiop-card) 100%
+  );
+}
+
+.aiop-shell--tf-light .cw-vs__animate-placeholder--working {
+  background: linear-gradient(
+    180deg,
+    var(--aiop-card) 0%,
+    var(--aiop-paper-2) 100%
+  );
+}
+
+.aiop-shell--tf-light .cw-vs__animate-placeholder-eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-vs__animate-placeholder-title {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-size: clamp(16px, 1.6vw, 20px);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--aiop-ink);
+  max-width: 28ch;
+}
+
+.aiop-shell--tf-light .cw-vs__animate-placeholder-hint {
+  margin: 0;
+  font-family: var(--aiop-body);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--aiop-ink-soft);
+  max-width: 44ch;
+}
+
+.aiop-shell--tf-light .cw-vs__animate-placeholder-error {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  color: var(--aiop-gold);
+  letter-spacing: 0.05em;
+}
+
+.aiop-shell--tf-light .cw-vs__animate-placeholder-bar {
+  position: relative;
+  width: min(360px, 60%);
+  height: 4px;
+  background: var(--aiop-rule);
+  overflow: hidden;
+}
+
+.aiop-shell--tf-light .cw-vs__animate-placeholder-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--aiop-gold);
+  transition: width 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aiop-shell--tf-light .cw-vs__viewer-stale {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 4;
+  padding: 4px 10px;
+  border: 1px solid var(--aiop-gold);
+  background: rgba(17, 15, 9, 0.7);
+  color: var(--aiop-gold);
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.aiop-shell--tf-light .cw-vs__render-hint {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  color: var(--aiop-muted);
+  align-self: center;
+}
+
+/* Inline render row: primary render button, optional download, and a
+   status/hint that truncates to one line. Replaces the older
+   actions-stack-then-status pattern for the pptx stage footer. */
+.aiop-shell--tf-light .cw-vs__render-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__render-row .aiop-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.aiop-shell--tf-light .cw-vs__render-note {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  color: var(--aiop-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Scrollbars — replaces the chunky OS default on every scroll surface
+   in the studio (scene inspector, variable rail, bullet textareas).
+   Thin, square-cornered, ink-on-paper at rest; gold on hover. The
+   transparent border + padding-box clip insets the thumb so it reads
+   as a precise hairline rather than a heavy bar. WebKit handles the
+   interactive states; Firefox gets the static thin variant. */
+
+.aiop-shell--tf-light .cw-vs,
+.aiop-shell--tf-light .cw-vs * {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(17, 15, 9, 0.32) transparent;
+}
+
+.aiop-shell--tf-light .cw-vs ::-webkit-scrollbar,
+.aiop-shell--tf-light .cw-vs::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.aiop-shell--tf-light .cw-vs ::-webkit-scrollbar-track,
+.aiop-shell--tf-light .cw-vs::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Drop the up/down stepper buttons — no place for them in a HUD. */
+.aiop-shell--tf-light .cw-vs ::-webkit-scrollbar-button,
+.aiop-shell--tf-light .cw-vs::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.aiop-shell--tf-light .cw-vs ::-webkit-scrollbar-thumb,
+.aiop-shell--tf-light .cw-vs::-webkit-scrollbar-thumb {
+  background-color: rgba(17, 15, 9, 0.34);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.aiop-shell--tf-light .cw-vs ::-webkit-scrollbar-thumb:hover,
+.aiop-shell--tf-light .cw-vs::-webkit-scrollbar-thumb:hover {
+  background-color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-vs ::-webkit-scrollbar-thumb:active,
+.aiop-shell--tf-light .cw-vs::-webkit-scrollbar-thumb:active {
+  background-color: var(--aiop-gold-bright);
+}
+
+.aiop-shell--tf-light .cw-vs ::-webkit-scrollbar-corner,
+.aiop-shell--tf-light .cw-vs::-webkit-scrollbar-corner {
+  background: transparent;
 }

@@ -10,7 +10,7 @@ type StudioTabsProps = {
 
 export function StudioTabs({ tabs, activeTab, onChange }: StudioTabsProps) {
   return (
-    <div className="cw-vs__tabs" role="tablist" aria-label="Video input modes">
+    <div className="cw-vs__tabs cw-vs__tabs--toolbar" role="tablist" aria-label="Video input modes">
       {tabs.map((tab) => (
         <button
           key={tab.id}
