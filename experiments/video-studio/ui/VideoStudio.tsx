@@ -21,6 +21,7 @@ import {
   type MotionPreset,
 } from "@/experiments/video-studio/ui/PowerPointPanel";
 import { PreviewPane } from "@/experiments/video-studio/ui/PreviewPane";
+import { RemotionGlobals } from "@/experiments/video-studio/ui/RemotionGlobals";
 import { RenderPanel } from "@/experiments/video-studio/ui/RenderPanel";
 import { StudioTabs } from "@/experiments/video-studio/ui/StudioTabs";
 import { VariableForm } from "@/experiments/video-studio/ui/VariableForm";
@@ -42,6 +43,8 @@ function aspectLabel({ width, height }: { width: number; height: number }) {
 }
 
 export type AnimationState = "idle" | "animating" | "ready";
+
+export type DeckEngine = "hyperframes" | "remotion";
 
 export function VideoStudio() {
   const [activeTab, setActiveTab] = useState<StudioTabId>("pptx");
@@ -66,6 +69,12 @@ export function VideoStudio() {
   const [animationSource, setAnimationSource] = useState<
     "agent" | "fallback" | null
   >(null);
+  // The engine the user PICKED for the next animate call.
+  const [deckEngine, setDeckEngine] = useState<DeckEngine>("hyperframes");
+  // The engine that actually PRODUCED the current session's composition.
+  // PreviewPane reads this — without it, switching the picker mid-session
+  // would point the preview at the wrong renderer.
+  const [sessionEngine, setSessionEngine] = useState<DeckEngine | null>(null);
   const animationPollerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const [valuesByTemplate, setValuesByTemplate] = useState<
@@ -136,7 +145,19 @@ export function VideoStudio() {
     setAnimationMessage("");
     setAnimatedFingerprint(undefined);
     setAnimationSource(null);
+    setSessionEngine(null);
   }, []);
+
+  // Engine switch invalidates the current session — the live preview
+  // wouldn't know which renderer to use otherwise.
+  const handleEngineChange = useCallback(
+    (next: DeckEngine) => {
+      if (next === deckEngine) return;
+      setDeckEngine(next);
+      resetAnimation();
+    },
+    [deckEngine, resetAnimation],
+  );
 
   // Selected scene index must stay valid when the plan shrinks.
   useEffect(() => {
@@ -191,16 +212,23 @@ export function VideoStudio() {
     setRenderStatus(`Footage stored for ${fieldKey}. Preview updated.`);
   }
 
-  function startAnimationPoll(jobId: string, planSnapshot: DeckScenePlan) {
+  function startAnimationPoll(
+    jobId: string,
+    planSnapshot: DeckScenePlan,
+    engine: DeckEngine,
+  ) {
     if (animationPollerRef.current) {
       clearInterval(animationPollerRef.current);
     }
 
+    const pollUrl =
+      engine === "remotion"
+        ? `/api/experiments/video-studio/animate-remotion?jobId=${jobId}`
+        : `/api/experiments/video-studio/animate?jobId=${jobId}`;
+
     animationPollerRef.current = setInterval(async () => {
       try {
-        const response = await fetch(
-          `/api/experiments/video-studio/animate?jobId=${jobId}`,
-        );
+        const response = await fetch(pollUrl);
 
         if (!response.ok) {
           return;
@@ -230,6 +258,7 @@ export function VideoStudio() {
           setAnimationSessionId(job.sessionId);
           setAnimatedFingerprint(JSON.stringify(planSnapshot));
           setAnimationSource(job.source ?? null);
+          setSessionEngine(engine);
           setAnimationState("ready");
           setAnimationProgress(1);
         } else if (job.status === "failed") {
@@ -258,9 +287,14 @@ export function VideoStudio() {
     setDownloadUrl(undefined);
 
     const planSnapshot = scenePlan;
+    const engineSnapshot = deckEngine;
+    const animateUrl =
+      engineSnapshot === "remotion"
+        ? "/api/experiments/video-studio/animate-remotion"
+        : "/api/experiments/video-studio/animate";
 
     try {
-      const response = await fetch("/api/experiments/video-studio/animate", {
+      const response = await fetch(animateUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -279,7 +313,7 @@ export function VideoStudio() {
         throw new Error(payload.error ?? "Animation failed to start.");
       }
 
-      startAnimationPoll(payload.jobId, planSnapshot);
+      startAnimationPoll(payload.jobId, planSnapshot, engineSnapshot);
     } catch (error) {
       setAnimationState("idle");
       setAnimationMessage(
@@ -310,6 +344,10 @@ export function VideoStudio() {
           // template — pass through the sessionId so the server can find it.
           animationSessionId:
             activeTab === "pptx" ? animationSessionId : undefined,
+          // Engine tells the renderer which pipeline produced the draft
+          // (HyperFrames HTML vs. Remotion TSX).
+          animationEngine:
+            activeTab === "pptx" ? sessionEngine ?? undefined : undefined,
         }),
       });
 
@@ -343,13 +381,27 @@ export function VideoStudio() {
       ? "Animation in progress…"
       : "Animate the deck first to enable render."
     : undefined;
-  const engineDisplayLabel = isPptx ? "HyperFrames" : engineLabel(template.engine);
-  const engineClassName = isPptx
-    ? "cw-vs__engine"
-    : `cw-vs__engine ${template.engine === "remotion" ? "cw-vs__engine--remotion" : ""}`;
+  // Engine label in the stage topbar reflects the engine that PRODUCED
+  // the current session (or the picker if no session yet).
+  const pptxEngineForDisplay = sessionEngine ?? deckEngine;
+  const engineDisplayLabel = isPptx
+    ? pptxEngineForDisplay === "remotion"
+      ? "Remotion"
+      : "HyperFrames"
+    : engineLabel(template.engine);
+  const pptxEngineIsRemotion = isPptx && pptxEngineForDisplay === "remotion";
+  const engineClassName =
+    isPptx && pptxEngineIsRemotion
+      ? "cw-vs__engine cw-vs__engine--remotion"
+      : isPptx
+        ? "cw-vs__engine"
+        : `cw-vs__engine ${template.engine === "remotion" ? "cw-vs__engine--remotion" : ""}`;
 
   return (
     <>
+      {/* Sets up __videoStudioGlobals + import map so dynamically imported
+          Remotion compositions share React/Remotion identity with the page. */}
+      <RemotionGlobals />
       <section className="aiop-section cw-vs cw-vs--studio">
         <div className="cw-vs__canvas">
           <header className="cw-vs__toolbar">
@@ -382,6 +434,8 @@ export function VideoStudio() {
                     isAnimationStale={isAnimationStale}
                     motionPreset={motionPreset}
                     styleIntent={styleIntent}
+                    deckEngine={deckEngine}
+                    onDeckEngineChange={handleEngineChange}
                     onMotionPresetChange={setMotionPreset}
                     onStyleIntentChange={setStyleIntent}
                     onAnimate={handleAnimate}
@@ -426,6 +480,8 @@ export function VideoStudio() {
                       animationMessage={animationMessage}
                       animationSessionId={animationSessionId}
                       isAnimationStale={isAnimationStale}
+                      deckEngine={sessionEngine ?? deckEngine}
+                      scenePlan={scenePlan}
                     />
                   </div>
 

@@ -70,6 +70,10 @@ const nextConfig: NextConfig = {
   serverExternalPackages: [
     "@remotion/bundler",
     "@remotion/renderer",
+    // esbuild ships a native binary per platform under @esbuild/<os>; we
+    // don't want Turbopack/webpack to crawl into those. The animate-remotion
+    // route uses it server-side only.
+    "esbuild",
   ],
   turbopack: {
     root: __dirname,
@@ -111,6 +115,19 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/api/experiments/video-studio/composition-draft/:sessionId",
+        headers: compositionFrameHeaders,
+      },
+      // Remotion-agent path: the compiled Composition.mjs is fetched
+      // by @remotion/player's lazyComponent and the shim re-exports
+      // are imported via the page's import map. Same relaxation so
+      // the page can fetch + execute them on the same origin.
+      {
+        source:
+          "/api/experiments/video-studio/composition-remotion/:sessionId/Composition.mjs",
+        headers: compositionFrameHeaders,
+      },
+      {
+        source: "/api/experiments/video-studio/module-shim/:moduleName",
         headers: compositionFrameHeaders,
       },
     ];

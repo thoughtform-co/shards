@@ -6,13 +6,26 @@ import type {
   DeckScenePlan,
   ExplainerScene,
 } from "@/experiments/video-studio/deck-scene-plan";
-import type { AnimationState } from "@/experiments/video-studio/ui/VideoStudio";
+import type { AnimationState, DeckEngine } from "@/experiments/video-studio/ui/VideoStudio";
 
 export type MotionPreset = "calm" | "kinetic";
 
 const MOTION_PRESETS: { id: MotionPreset; label: string; hint: string }[] = [
   { id: "calm", label: "Calm", hint: "Slow eases, generous holds, editorial pace." },
   { id: "kinetic", label: "Kinetic", hint: "Tight tweens, snappier transitions, on-beat." },
+];
+
+const DECK_ENGINES: { id: DeckEngine; label: string; hint: string }[] = [
+  {
+    id: "hyperframes",
+    label: "HyperFrames",
+    hint: "HTML/CSS/GSAP. Fast iteration, full creative latitude.",
+  },
+  {
+    id: "remotion",
+    label: "Remotion",
+    hint: "React + frame-perfect motion. Slower to compile, richer animation primitives.",
+  },
 ];
 
 export type PptxSetupPanelProps = {
@@ -27,6 +40,8 @@ export type PptxSetupPanelProps = {
   isAnimationStale: boolean;
   motionPreset: MotionPreset;
   styleIntent: string;
+  deckEngine: DeckEngine;
+  onDeckEngineChange: (engine: DeckEngine) => void;
   onMotionPresetChange: (preset: MotionPreset) => void;
   onStyleIntentChange: (value: string) => void;
   onAnimate: () => void;
@@ -94,6 +109,8 @@ export function PptxSetupPanel({
   isAnimationStale,
   motionPreset,
   styleIntent,
+  deckEngine,
+  onDeckEngineChange,
   onMotionPresetChange,
   onStyleIntentChange,
   onAnimate,
@@ -384,6 +401,27 @@ export function PptxSetupPanel({
         <div className="cw-vs__rail-head cw-vs__rail-head--flush">
           <span className="cw-vs__rail-label">Animate</span>
           <span className="cw-vs__rail-meta">{totalSeconds}s · 16:9</span>
+        </div>
+
+        <div
+          className="cw-vs__chip-row"
+          role="radiogroup"
+          aria-label="Animation engine"
+        >
+          {DECK_ENGINES.map((engine) => (
+            <button
+              key={engine.id}
+              type="button"
+              role="radio"
+              aria-checked={deckEngine === engine.id}
+              title={engine.hint}
+              className={`cw-vs__chip ${deckEngine === engine.id ? "cw-vs__chip--active" : ""}`}
+              onClick={() => onDeckEngineChange(engine.id)}
+              disabled={animationState === "animating"}
+            >
+              {engine.label}
+            </button>
+          ))}
         </div>
 
         <div className="cw-vs__motion-row">

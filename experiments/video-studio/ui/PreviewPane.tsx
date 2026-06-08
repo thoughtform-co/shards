@@ -7,7 +7,9 @@ import { resolveDeckExplainerProps } from "@/experiments/video-studio/templates/
 import { resolveSocialVariantProps } from "@/experiments/video-studio/templates/remotion/social-variant-props";
 import { SocialVariantSet } from "@/experiments/video-studio/templates/remotion/SocialVariantSet";
 import type { TemplateInputProps, VideoTemplate } from "@/experiments/video-studio/types";
-import type { AnimationState } from "@/experiments/video-studio/ui/VideoStudio";
+import type { AnimationState, DeckEngine } from "@/experiments/video-studio/ui/VideoStudio";
+import type { DeckScenePlan } from "@/experiments/video-studio/deck-scene-plan";
+import { RemotionLivePreview } from "@/experiments/video-studio/ui/RemotionLivePreview";
 
 type PreviewPaneProps = {
   template: VideoTemplate;
@@ -19,6 +21,10 @@ type PreviewPaneProps = {
   animationMessage?: string;
   animationSessionId?: string;
   isAnimationStale?: boolean;
+  /** Pptx mode: which engine the current session was produced with. */
+  deckEngine?: DeckEngine;
+  /** Pptx mode: the scene plan that drives the live Remotion preview's inputProps. */
+  scenePlan?: DeckScenePlan;
 };
 
 function ViewerFrame({
@@ -42,14 +48,20 @@ function AnimationPlaceholder({
   progress,
   message,
   isStale,
+  engine,
 }: {
   state: AnimationState;
   progress: number;
   message: string;
   isStale: boolean;
+  engine: DeckEngine;
 }) {
   if (state === "animating") {
     const pct = Math.round(progress * 100);
+    const hint =
+      engine === "remotion"
+        ? "Claude is writing the Remotion TSX, then esbuild validates it."
+        : "Claude is writing the HTML/CSS/GSAP composition, then linting it.";
     return (
       <div className="cw-vs__animate-placeholder cw-vs__animate-placeholder--working">
         <span className="cw-vs__animate-placeholder-eyebrow">
@@ -67,9 +79,7 @@ function AnimationPlaceholder({
         >
           <span style={{ width: `${pct}%` }} />
         </div>
-        <p className="cw-vs__animate-placeholder-hint">
-          Claude is writing the HTML/CSS/GSAP composition, then linting it.
-        </p>
+        <p className="cw-vs__animate-placeholder-hint">{hint}</p>
       </div>
     );
   }
@@ -101,6 +111,8 @@ export function PreviewPane({
   animationMessage = "",
   animationSessionId,
   isAnimationStale = false,
+  deckEngine = "hyperframes",
+  scenePlan,
 }: PreviewPaneProps) {
   const playerRef = useRef<HTMLElement>(null);
   const isVertical = template.dimensions.height > template.dimensions.width;
@@ -159,13 +171,51 @@ export function PreviewPane({
   }, [hyperframesSrc]);
 
   if (isPptx) {
-    if (animationState !== "ready" || !hyperframesSrc) {
+    // Idle / animating / no-session: same placeholder regardless of engine.
+    const showPlaceholder =
+      animationState !== "ready" ||
+      !animationSessionId ||
+      (deckEngine === "hyperframes" && !hyperframesSrc);
+
+    if (showPlaceholder) {
       return (
         <ViewerFrame isVertical={isVertical}>
           <AnimationPlaceholder
             state={animationState}
             progress={animationProgress}
             message={animationMessage}
+            isStale={isAnimationStale}
+            engine={deckEngine}
+          />
+        </ViewerFrame>
+      );
+    }
+
+    // Ready — branch on engine. The Remotion path uses @remotion/player
+    // with a lazyComponent that imports the per-session compiled .mjs;
+    // the HyperFrames path keeps the existing <hyperframes-player>.
+    if (deckEngine === "remotion") {
+      if (!scenePlan) {
+        return (
+          <ViewerFrame isVertical={isVertical}>
+            <AnimationPlaceholder
+              state="idle"
+              progress={0}
+              message="Missing scene plan for Remotion preview."
+              isStale={false}
+              engine={deckEngine}
+            />
+          </ViewerFrame>
+        );
+      }
+      return (
+        <ViewerFrame isVertical={isVertical}>
+          <RemotionLivePreview
+            sessionId={animationSessionId}
+            scenePlan={scenePlan}
+            width={template.dimensions.width}
+            height={template.dimensions.height}
+            fps={template.fps}
             isStale={isAnimationStale}
           />
         </ViewerFrame>

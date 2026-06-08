@@ -1,13 +1,18 @@
 import { randomUUID } from "node:crypto";
+import { stat } from "node:fs/promises";
 import path from "node:path";
 import { NextResponse } from "next/server";
+import { remotionProjectDir } from "@/experiments/video-studio/server/compileRemotionComposition";
 import { createJob, getJob, updateJob } from "@/experiments/video-studio/server/jobs";
 import {
   readDeckDraft,
   renderDeckDraft,
   renderHyperframesTemplate,
 } from "@/experiments/video-studio/server/renderHyperframes";
-import { renderRemotionTemplate } from "@/experiments/video-studio/server/renderRemotion";
+import {
+  renderAgentRemotionDraft,
+  renderRemotionTemplate,
+} from "@/experiments/video-studio/server/renderRemotion";
 import { parseTemplateInput } from "@/experiments/video-studio/server/validateInput";
 import { parseDeckSeriesInput } from "@/experiments/video-studio/server/validateDeckSeries";
 import {
@@ -25,6 +30,8 @@ export const maxDuration = 300;
 
 const DECK_TEMPLATE_ID = "deck-explainer-series";
 
+type DeckEngine = "hyperframes" | "remotion";
+
 type RenderRequestBody = {
   templateId: string;
   input: Record<string, string | number>;
@@ -32,6 +39,8 @@ type RenderRequestBody = {
   /** Pptx mode: id of the agent-authored draft to render. Required when
       templateId is deck-explainer-series. */
   animationSessionId?: string;
+  /** Pptx mode: which engine produced the draft. Defaults to hyperframes. */
+  animationEngine?: DeckEngine;
 };
 
 export async function POST(request: Request) {
@@ -69,9 +78,9 @@ export async function POST(request: Request) {
 
     // Pptx mode now renders the agent-authored draft, not the static
     // Remotion composition. Require the sessionId from the animate step
-    // and engine-route to HyperFrames regardless of the template's
-    // declared engine.
+    // and route to the engine that PRODUCED the draft.
     const isDeckMode = template.id === DECK_TEMPLATE_ID;
+    const deckEngine: DeckEngine = body.animationEngine ?? "hyperframes";
     if (isDeckMode) {
       if (!body.animationSessionId) {
         return NextResponse.json(
@@ -83,15 +92,33 @@ export async function POST(request: Request) {
         );
       }
 
-      const draft = await readDeckDraft(body.animationSessionId);
-      if (!draft) {
-        return NextResponse.json(
-          {
-            error:
-              "No composition found for that session. Re-animate and try again.",
-          },
-          { status: 404 },
+      if (deckEngine === "remotion") {
+        const compositionTsx = path.join(
+          remotionProjectDir(body.animationSessionId),
+          "Composition.tsx",
         );
+        try {
+          await stat(compositionTsx);
+        } catch {
+          return NextResponse.json(
+            {
+              error:
+                "No Remotion composition found for that session. Re-animate and try again.",
+            },
+            { status: 404 },
+          );
+        }
+      } else {
+        const draft = await readDeckDraft(body.animationSessionId);
+        if (!draft) {
+          return NextResponse.json(
+            {
+              error:
+                "No composition found for that session. Re-animate and try again.",
+            },
+            { status: 404 },
+          );
+        }
       }
     }
 
@@ -103,7 +130,7 @@ export async function POST(request: Request) {
     createJob({
       id: jobId,
       templateId: template.id,
-      engine: isDeckMode ? "hyperframes" : template.engine,
+      engine: isDeckMode ? deckEngine : template.engine,
       status: "queued",
       sessionId: body.animationSessionId,
     });
@@ -138,11 +165,23 @@ export async function POST(request: Request) {
     };
 
     if (isDeckMode) {
-      await renderDeckDraft({
-        sessionId: body.animationSessionId!,
-        outputPath,
-        onProgress,
-      });
+      if (deckEngine === "remotion") {
+        await renderAgentRemotionDraft({
+          sessionId: body.animationSessionId!,
+          scenePlan: parsedInput,
+          outputPath,
+          width: template.dimensions.width,
+          height: template.dimensions.height,
+          fps: template.fps,
+          onProgress,
+        });
+      } else {
+        await renderDeckDraft({
+          sessionId: body.animationSessionId!,
+          outputPath,
+          onProgress,
+        });
+      }
     } else if (template.engine === "remotion") {
       await renderRemotionTemplate({
         templateId: template.id,
