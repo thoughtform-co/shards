@@ -15,6 +15,7 @@ import {
 } from "@/experiments/video-studio/server/renderRemotion";
 import { parseTemplateInput } from "@/experiments/video-studio/server/validateInput";
 import { parseDeckSeriesInput } from "@/experiments/video-studio/server/validateDeckSeries";
+import type { DeckExplainerSeriesProps } from "@/experiments/video-studio/templates/remotion/deck-series-props";
 import {
   canRenderLocally,
   ensureWorkspace,
@@ -166,9 +167,12 @@ export async function POST(request: Request) {
 
     if (isDeckMode) {
       if (deckEngine === "remotion") {
+        // parsedInput is guaranteed to be the deck shape here because
+        // isDeckMode took the parseDeckSeriesInput branch above; TS
+        // can't re-narrow across const reassignment so we assert.
         await renderAgentRemotionDraft({
           sessionId: body.animationSessionId!,
-          scenePlan: parsedInput,
+          scenePlan: parsedInput as DeckExplainerSeriesProps,
           outputPath,
           width: template.dimensions.width,
           height: template.dimensions.height,
