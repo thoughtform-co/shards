@@ -6,6 +6,7 @@ import { createJob, getJob, updateJob } from "@/experiments/video-studio/server/
 import { renderHyperframesTemplate } from "@/experiments/video-studio/server/renderHyperframes";
 import { renderRemotionTemplate } from "@/experiments/video-studio/server/renderRemotion";
 import { parseTemplateInput } from "@/experiments/video-studio/server/validateInput";
+import { parseDeckSeriesInput } from "@/experiments/video-studio/server/validateDeckSeries";
 import {
   canRenderLocally,
   ensureWorkspace,
@@ -13,6 +14,7 @@ import {
   UPLOADS_DIR,
 } from "@/experiments/video-studio/server/workspace";
 import { getTemplateById } from "@/experiments/video-studio/templates";
+import type { TemplateInputProps } from "@/experiments/video-studio/types";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
@@ -57,7 +59,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Unknown template." }, { status: 404 });
     }
 
-    const input = parseTemplateInput(template, body.input);
+    const parsedInput =
+      template.id === "deck-explainer-series"
+        ? parseDeckSeriesInput(body.input)
+        : parseTemplateInput(template, body.input);
     const jobId = randomUUID();
 
     createJob({
@@ -99,7 +104,7 @@ export async function POST(request: Request) {
     if (template.engine === "remotion") {
       await renderRemotionTemplate({
         templateId: template.id,
-        input,
+        input: parsedInput,
         outputPath,
         onProgress,
       });
@@ -107,7 +112,7 @@ export async function POST(request: Request) {
       await renderHyperframesTemplate({
         templateId: template.id,
         sessionId: jobId,
-        input,
+        input: parsedInput as TemplateInputProps,
         outputPath,
         assetPaths,
         onProgress,

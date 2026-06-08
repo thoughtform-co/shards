@@ -1,30 +1,49 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { engineLabel, recommendEngine } from "@/experiments/video-studio/router";
+import {
+  monizzeDefaultScenePlan,
+  type DeckScenePlan,
+} from "@/experiments/video-studio/deck-scene-plan";
+import { engineLabel } from "@/experiments/video-studio/router";
 import {
   defaultInputForTemplate,
   getTemplateById,
   videoTemplates,
 } from "@/experiments/video-studio/templates";
+import {
+  deckSeriesPropsToInput,
+} from "@/experiments/video-studio/templates/remotion/deck-series-props";
+import { getStudioTab, studioTabs, type StudioTabId } from "@/experiments/video-studio/studio-tabs";
+import { PowerPointPanel } from "@/experiments/video-studio/ui/PowerPointPanel";
 import { PreviewPane } from "@/experiments/video-studio/ui/PreviewPane";
 import { RenderPanel } from "@/experiments/video-studio/ui/RenderPanel";
-import { TemplateGallery } from "@/experiments/video-studio/ui/TemplateGallery";
+import { StudioTabs } from "@/experiments/video-studio/ui/StudioTabs";
 import { VariableForm } from "@/experiments/video-studio/ui/VariableForm";
 import { VideoStudioHero } from "@/experiments/video-studio/ui/VideoStudioHero";
 import { WorkshopSection } from "@/experiments/video-studio/ui/WorkshopSection";
 import type { TemplateInputProps } from "@/experiments/video-studio/types";
 
+const legacyTemplateIds = videoTemplates
+  .map((template) => template.id)
+  .filter((id) => id !== "deck-explainer-series");
+
 export function VideoStudio() {
-  const [selectedId, setSelectedId] = useState(videoTemplates[0]!.id);
+  const [activeTab, setActiveTab] = useState<StudioTabId>("pptx");
+  const [scenePlan, setScenePlan] = useState<DeckScenePlan>(monizzeDefaultScenePlan);
+  const [analysisSource, setAnalysisSource] = useState<
+    "live" | "mock" | "sample" | null
+  >("sample");
+  const [pptxFilename, setPptxFilename] = useState<string | null>(null);
+
   const [valuesByTemplate, setValuesByTemplate] = useState<
     Record<string, TemplateInputProps>
   >(() =>
     Object.fromEntries(
-      videoTemplates.map((template) => [
-        template.id,
-        defaultInputForTemplate(template),
-      ]),
+      legacyTemplateIds.map((templateId) => {
+        const template = getTemplateById(templateId)!;
+        return [templateId, defaultInputForTemplate(template)];
+      }),
     ),
   );
   const [uploadIdsByTemplate, setUploadIdsByTemplate] = useState<
@@ -37,17 +56,30 @@ export function VideoStudio() {
   const [renderStatus, setRenderStatus] = useState("");
   const [downloadUrl, setDownloadUrl] = useState<string>();
 
-  const template = getTemplateById(selectedId) ?? videoTemplates[0]!;
+  const activeStudioTab = getStudioTab(activeTab);
+  const template =
+    getTemplateById(activeStudioTab.templateId) ?? getTemplateById("deck-explainer-series")!;
   const values = valuesByTemplate[template.id] ?? defaultInputForTemplate(template);
-  const recommendedEngine = recommendEngine(template.jobType);
   const videoAssetUrl = videoUrlsByTemplate[template.id]?.videoAsset;
 
-  const routerSummary = useMemo(() => {
-    return `Router recommends ${engineLabel(recommendedEngine)} for ${template.jobType.replaceAll("-", " ")} · ${engineLabel(template.engine)} selected`;
-  }, [recommendedEngine, template.engine, template.jobType]);
+  const previewInput = useMemo(() => {
+    if (activeTab === "pptx") {
+      return deckSeriesPropsToInput(scenePlan);
+    }
 
-  function handleSelectTemplate(templateId: string) {
-    setSelectedId(templateId);
+    return values;
+  }, [activeTab, scenePlan, values]);
+
+  const routerSummary = useMemo(() => {
+    if (activeTab === "pptx") {
+      return `Monizze demo · ${scenePlan.scenes.length} scenes · Remotion explainer from PowerPoint`;
+    }
+
+    return `${engineLabel(template.engine)} · ${template.name}`;
+  }, [activeTab, scenePlan.scenes.length, template.engine, template.name]);
+
+  function handleTabChange(tabId: StudioTabId) {
+    setActiveTab(tabId);
     setDownloadUrl(undefined);
     setRenderStatus("");
   }
@@ -87,6 +119,9 @@ export function VideoStudio() {
     setRenderStatus("Starting local render…");
     setDownloadUrl(undefined);
 
+    const renderInput =
+      activeTab === "pptx" ? deckSeriesPropsToInput(scenePlan) : values;
+
     try {
       const response = await fetch("/api/experiments/video-studio/render", {
         method: "POST",
@@ -95,7 +130,7 @@ export function VideoStudio() {
         },
         body: JSON.stringify({
           templateId: template.id,
-          input: values,
+          input: renderInput,
           uploadIds: uploadIdsByTemplate[template.id] ?? {},
         }),
       });
@@ -125,27 +160,28 @@ export function VideoStudio() {
     <>
       <VideoStudioHero routerSummary={routerSummary} />
 
-      <TemplateGallery
-        templates={videoTemplates}
-        selectedId={template.id}
-        onSelect={handleSelectTemplate}
-      />
-
-      <section className="aiop-section cw-vs cw-vs--editor">
+      <section className="aiop-section cw-vs cw-vs--studio">
         <div className="aiop-wrap cw-vs__inner">
           <div className="cw-vs__head">
-            <p className="cw-vs__eyebrow">Editor</p>
+            <p className="cw-vs__eyebrow">Video module</p>
             <h2 className="cw-vs__title">
-              Variables &amp; <em>preview</em>
+              One frame, <em>many inputs</em>
             </h2>
             <p className="cw-vs__sub">
-              Fill template variables, upload footage where required, then
-              preview live before rendering locally.
+              Upload a PowerPoint for Monizze&apos;s Centrale des Marchés redo, or
+              switch tabs for interview captions, social cut-downs, and variant
+              sets. Preview stays in the same frame — only the controls change.
             </p>
           </div>
 
+          <StudioTabs
+            tabs={studioTabs}
+            activeTab={activeTab}
+            onChange={handleTabChange}
+          />
+
           <div className="cw-vs__layout">
-            <div>
+            <div className="cw-vs__controls">
               <span
                 className={`cw-vs__engine ${
                   template.engine === "remotion" ? "cw-vs__engine--remotion" : ""
@@ -154,29 +190,58 @@ export function VideoStudio() {
                 {engineLabel(template.engine)}
               </span>
 
-              <VariableForm
-                fields={template.fields}
-                values={values}
-                templateId={template.id}
-                onChange={handleChange}
-                onUploadComplete={handleUploadComplete}
-              />
+              {activeTab === "pptx" ? (
+                <PowerPointPanel
+                  scenePlan={scenePlan}
+                  analysisSource={analysisSource}
+                  filename={pptxFilename}
+                  status={renderStatus.startsWith("Analy") ? renderStatus : ""}
+                  onScenePlanChange={setScenePlan}
+                  onAnalysisComplete={(result) => {
+                    setScenePlan(result.scenePlan);
+                    setAnalysisSource(result.source);
+                    setPptxFilename(result.filename);
+                    setRenderStatus(
+                      `Analyzed ${result.slideCount} slides · ${result.source === "live" ? "Claude" : "deterministic fallback"}`,
+                    );
+                  }}
+                  onLoadSample={() => {
+                    setScenePlan(monizzeDefaultScenePlan);
+                    setAnalysisSource("sample");
+                    setPptxFilename("Monizze × Centrale des Marchés (sample)");
+                    setRenderStatus("Loaded Monizze sample scene plan.");
+                  }}
+                  onStatus={(message) => {
+                    setRenderStatus(message);
+                  }}
+                />
+              ) : (
+                <VariableForm
+                  fields={template.fields}
+                  values={values}
+                  templateId={template.id}
+                  onChange={handleChange}
+                  onUploadComplete={handleUploadComplete}
+                />
+              )}
 
               <RenderPanel
                 isRendering={isRendering}
-                status={renderStatus}
+                status={
+                  renderStatus.startsWith("Analy") ? "" : renderStatus
+                }
                 downloadUrl={downloadUrl}
                 onRender={handleRender}
               />
             </div>
 
-            <div>
+            <div className="cw-vs__preview-column">
               <div className="cw-vs__preview-head">
                 <span className="cw-vs__preview-label">Live preview</span>
               </div>
               <PreviewPane
                 template={template}
-                input={values}
+                input={previewInput}
                 videoAssetUrl={videoAssetUrl}
               />
             </div>

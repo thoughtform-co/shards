@@ -3,14 +3,19 @@
 import { createElement, useEffect, useMemo, useRef } from "react";
 import { Player } from "@remotion/player";
 import { DeckExplainer } from "@/experiments/video-studio/templates/remotion/DeckExplainer";
-import { SocialVariantSet } from "@/experiments/video-studio/templates/remotion/SocialVariantSet";
+import { DeckExplainerSeries } from "@/experiments/video-studio/templates/remotion/DeckExplainerSeries";
 import { resolveDeckExplainerProps } from "@/experiments/video-studio/templates/remotion/deck-explainer-props";
+import {
+  resolveDeckSeriesProps,
+  totalSeriesDurationFrames,
+} from "@/experiments/video-studio/templates/remotion/deck-series-props";
 import { resolveSocialVariantProps } from "@/experiments/video-studio/templates/remotion/social-variant-props";
+import { SocialVariantSet } from "@/experiments/video-studio/templates/remotion/SocialVariantSet";
 import type { TemplateInputProps, VideoTemplate } from "@/experiments/video-studio/types";
 
 type PreviewPaneProps = {
   template: VideoTemplate;
-  input: TemplateInputProps;
+  input: TemplateInputProps | Record<string, unknown>;
   videoAssetUrl?: string;
 };
 
@@ -85,8 +90,32 @@ export function PreviewPane({ template, input, videoAssetUrl }: PreviewPaneProps
   }, [hyperframesSrc, template.engine]);
 
   if (template.engine === "remotion") {
+    if (template.id === "deck-explainer-series") {
+      const props = resolveDeckSeriesProps(input);
+      const durationInFrames = totalSeriesDurationFrames(
+        props.scenes,
+        template.fps,
+      );
+
+      return (
+        <ViewerFrame isVertical={isVertical}>
+          <Player
+            component={DeckExplainerSeries}
+            inputProps={props}
+            durationInFrames={durationInFrames}
+            fps={template.fps}
+            compositionWidth={template.dimensions.width}
+            compositionHeight={template.dimensions.height}
+            style={{ width: "100%", height: "100%" }}
+            controls
+            loop
+          />
+        </ViewerFrame>
+      );
+    }
+
     if (template.id === "deck-explainer") {
-      const props = resolveDeckExplainerProps(input);
+      const props = resolveDeckExplainerProps(input as TemplateInputProps);
 
       return (
         <ViewerFrame isVertical={isVertical}>
@@ -106,7 +135,7 @@ export function PreviewPane({ template, input, videoAssetUrl }: PreviewPaneProps
     }
 
     if (template.id === "social-variant-set") {
-      const props = resolveSocialVariantProps(input);
+      const props = resolveSocialVariantProps(input as TemplateInputProps);
 
       return (
         <ViewerFrame isVertical={isVertical}>

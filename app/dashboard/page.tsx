@@ -101,10 +101,10 @@ export default function DashboardPage() {
                 <div className="hud-divider" />
                 <div className="space-y-4">
                   <p className="text-sm leading-6 text-[var(--text)]">
-                    Video Studio routes per-job renders through Remotion and
-                    HyperFrames. The jukebox experiments remain the playful
-                    probes; Video Studio is the production-speed layer for the
-                    creative workshop.
+                    Video Studio is a tabbed module for the Monizze workshop:
+                    upload PowerPoint, Claude analyzes slide structure, preview a
+                    multi-scene Remotion explainer, render locally. Other tabs
+                    keep interview captions, social cut-downs, and variant sets.
                   </p>
                   <div className="grid gap-3 text-sm text-[var(--text)]">
                     <div className="flex items-center justify-between border border-[var(--border)] px-3 py-3">

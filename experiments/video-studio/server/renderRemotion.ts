@@ -3,8 +3,12 @@ import { bundle } from "@remotion/bundler";
 import { renderMedia, selectComposition } from "@remotion/renderer";
 import { getTemplateById } from "@/experiments/video-studio/templates";
 import { resolveDeckExplainerProps } from "@/experiments/video-studio/templates/remotion/deck-explainer-props";
+import {
+  resolveDeckSeriesProps,
+} from "@/experiments/video-studio/templates/remotion/deck-series-props";
 import { resolveSocialVariantProps } from "@/experiments/video-studio/templates/remotion/social-variant-props";
 import type { TemplateInputProps } from "@/experiments/video-studio/types";
+import type { DeckExplainerSeriesProps } from "@/experiments/video-studio/templates/remotion/deck-series-props";
 
 const entryPoint = path.join(
   process.cwd(),
@@ -40,13 +44,20 @@ async function getServeUrl() {
   return serveUrl;
 }
 
-function resolveInputProps(templateId: string, input: TemplateInputProps) {
+function resolveInputProps(
+  templateId: string,
+  input: TemplateInputProps | DeckExplainerSeriesProps | Record<string, unknown>,
+) {
   if (templateId === "deck-explainer") {
-    return resolveDeckExplainerProps(input);
+    return resolveDeckExplainerProps(input as TemplateInputProps);
+  }
+
+  if (templateId === "deck-explainer-series") {
+    return resolveDeckSeriesProps(input);
   }
 
   if (templateId === "social-variant-set") {
-    return resolveSocialVariantProps(input);
+    return resolveSocialVariantProps(input as TemplateInputProps);
   }
 
   return input;
@@ -54,7 +65,7 @@ function resolveInputProps(templateId: string, input: TemplateInputProps) {
 
 export async function renderRemotionTemplate(options: {
   templateId: string;
-  input: TemplateInputProps;
+  input: TemplateInputProps | DeckExplainerSeriesProps | Record<string, unknown>;
   outputPath: string;
   onProgress?: (progress: number, message: string) => void;
 }) {

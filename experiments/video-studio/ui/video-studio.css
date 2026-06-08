@@ -557,3 +557,167 @@
   font-size: 12px;
   letter-spacing: 0.04em;
 }
+
+/* Studio module — tabs, dropzone, scene cards */
+
+.aiop-shell--tf-light .cw-vs__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-bottom: 1px solid var(--aiop-rule);
+  padding-bottom: 12px;
+}
+
+.aiop-shell--tf-light .cw-vs__tab {
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-paper-2);
+  color: var(--aiop-muted);
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: border-color 140ms ease, color 140ms ease, background 140ms ease;
+}
+
+.aiop-shell--tf-light .cw-vs__tab:hover {
+  border-color: var(--aiop-gold);
+  color: var(--aiop-ink);
+}
+
+.aiop-shell--tf-light .cw-vs__tab--active {
+  border-color: var(--aiop-gold);
+  background: var(--aiop-card);
+  color: var(--aiop-ink);
+}
+
+.aiop-shell--tf-light .cw-vs__controls {
+  display: grid;
+  gap: 16px;
+}
+
+.aiop-shell--tf-light .cw-vs__preview-column {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.aiop-shell--tf-light .cw-vs__pptx {
+  display: grid;
+  gap: 16px;
+}
+
+.aiop-shell--tf-light .cw-vs__pptx-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.aiop-shell--tf-light .cw-vs__source-badge {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  border: 1px solid var(--aiop-rule);
+  color: var(--aiop-muted);
+}
+
+.aiop-shell--tf-light .cw-vs__source-badge--live {
+  border-color: var(--aiop-gold);
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-vs__source-badge--sample {
+  border-color: var(--aiop-sage);
+  color: var(--aiop-sage);
+}
+
+.aiop-shell--tf-light .cw-vs__dropzone {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  padding: clamp(20px, 2.4vw, 28px);
+  border: 1px dashed var(--aiop-rule-strong);
+  background: var(--aiop-paper-2);
+  cursor: pointer;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+
+.aiop-shell--tf-light .cw-vs__dropzone--active,
+.aiop-shell--tf-light .cw-vs__dropzone:hover {
+  border-color: var(--aiop-gold);
+  background: var(--aiop-card);
+}
+
+.aiop-shell--tf-light .cw-vs__dropzone-title {
+  font-family: var(--aiop-display);
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 600;
+  color: var(--aiop-ink);
+}
+
+.aiop-shell--tf-light .cw-vs__dropzone-meta {
+  font-family: var(--aiop-body);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--aiop-ink-soft);
+  max-width: 52ch;
+}
+
+.aiop-shell--tf-light .cw-vs__brand-grid {
+  display: grid;
+  gap: 12px;
+}
+
+@media (min-width: 720px) {
+  .aiop-shell--tf-light .cw-vs__brand-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.aiop-shell--tf-light .cw-vs__scene-list {
+  display: grid;
+  gap: 12px;
+}
+
+.aiop-shell--tf-light .cw-vs__scene-card {
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-card);
+  padding: 16px;
+  display: grid;
+  gap: 12px;
+}
+
+.aiop-shell--tf-light .cw-vs__scene-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.aiop-shell--tf-light .cw-vs__scene-index {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-vs__scene-remove {
+  border: 0;
+  background: transparent;
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.aiop-shell--tf-light .cw-vs__scene-remove:hover {
+  color: var(--aiop-ink);
+}

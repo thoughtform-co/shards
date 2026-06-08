@@ -2,6 +2,20 @@ import type { VideoTemplate } from "@/experiments/video-studio/types";
 
 export const videoTemplates: VideoTemplate[] = [
   {
+    id: "deck-explainer-series",
+    name: "PowerPoint → explainer",
+    description:
+      "Upload a deck, analyze slide structure with Claude, and preview a multi-scene Remotion explainer.",
+    engine: "remotion",
+    jobType: "deck-to-video",
+    compositionId: "deck-explainer-series",
+    fields: [],
+    dimensions: { width: 1920, height: 1080 },
+    durationSeconds: 20,
+    fps: 30,
+    tags: ["pptx", "deck", "series"],
+  },
+  {
     id: "interview-captioner",
     name: "Interview captioner",
     description:
