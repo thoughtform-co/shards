@@ -51,6 +51,11 @@ qa-screenshots/
 /*.png
 /*.txt
 
+.agents/
+
+# video studio temp workspace (uploads, renders, compiled compositions)
+.video-studio/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

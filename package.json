@@ -7,18 +7,26 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "video-studio:spike": "tsx scripts/video-studio-spike.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",
+    "@hyperframes/player": "^0.6.81",
+    "@hyperframes/producer": "^0.6.81",
+    "@remotion/bundler": "^4.0.473",
+    "@remotion/player": "^4.0.473",
+    "@remotion/renderer": "^4.0.473",
     "lucide-react": "^0.577.0",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
+    "remotion": "^4.0.473",
     "three": "^0.183.2",
     "zod": "^4.3.6"
   },
   "devDependencies": {
+    "@remotion/cli": "^4.0.473",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -26,8 +34,10 @@
     "@types/three": "^0.183.1",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "hyperframes": "^0.6.81",
     "sharp": "^0.33.5",
     "tailwindcss": "^4",
+    "tsx": "^4.22.4",
     "typescript": "^5"
   }
 }

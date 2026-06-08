@@ -4,13 +4,13 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 
 const contentSecurityPolicy = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline'${isDevelopment ? " 'unsafe-eval'" : ""}`,
+  `script-src 'self' 'unsafe-inline'${isDevelopment ? " 'unsafe-eval'" : ""} https://cdn.jsdelivr.net`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https:",
   "font-src 'self' data:",
   "connect-src 'self' https://api.anthropic.com https://accounts.spotify.com https://api.spotify.com",
   "media-src 'self' blob: https:",
-  "frame-src 'self' https://open.spotify.com",
+  "frame-src 'self' blob: https://open.spotify.com",
   "base-uri 'self'",
   "form-action 'self'",
   "frame-ancestors 'none'",
@@ -41,6 +41,10 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  serverExternalPackages: [
+    "@remotion/bundler",
+    "@remotion/renderer",
+  ],
   turbopack: {
     root: __dirname,
   },
@@ -61,6 +65,9 @@ const nextConfig: NextConfig = {
    */
   outputFileTracingIncludes: {
     "/api/skills/\\[name\\]": ["./data/skills/**/*"],
+    "/api/experiments/video-studio/render": [
+      "./experiments/video-studio/templates/**/*",
+    ],
   },
   async headers() {
     return [

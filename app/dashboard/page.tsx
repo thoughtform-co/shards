@@ -101,11 +101,16 @@ export default function DashboardPage() {
                 <div className="hud-divider" />
                 <div className="space-y-4">
                   <p className="text-sm leading-6 text-[var(--text)]">
-                    Two jukebox surfaces: V1 is the flat two-panel layout;
-                    V2 is the full Three.js 3D cabinet with particle effects,
-                    Claude-powered vibe analysis, and Spotify preview playback.
+                    Video Studio routes per-job renders through Remotion and
+                    HyperFrames. The jukebox experiments remain the playful
+                    probes; Video Studio is the production-speed layer for the
+                    creative workshop.
                   </p>
                   <div className="grid gap-3 text-sm text-[var(--text)]">
+                    <div className="flex items-center justify-between border border-[var(--border)] px-3 py-3">
+                      <span className="hud-readout">Video Studio</span>
+                      <span>/experiments/video-studio</span>
+                    </div>
                     <div className="flex items-center justify-between border border-[var(--border)] px-3 py-3">
                       <span className="hud-readout">V1 route</span>
                       <span>/experiments/image-to-spotify</span>
@@ -114,12 +119,15 @@ export default function DashboardPage() {
                       <span className="hud-readout">V2 route</span>
                       <span>/experiments/image-to-spotify-v2</span>
                     </div>
-                    <div className="flex items-center justify-between border border-[var(--border)] px-3 py-3">
-                      <span className="hud-readout">brand split</span>
-                      <span>hub / local override</span>
-                    </div>
                   </div>
                   <div className="flex flex-col gap-3">
+                    <Link
+                      href="/experiments/video-studio"
+                      className="violet-link inline-flex items-center gap-2 text-sm uppercase tracking-[0.14em]"
+                    >
+                      Video Studio
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
                     <Link
                       href="/experiments/image-to-spotify"
                       className="violet-link inline-flex items-center gap-2 text-sm uppercase tracking-[0.14em]"
