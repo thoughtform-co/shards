@@ -322,6 +322,10 @@ export function buildDeckComposition(
       flex-direction: column;
       justify-content: center;
       gap: ${Math.round(height * 0.045)}px;
+      /* Opaque background so scene N+1 fully covers scene N when it
+         finishes its cross-fade. Without this, scenes stack
+         transparently and all the text bleeds through. */
+      background: ${plan.backgroundColor};
     }
     .vs-deck__rail {
       position: absolute;

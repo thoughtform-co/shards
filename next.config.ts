@@ -39,6 +39,32 @@ const securityHeaders = [
   },
 ];
 
+/* The Video Studio composition routes serve HTML that the
+   hyperframes-player web component embeds in a same-origin iframe.
+   The site-wide CSP `frame-ancestors 'none'` + `X-Frame-Options: DENY`
+   would block that, so these two routes get a narrowly relaxed CSP
+   that allows same-origin framing only. The compositions themselves
+   load gsap from cdn.jsdelivr.net and run inline timelines, so the
+   inline script CSP stays permissive within the iframe. */
+const compositionFrameCsp = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob: https:",
+  "font-src 'self' data: https:",
+  "media-src 'self' blob: https:",
+  "connect-src 'self'",
+  "frame-ancestors 'self'",
+  "base-uri 'self'",
+].join("; ");
+
+const compositionFrameHeaders = [
+  { key: "Content-Security-Policy", value: compositionFrameCsp },
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+];
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   serverExternalPackages: [
@@ -74,6 +100,18 @@ const nextConfig: NextConfig = {
       {
         source: "/:path*",
         headers: securityHeaders,
+      },
+      // Composition routes override the global DENY so the
+      // hyperframes-player can embed them in a same-origin iframe.
+      // Listed AFTER the catch-all so the overrides win on duplicate
+      // header keys.
+      {
+        source: "/api/experiments/video-studio/composition/:id",
+        headers: compositionFrameHeaders,
+      },
+      {
+        source: "/api/experiments/video-studio/composition-draft/:sessionId",
+        headers: compositionFrameHeaders,
       },
     ];
   },

@@ -49,15 +49,33 @@ HARD RULES (non-negotiable):
 4. Scenes sequence in time. Scene N starts at \`sum(durations[0..N-1])\`. Allow ~0.4s overlap between scenes for cross-fades — extend each non-final scene's \`data-duration\` by 0.4s past its visible duration so the next scene fades in over it.
 5. Animations:
    - Single GSAP timeline: \`const tl = gsap.timeline({ paused: true });\`. Register it: \`window.__timelines = window.__timelines || {}; window.__timelines["deck-explainer-series"] = tl;\`.
+   - CRITICAL: every entrance tween MUST be added to the timeline as \`tl.from(target, vars, timeOffsetSeconds)\` — NOT \`gsap.from(...)\`. Using top-level \`gsap.from(...)\` creates standalone tweens that fire on page load instead of being scrubbed by the timeline, which breaks scene-by-scene sequencing entirely. Every animation belongs on \`tl\`.
    - LAYOUT BEFORE ANIMATION: every element's CSS describes its visible-at-rest state — full opacity, on-screen position, normal scale. Do NOT set \`opacity: 0\` or off-screen transforms in CSS as a starting state for tweens. The resting CSS IS the destination.
-   - Use \`gsap.from()\` for EVERY entrance tween. \`from()\` animates FROM the supplied values TO the resting CSS state. This means at frame 0 (before the timeline runs) elements are visible — no flash of empty composition.
-   - Cross-fades between scenes: animate scene N+1's root via \`gsap.from("#scene-N+1", { opacity: 0, duration: 0.4, ease: "..." }, sceneStartTime)\` — NOT a \`tl.to()\` that fades in from a CSS-zero state.
+   - Use \`tl.from(target, { ..., duration, ease }, timeOffset)\` for EVERY entrance tween. \`from()\` animates FROM the supplied values TO the resting CSS state, scrubbed by the timeline.
+   - Cross-fades between scenes: animate scene N+1's root via \`tl.from("#scene-N+1", { opacity: 0, duration: 0.4, ease: "..." }, sceneStartTime)\` — NOT a \`tl.to()\` that fades in from a CSS-zero state, and NOT a top-level \`gsap.from(...)\`.
+   - Worked example for a 2-scene 10s deck:
+     \`\`\`js
+     const tl = gsap.timeline({ paused: true });
+     // Scene 1 (0–5s) — entrances offset 0.2–0.8s
+     tl.from("#scene-1 .eyebrow",  { opacity: 0, y: 18, duration: 0.5, ease: "power2.out" }, 0.2);
+     tl.from("#scene-1 .headline", { opacity: 0, y: 40, duration: 0.7, ease: "power3.out" }, 0.4);
+     tl.from("#scene-1 .bullet",   { opacity: 0, x: -30, duration: 0.5, ease: "power2.out", stagger: 0.12 }, 0.7);
+     // Scene 2 (5–10s) — cross-fade scene root + offset element entrances
+     tl.from("#scene-2",           { opacity: 0, duration: 0.4, ease: "power2.out" }, 5);
+     tl.from("#scene-2 .eyebrow",  { opacity: 0, y: 18, duration: 0.5, ease: "expo.out" }, 5.2);
+     tl.from("#scene-2 .headline", { opacity: 0, y: 40, duration: 0.7, ease: "back.out(1.2)" }, 5.4);
+     // Final scene only: optional fade to black
+     tl.to("#scene-2", { opacity: 0, duration: 0.5, ease: "power2.in" }, 9.5);
+     window.__timelines = window.__timelines || {};
+     window.__timelines["deck-explainer-series"] = tl;
+     \`\`\`
    - NO exit animations EXCEPT the final scene (which may fade to black via \`tl.to()\` near the end).
    - Animate ONLY visual properties: opacity, x, y, scale, rotation, color, backgroundColor, transforms. Never animate visibility, display, width, height, or call \`play()\`/\`pause()\` on media.
    - Offset entrances 0.1-0.3s past scene start. Vary eases across tweens (use at least 3 different eases per scene).
    - Determinism: NO \`Math.random()\`, \`Date.now()\`, \`setTimeout\`, \`async\`, or \`await\`. Build the timeline synchronously.
    - NO \`repeat: -1\` — calculate finite repeat counts.
 6. Layout: every scene's content container fills the canvas — \`position: absolute; inset: 0; padding: ...; display: flex\`. Use padding to push content inward, not absolute positioning of inner content.
+6a. CRITICAL — Scene stacking: scenes are positioned with \`inset: 0\` and stacked in DOM order, so the LAST scene visually renders on top. The clip framework does NOT auto-hide previous scenes; you must make each scene OPAQUE so the next one fully covers it. Every scene container's CSS MUST include \`background: <plan.backgroundColor>\` (the same value as html/body bg) AND a \`z-index\` that increases per scene (e.g. scene 1 z-index 1, scene 2 z-index 2, ..., scene N z-index N). Combined with the \`tl.from("#scene-N", { opacity: 0, duration: 0.4 }, sceneStartTime)\` cross-fade, scene N+1 properly covers scene N once it reaches full opacity.
 7. Typography for 1080p video:
    - Headlines: at least 60px (aim 96-130px). Body bullets: 28-40px. Eyebrow/labels: 18-24px.
    - Use system fonts: \`'Inter', system-ui, -apple-system, sans-serif\` for body and \`ui-monospace, 'JetBrains Mono', monospace\` for labels/eyebrows.
