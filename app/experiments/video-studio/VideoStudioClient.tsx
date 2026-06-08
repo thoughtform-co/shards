@@ -10,21 +10,14 @@ const VideoStudio = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "grid",
-          placeItems: "center",
-          color: "#f5f0e8",
-          background: "#050403",
-          fontFamily: "ui-monospace, monospace",
-          letterSpacing: "0.14em",
-          textTransform: "uppercase",
-          fontSize: 12,
-        }}
-      >
-        Loading Video Studio…
-      </div>
+      <section className="aiop-section cw-vs cw-vs--hero">
+        <div className="aiop-wrap cw-vs__inner">
+          <p className="cw-vs__status">
+            <span className="cw-vs__status-dot" aria-hidden="true" />
+            Loading Video Studio
+          </p>
+        </div>
+      </section>
     ),
   },
 );

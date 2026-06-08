@@ -1,0 +1,559 @@
+/* Video Studio — scoped under Creative AI Workshop shell */
+
+.aiop-shell--tf-light .cw-vs__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 4vw, 48px);
+}
+
+.aiop-shell--tf-light .cw-vs__head {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 980px;
+}
+
+.aiop-shell--tf-light .cw-vs__eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-vs__title {
+  font-family: var(--aiop-display);
+  font-size: clamp(32px, 4.4vw, 56px);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__title em {
+  font-style: italic;
+  color: var(--aiop-gold);
+  font-weight: 600;
+}
+
+.aiop-shell--tf-light .cw-vs__sub {
+  font-family: var(--aiop-body);
+  font-size: clamp(15px, 1.3vw, 18px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+  max-width: 720px;
+}
+
+.aiop-shell--tf-light .cw-vs__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  font-weight: 500;
+  margin: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__status-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--aiop-gold);
+  flex-shrink: 0;
+}
+
+/* Gallery cards */
+
+.aiop-shell--tf-light .cw-vs__cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(16px, 2vw, 24px);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media (min-width: 1100px) {
+  .aiop-shell--tf-light .cw-vs__cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .aiop-shell--tf-light .cw-vs__cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aiop-shell--tf-light .cw-vs__card {
+  position: relative;
+  width: 100%;
+  text-align: left;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+  padding: clamp(20px, 2vw, 28px) clamp(18px, 1.8vw, 24px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+  color: inherit;
+  transition: border-color 140ms ease, transform 140ms ease;
+}
+
+.aiop-shell--tf-light .cw-vs__card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--aiop-rule-strong);
+}
+
+.aiop-shell--tf-light .cw-vs__card--router::before {
+  background: linear-gradient(
+    90deg,
+    var(--aiop-gold) 0%,
+    var(--aiop-gold-soft) 60%,
+    transparent 100%
+  );
+}
+
+.aiop-shell--tf-light .cw-vs__card--sage::before {
+  background: linear-gradient(
+    90deg,
+    var(--aiop-sage) 0%,
+    var(--aiop-sage-soft) 60%,
+    transparent 100%
+  );
+}
+
+.aiop-shell--tf-light .cw-vs__card--neutral::before {
+  background: var(--aiop-rule-strong);
+}
+
+.aiop-shell--tf-light .cw-vs__card:hover,
+.aiop-shell--tf-light .cw-vs__card--active {
+  border-color: var(--aiop-gold);
+  transform: translateY(-1px);
+}
+
+.aiop-shell--tf-light .cw-vs__kicker {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-vs__card--sage .cw-vs__kicker {
+  color: var(--aiop-sage);
+}
+
+.aiop-shell--tf-light .cw-vs__card-headline {
+  font-family: var(--aiop-display);
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__card-dek {
+  font-family: var(--aiop-body);
+  font-size: clamp(13px, 1vw, 15px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+  flex: 1;
+}
+
+.aiop-shell--tf-light .cw-vs__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.aiop-shell--tf-light .cw-vs__tag {
+  border: 1px solid var(--aiop-rule);
+  padding: 2px 8px;
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-shell--tf-light .cw-vs__card-note {
+  font-family: var(--aiop-body);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+  padding-top: 8px;
+  border-top: 1px solid var(--aiop-rule);
+}
+
+/* Editor layout */
+
+.aiop-shell--tf-light .cw-vs__layout {
+  display: grid;
+  gap: clamp(24px, 3vw, 40px);
+}
+
+@media (min-width: 960px) {
+  .aiop-shell--tf-light .cw-vs__layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    align-items: start;
+  }
+}
+
+.aiop-shell--tf-light .cw-vs__engine {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border: 1px solid currentColor;
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-vs__engine--remotion {
+  color: var(--aiop-sage);
+}
+
+.aiop-shell--tf-light .cw-vs__fields {
+  display: grid;
+  gap: 16px;
+}
+
+.aiop-shell--tf-light .cw-vs__field label {
+  display: grid;
+  gap: 8px;
+}
+
+.aiop-shell--tf-light .cw-vs__field-label {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-shell--tf-light .cw-vs__field input,
+.aiop-shell--tf-light .cw-vs__field textarea,
+.aiop-shell--tf-light .cw-vs__field select {
+  width: 100%;
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-paper-2);
+  color: var(--aiop-ink);
+  padding: 10px 12px;
+  font-family: var(--aiop-body);
+  font-size: 14px;
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.aiop-shell--tf-light .cw-vs__field input:focus,
+.aiop-shell--tf-light .cw-vs__field textarea:focus,
+.aiop-shell--tf-light .cw-vs__field select:focus {
+  outline: none;
+  border-color: var(--aiop-gold);
+  box-shadow: 0 0 0 1px var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-vs__field textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.aiop-shell--tf-light .cw-vs__field-help {
+  font-family: var(--aiop-body);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--aiop-muted);
+  margin: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__color {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.aiop-shell--tf-light .cw-vs__color-swatch {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-paper-2);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__color-swatch input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  padding: 0;
+  border: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__color-fill {
+  position: absolute;
+  inset: 6px;
+  border: 1px solid var(--aiop-rule);
+}
+
+.aiop-shell--tf-light .cw-vs__upload {
+  display: grid;
+  gap: 8px;
+}
+
+.aiop-shell--tf-light .cw-vs__upload input[type="file"] {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-shell--tf-light .cw-vs__upload-meta {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--aiop-muted);
+  margin: 0;
+}
+
+/* Preview viewer */
+
+.aiop-shell--tf-light .cw-vs__preview-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.aiop-shell--tf-light .cw-vs__preview-label {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-shell--tf-light .cw-vs__viewer {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--aiop-paper-2);
+  border: 1px solid var(--aiop-rule);
+  overflow: hidden;
+}
+
+.aiop-shell--tf-light .cw-vs__viewer--vertical {
+  aspect-ratio: 9 / 16;
+  max-width: 420px;
+  margin-inline: auto;
+}
+
+.aiop-shell--tf-light .cw-vs__viewer-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.aiop-shell--tf-light .cw-vs__viewer-corner::before,
+.aiop-shell--tf-light .cw-vs__viewer-corner::after {
+  content: "";
+  position: absolute;
+  background: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-vs__viewer-corner--tl {
+  top: 8px;
+  left: 8px;
+}
+
+.aiop-shell--tf-light .cw-vs__viewer-corner--tl::before {
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 1px;
+}
+
+.aiop-shell--tf-light .cw-vs__viewer-corner--tl::after {
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 16px;
+}
+
+.aiop-shell--tf-light .cw-vs__viewer-corner--tr {
+  top: 8px;
+  right: 8px;
+}
+
+.aiop-shell--tf-light .cw-vs__viewer-corner--tr::before {
+  top: 0;
+  right: 0;
+  width: 16px;
+  height: 1px;
+}
+
+.aiop-shell--tf-light .cw-vs__viewer-corner--tr::after {
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 16px;
+}
+
+.aiop-shell--tf-light .cw-vs__viewer-corner--bl {
+  bottom: 8px;
+  left: 8px;
+}
+
+.aiop-shell--tf-light .cw-vs__viewer-corner--bl::before {
+  bottom: 0;
+  left: 0;
+  width: 16px;
+  height: 1px;
+}
+
+.aiop-shell--tf-light .cw-vs__viewer-corner--bl::after {
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  height: 16px;
+}
+
+.aiop-shell--tf-light .cw-vs__viewer-corner--br {
+  bottom: 8px;
+  right: 8px;
+}
+
+.aiop-shell--tf-light .cw-vs__viewer-corner--br::before {
+  bottom: 0;
+  right: 0;
+  width: 16px;
+  height: 1px;
+}
+
+.aiop-shell--tf-light .cw-vs__viewer-corner--br::after {
+  bottom: 0;
+  right: 0;
+  width: 1px;
+  height: 16px;
+}
+
+.aiop-shell--tf-light .cw-vs__viewer-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aiop-shell--tf-light .cw-vs__viewer-placeholder {
+  padding: 24px;
+  text-align: center;
+  font-family: var(--aiop-body);
+  font-size: 14px;
+  color: var(--aiop-muted);
+}
+
+/* Render actions */
+
+.aiop-shell--tf-light .cw-vs__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.aiop-shell--tf-light .cw-vs__actions .aiop-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.aiop-shell--tf-light .cw-vs__render-status {
+  margin: 12px 0 0;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+  color: var(--aiop-muted);
+}
+
+/* Close section */
+
+.aiop-shell--tf-light .cw-vs__close {
+  font-family: var(--aiop-display);
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+  padding-top: clamp(20px, 3vh, 32px);
+  border-top: 1px solid var(--aiop-rule);
+  max-width: 1100px;
+}
+
+.aiop-shell--tf-light .cw-vs__close em {
+  font-style: italic;
+  color: var(--aiop-gold);
+  font-weight: 600;
+}
+
+.aiop-shell--tf-light .cw-vs__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin: 16px 0 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--aiop-rule);
+}
+
+.aiop-shell--tf-light .cw-vs__meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__meta dt {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-shell--tf-light .cw-vs__meta dd {
+  font-family: var(--aiop-body);
+  font-size: 14px;
+  color: var(--aiop-ink);
+  font-weight: 500;
+  margin: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__meta dd code {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}

@@ -7,13 +7,44 @@ import { SocialVariantSet } from "@/experiments/video-studio/templates/remotion/
 import { resolveDeckExplainerProps } from "@/experiments/video-studio/templates/remotion/deck-explainer-props";
 import { resolveSocialVariantProps } from "@/experiments/video-studio/templates/remotion/social-variant-props";
 import type { TemplateInputProps, VideoTemplate } from "@/experiments/video-studio/types";
-import styles from "@/experiments/video-studio/ui/video-studio.module.css";
 
 type PreviewPaneProps = {
   template: VideoTemplate;
   input: TemplateInputProps;
   videoAssetUrl?: string;
 };
+
+function ViewerFrame({
+  isVertical,
+  children,
+}: {
+  isVertical: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      className={`cw-vs__viewer ${isVertical ? "cw-vs__viewer--vertical" : ""}`}
+    >
+      <span
+        className="cw-vs__viewer-corner cw-vs__viewer-corner--tl"
+        aria-hidden="true"
+      />
+      <span
+        className="cw-vs__viewer-corner cw-vs__viewer-corner--tr"
+        aria-hidden="true"
+      />
+      <span
+        className="cw-vs__viewer-corner cw-vs__viewer-corner--bl"
+        aria-hidden="true"
+      />
+      <span
+        className="cw-vs__viewer-corner cw-vs__viewer-corner--br"
+        aria-hidden="true"
+      />
+      <div className="cw-vs__viewer-inner">{children}</div>
+    </div>
+  );
+}
 
 export function PreviewPane({ template, input, videoAssetUrl }: PreviewPaneProps) {
   const playerRef = useRef<HTMLElement>(null);
@@ -53,16 +84,12 @@ export function PreviewPane({ template, input, videoAssetUrl }: PreviewPaneProps
     playerRef.current.setAttribute("src", hyperframesSrc);
   }, [hyperframesSrc, template.engine]);
 
-  const frameClassName = `${styles.vsPreviewFrame} ${
-    isVertical ? styles.vsPreviewFrameVertical : ""
-  }`;
-
   if (template.engine === "remotion") {
     if (template.id === "deck-explainer") {
       const props = resolveDeckExplainerProps(input);
 
       return (
-        <div className={frameClassName}>
+        <ViewerFrame isVertical={isVertical}>
           <Player
             component={DeckExplainer}
             inputProps={props}
@@ -74,7 +101,7 @@ export function PreviewPane({ template, input, videoAssetUrl }: PreviewPaneProps
             controls
             loop
           />
-        </div>
+        </ViewerFrame>
       );
     }
 
@@ -82,7 +109,7 @@ export function PreviewPane({ template, input, videoAssetUrl }: PreviewPaneProps
       const props = resolveSocialVariantProps(input);
 
       return (
-        <div className={frameClassName}>
+        <ViewerFrame isVertical={isVertical}>
           <Player
             component={SocialVariantSet}
             inputProps={props}
@@ -94,13 +121,13 @@ export function PreviewPane({ template, input, videoAssetUrl }: PreviewPaneProps
             controls
             loop
           />
-        </div>
+        </ViewerFrame>
       );
     }
   }
 
   return (
-    <div className={frameClassName}>
+    <ViewerFrame isVertical={isVertical}>
       {hyperframesSrc ? (
         createElement("hyperframes-player", {
           ref: playerRef,
@@ -113,10 +140,10 @@ export function PreviewPane({ template, input, videoAssetUrl }: PreviewPaneProps
           style: { width: "100%", height: "100%" },
         })
       ) : (
-        <div className={styles.vsPreviewPlaceholder}>
+        <div className="cw-vs__viewer-placeholder">
           Select a HyperFrames template to preview.
         </div>
       )}
-    </div>
+    </ViewerFrame>
   );
 }

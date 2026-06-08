@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import { engineLabel, recommendEngine } from "@/experiments/video-studio/router";
 import {
@@ -12,9 +11,9 @@ import { PreviewPane } from "@/experiments/video-studio/ui/PreviewPane";
 import { RenderPanel } from "@/experiments/video-studio/ui/RenderPanel";
 import { TemplateGallery } from "@/experiments/video-studio/ui/TemplateGallery";
 import { VariableForm } from "@/experiments/video-studio/ui/VariableForm";
+import { VideoStudioHero } from "@/experiments/video-studio/ui/VideoStudioHero";
 import { WorkshopSection } from "@/experiments/video-studio/ui/WorkshopSection";
 import type { TemplateInputProps } from "@/experiments/video-studio/types";
-import styles from "@/experiments/video-studio/ui/video-studio.module.css";
 
 export function VideoStudio() {
   const [selectedId, setSelectedId] = useState(videoTemplates[0]!.id);
@@ -44,7 +43,7 @@ export function VideoStudio() {
   const videoAssetUrl = videoUrlsByTemplate[template.id]?.videoAsset;
 
   const routerSummary = useMemo(() => {
-    return `Router recommends ${engineLabel(recommendedEngine)} for ${template.jobType.replaceAll("-", " ")}. You picked ${engineLabel(template.engine)} — both engines stay installed.`;
+    return `Router recommends ${engineLabel(recommendedEngine)} for ${template.jobType.replaceAll("-", " ")} · ${engineLabel(template.engine)} selected`;
   }, [recommendedEngine, template.engine, template.jobType]);
 
   function handleSelectTemplate(templateId: string) {
@@ -123,50 +122,38 @@ export function VideoStudio() {
   }
 
   return (
-    <div className={styles.vsRoot}>
-      <div className={styles.vsShell}>
-        <header className={styles.vsHeader}>
-          <p className={styles.vsLabel}>
-            <Link href="/dashboard">Dashboard</Link> / Video Studio
-          </p>
-          <h1 className={styles.vsTitle}>Video Studio</h1>
-          <p className={styles.vsHelp}>
-            Pick a template, fill variables or upload footage, preview live, then render
-            to MP4 on the machine running <code>npm run dev</code>. The router keeps
-            both Remotion and HyperFrames installed — choose per job, not per team.
-          </p>
-          <p className={styles.vsRouterNote}>{routerSummary}</p>
-        </header>
+    <>
+      <VideoStudioHero routerSummary={routerSummary} />
 
-        <div className={styles.vsGrid}>
-          <aside className={styles.vsPanel}>
-            <div className={styles.vsPanelHeader}>
-              <span className={styles.vsLabel}>Templates</span>
-              <span className={styles.vsLabel}>{videoTemplates.length} ready</span>
-            </div>
-            <div className={styles.vsPanelBody}>
-              <TemplateGallery
-                templates={videoTemplates}
-                selectedId={template.id}
-                onSelect={handleSelectTemplate}
-              />
-            </div>
-          </aside>
+      <TemplateGallery
+        templates={videoTemplates}
+        selectedId={template.id}
+        onSelect={handleSelectTemplate}
+      />
 
-          <section className={styles.vsPanel}>
-            <div className={styles.vsPanelHeader}>
-              <span className={styles.vsLabel}>Editor</span>
+      <section className="aiop-section cw-vs cw-vs--editor">
+        <div className="aiop-wrap cw-vs__inner">
+          <div className="cw-vs__head">
+            <p className="cw-vs__eyebrow">Editor</p>
+            <h2 className="cw-vs__title">
+              Variables &amp; <em>preview</em>
+            </h2>
+            <p className="cw-vs__sub">
+              Fill template variables, upload footage where required, then
+              preview live before rendering locally.
+            </p>
+          </div>
+
+          <div className="cw-vs__layout">
+            <div>
               <span
-                className={`${styles.vsEnginePill} ${
-                  template.engine === "remotion"
-                    ? styles.vsEngineRemotion
-                    : styles.vsEngineHyperframes
+                className={`cw-vs__engine ${
+                  template.engine === "remotion" ? "cw-vs__engine--remotion" : ""
                 }`}
               >
                 {engineLabel(template.engine)}
               </span>
-            </div>
-            <div className={styles.vsPanelBody}>
+
               <VariableForm
                 fields={template.fields}
                 values={values}
@@ -175,15 +162,6 @@ export function VideoStudio() {
                 onUploadComplete={handleUploadComplete}
               />
 
-              <div style={{ marginTop: 24 }}>
-                <p className={styles.vsLabel}>Live preview</p>
-                <PreviewPane
-                  template={template}
-                  input={values}
-                  videoAssetUrl={videoAssetUrl}
-                />
-              </div>
-
               <RenderPanel
                 isRendering={isRendering}
                 status={renderStatus}
@@ -191,11 +169,22 @@ export function VideoStudio() {
                 onRender={handleRender}
               />
             </div>
-          </section>
-        </div>
 
-        <WorkshopSection />
-      </div>
-    </div>
+            <div>
+              <div className="cw-vs__preview-head">
+                <span className="cw-vs__preview-label">Live preview</span>
+              </div>
+              <PreviewPane
+                template={template}
+                input={values}
+                videoAssetUrl={videoAssetUrl}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <WorkshopSection />
+    </>
   );
 }

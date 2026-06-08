@@ -1,7 +1,6 @@
 "use client";
 
 import type { TemplateField, TemplateInputProps } from "@/experiments/video-studio/types";
-import styles from "@/experiments/video-studio/ui/video-studio.module.css";
 import { FootageUploader } from "@/experiments/video-studio/ui/FootageUploader";
 
 type VariableFormProps = {
@@ -20,7 +19,7 @@ export function VariableForm({
   onUploadComplete,
 }: VariableFormProps) {
   return (
-    <div className={styles.vsFieldGrid}>
+    <div className="cw-vs__fields">
       {fields.map((field) => {
         if (field.type === "file-video" || field.type === "file-image") {
           return (
@@ -35,10 +34,43 @@ export function VariableForm({
 
         const value = values[field.key] ?? field.defaultValue;
 
+        if (field.type === "color") {
+          return (
+            <div key={field.key} className="cw-vs__field">
+              <label>
+                <span className="cw-vs__field-label">{field.label}</span>
+                <div className="cw-vs__color">
+                  <span className="cw-vs__color-swatch">
+                    <span
+                      className="cw-vs__color-fill"
+                      style={{ backgroundColor: String(value) }}
+                      aria-hidden="true"
+                    />
+                    <input
+                      type="color"
+                      value={String(value)}
+                      onChange={(event) => onChange(field.key, event.target.value)}
+                    />
+                  </span>
+                  <input
+                    type="text"
+                    value={String(value)}
+                    placeholder={field.placeholder}
+                    onChange={(event) => onChange(field.key, event.target.value)}
+                  />
+                </div>
+              </label>
+              {field.helpText ? (
+                <p className="cw-vs__field-help">{field.helpText}</p>
+              ) : null}
+            </div>
+          );
+        }
+
         return (
-          <div key={field.key} className={styles.vsField}>
+          <div key={field.key} className="cw-vs__field">
             <label>
-              <span>{field.label}</span>
+              <span className="cw-vs__field-label">{field.label}</span>
               {field.type === "textarea" ? (
                 <textarea
                   value={String(value)}
@@ -58,7 +90,7 @@ export function VariableForm({
                 </select>
               ) : (
                 <input
-                  type={field.type === "color" ? "color" : field.type === "number" ? "number" : "text"}
+                  type={field.type === "number" ? "number" : "text"}
                   value={String(value)}
                   placeholder={field.placeholder}
                   onChange={(event) =>
@@ -72,7 +104,9 @@ export function VariableForm({
                 />
               )}
             </label>
-            {field.helpText ? <p className={styles.vsHelp}>{field.helpText}</p> : null}
+            {field.helpText ? (
+              <p className="cw-vs__field-help">{field.helpText}</p>
+            ) : null}
           </div>
         );
       })}

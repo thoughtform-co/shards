@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import type { TemplateField, UploadRecord } from "@/experiments/video-studio/types";
-import styles from "@/experiments/video-studio/ui/video-studio.module.css";
 
 type FootageUploaderProps = {
   field: TemplateField;
@@ -58,16 +57,16 @@ export function FootageUploader({
   }
 
   return (
-    <div className={styles.vsUploadRow}>
-      <span className={styles.vsLabel}>{field.label}</span>
+    <div className="cw-vs__upload">
+      <span className="cw-vs__field-label">{field.label}</span>
       <input
         type="file"
         accept={field.type === "file-video" ? "video/*" : "image/*"}
         disabled={isUploading}
         onChange={handleChange}
       />
-      {field.helpText ? <p className={styles.vsHelp}>{field.helpText}</p> : null}
-      {status ? <p className={styles.vsUploadMeta}>{status}</p> : null}
+      {field.helpText ? <p className="cw-vs__field-help">{field.helpText}</p> : null}
+      {status ? <p className="cw-vs__upload-meta">{status}</p> : null}
     </div>
   );
 }
