@@ -9,6 +9,7 @@ import {
   caSubstrateOrder,
   type CaAxis,
   type CaSkillCard,
+  type CaSkillsByTeamSection,
   type CaSubstrate,
   type CaTeamBlock,
 } from "@/content/claude-adoption";
@@ -57,9 +58,11 @@ function cardsBySubstrate(
    keep their full breakdown. /creative-ai-workshop renders this
    section as a pie-chart-only beat, so it passes both as `false`. */
 export function SkillsByTeam({
+  section,
   showBreakdown = true,
   showRepo = true,
 }: {
+  section?: CaSkillsByTeamSection;
   showBreakdown?: boolean;
   showRepo?: boolean;
 } = {}) {
@@ -69,9 +72,10 @@ export function SkillsByTeam({
     title,
     titleEm,
     titleAfter,
+    titleAccentLine,
     sub,
     teams,
-  } = caSkillsByTeamSection;
+  } = section ?? caSkillsByTeamSection;
 
   const [axis, setAxis] = useState<CaAxis>("team");
   const tabsRef = useRef<HTMLDivElement>(null);
@@ -104,6 +108,12 @@ export function SkillsByTeam({
           <h2 className="aiop-section-title">
             {title} <em>{titleEm}</em>
             {titleAfter ?? ""}
+            {titleAccentLine ? (
+              <>
+                <br />
+                <span className="ca-skills__title-accent">{titleAccentLine}</span>
+              </>
+            ) : null}
           </h2>
           <p className="aiop-section-head__sub">{sub}</p>
         </header>

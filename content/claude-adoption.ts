@@ -485,6 +485,10 @@ export type CaSkillsByTeamSection = {
   title: string;
   titleEm: string;
   titleAfter?: string;
+  /** Optional second headline line, rendered below the title in the
+      page accent colour. Used on /creative-ai-workshop so "At Loop"
+      sits under "What's being encoded." as case-study context. */
+  titleAccentLine?: string;
   sub: string;
   count: string;
   teams: readonly CaTeamBlock[];

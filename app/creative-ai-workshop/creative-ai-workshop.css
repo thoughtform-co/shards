@@ -388,6 +388,7 @@
  * ═══════════════════════════════════════════════════════════════════════ */
 
 .aiop-shell--tf-light main > section,
+.aiop-shell--tf-light .aiop-about-and-context > section,
 .aiop-shell--tf-light .aiop-evans-and-tool-collab > section,
 .aiop-shell--tf-light .aiop-encoding-pair > section,
 .aiop-shell--tf-light .aiop-claude-zone > section,
@@ -395,12 +396,9 @@
   min-height: 100dvh;
 }
 
-/* The two new editorial sections (About, Agent Context) were
-   designed without a fixed-height target; center their content
-   vertically so the extra room from min-height reads as breathing
-   room rather than top-pinned content with empty padding. */
-.aiop-shell--tf-light .cw-about,
-.aiop-shell--tf-light .cw-context {
+/* The About section centers vertically inside its viewport frame.
+   Agent context uses the engine-pattern card layout instead. */
+.aiop-shell--tf-light .cw-about {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -676,91 +674,70 @@
   margin: 0;
 }
 
-/* ─── Agent context (news-flash cards) ───────────────────────── */
+/* ─── About + agent context parallax pair ────────────────────── */
+
+.aiop-shell--tf-light .aiop-about-and-context {
+  position: relative;
+  width: 100%;
+}
+
+.aiop-shell--tf-light .aiop-about-and-context > .cw-about {
+  position: relative;
+  will-change: transform;
+}
+
+.aiop-shell--tf-light .aiop-about-and-context > .cw-context {
+  position: relative;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aiop-shell--tf-light .aiop-about-and-context > .cw-about,
+  .aiop-shell--tf-light .aiop-about-and-context > .cw-context {
+    transform: none !important;
+    will-change: auto !important;
+  }
+}
+
+/* ─── Agent context (quote slide) ────────────────────────────── */
 
 .aiop-shell--tf-light .cw-context {
-  padding-block: var(--aiop-section-y);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  isolation: isolate;
 }
 
 .aiop-shell--tf-light .cw-context__inner {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(40px, 6vw, 64px);
-}
-
-/* Two-column head: title block on the left, supporting paragraph
-   on the right. Stacks under 900px so the title still reads as
-   the dominant beat on tablet/mobile. */
-.aiop-shell--tf-light .cw-context__head {
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-  gap: clamp(32px, 4vw, 80px);
-  align-items: start;
-}
-
-@media (max-width: 900px) {
-  .aiop-shell--tf-light .cw-context__head {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-}
-
-.aiop-shell--tf-light .cw-context__head-title {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.aiop-shell--tf-light .cw-context__head-sub {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
-  /* Anchor the sub to the same baseline rhythm as the title.
-     A quiet rule on the left edge so the right column reads as
-     a paired beat rather than floating commentary. */
-  border-left: 1px solid var(--aiop-rule);
-  padding-left: clamp(20px, 2vw, 32px);
-  min-height: 100%;
+  justify-content: center;
+  width: 100%;
+  min-height: clamp(420px, 60vh, 640px);
+  padding-block: clamp(64px, 9vw, 144px);
+  text-align: center;
 }
 
-@media (max-width: 900px) {
-  .aiop-shell--tf-light .cw-context__head-sub {
-    border-left: 0;
-    border-top: 1px solid var(--aiop-rule);
-    padding-left: 0;
-    padding-top: 18px;
-  }
-}
-
-.aiop-shell--tf-light .cw-context__eyebrow {
-  font-family: var(--aiop-mono);
-  font-size: 12px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--aiop-gold);
-}
-
-.aiop-shell--tf-light .cw-context__title {
+.aiop-shell--tf-light .cw-context__q {
   font-family: var(--aiop-display);
-  font-size: clamp(36px, 5vw, 64px);
+  font-size: clamp(32px, 4.6vw, 60px);
   font-weight: 600;
-  line-height: 1.04;
+  line-height: 1.1;
   letter-spacing: -0.02em;
   color: var(--aiop-ink);
   margin: 0;
+  max-width: 22ch;
+  text-wrap: balance;
 }
 
-.aiop-shell--tf-light .cw-context__title em {
+.aiop-shell--tf-light .cw-context__q em {
   font-style: italic;
   color: var(--aiop-gold);
   font-weight: 600;
-}
-
-.aiop-shell--tf-light .cw-context__sub {
-  font-family: var(--aiop-body);
-  font-size: clamp(15px, 1.3vw, 18px);
-  line-height: 1.55;
-  color: var(--aiop-ink-soft);
-  margin: 0;
 }
 
 /* ca-approach (How we run it) reads its accent from --aiop-violet
@@ -826,4 +803,197 @@
   font-style: italic;
   color: var(--aiop-gold);
   font-weight: 600;
+}
+
+/* Skills section — case-study kicker under the headline. */
+.aiop-shell--tf-light .ca-skills__title-accent {
+  display: block;
+  margin-top: 0.08em;
+  font-style: normal;
+  font-weight: 560;
+  color: var(--aiop-gold);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 8 · Navigate interstitial
+ *
+ * Opens the Navigate chapter after the flywheel orbit. Mirrors the
+ * Encode interstitial layout (left copy, right 3-row card) but
+ * reuses `.aiop-engine-pattern__bleed` so the chapter break sits
+ * in the same atmospheric family as the homepage carousel — this
+ * is the deliberate "matched set with a calmer wash" call (see
+ * components/creative-workshop/navigate-interstitial.tsx).
+ *
+ * Height + alignment are inherited:
+ *   - `main > section { min-height: 100dvh }` (this file, §0) gives
+ *     the section full-viewport chapter scale, matching Encode and
+ *     Build.
+ *   - `.aiop-engine-pattern` (operator.css) sets desktop
+ *     `display: flex; flex-direction: column; justify-content:
+ *     center`, so the 2-col inner sits vertically centered in the
+ *     viewport — the same posture the previous centered divider
+ *     held.
+ *
+ * Only `position: relative` is set explicitly here so the absolute
+ * `.aiop-engine-pattern__bleed` inside positions against the
+ * section rather than the page root (the base `.aiop-engine-
+ * pattern` class establishes a stacking context via `isolation:
+ * isolate`, but not a positioning context).
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-shell--tf-light .aiop-navigate {
+  position: relative;
+}
+
+.aiop-shell--tf-light .aiop-navigate__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(28px, 3.5vw, 48px);
+  align-items: start;
+}
+
+@media (min-width: 960px) {
+  .aiop-shell--tf-light .aiop-navigate__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: clamp(40px, 4.5vw, 72px);
+    align-items: center;
+  }
+}
+
+.aiop-shell--tf-light .aiop-navigate__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.aiop-shell--tf-light .aiop-navigate__phase {
+  display: inline-flex;
+  align-items: center;
+}
+
+.aiop-shell--tf-light .aiop-navigate__title {
+  color: var(--aiop-ink);
+  max-width: 20ch;
+  margin: 0;
+}
+
+.aiop-shell--tf-light .aiop-navigate__title-em {
+  font-family: var(--aiop-display);
+  font-style: italic;
+  font-weight: 500;
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .aiop-navigate__body {
+  font-family: var(--aiop-body);
+  font-size: clamp(15px, 1.15vw, 17.5px);
+  line-height: 1.55;
+  color: color-mix(in oklab, var(--aiop-ink) 72%, transparent);
+  margin: 4px 0 0;
+  max-width: 52ch;
+}
+
+/* Right-side properties card — same chrome as the Encode card, but
+   tinted to the Navigate lane (gold in tf-light). */
+.aiop-shell--tf-light .aiop-navigate__card {
+  position: relative;
+  padding: clamp(20px, 2vw, 28px);
+  border-radius: 6px;
+  background: color-mix(in oklab, var(--aiop-card-2) 88%, transparent);
+  border: 1px solid color-mix(in oklab, var(--aiop-gold) 18%, var(--aiop-rule-strong));
+  box-shadow:
+    0 1px 2px rgba(26, 22, 18, 0.04),
+    0 18px 32px -28px rgba(26, 22, 18, 0.22);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.aiop-shell--tf-light .aiop-navigate__rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.aiop-shell--tf-light .aiop-navigate__row {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.65fr) minmax(0, 2.2fr) auto;
+  align-items: baseline;
+  gap: clamp(12px, 1.4vw, 22px);
+  padding-block: clamp(12px, 1.4vw, 18px);
+  border-top: 1px dashed color-mix(in oklab, var(--aiop-ink) 14%, transparent);
+}
+
+.aiop-shell--tf-light .aiop-navigate__row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.aiop-shell--tf-light .aiop-navigate__row:last-child {
+  padding-bottom: 0;
+}
+
+.aiop-shell--tf-light .aiop-navigate__row--highlight {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in oklab, var(--aiop-gold) 6%, transparent) 0%,
+      transparent 100%
+    );
+  margin-inline: calc(-1 * clamp(20px, 2vw, 28px));
+  padding-inline: clamp(20px, 2vw, 28px);
+}
+
+.aiop-shell--tf-light .aiop-navigate__row-label {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: color-mix(in oklab, var(--aiop-ink) 60%, transparent);
+  white-space: nowrap;
+}
+
+.aiop-shell--tf-light .aiop-navigate__row-detail {
+  font-family: var(--aiop-body);
+  font-size: clamp(13.5px, 1vw, 15.5px);
+  line-height: 1.5;
+  color: var(--aiop-ink);
+  min-width: 0;
+}
+
+.aiop-shell--tf-light .aiop-navigate__row-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: color-mix(in oklab, var(--aiop-gold) 14%, transparent);
+  color: color-mix(in oklab, var(--aiop-gold) 78%, var(--aiop-ink));
+  border: 1px solid color-mix(in oklab, var(--aiop-gold) 28%, transparent);
+  white-space: nowrap;
+}
+
+.aiop-shell--tf-light .aiop-navigate__row--highlight .aiop-navigate__row-tag {
+  background: color-mix(in oklab, var(--aiop-gold) 22%, transparent);
+  border-color: color-mix(in oklab, var(--aiop-gold) 38%, transparent);
+}
+
+@media (max-width: 720px) {
+  .aiop-shell--tf-light .aiop-navigate__row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .aiop-shell--tf-light .aiop-navigate__row-tag {
+    justify-self: start;
+  }
 }

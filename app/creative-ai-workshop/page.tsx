@@ -14,7 +14,7 @@ import { ClaudeSkillsAtLoop } from "@/components/claude-workshop/claude-skills-a
 import { AboutVince } from "@/components/creative-workshop/about-vince";
 import { AgentContext } from "@/components/creative-workshop/agent-context";
 import { CreativeHud } from "@/components/creative-workshop/creative-hud";
-import { NotSoftwareDivider } from "@/components/creative-workshop/not-software-divider";
+import { NavigateInterstitial } from "@/components/creative-workshop/navigate-interstitial";
 import { CloseAiop } from "@/components/intelligence-layer/close-aiop";
 import { DegreesOfFreedom } from "@/components/intelligence-layer/degrees-of-freedom";
 import { DiagnosisWithRoleFilter } from "@/components/intelligence-layer/diagnosis-with-role-filter";
@@ -22,7 +22,6 @@ import { RoleProvider } from "@/components/intelligence-layer/role-context";
 import { SubstrateMap } from "@/components/intelligence-layer/substrate-map";
 import { TheShift } from "@/components/intelligence-layer/the-shift";
 import { UseCasesProvider } from "@/components/intelligence-layer/use-cases-context";
-import { Approach } from "@/components/operator/approach";
 import { Cases } from "@/components/operator/cases";
 import { EncodingInterstitial } from "@/components/operator/encoding-interstitial";
 import { EvansBridge } from "@/components/operator/evans-bridge";
@@ -36,7 +35,7 @@ import { ToolCollabSpectrum } from "@/components/operator/tool-collab-spectrum";
 import { ScrollReveal as OperatorScrollReveal } from "@/components/operator/reveal";
 import { ScrollReveal as SharedScrollReveal } from "@/components/shared/reveal";
 import { SiteFooter } from "@/components/shared/site-footer";
-import { caWorkshopApproachSection } from "@/content/claude-adoption";
+import { caSkillsByTeamSection, caWorkshopApproachSection } from "@/content/claude-adoption";
 import {
   type DiagnosisCard,
   pageMeta,
@@ -55,28 +54,32 @@ import "./creative-ai-workshop.css";
  *
  * Shares the same shell, fonts, role/use-case providers, and
  * section composition as `/claude-workshop-v1`. Diverges only in
- * route-local copy: hero, brand sub, diagnosis head, approach,
- * vision section, footer, and metadata. Everything else (Signal,
- * SubstrateMap, EnginePattern, EvansBridge, ToolCollabSpectrum,
- * Approach, the Claude getting-started chapter, the encode
- * deep-dive, Cases, HeadlessShift, SurfacePick, CloseAiop) renders
- * unchanged so the page reads as a proper sibling to the Claude
- * workshop, not a separate site.
+ * route-local copy: hero, brand sub, diagnosis head, vision
+ * section, footer, and metadata.
  *
  * Audience reframe: this is for creative production teams (video,
  * design, copy, brand). The narrative answers "AI is a speed layer
  * on the creative process, not a salvage operation for bad work" —
  * so the surrounding chrome stays the same, the framing copy shifts.
  *
- * Same three structural divergences from `/` as the Claude variant:
- *   1. Live composer (CsIdeationEngine) is removed; nav engine link
- *      filtered out.
- *   2. `Approach` runs without the parallax wrapper and with
- *      `showOutcome={false}`. The Claude getting-started chapter
- *      sits in the closing slot the outcome would otherwise hold.
- *   3. The encode deep-dive folds in the two Skills sections from
- *      the Claude workshop (anatomy + skills-at-loop). They stay on
- *      the Aether palette outside `.aiop-claude-zone`.
+ * Post-flywheel structure follows a Navigate -> Encode -> Build
+ * arc. Each phase opens with an interstitial (NavigateInterstitial /
+ * EncodingInterstitial / SoftwareForFew) followed by its depth and
+ * proof:
+ *   - Navigate -> ToolCollabSpectrum, EvansBridge, Claude zone
+ *   - Encode  -> Anatomy / Shift / Freedom / Skills-at-Loop, then
+ *                the SkillsByTeam pie chart as proof
+ *   - Build   -> Cases, HeadlessShift, SurfacePick
+ * WorkshopApproach (#what-to-expect) closes as the workshop's
+ * logistics breakdown; the prior `Approach` recap was dropped
+ * because WorkshopApproach already covers that beat.
+ *
+ * Other divergences from `/`:
+ *   - Live composer (CsIdeationEngine) is removed; nav engine link
+ *     filtered out.
+ *   - The encode deep-dive folds in the two Skills sections from
+ *     the Claude workshop (anatomy + skills-at-loop). They stay on
+ *     the Aether palette outside `.aiop-claude-zone`.
  */
 
 const workshopHero = {
@@ -262,18 +265,22 @@ const workshopQuestion = {
   scrollNote: "",
 } as const;
 
-const workshopApproach = {
-  title: "Three motions,",
-  titleEm: "compounding inside the work.",
-  caption:
-    "Navigate, encode, build. The same flywheel that runs an AI rollout, here applied to the creative process.",
-};
-
 const workshopVision = {
   titleLead: "Adoption and Automation are",
   titleEm: "the same flywheel.",
   caption:
     "Adoption is the loop run inside real work: navigate with the team, encode what works, build small tools on top. Automation is what comes out the other side. Same flywheel, two readings.",
+};
+
+/* Skills pie chart — header override for external workshop audience.
+   The shared `caSkillsByTeamSection` copy assumes Loop insiders;
+   here we name the company and explain the chart as a case study. */
+const workshopSkillsSection = {
+  ...caSkillsByTeamSection,
+  ariaLabel:
+    "Skills shipped at Loop Earplugs, shown as a workshop case study",
+  titleAccentLine: "At Loop",
+  sub: "A real rollout at Loop Earplugs. Forty-two Skills across every team — each one captures how that team handles a specific piece of work, so people and agents can build on what the company already knows.",
 };
 
 const workshopFooter = {
@@ -450,8 +457,10 @@ export default function CreativeAiWorkshopPage() {
             {/* New top-of-page sequence: meet Vince, meet the room
                 (agent expectations + missing layer), then hand off
                 to the diagnosis. */}
-            <AboutVince />
-            <AgentContext />
+            <div className="aiop-about-and-context">
+              <AboutVince />
+              <AgentContext />
+            </div>
 
             <DiagnosisWithRoleFilter
               head={workshopDiagnosisHead}
@@ -463,6 +472,9 @@ export default function CreativeAiWorkshopPage() {
 
             <Signal section={workshopSignal} />
 
+            {/* Bridge into the flywheel: the workshop's diagnosis +
+                substrate map + signal land here, and the question
+                interstitial sets up the orbit beneath as the answer. */}
             <QuestionInterstitial section={workshopQuestion} />
 
             <section className="aiop-section aiop-vision" id="vision">
@@ -481,89 +493,75 @@ export default function CreativeAiWorkshopPage() {
               </div>
             </section>
 
-            {/* Pie-chart-only beat. Reuses the SubstrateAtlas donut
-                from /claude-adoption (42 Skills across the company,
-                axis toggle between By substrate / By team) but
-                hides the per-team / per-substrate skill lists and
-                the GitHub repo aside via the `showBreakdown` /
-                `showRepo` props. The header reads "What's being
-                encoded." from `caSkillsByTeamSection`. */}
-            <SkillsByTeam showBreakdown={false} showRepo={false} />
+            {/* ─── NAVIGATE chapter ───────────────────────────────────
+                Phase 1 of the flywheel: learn to work with the
+                intelligence itself before encoding it. The
+                interstitial introduces the chapter (left text +
+                right 3-row properties card), and ToolCollab + Evans
+                land as the depth: the tool↔collaborator continuum
+                and the asking-gap reframe. The Claude getting-
+                started zone closes the chapter as the practical
+                "meet the colleague" beat.
 
-            {/* Projects — moved up from the bottom of the page so
-                the visitor sees concrete tools (Mímir, Vesper,
-                Babylon, Heimdall) right after the pie chart of
-                Skills. The companion HeadlessShift section still
-                renders standalone below; without the
-                `.aiop-cases-and-shift` wrapper around them both,
-                Cases freezes/transforms cleanly back to its rest
-                state and HeadlessShift falls back to its plain
-                rect-based reveal (handled in headless-shift.tsx). */}
-            <Cases />
-
-            {/* "How we run it" — ported from Aether. The header copy
-                is overridden via `workshopHowWeRun` so the section
-                reads as the workshop's "what to expect" beat; the
-                three stage cards + inline diagrams stay as proof
-                of practice. */}
-            <WorkshopApproach section={workshopHowWeRun} />
-
-            {/* Editorial chapter break: the 15-Skill carousel that
-                used to live here was replaced by a single static
-                question on the same gradient family. Sets up the
-                tool-vs-collaborator argument in the next two
-                sections. No parallax. */}
-            <NotSoftwareDivider />
-
-            {/* Why we treat AI like a colleague (left), then the
-                Evans pull quote (right). Re-ordered from the
-                original layout so the colleague spectrum reads
-                first as the structural explanation, and Evans's
-                "working out how to ask" line lands as the
-                practical follow-on. Both render as plain stacked
-                sections — no `.aiop-evans-and-tool-collab`
-                wrapper, so neither parallax-pins. EvansBridge
-                falls back to its rect-based pivot reveal; the
-                spectrum renders fully static. */}
+                EvansBridge renders without `.aiop-evans-and-tool-
+                collab` wrapper, so it falls back to its rect-based
+                reveal (no parallax pin). */}
+            <NavigateInterstitial />
             <ToolCollabSpectrum />
             <EvansBridge />
 
-            <Approach
-              section={workshopApproach}
-              collapsibleBody
-              showOutcome={false}
-            />
-
-            <div className="aiop-encoding-pair">
-              <div className="aiop-claude-zone">
-                <ClaudeBridge />
-                <ClaudeSettings />
-                <ClaudeModels />
-                <ClaudeConnectors />
-              </div>
-
-              <EncodingInterstitial />
+            <div className="aiop-claude-zone">
+              <ClaudeBridge />
+              <ClaudeSettings />
+              <ClaudeModels />
+              <ClaudeConnectors />
             </div>
 
-            <UseCasesProvider>
-              <ClaudeSkillAnatomy />
+            {/* ─── ENCODE chapter ─────────────────────────────────────
+                Phase 2: turn judgment into substrate the model can
+                inherit. Interstitial leads, then the anatomy →
+                shift → freedom → skills-at-loop sequence unpacks
+                what a Skill is and how it runs. The pie chart lands
+                as the proof beat ("What's being encoded. At Loop").
 
+                EncodingInterstitial runs without the `.aiop-
+                encoding-pair` wrapper — its scroll handler picks
+                the self-progress fallback so the atmospheric
+                washes still drift, only the slide-over freeze is
+                dropped (acceptable for a standalone chapter intro).
+
+                Wrapped in `UseCasesProvider` so TheShift / Degrees
+                / SurfacePick share one use-case context across
+                both the Encode and Build chapters below. */}
+            <UseCasesProvider>
+              <EncodingInterstitial />
+              <ClaudeSkillAnatomy />
               <TheShift />
               <DegreesOfFreedom hideCaption />
-
               <ClaudeSkillsAtLoop />
+              <SkillsByTeam
+                section={workshopSkillsSection}
+                showBreakdown={false}
+                showRepo={false}
+              />
 
+              {/* ─── BUILD chapter ─────────────────────────────────────
+                  Phase 3: tools the team builds for itself on top of
+                  the encoded substrate. Interstitial leads, then
+                  Cases lands the four concrete projects (Mímir,
+                  Vesper, Babylon, Heimdall) as the proof beat.
+                  HeadlessShift + SurfacePick name where this is
+                  heading after the workshop. */}
               <SoftwareForFew />
-
-              {/* Cases moved up the page (above WorkshopApproach).
-                  HeadlessShift renders standalone now; without the
-                  `.aiop-cases-and-shift` wrapper its scroll handler
-                  picks the rect-based fallback, so it still reveals
-                  cleanly without a freeze partner. */}
+              <Cases />
               <HeadlessShift />
-
               <SurfacePick />
             </UseCasesProvider>
+
+            {/* Workshop logistics — what to expect from the session,
+                lands as the practical close before CloseAiop's
+                hand-off. */}
+            <WorkshopApproach section={workshopHowWeRun} />
 
             <CloseAiop />
           </RoleProvider>
