@@ -17,6 +17,9 @@ export type AnimateDeckRemotionOptions = {
   scenePlan: DeckScenePlan;
   motionPreset?: RemotionMotionPreset;
   styleIntent?: string;
+  /** Optional brand cheat sheet (DESIGN.md). When present, pasted into the
+      Claude prompt so authored Remotion TSX honors brand color/type/voice. */
+  designMd?: string;
   sessionId: string;
   onProgress?: (progress: number, message: string) => void;
 };
@@ -73,10 +76,24 @@ function extractTsx(text: string): string {
   return body.trim();
 }
 
+function buildDesignSystemBlock(designMd: string): string[] {
+  const trimmed = designMd.trim();
+  if (!trimmed) return [];
+  return [
+    "",
+    "DESIGN SYSTEM (baseline — honor these tokens):",
+    "```md",
+    trimmed,
+    "```",
+    "These tokens are the FLOOR for color/type/voice. The scene plan above wins on copy + duration; the design system wins on look + feel. If the design system specifies fonts, palette tiers, or motifs, use them.",
+  ];
+}
+
 function buildUserPrompt(
   plan: DeckScenePlan,
   motionPreset: RemotionMotionPreset,
   styleIntent: string,
+  designMd: string,
 ): string {
   const planJson = JSON.stringify(
     {
@@ -107,6 +124,7 @@ function buildUserPrompt(
     "```json",
     planJson,
     "```",
+    ...buildDesignSystemBlock(designMd),
     "",
     "Author the complete Remotion TSX. Output starts with `import` and ends with `}` of the default-exported component. No markdown.",
   ].join("\n");
@@ -116,6 +134,7 @@ function buildFixUserPrompt(
   plan: DeckScenePlan,
   motionPreset: RemotionMotionPreset,
   styleIntent: string,
+  designMd: string,
   previousTsx: string,
   compileError: string,
 ): string {
@@ -129,6 +148,7 @@ function buildFixUserPrompt(
     "```json",
     JSON.stringify(plan, null, 2),
     "```",
+    ...buildDesignSystemBlock(designMd),
     "",
     "esbuild errors:",
     "```",
@@ -171,6 +191,7 @@ async function attemptAgent(
 ): Promise<{ result: CompileResult; tsx: string } | null> {
   const motionPreset = options.motionPreset ?? "calm";
   const styleIntent = options.styleIntent ?? "";
+  const designMd = options.designMd ?? "";
   const onProgress = options.onProgress;
 
   onProgress?.(0.1, "Calling Claude (attempt 1)…");
@@ -180,7 +201,7 @@ async function attemptAgent(
     tsx = await callClaude(
       apiKey,
       SYSTEM_PROMPT,
-      buildUserPrompt(options.scenePlan, motionPreset, styleIntent),
+      buildUserPrompt(options.scenePlan, motionPreset, styleIntent, designMd),
     );
   } catch (error) {
     console.warn("[animateDeckRemotion] First Claude call failed:", error);
@@ -212,6 +233,7 @@ async function attemptAgent(
         options.scenePlan,
         motionPreset,
         styleIntent,
+        designMd,
         tsx,
         result.error,
       ),

@@ -20,6 +20,10 @@ export type AnimateDeckOptions = {
   scenePlan: DeckScenePlan;
   motionPreset?: MotionPreset;
   styleIntent?: string;
+  /** Optional brand cheat sheet (DESIGN.md). When present, it's pasted into
+      the Claude prompt as a baseline so authored HTML/CSS honors the
+      brand's real palette/type/voice — not just the two raw hex tokens. */
+  designMd?: string;
   sessionId: string;
   onProgress?: (progress: number, message: string) => void;
 };
@@ -111,10 +115,24 @@ function summarizeLintOutput(stdout: string, stderr: string): string {
   return `${combined.slice(0, 1500)}\n[…trimmed…]\n${combined.slice(-1200)}`;
 }
 
+function buildDesignSystemBlock(designMd: string): string[] {
+  const trimmed = designMd.trim();
+  if (!trimmed) return [];
+  return [
+    "",
+    "DESIGN SYSTEM (baseline — honor these tokens):",
+    "```md",
+    trimmed,
+    "```",
+    "These tokens are the FLOOR for color/type/voice. The scene plan above wins on copy + duration; the design system wins on look + feel. If the design system specifies fonts, palette tiers, or motifs, use them.",
+  ];
+}
+
 function buildUserPrompt(
   plan: DeckScenePlan,
   motionPreset: MotionPreset,
   styleIntent: string,
+  designMd: string,
 ): string {
   const planJson = JSON.stringify(
     {
@@ -145,6 +163,7 @@ function buildUserPrompt(
     "```json",
     planJson,
     "```",
+    ...buildDesignSystemBlock(designMd),
     "",
     "Author the complete HTML composition. Output the document only — no markdown, no prose.",
   ].join("\n");
@@ -154,6 +173,7 @@ function buildFixUserPrompt(
   plan: DeckScenePlan,
   motionPreset: MotionPreset,
   styleIntent: string,
+  designMd: string,
   previousHtml: string,
   lintOutput: string,
 ): string {
@@ -167,6 +187,7 @@ function buildFixUserPrompt(
     "```json",
     JSON.stringify(plan, null, 2),
     "```",
+    ...buildDesignSystemBlock(designMd),
     "",
     "Lint output:",
     "```",
@@ -212,6 +233,7 @@ async function attemptAgentAuthoring(
 ): Promise<{ html: string; source: "agent"; lintFailures: number } | null> {
   const motionPreset = options.motionPreset ?? "calm";
   const styleIntent = options.styleIntent ?? "";
+  const designMd = options.designMd ?? "";
   const sessionId = options.sessionId;
   const reportProgress = options.onProgress;
 
@@ -222,7 +244,7 @@ async function attemptAgentAuthoring(
     html = await callClaude(
       apiKey,
       SYSTEM_PROMPT,
-      buildUserPrompt(options.scenePlan, motionPreset, styleIntent),
+      buildUserPrompt(options.scenePlan, motionPreset, styleIntent, designMd),
     );
   } catch (error) {
     console.warn("[animateDeck] First Claude call failed:", error);
@@ -258,6 +280,7 @@ async function attemptAgentAuthoring(
         options.scenePlan,
         motionPreset,
         styleIntent,
+        designMd,
         html,
         summarizeLintOutput(lintResult.stdout, lintResult.stderr),
       ),

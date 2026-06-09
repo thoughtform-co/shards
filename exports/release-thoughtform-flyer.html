@@ -1,0 +1,995 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Release &times; Thoughtform &mdash; Workshop Special</title>
+  <meta name="description" content="A pro-bono Claude workshop for Release Antwerp personal trainers. Encode the way you coach, once." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800;900&family=PT+Mono&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* ────────────────────────────────────────────────────────────
+       Release × Thoughtform · Workshop Special
+       Single 4:5 portrait flyer · print-ready
+       ──────────────────────────────────────────────────────────── */
+
+    :root {
+      /* Paper / ink (warm newsprint, near-black) */
+      --paper: #ece3d6;
+      --paper-2: #e4dac9;
+      --paper-3: #d8cdb9;
+      --ink: #161512;
+      --ink-soft: rgba(22, 21, 18, 0.82);
+      --ink-muted: rgba(22, 21, 18, 0.58);
+      --ink-faint: rgba(22, 21, 18, 0.30);
+      --rule: rgba(22, 21, 18, 0.92);
+      --rule-mid: rgba(22, 21, 18, 0.45);
+      --rule-soft: rgba(22, 21, 18, 0.22);
+
+      /* Thoughtform gold — used sparingly, as a co-sign only */
+      --gold: #9a7a2e;
+      --gold-bright: #caa554;
+      --gold-soft: rgba(154, 122, 46, 0.16);
+
+      /* Photo / map block */
+      --photo: #cabfa9;
+      --photo-deep: #b6a98c;
+
+      color-scheme: light;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body { margin: 0; padding: 0; }
+
+    body {
+      background: #1c1b18;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: clamp(12px, 3vw, 40px);
+      font-family: 'PT Mono', 'Courier New', monospace;
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ─── Page ─────────────────────────────────────────────── */
+
+    .page {
+      width: 200mm;
+      height: 250mm;
+      max-width: calc(100vh * 4 / 5 - 48px);
+      max-height: calc(100vw * 5 / 4 - 48px);
+      aspect-ratio: 4 / 5;
+      background: var(--paper);
+      color: var(--ink);
+      position: relative;
+      padding: 8mm 11mm 5mm;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto auto auto;
+      row-gap: 1.4mm;
+      box-shadow:
+        0 40px 100px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    /* Subtle newsprint grain — fixed dotted noise overlay */
+    .page::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 17% 23%, rgba(22, 21, 18, 0.018) 0.5px, transparent 1.5px),
+        radial-gradient(circle at 63% 71%, rgba(22, 21, 18, 0.022) 0.4px, transparent 1.5px),
+        radial-gradient(circle at 88% 12%, rgba(22, 21, 18, 0.018) 0.4px, transparent 1.5px),
+        radial-gradient(circle at 32% 88%, rgba(22, 21, 18, 0.02) 0.5px, transparent 1.5px);
+      background-size: 7px 9px, 11px 13px, 5px 6px, 9px 11px;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+      opacity: 0.7;
+      z-index: 0;
+    }
+
+    /* Vertical fold suggestion — barely-there centerline */
+    .page::after {
+      content: "";
+      position: absolute;
+      top: 9mm;
+      bottom: 7mm;
+      left: 50%;
+      width: 1px;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(22, 21, 18, 0.04) 12%,
+        rgba(22, 21, 18, 0.04) 88%,
+        transparent 100%
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .page > * { position: relative; z-index: 1; }
+
+    /* ─── Masthead ─────────────────────────────────────────── */
+
+    .masthead {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      align-items: center;
+      padding-bottom: 2.5mm;
+      border-bottom: 1px solid var(--rule);
+      font-size: 8.5pt;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .masthead__left,
+    .masthead__center,
+    .masthead__right {
+      display: flex;
+      flex-direction: column;
+      gap: 1mm;
+    }
+
+    .masthead__left { align-items: flex-start; }
+
+    .masthead__center {
+      align-items: center;
+      text-align: center;
+    }
+
+    .masthead__right {
+      align-items: flex-end;
+      text-align: right;
+    }
+
+    .masthead__edition { font-weight: 700; }
+
+    .masthead__sub {
+      color: var(--ink-muted);
+      font-size: 7.5pt;
+    }
+
+    /* Release wordmark (left) + Thoughtform brandmark (right) */
+    .masthead__release {
+      height: 5mm;
+      width: auto;
+      display: block;
+      color: var(--ink);
+    }
+
+    .masthead__release svg { height: 100%; width: auto; display: block; }
+    .masthead__release svg path { fill: currentColor; }
+
+    .masthead__tf {
+      height: 8.5mm;
+      width: auto;
+      display: block;
+      color: var(--ink);
+    }
+
+    .masthead__tf svg { height: 100%; width: auto; display: block; }
+
+    /* ─── Title row ────────────────────────────────────────── */
+
+    .title-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      column-gap: 8mm;
+      padding-top: 1mm;
+    }
+
+    .title {
+      font-family: 'Archivo Black', 'Archivo', 'Helvetica Neue', sans-serif;
+      font-weight: 900;
+      font-size: 42pt;
+      line-height: 0.9;
+      letter-spacing: -0.03em;
+      margin: 0;
+      color: var(--ink);
+      text-transform: uppercase;
+    }
+
+    .title__line { display: block; }
+
+    .strapline {
+      font-family: 'Archivo', 'Helvetica Neue', sans-serif;
+      font-weight: 600;
+      font-size: 9pt;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-align: right;
+      padding-bottom: 4mm;
+      max-width: 44mm;
+      line-height: 1.4;
+    }
+
+    /* ─── Body grid ────────────────────────────────────────── */
+
+    .body {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      column-gap: 7mm;
+      row-gap: 3mm;
+      padding-top: 2mm;
+      border-top: 1px solid var(--rule);
+    }
+
+    .lede {
+      display: flex;
+      flex-direction: column;
+      gap: 2mm;
+    }
+
+    .lede__head {
+      font-family: 'Archivo Black', 'Archivo', 'Helvetica Neue', sans-serif;
+      font-weight: 900;
+      font-size: 15pt;
+      line-height: 1.05;
+      letter-spacing: -0.015em;
+      margin: 0 0 1mm;
+      color: var(--ink);
+    }
+
+    .lede__body {
+      font-family: 'PT Mono', monospace;
+      font-size: 8pt;
+      line-height: 1.55;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .lede__body + .lede__body { margin-top: 1.5mm; }
+
+    .lede__body em {
+      font-style: italic;
+      color: var(--ink);
+    }
+
+    /* "Who it's for" mini-block — kept inline / horizontal so it
+       doesn't push the lede column past the feature column. */
+    .for-who {
+      margin-top: 1mm;
+      padding-top: 1.5mm;
+      border-top: 1px solid var(--rule-soft);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0 3mm;
+      font-family: 'PT Mono', monospace;
+      font-size: 7pt;
+      line-height: 1.45;
+    }
+
+    .for-who__label {
+      font-size: 6.4pt;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+
+    .for-who__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0 2.5mm;
+      color: var(--ink);
+    }
+
+    .for-who__list li {
+      display: inline-flex;
+      align-items: baseline;
+    }
+
+    .for-who__list li + li::before {
+      content: "·";
+      color: var(--gold);
+      margin-right: 2.5mm;
+    }
+
+    /* Photo column */
+    .feature {
+      display: flex;
+      flex-direction: column;
+      gap: 2mm;
+    }
+
+    .photo {
+      position: relative;
+      aspect-ratio: 16 / 7;
+      background:
+        repeating-linear-gradient(
+          135deg,
+          rgba(22, 21, 18, 0.04) 0 2px,
+          transparent 2px 8px
+        ),
+        linear-gradient(
+          155deg,
+          var(--photo) 0%,
+          var(--photo-deep) 100%
+        );
+      border: 1px solid var(--rule-mid);
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      padding: 3mm;
+    }
+
+    .photo::before {
+      content: "";
+      position: absolute;
+      inset: 4mm;
+      border: 1px dashed rgba(22, 21, 18, 0.25);
+      pointer-events: none;
+    }
+
+    .photo__hint {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'PT Mono', monospace;
+      font-size: 7pt;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(22, 21, 18, 0.42);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .photo__hint strong {
+      display: block;
+      font-weight: 700;
+      color: rgba(22, 21, 18, 0.62);
+      margin-bottom: 1mm;
+    }
+
+    .photo__caption {
+      font-family: 'PT Mono', monospace;
+      font-size: 7pt;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+      padding-top: 1mm;
+    }
+
+    .photo__caption em {
+      font-style: italic;
+      text-transform: none;
+      letter-spacing: 0.04em;
+    }
+
+    /* Flywheel under photo — simplified Navigate / Encode / Build loop */
+    .flywheel {
+      margin: 0;
+      padding-top: 2mm;
+      border-top: 1px solid var(--rule-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 1mm;
+    }
+
+    .flywheel__eyebrow {
+      font-family: 'PT Mono', monospace;
+      font-size: 6.5pt;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+
+    .flywheel__svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .flywheel__cap {
+      font-family: 'PT Mono', monospace;
+      font-size: 7pt;
+      line-height: 1.4;
+      font-style: italic;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+
+    .flywheel__cap b { color: var(--gold); font-style: normal; font-weight: 400; }
+
+    /* ─── Offer: three blocks + one meta line ──────────────── */
+
+    .offer {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5mm;
+    }
+
+    .offer__head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 6mm;
+      padding-bottom: 2mm;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .offer__title {
+      font-family: 'Archivo Black', 'Archivo', sans-serif;
+      font-weight: 900;
+      font-size: 13pt;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .offer__title em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    .offer__head-note {
+      font-family: 'PT Mono', monospace;
+      font-size: 7pt;
+      letter-spacing: 0.04em;
+      color: var(--ink-muted);
+      text-align: right;
+    }
+
+    .offer__blocks {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7mm;
+    }
+
+    .offer__block {
+      display: flex;
+      flex-direction: column;
+      gap: 2mm;
+    }
+
+    .offer__num {
+      font-family: 'PT Mono', monospace;
+      font-size: 7pt;
+      letter-spacing: 0.18em;
+      color: var(--gold);
+      padding-bottom: 1.5mm;
+      border-bottom: 1px solid var(--rule-soft);
+    }
+
+    .offer__name {
+      font-family: 'Archivo Black', 'Archivo', sans-serif;
+      font-weight: 900;
+      font-size: 11.5pt;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    .offer__desc {
+      font-family: 'PT Mono', monospace;
+      font-size: 7pt;
+      line-height: 1.55;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+
+    .offer__meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0 5mm;
+      padding-top: 2mm;
+      border-top: 1px solid var(--rule);
+      font-family: 'PT Mono', monospace;
+      font-size: 7.5pt;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+    }
+
+    .offer__meta-item { display: inline-flex; align-items: baseline; gap: 1.5mm; }
+
+    .offer__meta-item + .offer__meta-item::before {
+      content: "·";
+      color: var(--gold);
+      margin-right: 5mm;
+      margin-left: -3.5mm;
+    }
+
+    .offer__meta-key {
+      font-size: 6.4pt;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-muted);
+    }
+
+    .offer__meta-val strong { font-weight: 700; }
+
+    /* ─── About strip ──────────────────────────────────────── */
+
+    .about {
+      display: grid;
+      grid-template-columns: 22mm 1fr;
+      column-gap: 6mm;
+      align-items: start;
+      margin-top: 1mm;
+      padding-top: 3mm;
+      border-top: 1px solid var(--rule);
+    }
+
+    .about__portrait {
+      margin: 0;
+      width: 22mm;
+      aspect-ratio: 4 / 5;
+      background: var(--paper-2);
+      border: 1px solid var(--rule-mid);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .about__portrait img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(1) contrast(1.04);
+      display: block;
+    }
+
+    .about__body {
+      display: flex;
+      flex-direction: column;
+      gap: 1mm;
+    }
+
+    .about__label {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 700;
+      font-size: 7.5pt;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .about__name {
+      font-family: 'Archivo Black', 'Archivo', sans-serif;
+      font-weight: 900;
+      font-size: 12pt;
+      letter-spacing: -0.01em;
+      color: var(--ink);
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    .about__bio {
+      font-family: 'PT Mono', monospace;
+      font-size: 7.2pt;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      margin: 0.5mm 0 0;
+    }
+
+    .about__bio strong { color: var(--ink); font-weight: 700; }
+
+    .about__contact {
+      margin: 1.5mm 0 0;
+      padding: 1.5mm 0 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0 4mm;
+      border-top: 1px solid var(--rule-soft);
+      font-family: 'PT Mono', monospace;
+      font-size: 7.5pt;
+      line-height: 1.4;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+    }
+
+    .about__contact a {
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 700;
+      border-bottom: 1px solid var(--gold);
+    }
+
+    .about__contact span + span::before {
+      content: "·";
+      color: var(--gold);
+      margin-right: 4mm;
+      margin-left: -2.5mm;
+    }
+
+    /* ─── Footer ───────────────────────────────────────────── */
+
+    .foot {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: end;
+      column-gap: 6mm;
+      padding-top: 2mm;
+      border-top: 1px solid var(--rule);
+      font-size: 7.5pt;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .foot__left {
+      display: flex;
+      flex-direction: column;
+      gap: 1mm;
+    }
+
+    .foot__co {
+      font-family: 'Archivo Black', 'Archivo', sans-serif;
+      font-weight: 900;
+      font-size: 9.5pt;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+
+    .foot__co-x {
+      color: var(--gold);
+      font-weight: 900;
+      padding: 0 0.4em;
+    }
+
+    .foot__contact {
+      font-family: 'PT Mono', monospace;
+      font-size: 7pt;
+      letter-spacing: 0.08em;
+      text-transform: none;
+      color: var(--ink-muted);
+    }
+
+    .foot__contact a {
+      color: var(--ink);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule-soft);
+    }
+
+    .foot__center {
+      text-align: center;
+      align-self: end;
+      font-family: 'PT Mono', monospace;
+      font-size: 7pt;
+      letter-spacing: 0.2em;
+      color: var(--ink-muted);
+    }
+
+    .foot__mark {
+      width: 26mm;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1mm;
+    }
+
+    .foot__mark svg {
+      width: 26mm;
+      height: auto;
+      display: block;
+    }
+
+    .foot__mark-tag {
+      font-family: 'PT Mono', monospace;
+      font-size: 6.5pt;
+      letter-spacing: 0.22em;
+      color: var(--ink-muted);
+    }
+
+    /* ─── Print ────────────────────────────────────────────── */
+
+    @page {
+      size: 200mm 250mm;
+      margin: 0;
+    }
+
+    @media print {
+      body {
+        background: var(--paper);
+        padding: 0;
+        display: block;
+      }
+      .page {
+        width: 200mm;
+        height: 250mm;
+        max-width: none;
+        max-height: none;
+        box-shadow: none;
+        margin: 0;
+      }
+    }
+
+    /* ─── Screen scaling fallback ──────────────────────────── */
+
+    @media (max-width: 760px) {
+      body { padding: 12px; }
+      .page {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 4 / 5;
+        max-width: none;
+        max-height: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <article class="page" aria-label="Release × Thoughtform Workshop Special">
+
+    <!-- ─── MASTHEAD ──────────────────────────────────────── -->
+    <header class="masthead">
+      <div class="masthead__left">
+        <span class="masthead__release" aria-label="Release">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 570.26 85.97" aria-hidden="true">
+            <path d="m36.87,65.2c-.92-9.73-5.91-14.85-14.72-16.56,10.12-1.32,17.88-8.94,17.88-21.16C40.03,11.57,29.51,1.58,8.09,1.58H0v16.04h4.93c10.39,0,15.51,4.07,15.51,11.43,0,8.15-5.12,11.17-15.51,11.17H0v15.38h4.41c8.28,0,12.48,3.03,13.14,12.36.66,8.8,1.71,14.19,3.42,16.43h20.24c-2.76-3.02-3.15-6.97-4.34-19.19Z"/>
+            <path d="m86.17,67.96v-17.48h33.51v-16.17h-33.51v-16.3h43.11V1.58h-62.7v82.81h63.88v-16.43h-44.29Z"/>
+            <path d="m176.86,67.96V1.58h-19.98v82.81h62.04v-16.43h-42.06Z"/>
+            <path d="m264.27,67.96v-17.48h33.52v-16.17h-33.52v-16.3h43.11V1.58h-62.69v82.81h63.87v-16.43h-44.29Z"/>
+            <path d="m384.01,1.58h-22.21l-33.12,82.81h19.97l6.97-17.88h33.39l7.09,17.88h21.3L384.01,1.58Zm-22.61,49.95l10.65-27.21h.53l10.64,27.21h-21.82Z"/>
+            <path d="m481.28,35.1l-15.51-2.76c-6.05-1.18-9.72-2.89-9.72-7.63,0-5.65,4.73-9.06,13.14-9.06,9.59,0,16.3,4.73,16.82,14.45l18.4-.52c-.39-18.4-12.61-29.58-35.09-29.58-20.11,0-32.86,10.13-32.86,26.42,0,14.07,9.33,21.43,22.48,23.93l15.51,2.76c7.23,1.44,12.09,2.76,12.09,8.28s-5.52,8.93-14.33,8.93c-10.25,0-18.79-4.6-19.58-16.03l-18.27.66c0,20.11,15.77,31.02,37.85,31.02,18.93,0,33.78-8.81,33.78-25.9,0-13.54-7.75-21.95-24.71-24.97Z"/>
+            <path d="m570.26,18.01V1.58h-37.71v82.81h37.71v-16.43h-18.13v-17.48h18.13v-16.17h-18.13v-16.3h18.13Z"/>
+          </svg>
+        </span>
+        <span class="masthead__sub">Workshop special &middot; for the trainers</span>
+      </div>
+      <div class="masthead__center">
+        <span class="masthead__edition">No. 1</span>
+        <span class="masthead__sub">Antwerp, BE &middot; Jun 2026</span>
+      </div>
+      <div class="masthead__right">
+        <span class="masthead__tf" aria-label="Thoughtform">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430.99 436" aria-hidden="true">
+            <g fill="currentColor">
+              <path d="M336.78,99.43c18.82,18.93,33.41,41.16,43.78,66.63,5.03,12.35,8.81,24.86,11.42,37.57h19.62c-1.91-18.99-6.54-37.52-13.79-55.54-10.01-24.71-24.56-46.73-43.78-66.02-19.17-19.29-41.16-33.97-65.92-43.99-7.9-3.24-15.9-5.92-23.95-8.1l-1.36,7.49-.9,4.91-1.41,7.49c2.87,1.11,5.79,2.28,8.65,3.54,25.51,10.99,48.06,26.33,67.63,46.02h.01Z"/>
+              <path d="M383.13,314.65c-8.61,22.23-21.59,41.97-38.85,59.38-16.91,16.61-35.23,29.06-55,37.36-19.78,8.3-40.21,12.45-61.29,12.45-11.68,0-23.35-1.22-34.92-3.7-2.47-.46-4.93-1.01-7.4-1.67-2.42-.61-4.88-1.27-7.3-2.02-7.4-2.18-14.74-4.91-22.14-8.1-1.21-.51-2.47-1.06-3.67-1.62-1.16-.51-2.31-1.06-3.42-1.62-2.37-1.11-4.73-2.28-7.05-3.49-20.78-10.83-39.75-24.86-56.91-42.07-19.98-19.69-35.63-42.88-46.9-69.56-5.38-12.61-9.46-25.36-12.28-38.22-.6-2.53-1.11-5.06-1.56-7.59s-.85-5.06-1.21-7.59c-.81-5.87-1.41-11.85-1.71-17.77-.1-2.53-.2-5.06-.2-7.59-.05-.96-.05-1.92-.05-2.89,0-1.57,0-3.14.1-4.71.45-21.06,4.48-41.21,11.98-60.45,8.1-20.66,20.53-39.49,37.44-56.45,16.86-17.01,35.48-29.57,55.86-37.67,20.33-8.1,41.62-12.2,63.91-12.2,5.99,0,11.93.25,17.86.81l2.72-14.68c-26.82,0-53.19,5.32-79,15.95-25.92,10.63-49.06,26.12-69.39,46.63-20.73,20.81-36.38,43.99-46.95,69.51-6.59,15.85-11.12,32.05-13.59,48.55-.35,2.53-.7,5.06-.96,7.59-.3,2.53-.5,5.06-.7,7.59-.35,5.01-.55,10.02-.55,15.04,0,.91,0,1.82.05,2.73,0,2.53.1,5.06.25,7.59.1,2.53.25,5.06.5,7.59,1.76,19.9,6.49,39.24,14.14,57.97,9.96,24.3,24.56,46.12,43.78,65.41,19.93,19.74,42.57,34.78,67.93,45.21,3.72,1.52,7.5,2.99,11.27,4.25,2.42.86,4.83,1.67,7.25,2.38,2.42.76,4.88,1.47,7.3,2.13,7.5,2.03,15.1,3.59,22.74,4.71,2.52.35,5.03.71,7.55.96,2.52.3,5.03.51,7.55.66,4.88.41,9.76.56,14.64.56,26.87,0,52.84-5.11,78-15.34,25.16-10.23,47.71-25.41,67.68-45.51,20.33-20.81,35.78-44.2,46.35-70.07,7.1-17.42,11.78-35.18,14.09-53.31h-15.1c-.71,21.82-4.98,42.78-12.83,62.88h-.01Z"/>
+              <path d="M29.12,218.81l132.09-.05v.05H29.12h0Z"/>
+              <path d="M163.32,250.35l12.58.05h-12.58v-.05Z"/>
+              <path d="M179.17,408.81l30.34-158.46-29.79,158.61s-.35-.1-.55-.15h0Z"/>
+              <path d="M430.98,218.81l-5.23,17.77h-184.93l-10.32.05-2.47,13.72h-18.52l-30.34,158.46c-7.2-2.23-14.44-4.96-21.59-8.1l24.05-132.9h-8.86l3.12-17.42h-20.73l2.57-13.77H30.87c-.86-5.87-1.46-11.8-1.76-17.77h132.09l10.32-.05,2.47-13.72h18.52l29.54-157.85,1.36-7.49,1.41-7.44.2-1.21,1.41-7.49,1.36-7.44L230.76.06h23.6l-3.52,19.14-1.36,7.44-1.41,7.49-.65,3.44-1.36,7.49-1.41,7.54-23.9,129.71h.6l13.49.1-4.78,21.52h17.01l-.2,1.16-2.57,13.77h186.69v-.05h-.01Z"/>
+              <path d="M254.35,0l-33.01,182.26h-.6L254.35,0h0Z"/>
+            </g>
+          </svg>
+        </span>
+        <span class="masthead__sub">Thoughtform</span>
+      </div>
+    </header>
+
+    <!-- ─── TITLE ROW ─────────────────────────────────────── -->
+    <div class="title-row">
+      <h1 class="title">
+        <span class="title__line">Coach&nbsp;more.</span>
+        <span class="title__line">Admin&nbsp;less.</span>
+      </h1>
+      <p class="strapline">
+        Where coaching<br />meets AI.
+      </p>
+    </div>
+
+    <!-- ─── BODY GRID ─────────────────────────────────────── -->
+    <section class="body">
+
+      <div class="lede">
+        <h2 class="lede__head">A pro&#8209;bono workshop on encoding the way you coach.</h2>
+        <p class="lede__body">
+          You already know how to write a great program. You already know
+          what to recommend when a client hits a plateau. You already
+          know how to answer a DM at 9pm. <em>That knowledge lives in
+          your head &mdash; and you retype it every time.</em>
+        </p>
+        <p class="lede__body">
+          In one working session, we encode it once. Plans, recommendations,
+          and replies start from your standard instead of a blank page.
+          You spend the saved time with clients, not at a laptop.
+        </p>
+
+        <div class="for-who" aria-label="Who it&rsquo;s for">
+          <span class="for-who__label">For</span>
+          <ul class="for-who__list">
+            <li>Release PTs</li>
+            <li>1:1 coaches</li>
+            <li>S&amp;C programmers</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="feature">
+        <figure class="photo" aria-label="Editorial photo placeholder">
+          <span class="photo__hint">
+            <strong>Release Eiland</strong>
+            Working session, on the floor
+          </span>
+        </figure>
+        <div class="photo__caption">
+          A SESSION AT RELEASE, <em>photo &copy; tbd</em>
+        </div>
+
+        <figure class="flywheel" aria-label="The loop: Navigate, Encode, Build">
+          <span class="flywheel__eyebrow">How we run it &middot; the loop</span>
+          <svg class="flywheel__svg" viewBox="0 0 320 92" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+            <defs>
+              <marker id="fwArrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#161512" />
+              </marker>
+              <marker id="fwArrowGold" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#9a7a2e" />
+              </marker>
+            </defs>
+
+            <!-- forward arrows -->
+            <line x1="58" y1="56" x2="148" y2="56" stroke="#161512" stroke-width="1.4" marker-end="url(#fwArrow)" />
+            <line x1="172" y1="56" x2="262" y2="56" stroke="#161512" stroke-width="1.4" marker-end="url(#fwArrow)" />
+
+            <!-- return arc (the compounding loop) -->
+            <path d="M274,46 C252,8 68,8 46,46" fill="none" stroke="#9a7a2e" stroke-width="1.4" marker-end="url(#fwArrowGold)" />
+
+            <!-- nodes -->
+            <g>
+              <circle cx="46"  cy="56" r="11" fill="#ECE3D6" stroke="#161512" stroke-width="1.4" />
+              <circle cx="46"  cy="56" r="3"  fill="#9a7a2e" />
+              <circle cx="160" cy="56" r="11" fill="#ECE3D6" stroke="#161512" stroke-width="1.4" />
+              <circle cx="160" cy="56" r="3"  fill="#9a7a2e" />
+              <circle cx="274" cy="56" r="11" fill="#ECE3D6" stroke="#161512" stroke-width="1.4" />
+              <circle cx="274" cy="56" r="3"  fill="#9a7a2e" />
+            </g>
+
+            <!-- labels -->
+            <g fill="#161512" font-family="'PT Mono', monospace" font-size="10" letter-spacing="0.5" text-anchor="middle" font-weight="700">
+              <text x="46"  y="84">NAVIGATE</text>
+              <text x="160" y="84">ENCODE</text>
+              <text x="274" y="84">BUILD</text>
+            </g>
+          </svg>
+          <figcaption class="flywheel__cap">
+            Read the work, encode the judgment, build the tool. <b>&#8635;</b> Each turn makes the next one lighter.
+          </figcaption>
+        </figure>
+      </div>
+
+    </section>
+
+    <!-- ─── OFFER: three blocks + meta line ───────────────── -->
+    <section class="offer" aria-label="What you'll encode and what to expect">
+      <header class="offer__head">
+        <h2 class="offer__title">What you&rsquo;ll <em>encode</em></h2>
+        <span class="offer__head-note">Three things, captured once &mdash; then reused on every client.</span>
+      </header>
+
+      <ul class="offer__blocks">
+        <li class="offer__block">
+          <span class="offer__num">01</span>
+          <p class="offer__name">Programming</p>
+          <p class="offer__desc">
+            Your templates, progressions, and swap-out rules. How you
+            adjust when a client is sore or chasing a PB.
+          </p>
+        </li>
+        <li class="offer__block">
+          <span class="offer__num">02</span>
+          <p class="offer__name">Knowledge</p>
+          <p class="offer__desc">
+            Your go-to cues on form, recovery, mobility, and nutrition.
+            The advice you already give, on tap.
+          </p>
+        </li>
+        <li class="offer__block">
+          <span class="offer__num">03</span>
+          <p class="offer__name">Comms</p>
+          <p class="offer__desc">
+            How you reply to intake emails, Instagram DMs, plan questions,
+            and 9pm check-ins.
+          </p>
+        </li>
+      </ul>
+
+      <div class="offer__meta" aria-label="What to expect">
+        <span class="offer__meta-item">
+          <span class="offer__meta-key">Format</span>
+          <span class="offer__meta-val"><strong>90-min session</strong>, on-site</span>
+        </span>
+        <span class="offer__meta-item">
+          <span class="offer__meta-key">Level</span>
+          <span class="offer__meta-val"><strong>Non-technical</strong>, no apps</span>
+        </span>
+        <span class="offer__meta-item">
+          <span class="offer__meta-key">Group</span>
+          <span class="offer__meta-val">1&ndash;6 PTs</span>
+        </span>
+        <span class="offer__meta-item">
+          <span class="offer__meta-key">Cost</span>
+          <span class="offer__meta-val"><strong>Pro bono</strong></span>
+        </span>
+      </div>
+    </section>
+
+    <!-- ─── ABOUT STRIP ───────────────────────────────────── -->
+    <section class="about" aria-label="About Vince Buyssens">
+      <figure class="about__portrait">
+        <img src="../public/images/vince.png" alt="Vince Buyssens portrait" />
+      </figure>
+      <div class="about__body">
+        <span class="about__label">About</span>
+        <p class="about__name">Vince Buyssens</p>
+        <p class="about__bio">
+          Founder of <strong>Thoughtform</strong>, embedded as AI strategy
+          lead at <strong>Loop Earplugs</strong>, where he runs the
+          company-wide Claude program &mdash; <strong>130+ users, 20+
+          workflows encoded</strong>. Before Loop: AI direction across
+          Belgian agencies, five years lecturing at Thomas More.
+          <strong>Member at Release Eiland.</strong>
+        </p>
+        <div class="about__contact">
+          <span><a href="mailto:vince@thoughtform.co">vince@thoughtform.co</a></span>
+          <span>+32&nbsp;471&nbsp;09&nbsp;42&nbsp;21</span>
+          <span>thoughtform.co</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── FOOTER ────────────────────────────────────────── -->
+    <footer class="foot">
+      <div class="foot__left">
+        <span class="foot__co">
+          Release<span class="foot__co-x">&times;</span>Thoughtform
+        </span>
+        <span class="foot__contact">
+          Pro&#8209;bono workshop &middot; Antwerp 2026
+        </span>
+      </div>
+
+      <div class="foot__center">Workshop &middot; 1.</div>
+
+      <div class="foot__mark" aria-label="Thoughtform wordmark">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1178.18 494.93" aria-hidden="true">
+          <g fill="#9a7a2e">
+            <path d="M517.7,108.78c0,59.15-39.04,108.78-107.06,108.78s-107.06-49.63-107.06-108.78S342.62,0,410.64,0s107.06,49.63,107.06,108.78ZM491.63,108.78c0-56.24-28.32-103.49-80.86-103.49s-80.86,47.38-80.86,103.49,28.32,103.49,80.86,103.49,80.86-47.38,80.86-103.49Z"/>
+            <path d="M421.49,374.38l-2.51,8.47h-93.83l-1.19,6.62h-8.87l-20.38,105.47h-11.38l18.26-97.13h-4.23l1.46-8.34h-9.93l1.19-6.62H0l2.51-8.47h294.31l1.19-6.62h8.87l18.39-97.93h11.38l-16.28,89.59h4.23l-1.46,8.34h9.93l-1.19,6.62h89.72-.13Z"/>
+            <path d="M598.29,273.54v9.93h-106.93v210.02h-25.94v-219.94h133-.13Z"/>
+            <path d="M557,373.58h-70.27v9.93h70.27v-9.93Z"/>
+            <path d="M734.59,483.95h-89.72v9.79h89.72v-9.79Z"/>
+            <path d="M618.54,316.94h-25.94v133.39h25.94v-133.39h0Z"/>
+            <path d="M786.47,316.94h-25.94v133.39h25.94v-133.39h0Z"/>
+            <path d="M734.59,283.46v-9.53h-89.99v9.53h-25.94v33.48h25.94v-33.22h89.99v33.22h25.94v-33.48h-25.94Z"/>
+            <path d="M644.87,450.47h-25.94v33.48h25.94v-33.48Z"/>
+            <path d="M760.53,450.47h-25.94v33.48h25.94v-33.48Z"/>
+            <path d="M912.58,283.46v100.31h-85.09v-100.31h85.09v-10.45h-111.16v220.74h26.07v-99.25h40.89v33.48h25.28v44.07h25.94v-44.07h-25.94v-33.48h18.92v-10.85h21.84v-100.31h-21.84v.13Z"/>
+            <path d="M930.98,472.17h-11.38v21.7h11.38v-21.7Z"/>
+            <path d="M1117.7,273.01v44.73h-25.67v43.27h-10.45v44.73h10.45v-44.73h25.67v132.6h25.81v-220.74h-25.81v.13Z"/>
+            <path d="M1009.06,361.14v-43.27h-25.67v-44.73h-25.81v220.74h25.81v-132.6h25.67v44.73h10.45v-44.73h-10.45v-.13Z"/>
+            <path d="M1035.26,405.87h-15.75v44.33h15.75v-44.33h0Z"/>
+            <path d="M1081.84,405.87h-15.75v44.33h15.75v-44.33h0Z"/>
+            <path d="M1066.09,450.2h-30.83v43.67h30.83v-43.67h0Z"/>
+            <path d="M877.38,1.85v4.9c7.68-.13,15.62-.66,16.54,8.73l-.26,188.45c-1.72,8.2-9.66,6.48-16.28,6.48v4.9h59.68v-4.9c-14.03.93-16.54-.79-17.47-14.56v-87.47h68.95v95.68c0,6.48-12.04,6.88-16.54,6.22v4.9h59.82v-4.9c-7.28,0-15.48,1.72-16.54-7.81l.66-190.56c2.12-6.22,10.72-5.16,15.88-5.29V1.59h-59.68v4.9c3.97,0,9.4-.53,13.1,1.46,1.06.66,3.57,3.97,3.57,4.76v85.75h-67.62l-1.32-1.32V19.19c0-.26.79-5.69.93-6.35,1.72-7.54,10.32-6.35,16.41-6.35V1.46h-59.82.13l-.13.4Z"/>
+            <path d="M301.33,1.72h-59.82v4.9h.93c1.99,0,4.76,0,7.41.26h.66c2.91.4,5.56,1.32,6.75,3.44.4.53,1.72,4.63,1.72,4.9v83.24h-69.87V15.22c0-.26,1.46-4.5,1.72-4.9,1.19-2.12,3.84-3.04,6.75-3.44h.66c2.65-.4,5.43-.26,7.41-.26h.93V1.72h-59.82v4.9h0c3.57.13,6.75,0,9.26.53h.53c4.1.79,6.88,3.18,7.68,9.93v181.43c-.93,12.57-5.96,12.44-17.47,11.91v4.9h59.82v-4.9h-7.68c-.66,0-1.46,0-2.12-.26-2.51-.4-4.63-1.32-5.96-3.71-.26-.66-1.72-4.63-1.72-4.9v-92.37h69.87v92.37c0,.26-1.46,4.23-1.72,4.9-1.32,2.38-3.57,3.31-5.96,3.71h-9.79v4.9h59.82v-4.9c-11.65.53-16.54.66-17.47-11.91V16.81c.79-6.75,3.44-9.13,7.68-9.93h.53c2.65-.4,5.82-.26,9.26-.26h0V1.59h0v.13Z"/>
+            <path d="M744.52,107.32l1.85,1.32,79.93.66c4.5,1.72,4.9,9.53,5.29,13.9,1.59,22.76-1.32,47.51,0,70.53l-.53,2.12c-32.29,25.94-80.86,21.31-107.99-9.93-45.13-52.27-30.83-175.87,51.48-180.64,14.16-.79,48.7,5.43,53.07,21.7,4.1,15.88-8.87,23.03-18.13,32.95v1.59l2.51,2.38,38.51-38.51c-43.01-37.72-119.37-32.95-155.23,12.44-34.27,43.54-31.89,123.47,14.16,158.14,38.64,29.11,111.96,29.91,147.29-5.43l.66-75.43c1.46-8.07,10.19-6.22,16.41-6.35v-9.93h-129.56v8.6h.4l-.13-.13Z"/>
+            <path d="M1178.18,28.19h-4.5s-5.56-11.65-10.32-14.82c-6.88-4.76-16.54-6.75-25.01-6.62h-2.25c-2.25.13-3.97.53-5.43,1.06-.26,0-.53.13-.66.26-.13,0-.26.13-.53.26-1.99,1.06-3.04,2.65-3.57,4.76h0c0,.26-.13.4-.26.66v186.99c-.13,3.97,3.04,9.53,7.15,9.53h12.7v4.9h-66.17v-4.9h12.7c4.1,0,7.28-5.56,7.15-9.53V13.76c0-.26-.13-.4-.26-.66h0c-.53-2.12-1.59-3.71-3.57-4.76-.13,0-.26-.13-.53-.26-.26,0-.4-.13-.66-.26-1.32-.53-3.18-.93-5.29-1.06h-2.25c-8.47-.26-18.13,1.85-25.01,6.62-4.63,3.18-10.32,14.82-10.32,14.82h-4.5l4.5-20.78,1.19-5.43h119.76l1.19,5.43,4.5,20.78h.26Z"/>
+            <path d="M134.19,28.19h-4.5s-5.56-11.65-10.32-14.82c-6.88-4.76-16.54-6.75-25.01-6.62h-2.25c-2.25.13-3.97.53-5.43,1.06-.26,0-.53.13-.66.26-.13,0-.26.13-.53.26-1.99,1.06-3.04,2.65-3.57,4.76h0c0,.26-.13.4-.26.66v186.99c-.13,3.97,3.04,9.53,7.15,9.53h12.7v4.9H35.2v-4.9h12.7c4.1,0,7.28-5.56,7.15-9.53V13.76c0-.26-.13-.4-.26-.66h0c-.53-2.12-1.46-3.71-3.57-4.76-.13,0-.26-.13-.53-.26-.26,0-.4-.13-.66-.26-1.32-.53-3.18-.93-5.43-1.06h-2.25c-8.47-.26-18,1.85-25.01,6.62-4.63,3.18-10.32,14.82-10.32,14.82H2.65L7.15,7.41l1.19-5.43h119.76l1.19,5.43,4.5,20.78h.4Z"/>
+            <path d="M631.5,1.85v4.9c8.47,0,15.48-.66,16.54,9.53-2.38,49.36,3.18,101.63,0,150.86-1.85,29.11-18.26,47.38-48.7,45.13-24.09-1.72-33.61-20.11-36-41.82V15.62c.26-9.4,9.26-8.87,16.54-8.73V1.98h-59.68v4.9c11.65-.66,15.22.79,16.81,8.73v137.76c-.26,34.27,13.1,60.87,53.46,63.92,35.86,2.65,60.08-10.72,62.73-48.43,3.31-49.1-2.51-101.9,0-151.39,1.32-10.98,6.88-10.45,16.54-10.45V2.12h-38.24v-.26Z"/>
+          </g>
+        </svg>
+        <span class="foot__mark-tag">Thoughtform &middot; A gift back</span>
+      </div>
+    </footer>
+
+  </article>
+</body>
+</html>

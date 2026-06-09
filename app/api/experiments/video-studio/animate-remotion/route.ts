@@ -15,7 +15,10 @@ type AnimateRequestBody = {
   scenePlan: unknown;
   motionPreset?: string;
   styleIntent?: string;
+  designMd?: string;
 };
+
+const DESIGN_MD_MAX_CHARS = 20_000;
 
 export async function POST(request: Request) {
   const ip = getClientIp(request);
@@ -55,6 +58,11 @@ export async function POST(request: Request) {
   const styleIntent =
     typeof body.styleIntent === "string" ? body.styleIntent.slice(0, 800) : "";
 
+  const designMd =
+    typeof body.designMd === "string"
+      ? body.designMd.slice(0, DESIGN_MD_MAX_CHARS)
+      : "";
+
   await ensureWorkspace();
 
   const jobId = randomUUID();
@@ -81,6 +89,7 @@ export async function POST(request: Request) {
         scenePlan: parsed.data,
         motionPreset,
         styleIntent,
+        designMd,
         sessionId,
         onProgress: (progress, message) => {
           updateJob(jobId, { status: "rendering", progress, message });

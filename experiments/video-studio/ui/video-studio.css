@@ -1564,3 +1564,133 @@
 .aiop-shell--tf-light .cw-vs::-webkit-scrollbar-corner {
   background: transparent;
 }
+
+/* Source segmented control — two equal-width chips that act as a
+   radiogroup. The --segmented modifier stretches each chip to share the
+   row evenly so the toggle feels like a tab strip rather than a chip
+   cluster. */
+.aiop-shell--tf-light .cw-vs__chip-row--segmented {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.aiop-shell--tf-light .cw-vs__chip--segment {
+  width: 100%;
+  text-align: center;
+  padding: 6px 10px;
+}
+
+/* URL source row: input + button on a single line, mirroring the
+   inline dropzone visual weight. */
+.aiop-shell--tf-light .cw-vs__url-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.aiop-shell--tf-light .cw-vs__url-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-paper-2);
+  color: var(--aiop-ink);
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+.aiop-shell--tf-light .cw-vs__url-input:focus {
+  outline: none;
+  border-color: var(--aiop-gold);
+  box-shadow: 0 0 0 1px var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-vs__url-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.aiop-shell--tf-light .cw-vs__url-row .aiop-button {
+  flex-shrink: 0;
+}
+
+/* Engine dropdown: label + select on one row, so the picker reads as a
+   field rather than a free-floating control. */
+.aiop-shell--tf-light .cw-vs__engine-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.aiop-shell--tf-light .cw-vs__engine-select-label {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  flex-shrink: 0;
+}
+
+.aiop-shell--tf-light .cw-vs__select {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 6px 10px;
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-paper-2);
+  color: var(--aiop-ink);
+  font-family: var(--aiop-body);
+  font-size: 12.5px;
+  cursor: pointer;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+
+.aiop-shell--tf-light .cw-vs__select:hover {
+  border-color: var(--aiop-ink-soft);
+}
+
+.aiop-shell--tf-light .cw-vs__select:focus {
+  outline: none;
+  border-color: var(--aiop-gold);
+  box-shadow: 0 0 0 1px var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-vs__select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Design.md panel: action row above an editable monospace textarea.
+   Sized for prose, not for one-liners. */
+.aiop-shell--tf-light .cw-vs__design-md {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.aiop-shell--tf-light .cw-vs__design-md-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.aiop-shell--tf-light .cw-vs__design-md-textarea {
+  width: 100%;
+  min-height: 160px;
+  max-height: 320px;
+  padding: 10px 12px;
+  border: 1px solid var(--aiop-rule);
+  background: var(--aiop-paper-2);
+  color: var(--aiop-ink);
+  font-family: var(--aiop-mono);
+  font-size: 11.5px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.aiop-shell--tf-light .cw-vs__design-md-textarea:focus {
+  outline: none;
+  border-color: var(--aiop-gold);
+  box-shadow: 0 0 0 1px var(--aiop-gold);
+}

@@ -9,6 +9,7 @@ import type {
 import type { AnimationState, DeckEngine } from "@/experiments/video-studio/ui/VideoStudio";
 
 export type MotionPreset = "calm" | "kinetic";
+export type SourceMode = "upload" | "url";
 
 const MOTION_PRESETS: { id: MotionPreset; label: string; hint: string }[] = [
   { id: "calm", label: "Calm", hint: "Slow eases, generous holds, editorial pace." },
@@ -28,6 +29,19 @@ const DECK_ENGINES: { id: DeckEngine; label: string; hint: string }[] = [
   },
 ];
 
+const SOURCE_MODES: { id: SourceMode; label: string; hint: string }[] = [
+  {
+    id: "upload",
+    label: "Upload",
+    hint: "Drop a .pptx deck and we'll lift slide structure into scenes.",
+  },
+  {
+    id: "url",
+    label: "From URL",
+    hint: "Point at a website — we'll read it and infer scenes + brand tokens.",
+  },
+];
+
 export type PptxSetupPanelProps = {
   scenePlan: DeckScenePlan;
   analysisSource: "live" | "mock" | "sample" | null;
@@ -41,12 +55,21 @@ export type PptxSetupPanelProps = {
   motionPreset: MotionPreset;
   styleIntent: string;
   deckEngine: DeckEngine;
+  sourceMode: SourceMode;
+  siteUrl: string;
+  designMd: string;
+  onSourceModeChange: (mode: SourceMode) => void;
+  onSiteUrlChange: (value: string) => void;
+  onAnalyzeUrl: () => Promise<void> | void;
+  onDesignMdChange: (value: string) => void;
   onDeckEngineChange: (engine: DeckEngine) => void;
   onMotionPresetChange: (preset: MotionPreset) => void;
   onStyleIntentChange: (value: string) => void;
   onAnimate: () => void;
   onScenePlanChange: (plan: DeckScenePlan) => void;
-  onAnalysisComplete: (result: DeckAnalysisResult & { filename: string }) => void;
+  onAnalysisComplete: (
+    result: DeckAnalysisResult & { filename: string; designMd?: string },
+  ) => void;
   onLoadSample: () => void;
   onStatus: (message: string) => void;
 };
@@ -110,6 +133,13 @@ export function PptxSetupPanel({
   motionPreset,
   styleIntent,
   deckEngine,
+  sourceMode,
+  siteUrl,
+  designMd,
+  onSourceModeChange,
+  onSiteUrlChange,
+  onAnalyzeUrl,
+  onDesignMdChange,
   onDeckEngineChange,
   onMotionPresetChange,
   onStyleIntentChange,
@@ -120,16 +150,48 @@ export function PptxSetupPanel({
   onStatus,
 }: PptxSetupPanelProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const designMdInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isFetchingSite, setIsFetchingSite] = useState(false);
   // Brand defaults to closed: the analysis step picks tokens from the deck,
   // so most users never need to touch them. Collapsed-by-default keeps the
   // rail minimal; one click reveals the full form when tuning.
   const [brandOpen, setBrandOpen] = useState(false);
+  // Design system block opens automatically once content arrives so the user
+  // notices the new baseline; before that it stays out of the way.
+  const [designOpen, setDesignOpen] = useState(false);
   // Style intent is a power-user knob — hidden until requested.
   const [styleIntentOpen, setStyleIntentOpen] = useState(
     Boolean(styleIntent.trim()),
   );
+
+  // Auto-open the design.md disclosure when content first appears so the
+  // user can see/edit the brand baseline right after analyzing a site.
+  useEffect(() => {
+    if (designMd.trim().length > 0) {
+      setDesignOpen(true);
+    }
+  }, [designMd]);
+
+  async function handleAnalyzeUrlClick() {
+    if (siteUrl.trim().length === 0 || isFetchingSite) return;
+    setIsFetchingSite(true);
+    try {
+      await onAnalyzeUrl();
+    } finally {
+      setIsFetchingSite(false);
+    }
+  }
+
+  async function handleDesignMdFile(file: File) {
+    const text = await file.text();
+    // Cap to a sane size so we don't blow the animate prompt budget — Claude
+    // calls cost tokens per request and the prompt also carries the scene
+    // plan + system instructions.
+    onDesignMdChange(text.slice(0, 20_000));
+    onStatus(`Loaded design.md from ${file.name}.`);
+  }
 
   async function analyzeFile(file: File) {
     onStatus(`Analyzing ${file.name}…`);
@@ -217,39 +279,92 @@ export function PptxSetupPanel({
         ) : null}
       </div>
 
-      <label
-        className={`cw-vs__dropzone cw-vs__dropzone--inline ${isDragging ? "cw-vs__dropzone--active" : ""}`}
-        onDragOver={(event) => {
-          event.preventDefault();
-          setIsDragging(true);
-        }}
-        onDragLeave={() => setIsDragging(false)}
-        onDrop={(event) => {
-          event.preventDefault();
-          setIsDragging(false);
-          void handleFiles(event.dataTransfer.files);
-        }}
+      {/* Source segmented control — two equal-width buttons that swap the
+          input below. Mirrors the chip-row pattern already used for engine
+          and motion presets. */}
+      <div
+        className="cw-vs__chip-row cw-vs__chip-row--segmented"
+        role="radiogroup"
+        aria-label="Source input"
       >
-        <input
-          ref={inputRef}
-          type="file"
-          accept=".pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-          hidden
-          disabled={isAnalyzing}
-          onChange={(event) => void handleFiles(event.target.files)}
-        />
-        <button
-          type="button"
-          className="aiop-button aiop-button--gold"
-          disabled={isAnalyzing}
-          onClick={() => inputRef.current?.click()}
+        {SOURCE_MODES.map((mode) => (
+          <button
+            key={mode.id}
+            type="button"
+            role="radio"
+            aria-checked={sourceMode === mode.id}
+            title={mode.hint}
+            className={`cw-vs__chip cw-vs__chip--segment ${sourceMode === mode.id ? "cw-vs__chip--active" : ""}`}
+            onClick={() => onSourceModeChange(mode.id)}
+            disabled={isAnalyzing || isFetchingSite}
+          >
+            {mode.label}
+          </button>
+        ))}
+      </div>
+
+      {sourceMode === "upload" ? (
+        <label
+          className={`cw-vs__dropzone cw-vs__dropzone--inline ${isDragging ? "cw-vs__dropzone--active" : ""}`}
+          onDragOver={(event) => {
+            event.preventDefault();
+            setIsDragging(true);
+          }}
+          onDragLeave={() => setIsDragging(false)}
+          onDrop={(event) => {
+            event.preventDefault();
+            setIsDragging(false);
+            void handleFiles(event.dataTransfer.files);
+          }}
         >
-          {isAnalyzing ? "Analyzing…" : "Upload PowerPoint"}
-        </button>
-        <span className="cw-vs__dropzone-hint">
-          {isDragging ? "Drop to analyze" : "or drop a .pptx"}
-        </span>
-      </label>
+          <input
+            ref={inputRef}
+            type="file"
+            accept=".pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation"
+            hidden
+            disabled={isAnalyzing}
+            onChange={(event) => void handleFiles(event.target.files)}
+          />
+          <button
+            type="button"
+            className="aiop-button aiop-button--gold"
+            disabled={isAnalyzing}
+            onClick={() => inputRef.current?.click()}
+          >
+            {isAnalyzing ? "Analyzing…" : "Upload PowerPoint"}
+          </button>
+          <span className="cw-vs__dropzone-hint">
+            {isDragging ? "Drop to analyze" : "or drop a .pptx"}
+          </span>
+        </label>
+      ) : (
+        <div className="cw-vs__url-row">
+          <input
+            type="url"
+            className="cw-vs__url-input"
+            placeholder="https://example.com"
+            value={siteUrl}
+            spellCheck={false}
+            autoComplete="off"
+            onChange={(event) => onSiteUrlChange(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                void handleAnalyzeUrlClick();
+              }
+            }}
+            disabled={isFetchingSite}
+          />
+          <button
+            type="button"
+            className="aiop-button aiop-button--gold"
+            onClick={() => void handleAnalyzeUrlClick()}
+            disabled={isFetchingSite || siteUrl.trim().length === 0}
+          >
+            {isFetchingSite ? "Reading…" : "Analyze site"}
+          </button>
+        </div>
+      )}
 
       {sourceLabel ? (
         <p className="cw-vs__source-state">
@@ -393,6 +508,74 @@ export function PptxSetupPanel({
         ) : null}
       </div>
 
+      {/* Design system (design.md) — collapsible, modeled on the Brand
+          collapse. Carries a free-form markdown baseline that the animate
+          prompt picks up as a brand cheat sheet for both engines. */}
+      <div className="cw-vs__collapse">
+        <button
+          type="button"
+          className="cw-vs__collapse-summary"
+          onClick={() => setDesignOpen((value) => !value)}
+          aria-expanded={designOpen}
+        >
+          <span className="cw-vs__rail-label">Design system</span>
+          <span className="cw-vs__collapse-summary-name">
+            {designMd.trim().length > 0
+              ? `design.md · ${designMd.trim().length.toLocaleString()} chars`
+              : "design.md (optional)"}
+          </span>
+          <Chevron open={designOpen} />
+        </button>
+
+        {designOpen ? (
+          <div className="cw-vs__design-md">
+            <div className="cw-vs__design-md-actions">
+              <input
+                ref={designMdInputRef}
+                type="file"
+                accept=".md,text/markdown,text/plain"
+                hidden
+                onChange={(event) => {
+                  const file = event.target.files?.[0];
+                  if (file) {
+                    void handleDesignMdFile(file);
+                  }
+                  // Reset so re-selecting the same file fires onChange again.
+                  if (designMdInputRef.current) {
+                    designMdInputRef.current.value = "";
+                  }
+                }}
+              />
+              <button
+                type="button"
+                className="cw-vs__text-action cw-vs__text-action--inline"
+                onClick={() => designMdInputRef.current?.click()}
+              >
+                Upload design.md
+              </button>
+              {designMd.trim().length > 0 ? (
+                <button
+                  type="button"
+                  className="cw-vs__text-action cw-vs__text-action--inline"
+                  onClick={() => onDesignMdChange("")}
+                >
+                  Clear
+                </button>
+              ) : null}
+            </div>
+            <textarea
+              className="cw-vs__design-md-textarea"
+              value={designMd}
+              placeholder="# DESIGN.md&#10;&#10;## Color palette&#10;- Accent · #E8521F&#10;&#10;## Typography&#10;- Display · Inter 600&#10;&#10;Paste or upload a design.md, or analyze a URL to generate one."
+              onChange={(event) =>
+                onDesignMdChange(event.target.value.slice(0, 20_000))
+              }
+              rows={8}
+            />
+          </div>
+        ) : null}
+      </div>
+
       {/* Animate block pinned at the bottom. Spacer is a flex grower in
           the rail-inner column. */}
       <div className="cw-vs__rail-spacer" />
@@ -403,26 +586,24 @@ export function PptxSetupPanel({
           <span className="cw-vs__rail-meta">{totalSeconds}s · 16:9</span>
         </div>
 
-        <div
-          className="cw-vs__chip-row"
-          role="radiogroup"
-          aria-label="Animation engine"
-        >
-          {DECK_ENGINES.map((engine) => (
-            <button
-              key={engine.id}
-              type="button"
-              role="radio"
-              aria-checked={deckEngine === engine.id}
-              title={engine.hint}
-              className={`cw-vs__chip ${deckEngine === engine.id ? "cw-vs__chip--active" : ""}`}
-              onClick={() => onDeckEngineChange(engine.id)}
-              disabled={animationState === "animating"}
-            >
-              {engine.label}
-            </button>
-          ))}
-        </div>
+        <label className="cw-vs__engine-select">
+          <span className="cw-vs__engine-select-label">Engine</span>
+          <select
+            className="cw-vs__select"
+            value={deckEngine}
+            aria-label="Animation engine"
+            onChange={(event) =>
+              onDeckEngineChange(event.target.value as DeckEngine)
+            }
+            disabled={animationState === "animating"}
+          >
+            {DECK_ENGINES.map((engine) => (
+              <option key={engine.id} value={engine.id} title={engine.hint}>
+                {engine.label}
+              </option>
+            ))}
+          </select>
+        </label>
 
         <div className="cw-vs__motion-row">
           <div
