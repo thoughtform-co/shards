@@ -63,16 +63,17 @@ import "./creative-ai-workshop.css";
  * so the surrounding chrome stays the same, the framing copy shifts.
  *
  * Post-flywheel structure follows a Navigate -> Encode -> Build
- * arc. Each phase opens with an interstitial (NavigateInterstitial /
- * EncodingInterstitial / SoftwareForFew) followed by its depth and
- * proof:
+ * arc. The flywheel orbit hands off to WorkshopApproach
+ * (#what-to-expect) — three stage cards that name how the
+ * session actually runs — and then each phase opens with an
+ * interstitial (NavigateInterstitial / EncodingInterstitial /
+ * SoftwareForFew) followed by its depth and proof:
  *   - Navigate -> ToolCollabSpectrum, EvansBridge, Claude zone
  *   - Encode  -> Anatomy / Shift / Freedom / Skills-at-Loop, then
  *                the SkillsByTeam pie chart as proof
  *   - Build   -> Cases, HeadlessShift, SurfacePick
- * WorkshopApproach (#what-to-expect) closes as the workshop's
- * logistics breakdown; the prior `Approach` recap was dropped
- * because WorkshopApproach already covers that beat.
+ * The prior `Approach` recap was dropped because WorkshopApproach
+ * already carries the loop breakdown in workshop-logistics form.
  *
  * Other divergences from `/`:
  *   - Live composer (CsIdeationEngine) is removed; nav engine link
@@ -288,24 +289,26 @@ const workshopFooter = {
   signature: "Scoped by Vince \u00b7 2026.",
 };
 
-/* "How we run it" override.
+/* "What the flywheel looks like in practice" override.
  *
  * Reuses the existing 3 stages and inline diagrams from the
- * shared `caWorkshopApproachSection` (those receipts are real
- * proof of practice). Overrides only the header copy so the
- * section reads as the workshop's "what to expect" beat per
- * the skeleton: the loop we run today, what you leave with,
- * what's pre-built, what we build live. */
+ * shared `caWorkshopApproachSection` (the receipts are the real
+ * Loop rollout). Overrides the header so the section reframes
+ * those receipts as the worked example of the flywheel running
+ * across a company, not as "what to expect at your session" —
+ * the audience here is external creative teams, not Loop
+ * insiders. The team list in card 1 + the Mímir briefing tool in
+ * card 3 are Loop-grown and named as such. */
 const workshopHowWeRun = {
   ...caWorkshopApproachSection,
   id: "what-to-expect",
   ariaLabel:
-    "What to expect from the workshop: the loop we run, what you leave with, and what we build live",
-  title: "What to expect",
-  titleEm: "from the session.",
+    "What the flywheel looks like in practice — Loop's rollout as a worked example",
+  title: "What the flywheel looks like",
+  titleEm: "in practice.",
   titleAfter: "",
   titleBreakBeforeEm: false,
-  sub: "You walk into a session that already has a shape, so no time goes to setup. You leave with one real thing you can use the next morning: a Skill. A Skill is a set of instructions Claude follows, so it works your way every time, without you re-explaining. That\u2019s the whole idea in miniature.",
+  sub: "Loop Earplugs is running this flywheel across every team. Same short kickoff, one Skill per workflow, all of them landing in a shared library the next team builds on \u2014 and when three teams hit the same pattern, that\u2019s where the next tool comes from.",
   cards: [
     {
       ...caWorkshopApproachSection.cards[0]!,
@@ -493,6 +496,16 @@ export default function CreativeAiWorkshopPage() {
               </div>
             </section>
 
+            {/* "What the flywheel looks like in practice" — sits
+                right under the orbit so the abstract loop above
+                lands as Loop's actual rollout before the per-phase
+                deep-dives begin. The three stage cards are the
+                worked example (every team starts here, the work
+                feeds the layer, patterns become tools); the header
+                copy in `workshopHowWeRun` reframes them for the
+                external creative-workshop audience. */}
+            <WorkshopApproach section={workshopHowWeRun} />
+
             {/* ─── NAVIGATE chapter ───────────────────────────────────
                 Phase 1 of the flywheel: learn to work with the
                 intelligence itself before encoding it. The
@@ -557,11 +570,6 @@ export default function CreativeAiWorkshopPage() {
               <HeadlessShift />
               <SurfacePick />
             </UseCasesProvider>
-
-            {/* Workshop logistics — what to expect from the session,
-                lands as the practical close before CloseAiop's
-                hand-off. */}
-            <WorkshopApproach section={workshopHowWeRun} />
 
             <CloseAiop />
           </RoleProvider>
