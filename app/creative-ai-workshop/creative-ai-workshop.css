@@ -509,6 +509,16 @@
   overflow: hidden;
 }
 
+.aiop-shell--tf-light .cw-about__portrait-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
 .aiop-shell--tf-light .cw-about__portrait-corner {
   position: absolute;
   width: 16px;
@@ -678,11 +688,47 @@
   gap: clamp(40px, 6vw, 64px);
 }
 
+/* Two-column head: title block on the left, supporting paragraph
+   on the right. Stacks under 900px so the title still reads as
+   the dominant beat on tablet/mobile. */
 .aiop-shell--tf-light .cw-context__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(32px, 4vw, 80px);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .aiop-shell--tf-light .cw-context__head {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.aiop-shell--tf-light .cw-context__head-title {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  max-width: 980px;
+}
+
+.aiop-shell--tf-light .cw-context__head-sub {
+  display: flex;
+  align-items: center;
+  /* Anchor the sub to the same baseline rhythm as the title.
+     A quiet rule on the left edge so the right column reads as
+     a paired beat rather than floating commentary. */
+  border-left: 1px solid var(--aiop-rule);
+  padding-left: clamp(20px, 2vw, 32px);
+  min-height: 100%;
+}
+
+@media (max-width: 900px) {
+  .aiop-shell--tf-light .cw-context__head-sub {
+    border-left: 0;
+    border-top: 1px solid var(--aiop-rule);
+    padding-left: 0;
+    padding-top: 18px;
+  }
 }
 
 .aiop-shell--tf-light .cw-context__eyebrow {
@@ -695,9 +741,9 @@
 
 .aiop-shell--tf-light .cw-context__title {
   font-family: var(--aiop-display);
-  font-size: clamp(32px, 4.4vw, 56px);
+  font-size: clamp(36px, 5vw, 64px);
   font-weight: 600;
-  line-height: 1.05;
+  line-height: 1.04;
   letter-spacing: -0.02em;
   color: var(--aiop-ink);
   margin: 0;
@@ -715,137 +761,6 @@
   line-height: 1.55;
   color: var(--aiop-ink-soft);
   margin: 0;
-  max-width: 720px;
-}
-
-.aiop-shell--tf-light .cw-context__cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(20px, 2vw, 28px);
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-@media (max-width: 900px) {
-  .aiop-shell--tf-light .cw-context__cards {
-    grid-template-columns: 1fr;
-  }
-}
-
-.aiop-shell--tf-light .cw-context__card {
-  position: relative;
-  background: var(--aiop-card);
-  border: 1px solid var(--aiop-rule);
-  padding: clamp(24px, 2.4vw, 32px) clamp(22px, 2vw, 28px);
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  min-height: clamp(280px, 36vh, 360px);
-}
-
-.aiop-shell--tf-light .cw-context__card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--aiop-rule-strong);
-}
-
-.aiop-shell--tf-light .cw-context__card--alert::before {
-  background: linear-gradient(
-    90deg,
-    var(--aiop-gold) 0%,
-    var(--aiop-gold-soft) 60%,
-    transparent 100%
-  );
-}
-
-.aiop-shell--tf-light .cw-context__card--neutral::before {
-  background: var(--aiop-rule-strong);
-}
-
-.aiop-shell--tf-light .cw-context__card--ground::before {
-  background: linear-gradient(
-    90deg,
-    var(--aiop-sage) 0%,
-    var(--aiop-sage-soft) 60%,
-    transparent 100%
-  );
-}
-
-.aiop-shell--tf-light .cw-context__kicker {
-  font-family: var(--aiop-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: var(--aiop-gold);
-}
-
-.aiop-shell--tf-light .cw-context__card--ground .cw-context__kicker {
-  color: var(--aiop-sage);
-}
-
-.aiop-shell--tf-light .cw-context__card--neutral .cw-context__kicker {
-  color: var(--aiop-muted);
-}
-
-.aiop-shell--tf-light .cw-context__card-headline {
-  font-family: var(--aiop-display);
-  font-size: clamp(20px, 1.8vw, 26px);
-  font-weight: 600;
-  line-height: 1.18;
-  letter-spacing: -0.01em;
-  color: var(--aiop-ink);
-  margin: 0;
-}
-
-.aiop-shell--tf-light .cw-context__card-dek {
-  font-family: var(--aiop-body);
-  font-size: clamp(14px, 1.1vw, 16px);
-  line-height: 1.55;
-  color: var(--aiop-ink-soft);
-  margin: 0;
-  flex: 1;
-}
-
-.aiop-shell--tf-light .cw-context__byline {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding-top: 14px;
-  border-top: 1px solid var(--aiop-rule);
-  font-family: var(--aiop-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--aiop-muted);
-  font-weight: 500;
-}
-
-.aiop-shell--tf-light .cw-context__byline-sep {
-  color: var(--aiop-rule-strong);
-}
-
-.aiop-shell--tf-light .cw-context__close {
-  font-family: var(--aiop-display);
-  font-size: clamp(20px, 2vw, 26px);
-  font-weight: 500;
-  line-height: 1.4;
-  color: var(--aiop-ink-soft);
-  margin: 0;
-  padding-top: clamp(20px, 3vh, 32px);
-  border-top: 1px solid var(--aiop-rule);
-  max-width: 1100px;
-}
-
-.aiop-shell--tf-light .cw-context__close em {
-  font-style: italic;
-  color: var(--aiop-gold);
-  font-weight: 600;
 }
 
 /* ca-approach (How we run it) reads its accent from --aiop-violet
@@ -863,4 +778,52 @@
 
 .aiop-shell--tf-light .ca-approach__stages > .ca-approach__stage--patterns-become-tools {
   --aiop-violet: var(--aiop-sage);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 7 · Not-software divider
+ *
+ * The static "Why you can't treat AI like normal software" beat
+ * uses `.aiop-engine-pattern__bleed` for its gradient + grid
+ * background, but renders as a centered single-line editorial
+ * pull quote rather than a carousel. The two custom classes scope
+ * the layout: `.aiop-engine-question__inner` centres the line in
+ * the section's full-viewport height, and `.aiop-engine-question__q`
+ * sets the type to a Bodoni-leaning display register that visually
+ * rhymes with the Evans pull quote a few sections below.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-shell--tf-light .aiop-engine-question {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.aiop-shell--tf-light .aiop-engine-question__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(420px, 60vh, 640px);
+  padding-block: clamp(64px, 9vw, 144px);
+  text-align: center;
+}
+
+.aiop-shell--tf-light .aiop-engine-question__q {
+  font-family: var(--aiop-display);
+  font-size: clamp(32px, 4.6vw, 60px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--aiop-ink);
+  margin: 0;
+  max-width: 22ch;
+}
+
+.aiop-shell--tf-light .aiop-engine-question__q em {
+  font-style: italic;
+  color: var(--aiop-gold);
+  font-weight: 600;
 }

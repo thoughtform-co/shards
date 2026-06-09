@@ -3,6 +3,7 @@ import { IBM_Plex_Sans, PT_Mono } from "next/font/google";
 import Link from "next/link";
 import { Suspense } from "react";
 
+import { SkillsByTeam } from "@/components/claude-adoption/skills-by-team";
 import { WorkshopApproach } from "@/components/claude-adoption/workshop-approach";
 import { ClaudeBridge } from "@/components/claude-workshop/claude-bridge";
 import { ClaudeConnectors } from "@/components/claude-workshop/claude-connectors";
@@ -13,6 +14,7 @@ import { ClaudeSkillsAtLoop } from "@/components/claude-workshop/claude-skills-a
 import { AboutVince } from "@/components/creative-workshop/about-vince";
 import { AgentContext } from "@/components/creative-workshop/agent-context";
 import { CreativeHud } from "@/components/creative-workshop/creative-hud";
+import { NotSoftwareDivider } from "@/components/creative-workshop/not-software-divider";
 import { CloseAiop } from "@/components/intelligence-layer/close-aiop";
 import { DegreesOfFreedom } from "@/components/intelligence-layer/degrees-of-freedom";
 import { DiagnosisWithRoleFilter } from "@/components/intelligence-layer/diagnosis-with-role-filter";
@@ -23,7 +25,6 @@ import { UseCasesProvider } from "@/components/intelligence-layer/use-cases-cont
 import { Approach } from "@/components/operator/approach";
 import { Cases } from "@/components/operator/cases";
 import { EncodingInterstitial } from "@/components/operator/encoding-interstitial";
-import { EnginePattern } from "@/components/operator/engine-pattern";
 import { EvansBridge } from "@/components/operator/evans-bridge";
 import { FlywheelOrbit } from "@/components/operator/flywheel-orbit";
 import { HeadlessShift } from "@/components/operator/headless-shift";
@@ -38,12 +39,10 @@ import { SiteFooter } from "@/components/shared/site-footer";
 import { caWorkshopApproachSection } from "@/content/claude-adoption";
 import {
   type DiagnosisCard,
-  pageEnginePatternHeader,
   pageMeta,
   pageSubstrateMap,
 } from "@/content/intelligence-layer";
-import { type EnginePatternSkillCard, signalSection } from "@/content/operator";
-import { skillsDeckSection } from "@/content/skills-deck";
+import { signalSection } from "@/content/operator";
 import "@/components/landing/landing.css";
 import "@/components/operator/operator.css";
 import "@/components/intelligence-layer/intelligence-layer.css";
@@ -259,8 +258,7 @@ const workshopSignal = {
 const workshopQuestion = {
   eyebrow: "Deep dive",
   question: "But how do you actually get here?",
-  subline:
-    "By starting with the hardest part: getting how you work out of your head and into a form AI can use.",
+  subline: "",
   scrollNote: "",
 } as const;
 
@@ -272,10 +270,10 @@ const workshopApproach = {
 };
 
 const workshopVision = {
-  titleLead: "Better output starts with",
-  titleEm: "better asking.",
+  titleLead: "Adoption and Automation are",
+  titleEm: "the same flywheel.",
   caption:
-    "The model is generic. The work isn\u2019t. Encode the way you brief, the way you cut, the way you decide what\u2019s good. Once that lives in a Skill, every team member starts from the same shoulders.",
+    "Adoption is the loop run inside real work: navigate with the team, encode what works, build small tools on top. Automation is what comes out the other side. Same flywheel, two readings.",
 };
 
 const workshopFooter = {
@@ -325,27 +323,15 @@ const workshopHowWeRun = {
   ],
 } as const;
 
-const skillCarouselCards: readonly EnginePatternSkillCard[] =
-  skillsDeckSection.slides.flatMap((slide) => {
-    const teamFull = slide.teamEm ? `${slide.team} ${slide.teamEm}` : slide.team;
-    return slide.cards.map(
-      (card): EnginePatternSkillCard => ({
-        kind: "skill",
-        id: card.id,
-        team: teamFull,
-        title: card.title,
-        body: card.body,
-        owners: card.owners,
-        receipt: card.statusLabel,
-        receiptTone: card.receiptTone,
-        link: card.link,
-      }),
-    );
-  });
-
-const creativeWorkshopNavLinks = pageMeta.links.filter(
-  (link) => link.id !== "engine",
-);
+/* Drop the live composer link (no engine on this route) and remap
+   the "Receipts" anchor — its target (`#engine-pattern`) used to
+   point at the 15-Skill carousel, but the workshop now renders
+   the new SkillsByTeam pie chart in its place under `#skills`. */
+const creativeWorkshopNavLinks = pageMeta.links
+  .filter((link) => link.id !== "engine")
+  .map((link) =>
+    link.id === "engine-pattern" ? { ...link, href: "#skills" } : link,
+  );
 
 /* Thoughtform light typeface stack: IBM Plex Sans for display +
    body, PT Mono for HUD labels and eyebrows. The display variable
@@ -495,6 +481,26 @@ export default function CreativeAiWorkshopPage() {
               </div>
             </section>
 
+            {/* Pie-chart-only beat. Reuses the SubstrateAtlas donut
+                from /claude-adoption (42 Skills across the company,
+                axis toggle between By substrate / By team) but
+                hides the per-team / per-substrate skill lists and
+                the GitHub repo aside via the `showBreakdown` /
+                `showRepo` props. The header reads "What's being
+                encoded." from `caSkillsByTeamSection`. */}
+            <SkillsByTeam showBreakdown={false} showRepo={false} />
+
+            {/* Projects — moved up from the bottom of the page so
+                the visitor sees concrete tools (Mímir, Vesper,
+                Babylon, Heimdall) right after the pie chart of
+                Skills. The companion HeadlessShift section still
+                renders standalone below; without the
+                `.aiop-cases-and-shift` wrapper around them both,
+                Cases freezes/transforms cleanly back to its rest
+                state and HeadlessShift falls back to its plain
+                rect-based reveal (handled in headless-shift.tsx). */}
+            <Cases />
+
             {/* "How we run it" — ported from Aether. The header copy
                 is overridden via `workshopHowWeRun` so the section
                 reads as the workshop's "what to expect" beat; the
@@ -502,30 +508,25 @@ export default function CreativeAiWorkshopPage() {
                 of practice. */}
             <WorkshopApproach section={workshopHowWeRun} />
 
-            {/* Relocated below "How we run it": the 15-skill
-                carousel + Evans bridge + Tool/Collab spectrum. They
-                still ride the page; they just sit after the run-of-
-                show now instead of interrupting it. */}
-            <EnginePattern
-              section={{
-                ...pageEnginePatternHeader,
-                cards: skillCarouselCards,
-              }}
-              cardsPerView={3}
-              footerActions={[
-                {
-                  id: "flywheel",
-                  label: "The program running it",
-                  href: "#approach",
-                  ariaLabel: "Continue to the program running the layer",
-                },
-              ]}
-            />
+            {/* Editorial chapter break: the 15-Skill carousel that
+                used to live here was replaced by a single static
+                question on the same gradient family. Sets up the
+                tool-vs-collaborator argument in the next two
+                sections. No parallax. */}
+            <NotSoftwareDivider />
 
-            <div className="aiop-evans-and-tool-collab">
-              <EvansBridge />
-              <ToolCollabSpectrum />
-            </div>
+            {/* Why we treat AI like a colleague (left), then the
+                Evans pull quote (right). Re-ordered from the
+                original layout so the colleague spectrum reads
+                first as the structural explanation, and Evans's
+                "working out how to ask" line lands as the
+                practical follow-on. Both render as plain stacked
+                sections — no `.aiop-evans-and-tool-collab`
+                wrapper, so neither parallax-pins. EvansBridge
+                falls back to its rect-based pivot reveal; the
+                spectrum renders fully static. */}
+            <ToolCollabSpectrum />
+            <EvansBridge />
 
             <Approach
               section={workshopApproach}
@@ -554,10 +555,12 @@ export default function CreativeAiWorkshopPage() {
 
               <SoftwareForFew />
 
-              <div className="aiop-cases-and-shift">
-                <Cases />
-                <HeadlessShift />
-              </div>
+              {/* Cases moved up the page (above WorkshopApproach).
+                  HeadlessShift renders standalone now; without the
+                  `.aiop-cases-and-shift` wrapper its scroll handler
+                  picks the rect-based fallback, so it still reveals
+                  cleanly without a freeze partner. */}
+              <HeadlessShift />
 
               <SurfacePick />
             </UseCasesProvider>

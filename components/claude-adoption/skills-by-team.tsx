@@ -50,7 +50,19 @@ function cardsBySubstrate(
   return out;
 }
 
-export function SkillsByTeam() {
+/* `showBreakdown` controls whether the per-team / per-substrate
+   skill-card lists render below the donut. `showRepo` controls
+   the GitHub repo aside under the donut. Both default to `true`
+   so existing /intelligence-layer + /claude-adoption call sites
+   keep their full breakdown. /creative-ai-workshop renders this
+   section as a pie-chart-only beat, so it passes both as `false`. */
+export function SkillsByTeam({
+  showBreakdown = true,
+  showRepo = true,
+}: {
+  showBreakdown?: boolean;
+  showRepo?: boolean;
+} = {}) {
   const {
     id,
     ariaLabel,
@@ -152,7 +164,9 @@ export function SkillsByTeam() {
               the visitor reads "here's the surface, here's where it
               lives" in one beat, before the per-team / per-substrate
               breakdown below. No frame: a quiet muted line plus the
-              GitHub CTA. */}
+              GitHub CTA. Hidden via `showRepo={false}` on routes
+              that render this section as a pie-chart-only beat. */}
+          {showRepo ? (
           <aside
             className="ca-skills-repo aiop-reveal"
             aria-label="Skills governance"
@@ -191,9 +205,10 @@ export function SkillsByTeam() {
               </span>
             </a>
           </aside>
+          ) : null}
         </div>
 
-        {axis === "team" ? (
+        {showBreakdown && axis === "team" ? (
           <ol
             id="ca-skills-breakdown-team"
             className="ca-skills__teams ca-skills__teams--deep-dive aiop-reveal"
@@ -207,7 +222,7 @@ export function SkillsByTeam() {
           </ol>
         ) : null}
 
-        {axis === "engine" ? (
+        {showBreakdown && axis === "engine" ? (
           <ol
             id="ca-skills-breakdown-engine"
             className="ca-skills__clusters aiop-reveal"

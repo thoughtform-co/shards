@@ -2,56 +2,13 @@
  * Creative AI Workshop · Agent expectations / context.
  *
  * Sets the room before the diagnosis: everyone wants an agent;
- * agents fail because the model has not learned how the team
- * works; the missing layer is encoded judgment.
- *
- * Renders as a small editorial reading-room with three
- * news-flash style cards (kicker, headline, dek, source line)
- * and a closing reframe sentence. Source slugs and bylines are
- * placeholders; real articles drop in later.
+ * most fail. Two-column header (title left, supporting line on
+ * the right) with no card grid below it — the three quick-read
+ * cards used to live here but they spoiled the diagnosis and
+ * substrate-map beats further down, so they were removed.
  *
  * Server component.
  */
-
-type ContextCard = {
-  id: string;
-  kicker: string;
-  headline: string;
-  dek: string;
-  source: string;
-  date: string;
-  tone: "alert" | "neutral" | "ground";
-};
-
-const CARDS: readonly ContextCard[] = [
-  {
-    id: "hype",
-    kicker: "Hype \u00b7 the agent rush",
-    headline: "Every team wants an agent. Most don\u2019t know where to start.",
-    dek: "Boards put \u201cAI agents\u201d on the roadmap without naming a single task it should do. IT gets asked for tools nobody has briefed. It starts from FOMO, not a real problem.",
-    source: "Industry signal",
-    date: "Q2 2026",
-    tone: "alert",
-  },
-  {
-    id: "miss-context",
-    kicker: "Reality \u00b7 the gap",
-    headline: "Pilots fail because the model never learned the work.",
-    dek: "Same story across early rollouts: fine in a demo, falls apart on the third real task. The AI is generic, the work isn\u2019t. With nothing telling it how you work, it gives you the average.",
-    source: "Field reports",
-    date: "ongoing",
-    tone: "neutral",
-  },
-  {
-    id: "missing-layer",
-    kicker: "The reframe",
-    headline: "The thing missing isn\u2019t the model. It\u2019s the layer.",
-    dek: "A layer that holds how your team works: your standards, your examples, the calls you make. Your sources feed in at the bottom, that knowledge sits in the middle, and every AI tool on top draws from it.",
-    source: "Thoughtform",
-    date: "the practice",
-    tone: "ground",
-  },
-];
 
 export function AgentContext() {
   return (
@@ -62,40 +19,22 @@ export function AgentContext() {
     >
       <div className="aiop-wrap cw-context__inner">
         <header className="cw-context__head aiop-reveal">
-          <span className="cw-context__eyebrow">Context</span>
-          <h2 className="cw-context__title">
-            Everyone wants an agent. <em>Most miss the layer.</em>
-          </h2>
-          <p className="cw-context__sub">
-            The room you&apos;re in: hype on one side, pilots that fizzle on
-            the other. Three quick reads, then we name what&apos;s actually
-            missing.
-          </p>
+          <div className="cw-context__head-title">
+            <span className="cw-context__eyebrow">Context</span>
+            <h2 className="cw-context__title">
+              Everyone wants an agent.
+              <br />
+              <em>Yet most fail.</em>
+            </h2>
+          </div>
+          <div className="cw-context__head-sub">
+            <p className="cw-context__sub">
+              The room you&apos;re in: hype on one side, pilots that fizzle
+              on the other. Same story across early rollouts, fine in a demo,
+              falls apart on the third real task.
+            </p>
+          </div>
         </header>
-
-        <ol className="cw-context__cards aiop-reveal" role="list">
-          {CARDS.map((card) => (
-            <li
-              key={card.id}
-              className={`cw-context__card cw-context__card--${card.tone}`}
-            >
-              <span className="cw-context__kicker">{card.kicker}</span>
-              <h3 className="cw-context__card-headline">{card.headline}</h3>
-              <p className="cw-context__card-dek">{card.dek}</p>
-              <div className="cw-context__byline">
-                <span>{card.source}</span>
-                <span className="cw-context__byline-sep">&middot;</span>
-                <span>{card.date}</span>
-              </div>
-            </li>
-          ))}
-        </ol>
-
-        <p className="cw-context__close aiop-reveal">
-          The workshop sits right here. First we find where the gap costs you,
-          then we show the fix: a layer that holds how you work, built one
-          team at a time.
-        </p>
       </div>
     </section>
   );

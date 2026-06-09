@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 /*
  * Creative AI Workshop · About Vince.
  *
@@ -6,10 +8,10 @@
  * and re-renders it inside the workshop chrome on the
  * Thoughtform light skin.
  *
- * Two-column layout: a framed portrait slot on the left, bio copy
- * on the right. The portrait slot is a placeholder for now (HUD
- * corner brackets + a `PORTRAIT` mono caption); swap in an <img>
- * once a real portrait lands in `public/images/`.
+ * Two-column layout: a framed portrait on the left, bio copy on
+ * the right. The portrait sits inside the gold corner brackets so
+ * the HUD frame still reads as Thoughtform instrument chrome on
+ * top of the photo.
  *
  * Server component.
  */
@@ -31,13 +33,19 @@ export function AboutVince() {
         </header>
 
         <div className="cw-about__grid aiop-reveal">
-          <figure className="cw-about__portrait" aria-label="Portrait placeholder">
+          <figure className="cw-about__portrait" aria-label="Portrait of Vince Buyssens">
             <div className="cw-about__portrait-frame">
+              <Image
+                src="/images/vince-portrait.png"
+                alt="Vince Buyssens"
+                className="cw-about__portrait-img"
+                fill
+                sizes="(min-width: 720px) 320px, 100vw"
+              />
               <span className="cw-about__portrait-corner cw-about__portrait-corner--tl" />
               <span className="cw-about__portrait-corner cw-about__portrait-corner--tr" />
               <span className="cw-about__portrait-corner cw-about__portrait-corner--bl" />
               <span className="cw-about__portrait-corner cw-about__portrait-corner--br" />
-              <span className="cw-about__portrait-label">Portrait</span>
             </div>
           </figure>
 
