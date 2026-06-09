@@ -378,9 +378,9 @@
  * parents — Suspense and the React providers (RoleProvider,
  * UseCasesProvider) don't render wrappers, so most sections are
  * direct children of <main>. The named DIVs (`.aiop-encoding-pair`,
- * `.aiop-evans-and-tool-collab`, `.aiop-claude-zone`,
- * `.aiop-cases-and-shift`) wrap section pairs that also need to
- * each stand alone at 100dvh.
+ * `.aiop-few-pair`, `.aiop-evans-and-tool-collab`,
+ * `.aiop-claude-zone`, `.aiop-cases-and-shift`) wrap section pairs
+ * that also need to each stand alone at 100dvh.
  *
  * Nested sections inside SubstrateMap chambers and similar
  * complex components are NOT targeted here (they are descendants
@@ -391,6 +391,7 @@
 .aiop-shell--tf-light .aiop-about-and-context > section,
 .aiop-shell--tf-light .aiop-evans-and-tool-collab > section,
 .aiop-shell--tf-light .aiop-encoding-pair > section,
+.aiop-shell--tf-light .aiop-few-pair > section,
 .aiop-shell--tf-light .aiop-claude-zone > section,
 .aiop-shell--tf-light .aiop-cases-and-shift > section {
   min-height: 100dvh;
@@ -699,13 +700,14 @@
   }
 }
 
-/* ─── Agent context (quote slide) ────────────────────────────── */
+/* ─── Agent context (chapter opener) ─────────────────────────────
+   Two-column header: title left, supporting line right. Mirrors the
+   eyebrow/title/body register of the other interstitials (gold
+   eyebrow + em, display title, muted body) instead of the old
+   centered quote-slide markup. */
 
 .aiop-shell--tf-light .cw-context {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
   isolation: isolate;
 }
@@ -713,31 +715,59 @@
 .aiop-shell--tf-light .cw-context__inner {
   position: relative;
   z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: clamp(420px, 60vh, 640px);
-  padding-block: clamp(64px, 9vw, 144px);
-  text-align: center;
 }
 
-.aiop-shell--tf-light .cw-context__q {
+.aiop-shell--tf-light .cw-context__head {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: clamp(32px, 5vw, 80px);
+  align-items: end;
+}
+
+@media (max-width: 860px) {
+  .aiop-shell--tf-light .cw-context__head {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+.aiop-shell--tf-light .cw-context__head-title {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.aiop-shell--tf-light .cw-context__eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-context__title {
   font-family: var(--aiop-display);
-  font-size: clamp(32px, 4.6vw, 60px);
+  font-size: clamp(36px, 5vw, 64px);
   font-weight: 600;
-  line-height: 1.1;
+  line-height: 1.04;
   letter-spacing: -0.02em;
   color: var(--aiop-ink);
   margin: 0;
-  max-width: 22ch;
   text-wrap: balance;
 }
 
-.aiop-shell--tf-light .cw-context__q em {
+.aiop-shell--tf-light .cw-context__title em {
   font-style: italic;
   color: var(--aiop-gold);
   font-weight: 600;
+}
+
+.aiop-shell--tf-light .cw-context__sub {
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.6;
+  color: var(--aiop-muted);
+  margin: 0;
+  max-width: 44ch;
 }
 
 /* ca-approach (How we run it) reads its accent from --aiop-violet
@@ -996,4 +1026,208 @@
   .aiop-shell--tf-light .aiop-navigate__row-tag {
     justify-self: start;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * design.md bridge
+ *
+ * Calm editorial beat between `DegreesOfFreedom` and the Four-Skills
+ * grid. Names design.md as encoded brand substrate and ships a
+ * downloadable take-home artifact (Centrale des Marchés design.md).
+ *
+ * Layout: two-column grid on desktop — left rail (what-it-powers
+ * list + Video Studio CTA), right card (download). Collapses to a
+ * single column below 860px.
+ *
+ * The download button itself reuses `.aiop-claude-skills-at-loop__
+ * download-btn` styles from claude-workshop.css so it matches the
+ * four .skill cards directly below with zero new CSS.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-shell--tf-light .cw-designmd {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.aiop-shell--tf-light .cw-designmd__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(36px, 5vw, 64px);
+}
+
+.aiop-shell--tf-light .cw-designmd__head {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 820px;
+}
+
+.aiop-shell--tf-light .cw-designmd__eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-designmd__title {
+  font-family: var(--aiop-display);
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--aiop-ink);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.aiop-shell--tf-light .cw-designmd__title-em {
+  font-style: italic;
+  color: var(--aiop-gold);
+  font-weight: 600;
+}
+
+.aiop-shell--tf-light .cw-designmd__body {
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.6;
+  color: var(--aiop-muted);
+  margin: 0;
+  max-width: 64ch;
+}
+
+.aiop-shell--tf-light .cw-designmd__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .aiop-shell--tf-light .cw-designmd__grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
+/* Left rail: what-it-powers + Video Studio CTA. Hairline above the
+   list so it reads as a small editorial sidebar against the card. */
+.aiop-shell--tf-light .cw-designmd__powers {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 18px;
+  border-top: 1px solid var(--aiop-rule);
+}
+
+.aiop-shell--tf-light .cw-designmd__powers-label {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-shell--tf-light .cw-designmd__powers-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.aiop-shell--tf-light .cw-designmd__powers-item {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--aiop-ink);
+}
+
+/* Ghost CTA — calm, link-shaped, gold accent on hover so it reads as
+   editorial follow-through rather than a primary button. */
+.aiop-shell--tf-light .cw-designmd__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
+  text-decoration: none;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--aiop-rule);
+  width: fit-content;
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aiop-shell--tf-light .cw-designmd__cta:hover,
+.aiop-shell--tf-light .cw-designmd__cta:focus-visible {
+  color: var(--aiop-gold);
+  border-color: var(--aiop-gold);
+  transform: translateY(-1px);
+}
+
+.aiop-shell--tf-light .cw-designmd__cta:focus-visible {
+  outline: 2px solid var(--aiop-gold);
+  outline-offset: 4px;
+}
+
+.aiop-shell--tf-light .cw-designmd__cta-arrow {
+  font-family: var(--aiop-body);
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+/* Right card: download. Same calm cream surface family as the four
+   Skill cards but a touch wider so the design.md feels like the
+   take-home object, not one item in a grid. */
+.aiop-shell--tf-light .cw-designmd__card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: clamp(20px, 2.4vw, 28px);
+  background: var(--aiop-card, var(--aiop-paper-2));
+  border: 1px solid var(--aiop-rule);
+  border-radius: 8px;
+}
+
+.aiop-shell--tf-light .cw-designmd__card-title {
+  font-family: var(--aiop-display);
+  font-size: clamp(22px, 2.2vw, 28px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.aiop-shell--tf-light .cw-designmd__card-owner {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+  margin: 0;
+}
+
+.aiop-shell--tf-light .cw-designmd__card-body {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.aiop-shell--tf-light .cw-designmd__footnote {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--aiop-muted);
+  margin: 0;
+  max-width: 80ch;
 }

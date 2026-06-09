@@ -7467,6 +7467,28 @@
   will-change: transform;
 }
 
+/* Generic Build pair: same choreography as `.aiop-approach-and-few`
+ * but the freeze target is whatever chapter sits above
+ * SoftwareForFew (e.g. the `.aiop-claude-zone` on the workshop fork)
+ * rather than a literal `.aiop-approach`. Mirrors `.aiop-encoding-pair`
+ * in claude-workshop.css. JS lives in `software-for-few.tsx`. */
+.aiop-few-pair {
+  position: relative;
+  width: 100%;
+}
+
+.aiop-few-pair > .aiop-claude-zone,
+.aiop-few-pair > .aiop-approach,
+.aiop-few-pair > .aiop-section {
+  position: relative;
+  will-change: transform;
+}
+
+.aiop-few-pair > .aiop-few {
+  position: relative;
+  will-change: transform;
+}
+
 
 /* ─── 25b · Section + bleed (the colored card) ───────────────────── */
 
@@ -7828,7 +7850,11 @@
    animated state. The pair collapses to a static stack. */
 @media (prefers-reduced-motion: reduce) {
   .aiop-approach-and-few > .aiop-approach,
-  .aiop-approach-and-few > .aiop-few {
+  .aiop-approach-and-few > .aiop-few,
+  .aiop-few-pair > .aiop-claude-zone,
+  .aiop-few-pair > .aiop-approach,
+  .aiop-few-pair > .aiop-section,
+  .aiop-few-pair > .aiop-few {
     transform: none !important;
     will-change: auto !important;
   }

@@ -14,6 +14,7 @@ import { ClaudeSkillsAtLoop } from "@/components/claude-workshop/claude-skills-a
 import { AboutVince } from "@/components/creative-workshop/about-vince";
 import { AgentContext } from "@/components/creative-workshop/agent-context";
 import { CreativeHud } from "@/components/creative-workshop/creative-hud";
+import { DesignMdBridge } from "@/components/creative-workshop/design-md-bridge";
 import { NavigateInterstitial } from "@/components/creative-workshop/navigate-interstitial";
 import { CloseAiop } from "@/components/intelligence-layer/close-aiop";
 import { DegreesOfFreedom } from "@/components/intelligence-layer/degrees-of-freedom";
@@ -515,15 +516,16 @@ export default function CreativeAiWorkshopPage() {
                 Phase 1 of the flywheel: learn to work with the
                 intelligence itself before encoding it. The
                 interstitial introduces the chapter (left text +
-                right 3-row properties card); the spectrum lands as
-                the depth treatment, naming the tool↔collaborator
-                continuum the visitor needs to internalise before
-                encoding can read as the answer. The asking-gap
-                reframe (Evans) and the practical Claude getting-
-                started chapter move INTO Encode below, where they
-                belong narratively. */}
+                right 3-row properties card); ToolCollabSpectrum
+                lands as the depth treatment, naming the
+                tool↔collaborator continuum the visitor needs to
+                internalise before encoding can read as the answer.
+                ToolCollabSpectrum now lives inside the Encode
+                `.aiop-encoding-pair` below so the Encode interstitial
+                can slide up over it. The asking-gap reframe (Evans)
+                and the practical Claude getting-started chapter move
+                INTO Encode below, where they belong narratively. */}
             <NavigateInterstitial />
-            <ToolCollabSpectrum />
 
             {/* ─── ENCODE chapter ─────────────────────────────────────
                 Phase 2: turn judgment into substrate the model can
@@ -541,11 +543,11 @@ export default function CreativeAiWorkshopPage() {
                    shows where these Skills actually live in
                    practice.
 
-                EncodingInterstitial runs without the `.aiop-
-                encoding-pair` wrapper — its scroll handler picks
-                the self-progress fallback so the atmospheric
-                washes still drift, only the slide-over freeze is
-                dropped (acceptable for a standalone chapter intro).
+                ToolCollabSpectrum (the Navigate depth beat) +
+                EncodingInterstitial share a `.aiop-encoding-pair`
+                parallax wrapper: ToolCollabSpectrum freezes while
+                the Encode interstitial slides up over it, the same
+                Encode-over-Approach choreography the homepage uses.
                 EvansBridge runs without `.aiop-evans-and-tool-
                 collab`, so it falls back to its rect-based reveal
                 (no parallax pin).
@@ -554,7 +556,10 @@ export default function CreativeAiWorkshopPage() {
                 / SurfacePick share one use-case context across
                 both the Encode and Build chapters below. */}
             <UseCasesProvider>
-              <EncodingInterstitial />
+              <div className="aiop-encoding-pair">
+                <ToolCollabSpectrum />
+                <EncodingInterstitial />
+              </div>
               <SkillsByTeam
                 section={workshopSkillsSection}
                 showBreakdown={false}
@@ -565,23 +570,40 @@ export default function CreativeAiWorkshopPage() {
               <ClaudeSkillAnatomy />
               <TheShift />
               <DegreesOfFreedom hideCaption />
-              <ClaudeSkillsAtLoop />
 
-              <div className="aiop-claude-zone">
-                <ClaudeBridge />
-                <ClaudeSettings />
-                <ClaudeModels />
-                <ClaudeConnectors />
-              </div>
+              {/* design.md bridge — a Skill encodes how a team works,
+                  a design.md encodes how a brand looks/sounds/moves.
+                  Ships a downloadable Centrale des Marchés design.md
+                  (the testimonial-video brand) and links to the
+                  HyperFrames + Remotion Video Studio that consumes
+                  it. Sits as a sibling beat to ClaudeSkillsAtLoop
+                  below so the visitor sees the same encode -> take
+                  home motion for both substrate kinds. */}
+              <DesignMdBridge />
+
+              <ClaudeSkillsAtLoop />
 
               {/* ─── BUILD chapter ─────────────────────────────────────
                   Phase 3: tools the team builds for itself on top of
-                  the encoded substrate. Interstitial leads, then
-                  Cases lands the four concrete projects (Mímir,
-                  Vesper, Babylon, Heimdall) as the proof beat.
-                  HeadlessShift + SurfacePick name where this is
-                  heading after the workshop. */}
-              <SoftwareForFew />
+                  the encoded substrate. The Claude getting-started
+                  zone (the last Encode beat) + the Build interstitial
+                  share a `.aiop-few-pair` parallax wrapper: the Claude
+                  zone freezes as a single block while SoftwareForFew
+                  slides up over it. Then Cases lands the four concrete
+                  projects (Mímir, Vesper, Babylon, Heimdall) as the
+                  proof beat. HeadlessShift + SurfacePick name where
+                  this is heading after the workshop. */}
+              <div className="aiop-few-pair">
+                <div className="aiop-claude-zone">
+                  <ClaudeBridge />
+                  <ClaudeSettings />
+                  <ClaudeModels />
+                  <ClaudeConnectors />
+                </div>
+
+                <SoftwareForFew />
+              </div>
+
               <Cases />
               <HeadlessShift />
               <SurfacePick />

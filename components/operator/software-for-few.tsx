@@ -78,19 +78,53 @@ export function SoftwareForFew({
      or the component unmounts. */
   const resetRef = useRef<(() => void) | null>(null);
 
+  /*
+   * Two wrapper shapes are supported (mirrors `encoding-interstitial.tsx`):
+   *
+   *   - `.aiop-approach-and-few` (canonical homepage `/`): the freeze
+   *     target is the `.aiop-approach` sibling so the flywheel deep
+   *     dive freezes while this interstitial slides up over it.
+   *
+   *   - `.aiop-few-pair` (e.g. `/creative-ai-workshop`): the freeze
+   *     target is the first element child of the wrapper that isn't
+   *     this section. Lets a route that has its own chapter above
+   *     SoftwareForFew (the Claude getting-started zone on the
+   *     workshop fork) freeze that chapter as a single block during
+   *     the slide-over.
+   *
+   * If neither wrapper or freeze target is present the section still
+   * self-progresses its `--aiop-few-progress` from its own scroll. */
+  const findPair = useCallback(() => {
+    const node = sectionRef.current;
+    if (!node) {
+      return { wrapper: null as HTMLElement | null, target: null as HTMLElement | null };
+    }
+
+    const wrapper =
+      node.closest<HTMLElement>(".aiop-approach-and-few") ??
+      node.closest<HTMLElement>(".aiop-few-pair");
+
+    if (!wrapper) return { wrapper: null, target: null };
+
+    const approachTarget = wrapper.querySelector<HTMLElement>(".aiop-approach");
+    if (approachTarget) return { wrapper, target: approachTarget };
+
+    const siblingTarget = (Array.from(wrapper.children) as HTMLElement[]).find(
+      (child) => child !== node,
+    );
+    return { wrapper, target: siblingTarget ?? null };
+  }, []);
+
   useEffect(() => {
     const node = sectionRef.current;
     if (!node) return;
 
-    // Walk up from the section to find the parallax-reveal wrapper
-    // and the previous-sibling Approach section it pins for us.
-    const wrapper = node.closest<HTMLElement>(".aiop-approach-and-few");
-    const approach = wrapper?.querySelector<HTMLElement>(".aiop-approach");
+    const { target } = findPair();
 
     resetRef.current = () => {
       node.style.removeProperty("--aiop-few-progress");
       node.style.transform = "";
-      if (approach) approach.style.transform = "";
+      if (target) target.style.transform = "";
     };
 
     if (!animated) {
@@ -101,7 +135,7 @@ export function SoftwareForFew({
       resetRef.current?.();
       resetRef.current = null;
     };
-  }, [animated]);
+  }, [animated, findPair]);
 
   const measure = useCallback(
     (frame: ScrollFrame) => {
@@ -109,8 +143,7 @@ export function SoftwareForFew({
       const node = sectionRef.current;
       if (!node) return;
 
-      const wrapper = node.closest<HTMLElement>(".aiop-approach-and-few");
-      const approach = wrapper?.querySelector<HTMLElement>(".aiop-approach");
+      const { wrapper, target: approach } = findPair();
 
       if (!wrapper || !approach) {
         // Defensive fallback: without the wrapper structure we
@@ -176,7 +209,7 @@ export function SoftwareForFew({
       }
       node.style.transform = hold > 0 ? `translate3d(0, ${hold}px, 0)` : "";
     },
-    [animated],
+    [animated, findPair],
   );
 
   useScrollFrame(measure);
