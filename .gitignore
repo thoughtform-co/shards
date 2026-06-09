@@ -40,6 +40,13 @@ yarn-error.log*
 # image sources (compressed derivatives are committed under public/images)
 /public/stripe-office.png
 
+# canon videos — large source files used by /creative-ai-workshop video
+# sections. Kept local while the deploy hosting (Vercel Blob / Mux /
+# external CDN) is decided. Drop new .mp4 files in public/videos/ and
+# they will be served by `next dev`; remove a path from this glob when
+# you are ready to ship it from the deployed build.
+/public/videos/*.mp4
+
 # QA, working notes, browser session captures — kept local, never committed
 .cursor/plans/
 .playwright-mcp/

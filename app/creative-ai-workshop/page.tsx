@@ -11,11 +11,14 @@ import { ClaudeModels } from "@/components/claude-workshop/claude-models";
 import { ClaudeSettings } from "@/components/claude-workshop/claude-settings";
 import { ClaudeSkillAnatomy } from "@/components/claude-workshop/claude-skill-anatomy";
 import { ClaudeSkillsAtLoop } from "@/components/claude-workshop/claude-skills-at-loop";
+import { VideoStudioClient } from "@/app/experiments/video-studio/VideoStudioClient";
 import { AboutVince } from "@/components/creative-workshop/about-vince";
 import { AgentContext } from "@/components/creative-workshop/agent-context";
+import { BuildQuote } from "@/components/creative-workshop/build-quote";
 import { CreativeHud } from "@/components/creative-workshop/creative-hud";
 import { DesignMdBridge } from "@/components/creative-workshop/design-md-bridge";
 import { NavigateInterstitial } from "@/components/creative-workshop/navigate-interstitial";
+import { VideoSection } from "@/components/creative-workshop/video-section";
 import { CloseAiop } from "@/components/intelligence-layer/close-aiop";
 import { DegreesOfFreedom } from "@/components/intelligence-layer/degrees-of-freedom";
 import { DiagnosisWithRoleFilter } from "@/components/intelligence-layer/diagnosis-with-role-filter";
@@ -48,6 +51,7 @@ import "@/components/operator/operator.css";
 import "@/components/intelligence-layer/intelligence-layer.css";
 import "@/components/claude-workshop/claude-workshop.css";
 import "@/components/claude-adoption/claude-adoption.css";
+import "@/experiments/video-studio/ui/video-studio.css";
 import "./creative-ai-workshop.css";
 
 /*
@@ -520,22 +524,34 @@ export default function CreativeAiWorkshopPage() {
                 lands as the depth treatment, naming the
                 tool↔collaborator continuum the visitor needs to
                 internalise before encoding can read as the answer.
-                ToolCollabSpectrum now lives inside the Encode
-                `.aiop-encoding-pair` below so the Encode interstitial
-                can slide up over it. The asking-gap reframe (Evans)
-                and the practical Claude getting-started chapter move
-                INTO Encode below, where they belong narratively. */}
+                Then the Michael Levin clip closes Navigate: a
+                short outside-voice illustration that biological
+                intelligence is also alien and navigable — same
+                posture we want for AI. Levin sits inside the
+                Encode `.aiop-encoding-pair` below as the freeze
+                target so the Encode interstitial slides up over
+                it, making the Navigate→Encode handoff land as a
+                single choreographed motion. The asking-gap reframe
+                (Evans) and the practical Claude getting-started
+                chapter move INTO Encode below, where they belong
+                narratively. */}
             <NavigateInterstitial />
+
+            <ToolCollabSpectrum />
 
             {/* ─── ENCODE chapter ─────────────────────────────────────
                 Phase 2: turn judgment into substrate the model can
                 inherit. The chapter reads in two halves:
 
-                1. Frame the encode  -> the interstitial introduces
-                   the motion, the SkillsByTeam pie chart lands as
-                   the proof beat (Loop's 42 Skills as the worked
-                   example), and Evans names the underlying
-                   challenge ("working out how to ask").
+                1. Frame the encode  -> Levin video closes Navigate
+                   and pins under the Encode interstitial (slide-
+                   over via `.aiop-encoding-pair`). SkillsByTeam
+                   lands as the proof beat (Loop's 42 Skills as the
+                   worked example), Evans names the underlying
+                   challenge ("working out how to ask"), and the
+                   Anthropic prompting-advice clip drops in right
+                   after as the outside-voice confirmation before
+                   we unpack the Skill internals.
                 2. Unpack the Skill  -> anatomy / shift / freedom /
                    skills-to-take-home explain what a Skill is and
                    how it runs, then the Claude getting-started
@@ -543,11 +559,6 @@ export default function CreativeAiWorkshopPage() {
                    shows where these Skills actually live in
                    practice.
 
-                ToolCollabSpectrum (the Navigate depth beat) +
-                EncodingInterstitial share a `.aiop-encoding-pair`
-                parallax wrapper: ToolCollabSpectrum freezes while
-                the Encode interstitial slides up over it, the same
-                Encode-over-Approach choreography the homepage uses.
                 EvansBridge runs without `.aiop-evans-and-tool-
                 collab`, so it falls back to its rect-based reveal
                 (no parallax pin).
@@ -557,7 +568,20 @@ export default function CreativeAiWorkshopPage() {
                 both the Encode and Build chapters below. */}
             <UseCasesProvider>
               <div className="aiop-encoding-pair">
-                <ToolCollabSpectrum />
+                <VideoSection
+                  id="navigate-levin"
+                  lane="navigate"
+                  phaseLabel="Navigate"
+                  eyebrow="Outside voice"
+                  title="Intelligence is"
+                  titleEm="navigable"
+                  titleAfter="."
+                  body="Michael Levin shows that even biological intelligence is alien — cells, tissues, and selves cohere through interfaces we are still learning to read. AI lands in the same family. The skill is the same: navigate the interface, do not assume the substrate."
+                  videoSrc="/videos/michael-levin-cognitive-interfaces.mp4"
+                  speaker="Michael Levin"
+                  speakerRole="Tufts University · Cognitive interfaces in biology"
+                  sourceLabel="Thoughtform Canon · Videos & Podcast"
+                />
                 <EncodingInterstitial />
               </div>
               <SkillsByTeam
@@ -566,6 +590,22 @@ export default function CreativeAiWorkshopPage() {
                 showRepo={false}
               />
               <EvansBridge />
+
+              <VideoSection
+                id="encode-anthropic"
+                lane="encode"
+                phaseLabel="Encode"
+                eyebrow="Outside voice"
+                title="The lab's own"
+                titleEm="prompting advice"
+                titleAfter="."
+                body="Anthropic walks through how to brief Claude well — context, examples, constraints, iteration. Watch it once, then stop re-teaching the model every chat: encode the patterns into a Skill and let every conversation start from there."
+                videoSrc="/videos/anthropic-prompting-advice.mp4"
+                speaker="Anthropic"
+                speakerRole="Prompting advice for Claude (with subtitles)"
+                sourceLabel="anthropic.com"
+                sourceHref="https://www.anthropic.com/"
+              />
 
               <ClaudeSkillAnatomy />
               <TheShift />
@@ -605,6 +645,27 @@ export default function CreativeAiWorkshopPage() {
               </div>
 
               <Cases />
+
+              {/* BuildQuote → Video Studio embed
+                  Calm editorial pivot ("And this is how you build it
+                  yourself.") then the live HyperFrames + Remotion
+                  module rendered inline on the workshop page. The
+                  studio is the same client component the standalone
+                  /experiments/video-studio route uses — lazy-loaded
+                  via next/dynamic with ssr:false, so it only ships
+                  to the browser when the visitor scrolls this far.
+                  Wrapping it in `.cw-studio-embed` opts the studio
+                  section out of the workshop's `min-height: 100dvh`
+                  rule (it sizes its own canvas) and lets the studio
+                  canvas line up with the rest of the page rhythm.
+
+                  HeadlessShift below then frames where this is
+                  heading after the workshop. */}
+              <BuildQuote />
+              <div className="cw-studio-embed">
+                <VideoStudioClient />
+              </div>
+
               <HeadlessShift />
               <SurfacePick />
             </UseCasesProvider>

@@ -1231,3 +1231,271 @@
   margin: 0;
   max-width: 80ch;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * Video section (Michael Levin · Navigate, Anthropic · Encode)
+ *
+ * Calm editorial frame around a single <video>. Same eyebrow + display
+ * title + supporting line register as the other interstitials; the
+ * video itself sits in a cream card with a 1 px hairline, capped at
+ * 1100px wide so the player stays legible even on large monitors.
+ * `--lane` switches the phase pill colour family (gold for Navigate,
+ * sage-ish for Encode via the shared `.aiop-term-pill--*` classes).
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-shell--tf-light .cw-video {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.aiop-shell--tf-light .cw-video__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 4.5vw, 56px);
+}
+
+.aiop-shell--tf-light .cw-video__head {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 820px;
+}
+
+.aiop-shell--tf-light .cw-video__phase {
+  display: inline-flex;
+  align-items: center;
+}
+
+.aiop-shell--tf-light .cw-video__eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.aiop-shell--tf-light .cw-video__title {
+  font-family: var(--aiop-display);
+  font-size: clamp(32px, 4.6vw, 56px);
+  font-weight: 600;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  color: var(--aiop-ink);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.aiop-shell--tf-light .cw-video__title-em {
+  font-style: italic;
+  color: var(--aiop-gold);
+  font-weight: 600;
+}
+
+.aiop-shell--tf-light .cw-video__body {
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.6;
+  color: var(--aiop-muted);
+  margin: 0;
+  max-width: 64ch;
+}
+
+/* The figure carries the player + caption. Border + radius match the
+   design.md card so the two recurring "objects" on the workshop fork
+   (download card, video card) read as one family. */
+.aiop-shell--tf-light .cw-video__figure {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: clamp(14px, 1.6vw, 20px);
+  background: var(--aiop-card, var(--aiop-paper-2));
+  border: 1px solid var(--aiop-rule);
+  border-radius: 10px;
+  max-width: 1100px;
+  width: 100%;
+}
+
+.aiop-shell--tf-light .cw-video__player {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: #0b0b0b;
+  border-radius: 6px;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.aiop-shell--tf-light .cw-video__caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--aiop-muted);
+  padding-inline: 4px;
+}
+
+.aiop-shell--tf-light .cw-video__caption-speaker {
+  color: var(--aiop-ink);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.aiop-shell--tf-light .cw-video__caption-role {
+  color: var(--aiop-muted);
+}
+
+.aiop-shell--tf-light .cw-video__caption-meta {
+  color: var(--aiop-muted);
+}
+
+.aiop-shell--tf-light .cw-video__caption-sep {
+  color: var(--aiop-rule);
+}
+
+/* Source pushes to the right edge on wide layouts so the speaker
+   identity reads first; falls back to a normal stack on narrow. */
+.aiop-shell--tf-light .cw-video__caption-source {
+  margin-left: auto;
+  color: var(--aiop-muted);
+}
+
+.aiop-shell--tf-light .cw-video__caption-source a {
+  color: var(--aiop-ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--aiop-rule);
+  transition: border-color 160ms ease;
+}
+
+.aiop-shell--tf-light .cw-video__caption-source a:hover,
+.aiop-shell--tf-light .cw-video__caption-source a:focus-visible {
+  border-color: var(--aiop-gold);
+}
+
+@media (max-width: 640px) {
+  .aiop-shell--tf-light .cw-video__caption-source {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * Build-quote interstitial
+ *
+ * Calm centred pause beat between the Cases / SoftwareForFew slabs and
+ * the embedded Video Studio module. One editorial line in display
+ * serif (with `em` gold pivot), bracketed by oversized quote marks
+ * that read as marginalia, plus a small supporting sentence below.
+ * The section claims a full 100dvh via the existing `main > section`
+ * rule and centres its contents vertically so the line sits as a
+ * single visual hero.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-shell--tf-light .cw-buildquote {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.aiop-shell--tf-light .cw-buildquote__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(20px, 2.4vw, 28px);
+  max-width: 880px;
+}
+
+.aiop-shell--tf-light .cw-buildquote__eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-buildquote__quote {
+  position: relative;
+  margin: 0;
+  display: inline-flex;
+  align-items: baseline;
+  gap: clamp(8px, 1vw, 14px);
+}
+
+.aiop-shell--tf-light .cw-buildquote__mark {
+  font-family: var(--aiop-display);
+  font-size: clamp(56px, 8vw, 96px);
+  line-height: 0.6;
+  color: var(--aiop-gold);
+  opacity: 0.5;
+  user-select: none;
+}
+
+.aiop-shell--tf-light .cw-buildquote__mark--open {
+  align-self: flex-start;
+  margin-top: 0.12em;
+}
+
+.aiop-shell--tf-light .cw-buildquote__mark--close {
+  align-self: flex-end;
+  margin-bottom: -0.18em;
+}
+
+.aiop-shell--tf-light .cw-buildquote__title {
+  font-family: var(--aiop-display);
+  font-size: clamp(36px, 5.4vw, 68px);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--aiop-ink);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.aiop-shell--tf-light .cw-buildquote__title-em {
+  font-style: italic;
+  color: var(--aiop-gold);
+  font-weight: 600;
+}
+
+.aiop-shell--tf-light .cw-buildquote__sub {
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.6;
+  color: var(--aiop-muted);
+  margin: 0;
+  max-width: 56ch;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * Embedded Video Studio frame
+ *
+ * The standalone `/experiments/video-studio` page renders the studio
+ * inside its own minimal shell. When the same component is embedded
+ * inline on the workshop page it inherits the same `.aiop-shell--
+ * tf-light` tokens, but the studio's own section min-height + side
+ * gutters can fight the workshop page's section rhythm. Wrapping the
+ * studio in `.cw-studio-embed` lets us
+ *   - opt the inner `.cw-vs--studio` out of the workshop `min-height:
+ *     100dvh` rule, since the studio renders its own canvas height,
+ *   - constrain the studio's bleed so it lines up with the workshop's
+ *     `.aiop-wrap` rather than the wider studio canvas.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-shell--tf-light .cw-studio-embed {
+  display: contents;
+}
+
+.aiop-shell--tf-light .cw-studio-embed > .cw-vs--studio {
+  /* The studio canvas already fills its own height; do not stretch it
+     to 100dvh as workshop sections do, otherwise the toolbar floats
+     unnecessarily far above the rail. */
+  min-height: 0;
+}
