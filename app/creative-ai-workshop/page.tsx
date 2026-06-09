@@ -68,9 +68,14 @@ import "./creative-ai-workshop.css";
  * session actually runs — and then each phase opens with an
  * interstitial (NavigateInterstitial / EncodingInterstitial /
  * SoftwareForFew) followed by its depth and proof:
- *   - Navigate -> ToolCollabSpectrum, EvansBridge, Claude zone
- *   - Encode  -> Anatomy / Shift / Freedom / Skills-at-Loop, then
- *                the SkillsByTeam pie chart as proof
+ *   - Navigate -> ToolCollabSpectrum (the tool↔collaborator
+ *                 continuum)
+ *   - Encode  -> SkillsByTeam pie chart (Loop as the worked
+ *                 example) -> EvansBridge (the asking gap) ->
+ *                 Anatomy / Shift / Freedom / Skills-at-Loop
+ *                 (what a Skill is and how it runs) -> Claude
+ *                 getting-started zone (Bridge / Settings /
+ *                 Models / Connectors, where the Skills live)
  *   - Build   -> Cases, HeadlessShift, SurfacePick
  * The prior `Approach` recap was dropped because WorkshopApproach
  * already carries the loop breakdown in workshop-logistics form.
@@ -510,53 +515,64 @@ export default function CreativeAiWorkshopPage() {
                 Phase 1 of the flywheel: learn to work with the
                 intelligence itself before encoding it. The
                 interstitial introduces the chapter (left text +
-                right 3-row properties card), and ToolCollab + Evans
-                land as the depth: the tool↔collaborator continuum
-                and the asking-gap reframe. The Claude getting-
-                started zone closes the chapter as the practical
-                "meet the colleague" beat.
-
-                EvansBridge renders without `.aiop-evans-and-tool-
-                collab` wrapper, so it falls back to its rect-based
-                reveal (no parallax pin). */}
+                right 3-row properties card); the spectrum lands as
+                the depth treatment, naming the tool↔collaborator
+                continuum the visitor needs to internalise before
+                encoding can read as the answer. The asking-gap
+                reframe (Evans) and the practical Claude getting-
+                started chapter move INTO Encode below, where they
+                belong narratively. */}
             <NavigateInterstitial />
             <ToolCollabSpectrum />
-            <EvansBridge />
-
-            <div className="aiop-claude-zone">
-              <ClaudeBridge />
-              <ClaudeSettings />
-              <ClaudeModels />
-              <ClaudeConnectors />
-            </div>
 
             {/* ─── ENCODE chapter ─────────────────────────────────────
                 Phase 2: turn judgment into substrate the model can
-                inherit. Interstitial leads, then the anatomy →
-                shift → freedom → skills-at-loop sequence unpacks
-                what a Skill is and how it runs. The pie chart lands
-                as the proof beat ("What's being encoded. At Loop").
+                inherit. The chapter reads in two halves:
+
+                1. Frame the encode  -> the interstitial introduces
+                   the motion, the SkillsByTeam pie chart lands as
+                   the proof beat (Loop's 42 Skills as the worked
+                   example), and Evans names the underlying
+                   challenge ("working out how to ask").
+                2. Unpack the Skill  -> anatomy / shift / freedom /
+                   skills-to-take-home explain what a Skill is and
+                   how it runs, then the Claude getting-started
+                   chapter (Bridge → Settings → Models → Connectors)
+                   shows where these Skills actually live in
+                   practice.
 
                 EncodingInterstitial runs without the `.aiop-
                 encoding-pair` wrapper — its scroll handler picks
                 the self-progress fallback so the atmospheric
                 washes still drift, only the slide-over freeze is
                 dropped (acceptable for a standalone chapter intro).
+                EvansBridge runs without `.aiop-evans-and-tool-
+                collab`, so it falls back to its rect-based reveal
+                (no parallax pin).
 
                 Wrapped in `UseCasesProvider` so TheShift / Degrees
                 / SurfacePick share one use-case context across
                 both the Encode and Build chapters below. */}
             <UseCasesProvider>
               <EncodingInterstitial />
-              <ClaudeSkillAnatomy />
-              <TheShift />
-              <DegreesOfFreedom hideCaption />
-              <ClaudeSkillsAtLoop />
               <SkillsByTeam
                 section={workshopSkillsSection}
                 showBreakdown={false}
                 showRepo={false}
               />
+              <EvansBridge />
+
+              <ClaudeSkillAnatomy />
+              <TheShift />
+              <DegreesOfFreedom hideCaption />
+              <ClaudeSkillsAtLoop />
+
+              <div className="aiop-claude-zone">
+                <ClaudeBridge />
+                <ClaudeSettings />
+                <ClaudeModels />
+                <ClaudeConnectors />
+              </div>
 
               {/* ─── BUILD chapter ─────────────────────────────────────
                   Phase 3: tools the team builds for itself on top of
