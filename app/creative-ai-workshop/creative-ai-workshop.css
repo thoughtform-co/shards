@@ -810,6 +810,7 @@
 .aiop-shell--tf-light .aiop-engine-question__inner {
   position: relative;
   z-index: 1;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
