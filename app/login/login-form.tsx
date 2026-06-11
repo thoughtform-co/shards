@@ -9,7 +9,7 @@ import styles from "./login.module.css";
  * Shards site gate.
  *
  * Posts the access key to /api/unlock; on 200 the proxy stops
- * rewriting to /login and the visitor lands on the AI operator page.
+ * rewriting to /login and the visitor lands on the workshop page.
  * Keyboard-first UX: input is
  * autofocused, submit reveals an inline error and shakes the card on
  * 401.
@@ -48,7 +48,7 @@ export function LoginForm() {
       });
 
       if (res.ok) {
-        router.replace("/ai-operator");
+        router.replace("/creative-ai-workshop");
         router.refresh();
         return;
       }
