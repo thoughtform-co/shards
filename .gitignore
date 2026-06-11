@@ -40,12 +40,13 @@ yarn-error.log*
 # image sources (compressed derivatives are committed under public/images)
 /public/stripe-office.png
 
-# canon videos — large source files used by /creative-ai-workshop video
-# sections. Kept local while the deploy hosting (Vercel Blob / Mux /
-# external CDN) is decided. Drop new .mp4 files in public/videos/ and
-# they will be served by `next dev`; remove a path from this glob when
-# you are ready to ship it from the deployed build.
+# canon videos used by /creative-ai-workshop video sections. The large
+# HEVC source masters stay local (too big, and HEVC won't play in
+# Chrome/Firefox). The compressed, web-ready H.264 cuts below are
+# committed and served as static assets from /public on Vercel.
 /public/videos/*.mp4
+!/public/videos/anthropic-prompting-advice.mp4
+!/public/videos/michael-levin-cognitive-interfaces.mp4
 
 # QA, working notes, browser session captures — kept local, never committed
 .cursor/plans/
