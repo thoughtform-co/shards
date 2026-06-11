@@ -11,10 +11,8 @@ import { ClaudeModels } from "@/components/claude-workshop/claude-models";
 import { ClaudeSettings } from "@/components/claude-workshop/claude-settings";
 import { ClaudeSkillAnatomy } from "@/components/claude-workshop/claude-skill-anatomy";
 import { ClaudeSkillsAtLoop } from "@/components/claude-workshop/claude-skills-at-loop";
-import { VideoStudioClient } from "@/app/experiments/video-studio/VideoStudioClient";
 import { AboutVince } from "@/components/creative-workshop/about-vince";
 import { AgentContext } from "@/components/creative-workshop/agent-context";
-import { BuildQuote } from "@/components/creative-workshop/build-quote";
 import { CreativeHud } from "@/components/creative-workshop/creative-hud";
 import { DesignMdBridge } from "@/components/creative-workshop/design-md-bridge";
 import { NavigateInterstitial } from "@/components/creative-workshop/navigate-interstitial";
@@ -51,7 +49,6 @@ import "@/components/operator/operator.css";
 import "@/components/intelligence-layer/intelligence-layer.css";
 import "@/components/claude-workshop/claude-workshop.css";
 import "@/components/claude-adoption/claude-adoption.css";
-import "@/experiments/video-studio/ui/video-studio.css";
 import "./creative-ai-workshop.css";
 
 /*
@@ -571,8 +568,6 @@ export default function CreativeAiWorkshopPage() {
                 <VideoSection
                   id="navigate-levin"
                   lane="navigate"
-                  phaseLabel="Navigate"
-                  eyebrow="Outside voice"
                   title="Intelligence is"
                   titleEm="navigable"
                   titleAfter="."
@@ -594,8 +589,6 @@ export default function CreativeAiWorkshopPage() {
               <VideoSection
                 id="encode-anthropic"
                 lane="encode"
-                phaseLabel="Encode"
-                eyebrow="Outside voice"
                 title="The lab's own"
                 titleEm="prompting advice"
                 titleAfter="."
@@ -645,26 +638,6 @@ export default function CreativeAiWorkshopPage() {
               </div>
 
               <Cases />
-
-              {/* BuildQuote → Video Studio embed
-                  Calm editorial pivot ("And this is how you build it
-                  yourself.") then the live HyperFrames + Remotion
-                  module rendered inline on the workshop page. The
-                  studio is the same client component the standalone
-                  /experiments/video-studio route uses — lazy-loaded
-                  via next/dynamic with ssr:false, so it only ships
-                  to the browser when the visitor scrolls this far.
-                  Wrapping it in `.cw-studio-embed` opts the studio
-                  section out of the workshop's `min-height: 100dvh`
-                  rule (it sizes its own canvas) and lets the studio
-                  canvas line up with the rest of the page rhythm.
-
-                  HeadlessShift below then frames where this is
-                  heading after the workshop. */}
-              <BuildQuote />
-              <div className="cw-studio-embed">
-                <VideoStudioClient />
-              </div>
 
               <HeadlessShift />
               <SurfacePick />

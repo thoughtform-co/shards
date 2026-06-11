@@ -3,15 +3,15 @@
  *
  * Calm editorial frame around a single MP4. Used twice on the
  * page — once in Navigate (Michael Levin · Cognitive Interfaces)
- * and once in Encode (Anthropic · Prompting Advice). The chrome
- * matches the other interstitials in the workshop fork: phase
- * pill, display title with gold em, short supporting line, then
- * the video itself sitting in a calm cream card with a 1 px
- * hairline. A small caption below names the speaker / source.
+ * and once in Encode (Anthropic · Prompting Advice). The header
+ * follows the site-wide two-column pattern: the display title
+ * (with gold em) sits on the left, a short supporting paragraph
+ * on the right. Below it the video sits in a calm cream card with
+ * a 1 px hairline, and a caption names the speaker / source.
  *
  * The video is a native <video> element with controls, no
- * autoplay, preload="metadata" so the 49-77 MB sources don't
- * fully buffer until the visitor presses play. No poster image —
+ * autoplay, preload="metadata" so the H.264 sources (~16-20 MB)
+ * don't fully buffer until the visitor presses play. No poster image —
  * the first frame is fine for both cuts.
  *
  * Server component. Copy is passed in via props so the page can
@@ -23,8 +23,6 @@ type VideoLane = "navigate" | "encode";
 export interface VideoSectionProps {
   id: string;
   lane: VideoLane;
-  phaseLabel: string;
-  eyebrow: string;
   title: string;
   titleEm: string;
   titleAfter?: string;
@@ -42,8 +40,6 @@ export interface VideoSectionProps {
 export function VideoSection({
   id,
   lane,
-  phaseLabel,
-  eyebrow,
   title,
   titleEm,
   titleAfter = "",
@@ -69,13 +65,6 @@ export function VideoSection({
     >
       <div className="aiop-wrap cw-video__inner">
         <header className="cw-video__head aiop-reveal">
-          <span className="cw-video__phase" aria-label="Flywheel phase">
-            <span className={`aiop-term-pill aiop-term-pill--${lane}`}>
-              <span className="aiop-term-pill__dot" aria-hidden="true" />
-              {phaseLabel}
-            </span>
-          </span>
-          <span className="cw-video__eyebrow">{eyebrow}</span>
           <h2 className="cw-video__title" id={titleId}>
             {title} <em className="cw-video__title-em">{titleEm}</em>
             {titleAfter}
