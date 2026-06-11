@@ -51,14 +51,14 @@ export function AboutVince() {
 
           <div className="cw-about__copy">
             <p className="cw-about__bio">
-              Vince leads AI adoption at Loop Earplugs, and for other
-              companies through Thoughtform.
+              Vince is a technologist who&apos;s been navigating the tides of
+              digital change for over a decade. Through Thoughtform he helps
+              teams navigate AI, encode the judgment that makes their work
+              good, and build tools they own.
             </p>
             <p className="cw-about__bio">
-              In workshops and sprints he helps teams capture their
-              knowledge, taste, and ways of working in a form any AI can
-              use. Not to replace them, but to free them from the busywork
-              so they can build what they couldn&apos;t before.
+              He runs the same practice inside Loop Earplugs, leading AI
+              adoption across the company.
             </p>
 
             <dl className="cw-about__meta" aria-label="Practice meta">

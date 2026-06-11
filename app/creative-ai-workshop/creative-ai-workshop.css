@@ -1498,3 +1498,351 @@
      unnecessarily far above the rail. */
   min-height: 0;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * Creative AI Keynote · proof + interstitial sections
+ *
+ * Used on /ai-keynote between AboutVince and AgentContext. The two
+ * proof sections (ATL film + Studio "95% with AI") render the
+ * underlying PowerPoint as native keynote beats: editorial heads,
+ * cream cards with hairline rules, gold em accents, gold corner
+ * brackets on the video frame, and a 3-column performance grid.
+ * The interstitials reuse the engine-pattern wash so the keynote
+ * stays inside the existing atmospheric family without inventing a
+ * new one for two short bridge slides.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-shell--tf-light .cw-keynote-proof {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: var(--aiop-section-y);
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(36px, 5vw, 64px);
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__head {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 960px;
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__title {
+  font-family: var(--aiop-display);
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 600;
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--aiop-ink);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__title em {
+  font-style: italic;
+  color: var(--aiop-gold);
+  font-weight: 600;
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__body {
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.6;
+  color: var(--aiop-muted);
+  margin: 0;
+  max-width: 64ch;
+}
+
+/* ─── ATL video proof ─────────────────────────────────────────── */
+
+.aiop-shell--tf-light .cw-keynote-proof__figure {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__player {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #0b0b0b;
+  border: 1px solid var(--aiop-rule);
+  overflow: hidden;
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--aiop-muted);
+  padding-inline: 4px;
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__caption-label {
+  color: var(--aiop-ink);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__caption-sep {
+  color: var(--aiop-rule-strong);
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__caption-meta {
+  color: var(--aiop-muted);
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__caption-source {
+  margin-left: auto;
+  color: var(--aiop-muted-2);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  .aiop-shell--tf-light .cw-keynote-proof__caption-source {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+/* ─── Studio "95%" proof ─────────────────────────────────────── */
+
+/* Two-column section head — display title on the left, supporting
+   paragraph on the right — matching the site-wide pattern
+   (cf. .cw-context__head, .cw-video__head). Collapses to a single
+   column on narrow viewports. */
+.aiop-shell--tf-light .cw-keynote-proof__head-cols {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: clamp(32px, 5vw, 80px);
+  align-items: end;
+  margin-top: 4px;
+}
+
+@media (max-width: 860px) {
+  .aiop-shell--tf-light .cw-keynote-proof__head-cols {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* The metric title reads as a single H2 in two visual lines: the
+   number sits at the standard display-title scale (matching
+   .cw-keynote-proof__title across the rest of the keynote), and the
+   following line continues at the same scale so they read as one
+   sentence rather than a billboard number with a caption under it. */
+.aiop-shell--tf-light .cw-keynote-proof__title--metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  line-height: 1.04;
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__metric {
+  font-family: var(--aiop-display);
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--aiop-ink);
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__metric-line {
+  font-family: var(--aiop-display);
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--aiop-ink);
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__metric-line em {
+  font-style: italic;
+  color: var(--aiop-gold);
+  font-weight: 600;
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__body--studio {
+  align-self: end;
+  padding-bottom: 10px;
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 2.6vw, 32px);
+}
+
+@media (max-width: 980px) {
+  .aiop-shell--tf-light .cw-keynote-proof__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .aiop-shell--tf-light .cw-keynote-proof__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: clamp(12px, 1.2vw, 16px);
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__card-frame {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  background: var(--aiop-paper-3);
+  overflow: hidden;
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__card-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__card-stats {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 16px;
+  row-gap: 6px;
+  margin: 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--aiop-rule);
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__card-row {
+  display: contents;
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__card-row dt {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  align-self: baseline;
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__card-row dd {
+  font-family: var(--aiop-body);
+  font-size: 14px;
+  color: var(--aiop-ink);
+  font-weight: 500;
+  margin: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__card-row--accent dd {
+  font-family: var(--aiop-display);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--aiop-gold);
+  letter-spacing: -0.01em;
+}
+
+.aiop-shell--tf-light .cw-keynote-proof__footnote {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted-2);
+  margin: 0;
+  padding-top: 8px;
+  border-top: 1px solid var(--aiop-rule-soft);
+  max-width: 80ch;
+}
+
+/* ─── Interstitials ──────────────────────────────────────────── */
+
+.aiop-shell--tf-light .cw-keynote-interstitial {
+  /* aiop-engine-question carries the centered min-height column
+     already; we only adjust spacing between eyebrow and quote. */
+  position: relative;
+}
+
+.aiop-shell--tf-light .cw-keynote-interstitial__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+  padding-block: clamp(64px, 9vw, 144px);
+}
+
+.aiop-shell--tf-light .cw-keynote-interstitial__eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light .cw-keynote-interstitial__q {
+  /* Inherits scale from .aiop-engine-question__q above; this rule
+     just trims the max-width to keep the call lines tight. */
+  max-width: 26ch;
+}
+
+/* The "Agents." callout stretches the em mark to a stage-sized
+   reveal — same family as the engine-pattern question, but the
+   single italic word reads as the keynote moment, not a sentence. */
+.aiop-shell--tf-light .cw-keynote-interstitial--callout
+  .cw-keynote-interstitial__q {
+  max-width: none;
+}
+
+.aiop-shell--tf-light .cw-keynote-interstitial--callout
+  .cw-keynote-interstitial__q
+  em {
+  display: inline-block;
+  font-size: clamp(64px, 11vw, 156px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-style: italic;
+  color: var(--aiop-gold);
+  font-weight: 600;
+}

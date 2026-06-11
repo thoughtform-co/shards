@@ -47,6 +47,7 @@ yarn-error.log*
 /public/videos/*.mp4
 !/public/videos/anthropic-prompting-advice.mp4
 !/public/videos/michael-levin-cognitive-interfaces.mp4
+!/public/videos/loop-smug-owl-ai-atl.mp4
 
 # QA, working notes, browser session captures — kept local, never committed
 .cursor/plans/
