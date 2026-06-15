@@ -1,0 +1,1385 @@
+/* ─────────────────────────────────────────────────────────────────────
+ * Forward-deployed pitch — route-local styles.
+ *
+ * Scopes new sections (`.fd-*`) on top of the shared aiop chrome and
+ * the Thoughtform light remap (`.aiop-shell--tf-light`). Reuses the
+ * existing aiop tokens (--aiop-paper / -ink / -gold / -sage / -slate)
+ * and a handful of existing utility classes (`.aiop-wrap`,
+ * `.aiop-section`, `.aiop-reveal`, `.aiop-button`).
+ *
+ * Sections (in page order):
+ *   01 · Page chrome (header CTA, stage atmosphere)
+ *   02 · Diagnosis (4-card exec grid)
+ *   03 · Spectrum (production / adoption / automation bands)
+ *   04 · Spectrum evidence (ROAS ads + ATL film inside production)
+ *   05 · Scope (what we own — 2x2 grid)
+ *   06 · Offer (three numbered formats) + qualifier
+ *   07 · Founders (two-up portrait + bio cards + pairing block)
+ *   08 · Testimonial (outside-voice quote)
+ *   09 · Close (the ask, two actions)
+ *   10 · Footer
+ *
+ * Shape law (zero radius) is inherited from aiop-shell--tf-light;
+ * every block here is corner-sharp by intent so the override never
+ * has to fire.
+ * ─────────────────────────────────────────────────────────────────── */
+
+/* ═════════════════════════════════════════════════════════════════════
+ * 01 · Page chrome
+ * ════════════════════════════════════════════════════════════════════ */
+
+.fd-stage .aiop-header__inner {
+  align-items: center;
+}
+
+/* Header right-side CTA: replaces the keynote\u2019s read-only status
+   pill with an active link styled to match. Same chrome (paper pill,
+   pulse dot, mono caps) so the header rhythm holds. */
+.fd-header__cta {
+  cursor: pointer;
+  transition: border-color 160ms ease, color 160ms ease;
+}
+
+.fd-header__cta:hover {
+  color: var(--aiop-ink);
+  border-color: var(--aiop-gold);
+}
+
+.fd-header__cta:hover .aiop-header__status-dot {
+  box-shadow: 0 0 0 4px var(--aiop-gold-soft);
+}
+
+/* Stage atmosphere lift: the forward-deployed page is denser than
+   the keynote, so we keep the existing tf-light radial wash but
+   tone the second corner softer so the cumulative gradient depth
+   stays calm under a longer scroll. */
+.fd-stage.aiop-shell--tf-light .aiop-stage::before {
+  background:
+    radial-gradient(ellipse 65% 50% at 10% 8%, rgba(154, 122, 46, 0.10), transparent 60%),
+    radial-gradient(ellipse 55% 42% at 92% 4%, rgba(91, 122, 78, 0.05), transparent 60%),
+    linear-gradient(180deg, var(--aiop-paper) 0%, var(--aiop-paper-2) 100%);
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+ * 02 · Diagnosis — static 4-card exec grid
+ * ════════════════════════════════════════════════════════════════════ */
+
+.fd-diagnosis__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 5vw, 64px);
+}
+
+.fd-diagnosis__head {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 880px;
+}
+
+.fd-diagnosis__eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.fd-diagnosis__title {
+  font-family: var(--aiop-body);
+  font-weight: 620;
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  color: var(--aiop-ink);
+  max-width: 22ch;
+  margin: 0;
+}
+
+.fd-diagnosis__title em {
+  font-style: normal;
+  color: var(--aiop-gold);
+  font-weight: 600;
+}
+
+.fd-diagnosis__sub {
+  font-size: clamp(15px, 1.1vw, 18px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  max-width: 64ch;
+  margin: 0;
+}
+
+.fd-diagnosis__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media (max-width: 1100px) {
+  .fd-diagnosis__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .fd-diagnosis__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fd-diagnosis__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px 26px 30px;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+  min-height: 100%;
+}
+
+.fd-diagnosis__card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 56px;
+  height: 2px;
+  background: var(--aiop-gold);
+}
+
+.fd-diagnosis__card--tone-gold::before {
+  background: var(--aiop-gold);
+}
+.fd-diagnosis__card--tone-sage::before {
+  background: var(--aiop-sage);
+}
+.fd-diagnosis__card--tone-slate::before {
+  background: var(--aiop-slate);
+}
+.fd-diagnosis__card--tone-violet::before {
+  background: var(--aiop-violet);
+}
+
+.fd-diagnosis__card-tag {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.fd-diagnosis__card--tone-sage .fd-diagnosis__card-tag {
+  color: var(--aiop-sage);
+}
+.fd-diagnosis__card--tone-slate .fd-diagnosis__card-tag {
+  color: var(--aiop-slate);
+}
+
+.fd-diagnosis__card-title {
+  font-family: var(--aiop-body);
+  font-weight: 600;
+  font-size: clamp(16px, 1.25vw, 19px);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.fd-diagnosis__card-body {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+}
+
+.fd-diagnosis__gap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 22px 24px;
+  border-top: 1px solid var(--aiop-gold);
+  background: linear-gradient(180deg, rgba(154, 122, 46, 0.06) 0%, transparent 100%);
+}
+
+.fd-diagnosis__gap-eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.fd-diagnosis__gap-title {
+  font-family: var(--aiop-body);
+  font-weight: 600;
+  font-size: clamp(17px, 1.4vw, 22px);
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  color: var(--aiop-ink);
+  margin: 0;
+  max-width: 72ch;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+ * 03 · Spectrum — production / adoption / automation bands
+ * ════════════════════════════════════════════════════════════════════ */
+
+.fd-spectrum__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(48px, 6vw, 80px);
+}
+
+.fd-spectrum__head {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 900px;
+}
+
+.fd-spectrum__eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.fd-spectrum__title {
+  font-family: var(--aiop-body);
+  font-weight: 620;
+  font-size: clamp(34px, 4.2vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: var(--aiop-ink);
+  max-width: 22ch;
+  margin: 0;
+}
+
+.fd-spectrum__title em {
+  font-style: normal;
+  color: var(--aiop-gold);
+  font-weight: 600;
+}
+
+.fd-spectrum__sub {
+  font-size: clamp(15px, 1.15vw, 19px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  max-width: 66ch;
+  margin: 0;
+}
+
+.fd-spectrum__bands {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 4vw, 56px);
+}
+
+.fd-spectrum__foot {
+  font-family: var(--aiop-mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--aiop-muted);
+  text-align: center;
+  padding-top: 24px;
+  border-top: 1px solid var(--aiop-rule);
+}
+
+/* Band card */
+.fd-band {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: clamp(28px, 3vw, 44px) clamp(28px, 3vw, 44px) clamp(32px, 3.5vw, 48px);
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+}
+
+.fd-band::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 88px;
+  height: 3px;
+  background: var(--aiop-gold);
+}
+
+.fd-band--tone-sage::before {
+  background: var(--aiop-sage);
+}
+.fd-band--tone-slate::before {
+  background: var(--aiop-slate);
+}
+
+.fd-band__head {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 880px) {
+  .fd-band__head {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+.fd-band__head-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.fd-band__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.fd-band--tone-sage .fd-band__tag {
+  color: var(--aiop-sage);
+}
+.fd-band--tone-slate .fd-band__tag {
+  color: var(--aiop-slate);
+}
+
+.fd-band__dot {
+  width: 8px;
+  height: 8px;
+  background: var(--aiop-gold);
+  display: inline-block;
+}
+
+.fd-band--tone-sage .fd-band__dot {
+  background: var(--aiop-sage);
+}
+.fd-band--tone-slate .fd-band__dot {
+  background: var(--aiop-slate);
+}
+
+.fd-band__title {
+  font-family: var(--aiop-body);
+  font-weight: 620;
+  font-size: clamp(24px, 2.6vw, 36px);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: var(--aiop-ink);
+  margin: 0 0 14px;
+  max-width: 22ch;
+}
+
+.fd-band__body {
+  font-size: clamp(15px, 1.05vw, 17px);
+  line-height: 1.6;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+  max-width: 68ch;
+}
+
+.fd-band__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 0;
+  padding: 24px 0;
+  border-top: 1px solid var(--aiop-rule);
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+@media (max-width: 640px) {
+  .fd-band__stats {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+.fd-band__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-inline: 4px;
+}
+
+.fd-band__stat-value {
+  font-family: var(--aiop-body);
+  font-weight: 620;
+  font-size: clamp(28px, 3.2vw, 42px);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--aiop-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.fd-band--tone-sage .fd-band__stat-value {
+  color: var(--aiop-ink);
+}
+
+.fd-band__stat-label {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  margin: 0;
+}
+
+.fd-band__note {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--aiop-muted);
+  margin: 0;
+  padding-top: 8px;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+ * 04 · Spectrum evidence — ROAS ads + ATL film (production band)
+ * ════════════════════════════════════════════════════════════════════ */
+
+.fd-evidence {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: clamp(24px, 3vw, 40px);
+  margin-top: 8px;
+  align-items: start;
+}
+
+@media (max-width: 980px) {
+  .fd-evidence {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fd-evidence__col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fd-evidence__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+  margin: 0;
+}
+
+.fd-evidence__label-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--aiop-gold);
+  display: inline-block;
+}
+
+.fd-evidence__ads {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .fd-evidence__ads {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fd-evidence__ad {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: var(--aiop-card-2);
+  border: 1px solid var(--aiop-rule);
+  overflow: hidden;
+}
+
+.fd-evidence__ad-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  background: var(--aiop-paper-2);
+  overflow: hidden;
+}
+
+.fd-evidence__ad-img {
+  object-fit: cover;
+  object-position: center;
+}
+
+.fd-evidence__ad-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 12px 14px 14px;
+}
+
+.fd-evidence__ad-row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 8px;
+  padding: 6px 0;
+  border-top: 1px solid var(--aiop-rule-soft);
+  align-items: baseline;
+}
+
+.fd-evidence__ad-row:first-child {
+  border-top: none;
+}
+
+.fd-evidence__ad-row dt {
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+  margin: 0;
+}
+
+.fd-evidence__ad-row dd {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--aiop-ink);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.fd-evidence__ad-row--accent dt,
+.fd-evidence__ad-row--accent dd {
+  color: var(--aiop-gold);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.fd-evidence__ad-row--accent dd {
+  font-size: 14px;
+}
+
+.fd-evidence__foot {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--aiop-muted);
+  line-height: 1.55;
+  margin: 4px 0 0;
+}
+
+.fd-evidence__film {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0;
+}
+
+.fd-evidence__film-player {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--aiop-ink);
+  border: 1px solid var(--aiop-rule);
+  overflow: hidden;
+}
+
+.fd-evidence__film-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.fd-evidence__film-caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.fd-evidence__film-caption-label {
+  color: var(--aiop-ink);
+  font-weight: 600;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+ * 05 · Scope — what we own (2x2 grid)
+ * ════════════════════════════════════════════════════════════════════ */
+
+.fd-scope__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 5vw, 64px);
+}
+
+.fd-scope__head {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 880px;
+}
+
+.fd-scope__eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.fd-scope__title {
+  font-family: var(--aiop-body);
+  font-weight: 620;
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  color: var(--aiop-ink);
+  max-width: 22ch;
+  margin: 0;
+}
+
+.fd-scope__title em {
+  font-style: normal;
+  color: var(--aiop-gold);
+  font-weight: 600;
+}
+
+.fd-scope__sub {
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  max-width: 64ch;
+  margin: 0;
+}
+
+.fd-scope__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media (max-width: 720px) {
+  .fd-scope__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fd-scope__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 32px 30px;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+}
+
+.fd-scope__card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 64px;
+  height: 2px;
+  background: var(--aiop-gold);
+}
+
+.fd-scope__card--tone-sage::before {
+  background: var(--aiop-sage);
+}
+.fd-scope__card--tone-slate::before {
+  background: var(--aiop-slate);
+}
+.fd-scope__card--tone-violet::before {
+  background: var(--aiop-violet);
+}
+
+.fd-scope__card-n {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.fd-scope__card--tone-sage .fd-scope__card-n {
+  color: var(--aiop-sage);
+}
+.fd-scope__card--tone-slate .fd-scope__card-n {
+  color: var(--aiop-slate);
+}
+
+.fd-scope__card-title {
+  font-family: var(--aiop-body);
+  font-weight: 600;
+  font-size: clamp(20px, 1.7vw, 26px);
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.fd-scope__card-body {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+ * 06 · Offer — three numbered formats + qualifier
+ * ════════════════════════════════════════════════════════════════════ */
+
+.fd-offer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 5vw, 64px);
+}
+
+.fd-offer__head {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 880px;
+}
+
+.fd-offer__eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.fd-offer__title {
+  font-family: var(--aiop-body);
+  font-weight: 620;
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  color: var(--aiop-ink);
+  max-width: 22ch;
+  margin: 0;
+}
+
+.fd-offer__title em {
+  font-style: normal;
+  color: var(--aiop-gold);
+  font-weight: 600;
+}
+
+.fd-offer__sub {
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  max-width: 64ch;
+  margin: 0;
+}
+
+.fd-offer__grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--aiop-rule);
+  border-left: 1px solid var(--aiop-rule);
+}
+
+@media (max-width: 980px) {
+  .fd-offer__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fd-offer__card {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 36px 32px;
+  background: var(--aiop-card);
+  border-right: 1px solid var(--aiop-rule);
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+.fd-offer__card-head {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fd-offer__card-n {
+  font-family: var(--aiop-mono);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  color: var(--aiop-gold);
+}
+
+.fd-offer__card-title {
+  font-family: var(--aiop-body);
+  font-weight: 620;
+  font-size: clamp(24px, 2vw, 32px);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.fd-offer__card-body {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+}
+
+.fd-offer__card-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fd-offer__card-bullet {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--aiop-ink);
+}
+
+.fd-offer__card-bullet-tick {
+  width: 6px;
+  height: 6px;
+  background: var(--aiop-gold);
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+
+.fd-offer__card-foot {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 16px;
+  border-top: 1px solid var(--aiop-rule-soft);
+}
+
+.fd-offer__card-meta {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.fd-offer__card-cta {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+  font-weight: 600;
+}
+
+/* Qualifier */
+.fd-qualifier {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 28px 30px 32px;
+  background: linear-gradient(180deg, rgba(154, 122, 46, 0.05) 0%, transparent 100%);
+  border-top: 1px solid var(--aiop-gold);
+}
+
+.fd-qualifier__head {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fd-qualifier__eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.fd-qualifier__title {
+  font-family: var(--aiop-body);
+  font-weight: 600;
+  font-size: clamp(18px, 1.4vw, 22px);
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--aiop-ink);
+  margin: 0;
+  max-width: 56ch;
+}
+
+.fd-qualifier__rows {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin: 0;
+}
+
+@media (max-width: 720px) {
+  .fd-qualifier__rows {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fd-qualifier__row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fd-qualifier__row-label {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
+  font-weight: 600;
+  margin: 0;
+}
+
+.fd-qualifier__row-body {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+ * 07 · Founders — two-up portrait + bio cards + pairing
+ * ════════════════════════════════════════════════════════════════════ */
+
+.fd-founders__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 5vw, 64px);
+}
+
+.fd-founders__head {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 880px;
+}
+
+.fd-founders__eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.fd-founders__title {
+  font-family: var(--aiop-body);
+  font-weight: 620;
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.06;
+  letter-spacing: -0.035em;
+  color: var(--aiop-ink);
+  max-width: 22ch;
+  margin: 0;
+}
+
+.fd-founders__title em {
+  font-style: normal;
+  color: var(--aiop-gold);
+  font-weight: 600;
+}
+
+.fd-founders__sub {
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+  max-width: 66ch;
+  margin: 0;
+}
+
+.fd-founders__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(28px, 4vw, 56px);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+@media (max-width: 880px) {
+  .fd-founders__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fd-founder {
+  display: grid;
+  grid-template-columns: minmax(200px, 240px) 1fr;
+  gap: 24px;
+  align-items: start;
+  padding: 24px;
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+}
+
+@media (max-width: 560px) {
+  .fd-founder {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Portrait sits inside the cw-about cornered frame; scope a smaller
+   aspect for the founders block so the 2-up cards stay even-height.
+   The frame uses the existing cw-about__portrait* corner brackets
+   defined in `creative-ai-workshop.css`. */
+.aiop-shell--tf-light .fd-founder__portrait {
+  aspect-ratio: 4 / 5;
+  margin: 0;
+  width: 100%;
+}
+
+.aiop-shell--tf-light .fd-founder__portrait-frame {
+  background: var(--aiop-paper-2);
+}
+
+.fd-founder__body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fd-founder__head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fd-founder__name {
+  font-family: var(--aiop-body);
+  font-weight: 620;
+  font-size: clamp(22px, 1.8vw, 28px);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.fd-founder__role {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+  margin: 0;
+}
+
+.fd-founder__bio {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fd-founder__bio p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+}
+
+.fd-founder__owns {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 12px;
+  padding: 14px 0;
+  margin: 0;
+  border-top: 1px solid var(--aiop-rule-soft);
+  border-bottom: 1px solid var(--aiop-rule-soft);
+}
+
+.fd-founder__owns dt {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+  margin: 0;
+}
+
+.fd-founder__owns dd {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--aiop-ink);
+  margin: 0;
+}
+
+.fd-founder__credentials {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.fd-founder__credential {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  background: var(--aiop-card-2);
+  border: 1px solid var(--aiop-rule);
+  font-family: var(--aiop-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
+  font-weight: 500;
+}
+
+/* Pairing — explanatory block below the two founder cards */
+.fd-founders__pairing {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 28px 32px 32px;
+  border-top: 1px solid var(--aiop-gold);
+  background: linear-gradient(180deg, rgba(154, 122, 46, 0.06) 0%, transparent 100%);
+}
+
+.fd-founders__pairing-eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.fd-founders__pairing-headline {
+  font-family: var(--aiop-body);
+  font-weight: 600;
+  font-size: clamp(20px, 1.7vw, 26px);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--aiop-ink);
+  margin: 0;
+  max-width: 64ch;
+}
+
+.fd-founders__pairing-body {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--aiop-ink-soft);
+  margin: 0;
+  max-width: 72ch;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+ * 08 · Testimonial — outside-voice quote
+ * ════════════════════════════════════════════════════════════════════ */
+
+.fd-testimonial {
+  padding-block: clamp(56px, 7vw, 96px);
+}
+
+.fd-testimonial__inner {
+  position: relative;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 40px clamp(20px, 3vw, 48px);
+  text-align: center;
+  background:
+    radial-gradient(ellipse 70% 100% at 50% 50%, rgba(154, 122, 46, 0.08), transparent 70%);
+  border-top: 1px solid var(--aiop-gold);
+  border-bottom: 1px solid var(--aiop-gold);
+}
+
+.fd-testimonial__quote {
+  font-family: var(--aiop-body);
+  font-weight: 500;
+  font-style: italic;
+  font-size: clamp(20px, 2.1vw, 28px);
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+  color: var(--aiop-ink);
+  margin: 0 auto;
+  max-width: 60ch;
+}
+
+.fd-testimonial__attribution {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 24px;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.fd-testimonial__name {
+  color: var(--aiop-ink);
+  font-weight: 600;
+}
+
+.fd-testimonial__sep {
+  color: var(--aiop-gold);
+  font-weight: 600;
+}
+
+.fd-testimonial__role {
+  color: var(--aiop-muted);
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+ * 09 · Close — the ask
+ * ════════════════════════════════════════════════════════════════════ */
+
+.fd-close__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 3vw, 40px);
+  max-width: 880px;
+  margin: 0 auto;
+  text-align: center;
+  align-items: center;
+}
+
+.fd-close__head {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.fd-close__eyebrow {
+  font-family: var(--aiop-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.fd-close__title {
+  font-family: var(--aiop-body);
+  font-weight: 620;
+  font-size: clamp(36px, 4.6vw, 60px);
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  color: var(--aiop-ink);
+  margin: 0;
+  max-width: 22ch;
+}
+
+.fd-close__title em {
+  font-style: normal;
+  color: var(--aiop-gold);
+  font-weight: 600;
+}
+
+.fd-close__body {
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.6;
+  color: var(--aiop-ink-soft);
+  max-width: 60ch;
+  margin: 0;
+}
+
+.fd-close__actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+/* ═════════════════════════════════════════════════════════════════════
+ * 10 · Footer
+ * ════════════════════════════════════════════════════════════════════ */
+
+.fd-footer {
+  border-top: 1px solid var(--aiop-rule);
+  padding: 32px 0 56px;
+  background: var(--aiop-paper-2);
+}
+
+.fd-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.fd-footer__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fd-footer__mark {
+  font-family: var(--aiop-body);
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: var(--aiop-ink);
+}
+
+.fd-footer__line,
+.fd-footer__signature {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--aiop-muted);
+  margin: 0;
+}
+
+.fd-footer__signature {
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .fd-footer__signature {
+    text-align: left;
+  }
+}
