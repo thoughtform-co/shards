@@ -1,0 +1,325 @@
+/*
+ * Field direction — editorial humanist.
+ *
+ * Anchored on Microsoft AI and General Intelligence Company. Warm ivory
+ * ground with soft dappled light (no grid), large Fraunces serif set
+ * editorially, a deep pine accent, generous measured prose. The hero is
+ * type-led. The content section is an interactive principles index in
+ * the MAI "Our Values" pattern.
+ *
+ * No monospace, no HUD corners, no eyebrow/title/sub grammar. Tokens
+ * scoped to .loam-field.
+ */
+
+.loam-field {
+  --paper: #f4efe3;
+  --paper-deep: #ece4d3;
+  --ink: #1c1812;
+  --ink-soft: rgba(28, 24, 18, 0.66);
+  --ink-mute: rgba(28, 24, 18, 0.38);
+  --pine: #2f4a3c;
+  --pine-deep: #1f3329;
+  --clay: #b0593a;
+  --line: rgba(28, 24, 18, 0.16);
+  --serif: var(--font-field-serif), "Fraunces", Georgia, serif;
+  --sans: var(--font-field-sans), system-ui, sans-serif;
+
+  min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Soft dappled light, like sun through leaves. Three large, very soft
+   radial washes, fixed so they read as ambient light over scrolling
+   content. No hard edges, no grid. */
+.loam-field::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(38% 44% at 16% 12%, rgba(255, 248, 232, 0.9), transparent 70%),
+    radial-gradient(44% 50% at 88% 24%, rgba(180, 196, 168, 0.32), transparent 72%),
+    radial-gradient(50% 56% at 70% 92%, rgba(47, 74, 60, 0.16), transparent 74%);
+}
+.loam-field > * { position: relative; z-index: 1; }
+
+/* ---------------- Header (soft pill) ---------------- */
+
+.field-header {
+  position: fixed;
+  top: clamp(16px, 2vw, 26px);
+  left: 0;
+  right: 0;
+  z-index: 40;
+  display: flex;
+  justify-content: center;
+  padding-inline: 16px;
+  pointer-events: none;
+}
+.field-header__inner {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 3vw, 44px);
+  padding: 9px 12px 9px 24px;
+  background: rgba(244, 239, 227, 0.72);
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  border: 1px solid rgba(28, 24, 18, 0.1);
+  border-radius: 999px;
+}
+.field-brand {
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.field-nav {
+  display: inline-flex;
+  gap: 4px;
+}
+.field-nav a {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  color: var(--ink-soft);
+  transition: color 200ms ease, background 200ms ease;
+}
+.field-nav a:hover { color: var(--ink); background: rgba(28, 24, 18, 0.05); }
+.field-cta {
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--paper);
+  background: var(--pine);
+  transition: background 200ms ease;
+}
+.field-cta:hover { background: var(--pine-deep); }
+@media (max-width: 820px) { .field-nav { display: none; } }
+
+/* ---------------- Hero ---------------- */
+
+.field-hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(140px, 20vh, 220px) 0 clamp(60px, 10vh, 120px);
+}
+.field-hero__inner { width: var(--loam-content-w); margin-inline: auto; }
+
+.field-hero__kicker {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pine);
+  margin-bottom: clamp(24px, 4vw, 44px);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.field-hero__kicker::before {
+  content: "";
+  width: 40px;
+  height: 1px;
+  background: var(--pine);
+}
+
+.field-hero__title {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(46px, 9vw, 148px);
+  line-height: 0.94;
+  letter-spacing: -0.025em;
+  max-width: 14ch;
+}
+.field-hero__title em {
+  font-style: italic;
+  color: var(--pine);
+}
+
+.field-hero__standfirst {
+  margin-top: clamp(28px, 4vw, 48px);
+  max-width: 52ch;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(19px, 1.8vw, 26px);
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.field-hero__actions {
+  margin-top: clamp(32px, 4vw, 48px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+.field-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 26px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 500;
+  transition: transform 200ms ease, background 200ms ease, color 200ms ease;
+}
+.field-btn--primary { background: var(--ink); color: var(--paper); }
+.field-btn--primary:hover { transform: translateY(-2px); background: #000; }
+.field-btn--text {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--line);
+}
+.field-btn--text:hover { text-decoration-color: var(--ink); }
+
+/* ---------------- Principles index (content section) ---------------- */
+
+.field-principles {
+  width: var(--loam-content-w);
+  margin-inline: auto;
+  padding-block: clamp(72px, 12vw, 180px);
+}
+.field-principles__head {
+  max-width: 40ch;
+  margin-bottom: clamp(48px, 7vw, 96px);
+}
+.field-principles__overline {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--clay);
+}
+.field-principles__title {
+  margin: 18px 0 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(32px, 4.6vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.field-index {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(32px, 6vw, 96px);
+  align-items: start;
+}
+@media (max-width: 820px) {
+  .field-index { grid-template-columns: 1fr; gap: 32px; }
+}
+
+.field-index__list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 1vw, 12px);
+  border-top: 1px solid var(--line);
+  padding-top: clamp(16px, 2vw, 28px);
+}
+.field-index__label {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  padding: 6px 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(34px, 5vw, 68px);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--ink-mute);
+  transition: color 240ms ease;
+  width: fit-content;
+}
+.field-index__label.is-active {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 10px;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--clay);
+}
+.field-index__label:hover { color: var(--ink); }
+.field-index__label:focus-visible {
+  outline: 2px solid var(--pine);
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+
+.field-index__detail {
+  position: sticky;
+  top: 120px;
+  padding-top: clamp(16px, 2vw, 28px);
+  border-top: 1px solid var(--line);
+}
+.field-index__detail-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: clamp(24px, 2.6vw, 34px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.field-index__detail-body {
+  margin-top: 18px;
+  max-width: 46ch;
+  font-size: clamp(16px, 1.3vw, 19px);
+  line-height: 1.68;
+  color: var(--ink-soft);
+}
+
+/* ---------------- Pull quote ---------------- */
+
+.field-quote {
+  width: var(--loam-content-narrow);
+  margin-inline: auto;
+  padding-block: clamp(56px, 9vw, 130px);
+  border-top: 1px solid var(--line);
+}
+.field-quote__text {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(26px, 3.6vw, 48px);
+  line-height: 1.22;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+}
+.field-quote__cite {
+  margin-top: 28px;
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+.field-quote__cite strong { color: var(--ink); font-weight: 600; }
+
+/* ---------------- Proto foot ---------------- */
+
+.field-foot {
+  width: var(--loam-content-w);
+  margin-inline: auto;
+  padding-block: 36px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--ink-mute);
+}
+.field-foot a { color: inherit; text-decoration: underline; text-underline-offset: 4px; }
+.field-foot a:hover { color: var(--ink); }

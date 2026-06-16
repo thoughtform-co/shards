@@ -1,0 +1,319 @@
+/*
+ * Yield direction — saturated color block.
+ *
+ * Anchored on Jeton (by Buro). A confident deep-green field, oversized
+ * friendly bold sans, rounded cream cards, big numerals, alternating
+ * green/cream blocks. Brand-forward, playful scale, generous space.
+ *
+ * No serif, no monospace, no HUD. Tokens scoped to .loam-yield.
+ */
+
+.loam-yield {
+  --green: #46571f;
+  --green-deep: #36441680;
+  --green-solid-deep: #364416;
+  --cream: #f3edda;
+  --cream-deep: #e7dec4;
+  --lime: #d3e06a;
+  --clay: #c2603a;
+  --ink: #211f14;
+  --on-green: #f3edda;
+  --on-green-soft: rgba(243, 237, 218, 0.74);
+  --on-cream: #2a3015;
+  --on-cream-soft: rgba(42, 48, 21, 0.66);
+  --display: var(--font-yield-display), "Bricolage Grotesque", system-ui, sans-serif;
+  --sans: var(--font-yield-sans), system-ui, sans-serif;
+
+  min-height: 100vh;
+  background: var(--green);
+  color: var(--on-green);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------- Header ---------------- */
+
+.yield-header {
+  position: fixed;
+  top: clamp(14px, 2vw, 24px);
+  left: 0; right: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-inline: clamp(18px, 3vw, 40px);
+  pointer-events: none;
+}
+.yield-header > * { pointer-events: auto; }
+.yield-brand {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+  color: var(--on-green);
+}
+.yield-nav {
+  display: inline-flex;
+  gap: 4px;
+  padding: 6px;
+  background: rgba(243, 237, 218, 0.12);
+  border-radius: 999px;
+}
+.yield-nav a {
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--on-green-soft);
+  transition: color 200ms ease, background 200ms ease;
+}
+.yield-nav a:hover { color: var(--on-green); background: rgba(243, 237, 218, 0.12); }
+.yield-cta {
+  padding: 11px 20px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--lime);
+  color: var(--green-solid-deep);
+  transition: transform 200ms ease;
+}
+.yield-cta:hover { transform: translateY(-1px); }
+@media (max-width: 860px) { .yield-nav { display: none; } }
+
+/* ---------------- Hero ---------------- */
+
+.yield-hero {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(120px, 16vh, 200px) clamp(18px, 3vw, 40px) clamp(40px, 7vh, 80px);
+  overflow: hidden;
+}
+/* Playful rounded shapes peeking in, Jeton-style. */
+.yield-hero__blob {
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+}
+.yield-hero__blob--lime {
+  width: 42vw; height: 42vw;
+  max-width: 560px; max-height: 560px;
+  right: -10vw; top: 8vh;
+  background: radial-gradient(circle at 35% 35%, #e4ef85, var(--lime));
+  opacity: 0.9;
+}
+.yield-hero__blob--clay {
+  width: 18vw; height: 18vw;
+  max-width: 220px; max-height: 220px;
+  right: 22vw; top: 44vh;
+  background: var(--clay);
+  opacity: 0.85;
+}
+.yield-hero__inner { position: relative; z-index: 2; max-width: 1280px; margin-inline: auto; width: 100%; }
+
+.yield-hero__eyebrow {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--on-green-soft);
+  margin-bottom: 20px;
+}
+.yield-hero__title {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(52px, 11vw, 184px);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--on-green);
+  max-width: 14ch;
+}
+.yield-hero__title span { color: var(--lime); }
+.yield-hero__row {
+  margin-top: clamp(28px, 4vw, 48px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  align-items: center;
+  justify-content: space-between;
+}
+.yield-hero__standfirst {
+  max-width: 40ch;
+  font-size: clamp(16px, 1.3vw, 20px);
+  line-height: 1.55;
+  color: var(--on-green-soft);
+}
+.yield-hero__actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.yield-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 28px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: transform 200ms ease, background 200ms ease;
+}
+.yield-btn--primary { background: var(--cream); color: var(--on-cream); }
+.yield-btn--primary:hover { transform: translateY(-2px); background: #fff; }
+.yield-btn--ghost { background: transparent; color: var(--on-green); border: 1.5px solid rgba(243, 237, 218, 0.4); }
+.yield-btn--ghost:hover { background: rgba(243, 237, 218, 0.1); }
+
+/* ---------------- Steps section (cream block) ---------------- */
+
+.yield-steps {
+  background: var(--cream);
+  color: var(--on-cream);
+  border-radius: clamp(24px, 4vw, 48px) clamp(24px, 4vw, 48px) 0 0;
+  padding: clamp(56px, 9vw, 130px) clamp(18px, 3vw, 40px);
+  margin-top: -1px;
+}
+.yield-steps__inner { max-width: 1280px; margin-inline: auto; }
+.yield-steps__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: clamp(40px, 6vw, 80px);
+}
+.yield-steps__title {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(34px, 5.5vw, 76px);
+  line-height: 0.96;
+  letter-spacing: -0.03em;
+  max-width: 16ch;
+}
+.yield-steps__title span { color: var(--clay); }
+.yield-steps__sub {
+  max-width: 36ch;
+  font-size: clamp(15px, 1.2vw, 18px);
+  line-height: 1.55;
+  color: var(--on-cream-soft);
+}
+
+.yield-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(14px, 1.6vw, 22px);
+}
+@media (max-width: 900px) { .yield-cards { grid-template-columns: 1fr; } }
+
+.yield-card {
+  background: #fff;
+  border-radius: clamp(18px, 2vw, 26px);
+  padding: clamp(24px, 2.6vw, 38px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 380px;
+}
+.yield-card:nth-child(2) { background: var(--green); color: var(--on-green); }
+.yield-card:nth-child(2) .yield-card__meta { color: var(--on-green-soft); border-color: rgba(243,237,218,0.2); }
+.yield-card:nth-child(2) .yield-card__num { color: var(--lime); }
+.yield-card:nth-child(2) .yield-card__bullets li { color: var(--on-green-soft); }
+.yield-card:nth-child(2) .yield-card__bullets li::before { background: var(--lime); }
+
+.yield-card__num {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(48px, 6vw, 86px);
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: var(--clay);
+}
+.yield-card__title {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(22px, 2.2vw, 30px);
+  letter-spacing: -0.02em;
+}
+.yield-card__body { font-size: 15px; line-height: 1.55; color: var(--on-cream-soft); }
+.yield-card:nth-child(2) .yield-card__body { color: var(--on-green-soft); }
+.yield-card__bullets {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.yield-card__bullets li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--on-cream-soft);
+}
+.yield-card__bullets li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 8px;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--clay);
+}
+.yield-card__meta {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(42, 48, 21, 0.14);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--on-cream-soft);
+}
+
+/* ---------------- Stat band (green) ---------------- */
+
+.yield-stats {
+  background: var(--cream);
+  padding: 0 clamp(18px, 3vw, 40px) clamp(56px, 9vw, 120px);
+}
+.yield-stats__inner {
+  max-width: 1280px;
+  margin-inline: auto;
+  background: var(--green);
+  color: var(--on-green);
+  border-radius: clamp(20px, 3vw, 36px);
+  padding: clamp(40px, 6vw, 80px) clamp(28px, 4vw, 64px);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+}
+@media (max-width: 760px) { .yield-stats__inner { grid-template-columns: 1fr; gap: 32px; } }
+.yield-stat__value {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(40px, 6vw, 88px);
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--lime);
+}
+.yield-stat__label {
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--on-green-soft);
+  max-width: 28ch;
+}
+
+/* ---------------- Proto foot ---------------- */
+
+.yield-foot {
+  background: var(--cream);
+  padding: 0 clamp(18px, 3vw, 40px) 40px;
+}
+.yield-foot__inner {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-top: 28px;
+  border-top: 1px solid rgba(42, 48, 21, 0.16);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--on-cream-soft);
+}
+.yield-foot__inner a { color: var(--on-cream); font-weight: 600; }
