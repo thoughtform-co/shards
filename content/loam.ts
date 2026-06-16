@@ -603,26 +603,67 @@ export const loamFooter = {
 
 export const loamSubstrate = {
   hero: {
-    /* Enerblock-style technical kicker placed near the brand mark. */
+    /* Nav-bar metadata (kicker pills next to the brand mark in the
+       sticky top bar). Kept here because they live with the hero's
+       page-level identity. */
     kind: "PRACTICE",
     operators: "TWO OPERATORS",
     est: "EST. 2026",
-    drawing: "DWG-00 / LIVING LAYER",
-    scale: "SCALE 1:1",
 
-    /* Split headline thrown to opposite edges of the viewport. */
-    left: "Loam",
-    right: { lead: "the", em: "living layer." },
-
-    /* Confident consultancy descriptor. Declarative, no balanced
-       constructions, three beats that each carry distinct content. */
+    /* Left-column copy. Mono eyebrow, display headline (chartreuse
+       underline lands on `headlineEm`), broadened descriptor. The page
+       is for marketing and creative teams, not creative work alone. */
+    eyebrow: "Forward-deployed AI · Marketing + creative teams",
+    headline: "AI capability built",
+    headlineEm: "inside your teams.",
     descriptor:
-      "A forward-deployed AI practice for creative work. Two operators embed inside one team for a quarter. The work ships under our hand, the judgment gets encoded as we go, and the intelligence layer stays in your repo.",
+      "A forward-deployed AI practice for marketing and creative teams. Two operators embed inside one team for a quarter. The work ships under their hand, the judgment gets encoded as it goes, and the intelligence layer stays in your repo. Every tool and agent you run next inherits it.",
 
     actions: [
       { id: "engage", label: "Start a conversation", href: "#close", primary: true },
-      { id: "substrate", label: "Walk the substrate", href: "#substrate" },
+      { id: "engine", label: "See the motion", href: "#engine" },
     ] as const,
+
+    /* Enerblock-style drawing-label plate that sits over the flywheel
+       visual on the right column. */
+    plate: {
+      drawing: "DWG-00 / LIVING LAYER",
+      drawingNo: "DRAWING NO: 158.01.00",
+      scale: "SCALE 1:1",
+    },
+  },
+
+  /* Section 2 — the engine.
+
+     Confident, centered, Weavy-register. The hero flywheel is iconic
+     (the motion); this section makes the motion explicit: Adoption
+     and Automation flow into each other, the Intelligence Layer at
+     the hub is the asset the motion builds, the surfaces around it
+     are where it gets used. Sits between the hero and the diagnosis
+     so the value prop lands before the friction register. */
+  engine: {
+    id: "engine",
+    eyebrow: "The motion",
+    headline: "The motion that builds",
+    headlineEm: "your intelligence layer.",
+    sub: "Adoption gets the team working this way. Automation turns the workflows into tools. Both feed the same layer, and every tool and agent you run next inherits it.",
+    arcs: {
+      adoption: {
+        label: "Adoption",
+        caption: "Teams learn to work this way.",
+      },
+      automation: {
+        label: "Automation",
+        caption: "Workflows become tools.",
+      },
+    },
+    hub: {
+      eyebrow: "Intelligence layer",
+      title: "What every tool inherits.",
+    },
+    surfaces: ["Chat", "Docs", "Agents", "Slack", "Website", "API"] as const,
+    caption: "One motion. One layer. Many surfaces.",
+    cta: { label: "Walk the substrate", href: "#substrate" },
   },
 
   /* Substrate-only opening argument. Reuses the AI Keynote diagnosis
@@ -727,8 +768,10 @@ export const loamSubstrate = {
       "Your work stays where it is, the layer holds the judgment, and every tool draws from it.",
   },
 
-  /* Top-bar links scoped to the substrate IA. */
+  /* Top-bar links scoped to the substrate IA. Engine sits first because
+     it is the page's value-prop section, directly under the hero. */
   nav: [
+    { id: "engine", label: "Engine", href: "#engine" },
     { id: "diagnosis", label: "Diagnosis", href: "#diagnosis" },
     { id: "substrate", label: "Substrate", href: "#substrate" },
     { id: "shift", label: "Shift", href: "#shift" },
@@ -740,6 +783,7 @@ export const loamSubstrate = {
   /* Per-section technical annotations rendered by <SubstrateFigure/>. */
   figs: {
     hero: { label: "DWG-00", caption: "Living layer / SCALE 1:1" },
+    engine: { label: "DGM-01", caption: "Adoption + Automation / Intelligence layer" },
     diagnosis: { label: "FIG. 01-04", caption: "Friction register" },
     substrate: { label: "LAYER 01-03", caption: "Sources / substrate / surfaces" },
     shift: { label: "LEDGER 11.5B", caption: "Frontier proof" },

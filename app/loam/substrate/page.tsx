@@ -5,8 +5,8 @@ import { Fragment } from "react";
 
 import { LoamReveal } from "@/components/loam/reveal";
 import { SubstrateFigure } from "@/components/loam/substrate/figure";
+import { SubstrateFlywheel } from "@/components/loam/substrate/substrate-flywheel";
 import { SubstrateNav } from "@/components/loam/substrate/substrate-nav";
-import { SubstrateNetwork } from "@/components/loam/substrate/substrate-network";
 import {
   loamClose,
   loamFoundersSection,
@@ -102,33 +102,22 @@ export default function LoamSubstratePage() {
 
       <main>
         {/* ------------------------------------------------------------
-            Hero — split LOAM / the living layer over the network.
+            Hero — Enerblock-style split. Left column: eyebrow, display
+            headline ("AI capability built inside your teams"), broadened
+            descriptor for marketing + creative teams, actions. Right
+            column: the iconic flywheel mark with a drawing-label plate
+            overlaid bottom-right. Stays on the light --surface palette
+            so the rest of the page reads as a continuous descent.
         ------------------------------------------------------------ */}
         <section className="subs-hero" id="top" aria-label="Loam">
-          <SubstrateNetwork />
-
-          <div className="subs-hero__head">
-            <div className="subs-hero__head-l">
-              <b>{loamSubstrate.hero.drawing}</b>
-              <span>{loamSubstrate.hero.scale}</span>
+          <div className="subs-hero__text">
+            <div className="subs-hero__eyebrow reveal">
+              {loamSubstrate.hero.eyebrow}
             </div>
-            <div className="subs-hero__head-r">
-              <b>FORWARD-DEPLOYED AI</b>
-              <span>{loamSubstrate.hero.est}</span>
-            </div>
-          </div>
-
-          <div className="subs-hero__split">
-            <h1 className="subs-hero__l">{loamSubstrate.hero.left}</h1>
-            {/* Tagline, not a second h1 — keeps the heading hierarchy
-                clean for assistive tech while sharing display type. */}
-            <p className="subs-hero__r" aria-label="The living layer">
-              <span className="lead">{loamSubstrate.hero.right.lead}</span>
-              <em>{loamSubstrate.hero.right.em}</em>
-            </p>
-          </div>
-
-          <div className="subs-hero__foot">
+            <h1 className="subs-hero__headline reveal">
+              {loamSubstrate.hero.headline}{" "}
+              <em>{loamSubstrate.hero.headlineEm}</em>
+            </h1>
             <p className="subs-hero__descriptor reveal">
               {loamSubstrate.hero.descriptor}
             </p>
@@ -147,6 +136,104 @@ export default function LoamSubstratePage() {
                   </a>
                 );
               })}
+            </div>
+          </div>
+
+          <div className="subs-hero__visual reveal" aria-hidden="true">
+            <SubstrateFlywheel variant="mark" className="subs-hero__fly" />
+            <div className="subs-hero__plate">
+              <span className="subs-hero__plate-mark" aria-hidden="true" />
+              <div className="subs-hero__plate-fields">
+                <b>{loamSubstrate.hero.plate.drawing}</b>
+                <span>{loamSubstrate.hero.plate.drawingNo}</span>
+                <span>{loamSubstrate.hero.plate.scale}</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ------------------------------------------------------------
+            Engine — the motion that builds the intelligence layer.
+            Centered, light surface. The hero flywheel reads as iconic;
+            this section makes the motion explicit: Adoption and
+            Automation loop around a chartreuse hub, surrounded by the
+            surfaces every tool and agent inherits from. Distinct from
+            the later "Substrate / the layer" anatomy section: this is
+            the thesis, that is the dissection.
+        ------------------------------------------------------------ */}
+        <section
+          className="subs-section subs-engine"
+          id={loamSubstrate.engine.id}
+          aria-label="The motion"
+        >
+          <div className="subs-section__inner subs-engine__inner">
+            <div className="subs-engine__head reveal">
+              <SubstrateFigure
+                label={loamSubstrate.figs.engine.label}
+                caption={loamSubstrate.figs.engine.caption}
+                className="subs-engine__fig"
+              />
+              <div className="subs-engine__eyebrow">
+                {loamSubstrate.engine.eyebrow}
+              </div>
+              <h2 className="subs-engine__title">
+                {loamSubstrate.engine.headline}{" "}
+                <em>{loamSubstrate.engine.headlineEm}</em>
+              </h2>
+              <p className="subs-engine__sub">{loamSubstrate.engine.sub}</p>
+            </div>
+
+            <div className="subs-engine__stage reveal">
+              <div className="subs-engine__diagram">
+                <SubstrateFlywheel variant="engine" />
+
+                {/* Adoption sits in the left lobe, Automation in the
+                    right lobe, the hub between them. */}
+                <div className="subs-engine__arc-label subs-engine__arc-label--adoption">
+                  <span className="subs-engine__arc-tag">01</span>
+                  <b>{loamSubstrate.engine.arcs.adoption.label}</b>
+                  <span className="subs-engine__arc-cap">
+                    {loamSubstrate.engine.arcs.adoption.caption}
+                  </span>
+                </div>
+                <div className="subs-engine__arc-label subs-engine__arc-label--automation">
+                  <span className="subs-engine__arc-tag">02</span>
+                  <b>{loamSubstrate.engine.arcs.automation.label}</b>
+                  <span className="subs-engine__arc-cap">
+                    {loamSubstrate.engine.arcs.automation.caption}
+                  </span>
+                </div>
+
+                <div className="subs-engine__hub-label">
+                  <span className="subs-engine__hub-eyebrow">
+                    {loamSubstrate.engine.hub.eyebrow}
+                  </span>
+                  <span className="subs-engine__hub-title">
+                    {loamSubstrate.engine.hub.title}
+                  </span>
+                </div>
+
+                {loamSubstrate.engine.surfaces.map((s, i) => (
+                  <span
+                    key={s}
+                    className={`subs-engine__chip subs-engine__chip--${i}`}
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="subs-engine__foot reveal">
+              <p className="subs-engine__caption">
+                {loamSubstrate.engine.caption}
+              </p>
+              <a
+                className="subs-btn subs-btn--ghost"
+                href={loamSubstrate.engine.cta.href}
+              >
+                {loamSubstrate.engine.cta.label}
+              </a>
             </div>
           </div>
         </section>
