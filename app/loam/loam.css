@@ -146,6 +146,43 @@ body.loam-reveals .loam-stage .reveal:not(.is-in) {
   display: block;
 }
 
+/* Substrate preview: dark soil ground with a chartreuse hub junction
+   and a few amber edge dots, evoking the mycelial network. */
+.loam-card__preview--substrate {
+  background:
+    radial-gradient(70% 60% at 50% 50%, rgba(232, 161, 58, 0.18), transparent 70%),
+    radial-gradient(40% 30% at 20% 22%, rgba(205, 238, 101, 0.16), transparent 70%),
+    linear-gradient(180deg, #0e120e 0%, #181d18 100%);
+  position: relative;
+  overflow: hidden;
+}
+.loam-card__preview--substrate::before {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 0; bottom: 0;
+  background-image:
+    linear-gradient(rgba(238, 235, 222, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(238, 235, 222, 0.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+.loam-card__preview--substrate::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 14px; height: 14px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #cdee65;
+  box-shadow:
+    0 0 0 6px rgba(205, 238, 101, 0.18),
+    0 0 30px 6px rgba(205, 238, 101, 0.5),
+    /* Two amber satellite junctions. */
+    -64px -28px 0 -10px #e8a13a,
+    -64px -28px 0 -7px rgba(232, 161, 58, 0.42),
+     64px  32px 0 -10px #e8a13a,
+     64px  32px 0 -7px rgba(232, 161, 58, 0.42);
+}
+
 /* Weave preview: a mini blueprint canvas with two node chips, a
    connector and a chartreuse port. */
 .loam-card__preview--weave {

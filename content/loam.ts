@@ -585,3 +585,104 @@ export const loamFooter = {
   line: "Loam / Forward-deployed AI / Embedded inside the work.",
   signature: "Co-founded by Vince Buyssens and Rob Weston / 2026.",
 } as const;
+
+/* -----------------------------------------------------------------------
+ * Substrate direction — additive overlay used by /loam/substrate.
+ *
+ * Only the parts that differ from the Weave direction live here. The
+ * shift cards, diagnosis cards, spectrum bands, method steps, scope
+ * cards, offer cards, founders, testimonial, and close are reused from
+ * the existing exports above without mutation.
+ *
+ * The substrate direction carries an engineering-document register:
+ * DWG / FIG. / SCALE / STRATA / SECTION annotations sit next to the
+ * content, and the hero reads as a forward-deployed practice rather
+ * than a product. Voice rules carry over: no em dashes, no balanced
+ * not-X-but-Y constructions, no filler authority words.
+ * --------------------------------------------------------------------- */
+
+export const loamSubstrate = {
+  hero: {
+    /* Enerblock-style technical kicker placed near the brand mark. */
+    kind: "PRACTICE",
+    operators: "TWO OPERATORS",
+    est: "EST. 2026",
+    drawing: "DWG-00 / LIVING LAYER",
+    scale: "SCALE 1:1",
+
+    /* Split headline thrown to opposite edges of the viewport. */
+    left: "Loam",
+    right: { lead: "the", em: "living layer." },
+
+    /* Confident consultancy descriptor. Declarative, no balanced
+       constructions, three beats that each carry distinct content. */
+    descriptor:
+      "A forward-deployed AI practice for creative work. Two operators embed inside one team for a quarter. The work ships under our hand, the judgment gets encoded as we go, and the intelligence layer stays in your repo.",
+
+    actions: [
+      { id: "engage", label: "Start a conversation", href: "#close", primary: true },
+      { id: "substrate", label: "Walk the substrate", href: "#substrate" },
+    ] as const,
+  },
+
+  /* Top-bar links scoped to the substrate IA. */
+  nav: [
+    { id: "shift", label: "Shift", href: "#shift" },
+    { id: "diagnosis", label: "Diagnosis", href: "#diagnosis" },
+    { id: "substrate", label: "Substrate", href: "#substrate" },
+    { id: "method", label: "Method", href: "#method" },
+    { id: "engage", label: "Engage", href: "#engage" },
+    { id: "founders", label: "Founders", href: "#founders" },
+  ] as const,
+
+  /* Per-section technical annotations rendered by <SubstrateFigure/>. */
+  figs: {
+    hero: { label: "DWG-00", caption: "Living layer / SCALE 1:1" },
+    shift: { label: "FIG. 01-04", caption: "Frontier ledger" },
+    diagnosis: { label: "STRATA 01-04", caption: "Core sample" },
+    substrate: { label: "SECTION A-A", caption: "Living layer / cross-section" },
+    spectrum: { label: "SPAN 01-03", caption: "Production / Adoption / Automation" },
+    method: { label: "PHASE 01-03", caption: "Navigate / Encode / Build" },
+    scope: { label: "BAND 01-04", caption: "Executive depth" },
+    engage: { label: "TIER 01-03", caption: "Engagement ladder" },
+    founders: { label: "PAIR / 02", caption: "Operators" },
+    close: { label: "ASK / FINAL", caption: "Engagement" },
+  },
+
+  /* Anti-positioning frame used inside the Scope section. Declarative,
+     no not-X-but-Y, no forced triad. */
+  scopeFrame: {
+    overline: "What this is",
+    statement: "Loam is consulting, sold by the quarter.",
+    body: "Two operators embed inside one team for the duration. The work ships under our hand and the judgment gets encoded as we go. What we leave behind is the intelligence layer every future AI tool inherits from.",
+  },
+
+  /* The Engage ladder header for the substrate direction. */
+  tiers: {
+    overline: "Engage",
+    headline: "Three tiers.",
+    headlineEm: "One operating model.",
+    body: "The check size scales with the scope of the embed.",
+    tagline: "Pricing on request.",
+    footnote: "The shape Anthropic and OpenAI now sell to the enterprise. We have run it inside marketing for two years.",
+  },
+
+  /* Engineering-document colophon for the footer band. */
+  colophon: {
+    drawing: "DWG-00",
+    title: "LIVING LAYER",
+    est: "EST. 2026",
+    scale: "SCALE 1:1",
+    authors: "VINCE BUYSSENS / ROB WESTON",
+    statement: "Forward-deployed AI for creative work.",
+  },
+
+  /* Close section overrides for the substrate direction. */
+  close: {
+    overline: "ASK / FINAL",
+    title: "Pick the function.",
+    titleEm: "Pick the quarter.",
+    titleAfter: "We deploy.",
+    body: "If a function in your portfolio is ready to compound, we can run a two-week diagnostic inside it before the quarter starts. If you want to talk through the shape first, send a note.",
+  },
+} as const;

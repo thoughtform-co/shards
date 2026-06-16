@@ -41,6 +41,13 @@ export const metadata: Metadata = {
 
 const cards = [
   {
+    href: "/loam/substrate",
+    name: "Substrate",
+    kind: "Biomechanical · Industrial",
+    desc: "Bold asymmetric editorial that descends through alternating surface and soil zones. Hairline blueprint grid laced with growing hyphae and amber junctions. Sells the consultancy register, lands the VC-tier ladder. The flagship direction.",
+    preview: { type: "css" as const, cls: "loam-card__preview--substrate" },
+  },
+  {
     href: "/loam/weave",
     name: "Weave",
     kind: "Node-canvas product board",
