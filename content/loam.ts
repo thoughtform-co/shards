@@ -625,11 +625,113 @@ export const loamSubstrate = {
     ] as const,
   },
 
+  /* Substrate-only opening argument. Reuses the AI Keynote diagnosis
+     because this page now needs a calmer setup before the frontier
+     proof appears. */
+  diagnosis: {
+    head: {
+      id: "diagnosis",
+      eyebrow: "The diagnosis",
+      title: "Where AI keeps",
+      titleEm: "falling short.",
+      sub: "You have run into all four of these. They look like separate problems, but they share one cause: nothing holds how your team actually works.",
+    },
+    cards: [
+      {
+        id: "cold-start",
+        tag: "01",
+        title: "You explain yourself from scratch every time.",
+        body: "Each new chat starts cold. The AI does not know your team, your standards, or what you decided last week, so you retype the same context again and again.",
+      },
+      {
+        id: "generic-output",
+        tag: "02",
+        title: "The output is generic.",
+        body: "Ask without context and you get the safe, average answer. It reads fine. It just does not sound like you, and it does not reflect how you actually work.",
+      },
+      {
+        id: "tacit-knowledge",
+        tag: "03",
+        title: "Your best thinking stays in people's heads.",
+        body: "How your strongest people work is rarely written down. AI cannot draw on it, new people cannot learn it, and it walks out the door when they leave.",
+      },
+      {
+        id: "blank-page",
+        tag: "04",
+        title: "Every project starts from a blank page.",
+        body: "Nothing carries over. The work you did last month does not make this month faster, so you rebuild the same things over and over.",
+      },
+    ] satisfies readonly LoamDiagnosisCard[],
+    gap: {
+      eyebrow: "Shared gap",
+      body: "All four come from the same gap: nothing holds how your team works in a form AI can use.",
+    },
+  },
+
+  /* Substrate-only version of the layer map. The shared loamLayerSection
+     keeps powering the earlier Weave and Living directions unchanged. */
+  layer: {
+    id: "substrate",
+    eyebrow: "What compounds",
+    title: "What's missing is an",
+    titleEm: "intelligence layer.",
+    body: "Three parts, and you already have the first one. The work lives in your tools. The way you work gets captured once in the middle. Every AI tool you use draws from it.",
+    columns: {
+      sources: {
+        n: "01",
+        kicker: "Trusted sources",
+        title: "Where the work already lives.",
+        caption: "The tools and files you already use: client notes, briefs, docs, whatever holds your real work. AI reads from these instead of guessing.",
+        ontology: {
+          kind: "Your stack",
+          objects: ["CRM", "Docs", "Drive", "Board"],
+        },
+        systems: {
+          items: [
+            "Your CRM",
+            "Your docs",
+            "Your shared drive",
+            "Your project board",
+          ],
+        },
+      },
+      substrate: {
+        n: "02",
+        kicker: "Encoded substrate",
+        badge: "Authority layer",
+        title: "How the team decides.",
+        caption: "Your rules, your examples, your voice, and who signs off. Captured once, owned by you, and it keeps working when the AI models change.",
+        items: [
+          { tag: "Rules", name: "How the team decides" },
+          { tag: "Examples", name: "What good looks like" },
+          { tag: "Voice", name: "How you sound" },
+          { tag: "Sign-off", name: "Who confirms what" },
+        ],
+        tags: ["Owned by you", "Versioned", "Survives model changes"],
+      },
+      surfaces: {
+        n: "03",
+        kicker: "Headless surfaces",
+        badge: "Headless wrapper",
+        title: "Where you actually use it.",
+        caption: "One source of truth, many places to use it. A chat, a doc, a website, whatever fits the moment.",
+        items: [
+          { icon: "Cl", name: "Chat" },
+          { icon: "D", name: "Docs" },
+          { icon: "W", name: "Website" },
+          { icon: "#", name: "Slack" },
+        ],
+      },
+    },
+    closing:
+      "Your work stays where it is, the layer holds the judgment, and every tool draws from it.",
+  },
+
   /* Top-bar links scoped to the substrate IA. */
   nav: [
-    { id: "shift", label: "Shift", href: "#shift" },
     { id: "diagnosis", label: "Diagnosis", href: "#diagnosis" },
     { id: "substrate", label: "Substrate", href: "#substrate" },
+    { id: "shift", label: "Shift", href: "#shift" },
     { id: "method", label: "Method", href: "#method" },
     { id: "engage", label: "Engage", href: "#engage" },
     { id: "founders", label: "Founders", href: "#founders" },
@@ -638,9 +740,9 @@ export const loamSubstrate = {
   /* Per-section technical annotations rendered by <SubstrateFigure/>. */
   figs: {
     hero: { label: "DWG-00", caption: "Living layer / SCALE 1:1" },
-    shift: { label: "FIG. 01-04", caption: "Frontier ledger" },
-    diagnosis: { label: "STRATA 01-04", caption: "Core sample" },
-    substrate: { label: "SECTION A-A", caption: "Living layer / cross-section" },
+    diagnosis: { label: "FIG. 01-04", caption: "Friction register" },
+    substrate: { label: "LAYER 01-03", caption: "Sources / substrate / surfaces" },
+    shift: { label: "LEDGER 11.5B", caption: "Frontier proof" },
     spectrum: { label: "SPAN 01-03", caption: "Production / Adoption / Automation" },
     method: { label: "PHASE 01-03", caption: "Navigate / Encode / Build" },
     scope: { label: "BAND 01-04", caption: "Executive depth" },

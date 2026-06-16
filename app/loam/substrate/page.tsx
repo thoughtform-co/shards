@@ -4,17 +4,12 @@ import Image from "next/image";
 import { Fragment } from "react";
 
 import { LoamReveal } from "@/components/loam/reveal";
-import { CrossSection, type CrossSectionBand } from "@/components/loam/substrate/cross-section";
 import { SubstrateFigure } from "@/components/loam/substrate/figure";
 import { SubstrateNav } from "@/components/loam/substrate/substrate-nav";
 import { SubstrateNetwork } from "@/components/loam/substrate/substrate-network";
 import {
   loamClose,
-  loamDiagnosisCards,
-  loamDiagnosisGap,
-  loamDiagnosisHead,
   loamFoundersSection,
-  loamLayerSection,
   loamMethodSection,
   loamOfferSection,
   loamQualifierSection,
@@ -79,38 +74,8 @@ const portraits: Record<string, string> = {
   rob: "/images/rob-weston.png",
 };
 
-/* Adapt loamLayerSection.columns into the cross-section band shape.
-   The cross-section component owns its own visual presentation; we
-   just give it well-typed bands. */
-const xsBands: readonly CrossSectionBand[] = [
-  {
-    id: "topsoil",
-    variant: "topsoil",
-    n: loamLayerSection.columns.sources.n,
-    kicker: loamLayerSection.columns.sources.kicker,
-    title: loamLayerSection.columns.sources.title,
-    body: loamLayerSection.columns.sources.caption,
-    chips: loamLayerSection.columns.sources.systems.items.slice(0, 4),
-  },
-  {
-    id: "loam",
-    variant: "loam",
-    n: loamLayerSection.columns.substrate.n,
-    kicker: loamLayerSection.columns.substrate.kicker,
-    title: loamLayerSection.columns.substrate.title,
-    body: loamLayerSection.columns.substrate.caption,
-    chips: loamLayerSection.columns.substrate.items.map((i) => i.tag),
-  },
-  {
-    id: "surface",
-    variant: "surface",
-    n: loamLayerSection.columns.surfaces.n,
-    kicker: loamLayerSection.columns.surfaces.kicker,
-    title: loamLayerSection.columns.surfaces.title,
-    body: loamLayerSection.columns.surfaces.caption,
-    chips: loamLayerSection.columns.surfaces.items.map((i) => i.name),
-  },
-];
+const substrateDiagnosis = loamSubstrate.diagnosis;
+const substrateLayer = loamSubstrate.layer;
 
 /* The shift section sums the two announced joint ventures into the
    $11.5B headline figure. Pulled from a constant rather than the card
@@ -187,6 +152,157 @@ export default function LoamSubstratePage() {
         </section>
 
         {/* ------------------------------------------------------------
+            Diagnosis — calm core sample before the market proof.
+        ------------------------------------------------------------ */}
+        <section
+          className="subs-section subs-section--diagnosis"
+          id={substrateDiagnosis.head.id}
+        >
+          <div className="subs-section__inner">
+            <SubstrateFigure
+              label={loamSubstrate.figs.diagnosis.label}
+              caption={loamSubstrate.figs.diagnosis.caption}
+              className="reveal"
+            />
+            <div className="subs-diag__head">
+              <h2 className="subs-diag__title reveal">
+                {substrateDiagnosis.head.title}{" "}
+                <em>{substrateDiagnosis.head.titleEm}</em>
+              </h2>
+              <p className="subs-diag__sub reveal">
+                {substrateDiagnosis.head.sub}
+              </p>
+            </div>
+
+            <div className="subs-strata" data-loam-stack>
+              {substrateDiagnosis.cards.map((card) => (
+                <article key={card.id} className="subs-strata__row reveal">
+                  <span className="subs-strata__n">{card.tag}</span>
+                  <h3 className="subs-strata__title">{card.title}</h3>
+                  <p className="subs-strata__body">{card.body}</p>
+                </article>
+              ))}
+            </div>
+
+            <p className="subs-diag__cause reveal">
+              <span className="subs-diag__cause-tag">
+                {substrateDiagnosis.gap.eyebrow}
+              </span>
+              <span className="subs-diag__cause-body">
+                {substrateDiagnosis.gap.body}
+              </span>
+            </p>
+          </div>
+        </section>
+
+        {/* ------------------------------------------------------------
+            Substrate — the intelligence layer as three calm blocks.
+            Applies the keynote's three-part principle (sources /
+            encoded judgment / surfaces) in the Substrate register,
+            without the pinned scroll choreography.
+        ------------------------------------------------------------ */}
+        <section
+          className="subs-section subs-section--soil subs-layer"
+          id="substrate"
+          aria-label="The living layer"
+        >
+          <div className="subs-section__inner">
+            <SubstrateFigure
+              label={loamSubstrate.figs.substrate.label}
+              caption={loamSubstrate.figs.substrate.caption}
+              className="reveal"
+            />
+            <div className="subs-layer__head">
+              <h2 className="subs-layer__title reveal">
+                {substrateLayer.title} <em>{substrateLayer.titleEm}</em>
+              </h2>
+              <p className="subs-layer__lede reveal">{substrateLayer.body}</p>
+            </div>
+
+            <div className="subs-layer__grid" data-loam-stack>
+              {/* 01 — Trusted sources */}
+              <article className="subs-layer__col reveal">
+                <span className="subs-layer__kicker">
+                  {substrateLayer.columns.sources.n} ·{" "}
+                  {substrateLayer.columns.sources.kicker}
+                </span>
+                <h3 className="subs-layer__coltitle">
+                  {substrateLayer.columns.sources.title}
+                </h3>
+                <p className="subs-layer__caption">
+                  {substrateLayer.columns.sources.caption}
+                </p>
+                <ul className="subs-layer__chips" role="list">
+                  {substrateLayer.columns.sources.systems.items.map((item) => (
+                    <li key={item} className="subs-layer__chip">
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+
+              {/* 02 — Encoded substrate (the half no vendor sells) */}
+              <article className="subs-layer__col subs-layer__col--mid reveal">
+                <span className="subs-layer__kicker">
+                  {substrateLayer.columns.substrate.n} ·{" "}
+                  {substrateLayer.columns.substrate.kicker}
+                </span>
+                <h3 className="subs-layer__coltitle">
+                  {substrateLayer.columns.substrate.title}
+                </h3>
+                <p className="subs-layer__caption">
+                  {substrateLayer.columns.substrate.caption}
+                </p>
+                <ul className="subs-layer__rows" role="list">
+                  {substrateLayer.columns.substrate.items.map((item) => (
+                    <li key={item.tag} className="subs-layer__row">
+                      <span className="subs-layer__row-tag">{item.tag}</span>
+                      <span className="subs-layer__row-name">{item.name}</span>
+                    </li>
+                  ))}
+                </ul>
+                <ul className="subs-layer__tags" role="list">
+                  {substrateLayer.columns.substrate.tags.map((t) => (
+                    <li key={t} className="subs-layer__tag">
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+
+              {/* 03 — Headless surfaces */}
+              <article className="subs-layer__col reveal">
+                <span className="subs-layer__kicker">
+                  {substrateLayer.columns.surfaces.n} ·{" "}
+                  {substrateLayer.columns.surfaces.kicker}
+                </span>
+                <h3 className="subs-layer__coltitle">
+                  {substrateLayer.columns.surfaces.title}
+                </h3>
+                <p className="subs-layer__caption">
+                  {substrateLayer.columns.surfaces.caption}
+                </p>
+                <ul className="subs-layer__surfaces" role="list">
+                  {substrateLayer.columns.surfaces.items.map((s) => (
+                    <li key={s.name} className="subs-layer__surface">
+                      <span
+                        className="subs-layer__surface-icon"
+                        aria-hidden="true"
+                      >
+                        {s.icon}
+                      </span>
+                      <span className="subs-layer__surface-name">{s.name}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            </div>
+
+            <p className="subs-layer__close reveal">{substrateLayer.closing}</p>
+          </div>
+        </section>
+
+        {/* ------------------------------------------------------------
             Shift — asymmetric ledger with the $11.5B figure. No grid.
         ------------------------------------------------------------ */}
         <section className="subs-section" id={loamShiftSection.id}>
@@ -246,66 +362,6 @@ export default function LoamSubstratePage() {
             </p>
           </div>
         </section>
-
-        {/* ------------------------------------------------------------
-            Diagnosis — dark zone. Four reasons as descending strata.
-        ------------------------------------------------------------ */}
-        <section
-          className="subs-section subs-section--soil"
-          id={loamDiagnosisHead.id}
-        >
-          <div className="subs-section__inner">
-            <SubstrateFigure
-              label={loamSubstrate.figs.diagnosis.label}
-              caption={loamSubstrate.figs.diagnosis.caption}
-              className="reveal"
-            />
-            <div className="subs-diag__head">
-              <h2 className="subs-diag__title reveal">
-                {loamDiagnosisHead.title}{" "}
-                <em>{loamDiagnosisHead.titleEm}</em>
-              </h2>
-              <p className="subs-diag__sub reveal">{loamDiagnosisHead.sub}</p>
-            </div>
-
-            <div className="subs-strata" data-loam-stack>
-              {loamDiagnosisCards.map((card) => (
-                <article key={card.id} className="subs-strata__row reveal">
-                  <span className="subs-strata__tag">
-                    <b>{card.tag}</b>
-                    STRATA
-                  </span>
-                  <h3 className="subs-strata__title">{card.title}</h3>
-                  <p className="subs-strata__body">{card.body}</p>
-                </article>
-              ))}
-            </div>
-
-            <div className="subs-diag__cause reveal">
-              <span className="subs-diag__cause-tag">
-                {loamDiagnosisGap.eyebrow}
-              </span>
-              <p className="subs-diag__cause-body">
-                <span>{loamDiagnosisGap.body}</span>
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* ------------------------------------------------------------
-            Substrate cross-section — pinned centerpiece.
-        ------------------------------------------------------------ */}
-        <CrossSection
-          headline={{
-            lead: "Inputs in. Surfaces out.",
-            em: "Loam is the weave between.",
-          }}
-          sub={loamLayerSection.body}
-          caption={`${loamSubstrate.figs.substrate.label} / ${loamSubstrate.figs.substrate.caption}`}
-          bands={xsBands}
-          bgSrc="/loam/living-network.png"
-          closing={loamLayerSection.closing}
-        />
 
         {/* ------------------------------------------------------------
             Spectrum — horizontal growth rule, oversized stats.
