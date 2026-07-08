@@ -1,0 +1,54 @@
+/*
+ * /ai-adoption — route-local tokens.
+ *
+ * The page composes the three claude-adoption components
+ * (WorkshopApproach, VisionFlywheel, SkillsByTeam) onto the canonical
+ * Aether violet chassis rather than the Claude-Clay one. Two token
+ * families that `claude-adoption.css` only declares inside its
+ * `.aiop-claude-adoption` scope therefore have to be re-declared
+ * here, or they resolve to the guaranteed-invalid value:
+ *
+ *   --aiop-phase-*   Navigate / Encode / Build lane colours. Consumed
+ *                    as raw `stroke` / `fill` / `background` values on
+ *                    the flywheel's SVG connectors and anchors, so an
+ *                    undefined token doesn't fall back — `stroke`
+ *                    inherits its initial `none` and the connectors
+ *                    vanish. Mapped onto the operator palette's own
+ *                    trio (violet / amber / sage), which is the same
+ *                    lane grammar the Diagnosis cards and the orbit
+ *                    pills already use further up this page.
+ *
+ *   --aiop-radius*   Corner standard for the ca-* surfaces. Undefined
+ *                    means `border-radius: var(--aiop-radius)` computes
+ *                    to 0 and the workshop cards read as sharp slabs.
+ */
+.aiop-ai-adoption {
+  --aiop-phase-navigate: var(--aiop-violet);
+  --aiop-phase-encode: var(--aiop-amber);
+  --aiop-phase-build: var(--aiop-sage);
+
+  --aiop-radius: 12px;
+  --aiop-radius-sm: 7px;
+}
+
+/* Stage 02 · Encode.
+ *
+ * `claude-adoption.css` tints each Approach stage by pointing
+ * `--aiop-violet` at the right phase token for that subtree, so every
+ * violet reference inside the stage (pill border, halo, datum dot,
+ * internal chrome) repaints without per-element rules. It skips
+ * Stage 02 because on /claude-adoption the page accent already IS the
+ * Encode colour (Clay). Here the page accent is violet, so Encode
+ * needs the override that stylesheet never had to write.
+ *
+ * The connector chevrons take the colour of their DESTINATION phase,
+ * so the first connector (`data-to="every-record"`, verb "One record")
+ * gets the same amber. The second connector already resolves to sage
+ * via the canonical `[data-to="patterns-become-tools"]` rule.
+ */
+.aiop-ai-adoption .ca-approach__stages > .ca-approach__stage--every-record,
+.aiop-ai-adoption
+  .ca-approach__stages
+  > .ca-approach__connector[data-to="every-record"] {
+  --aiop-violet: var(--aiop-phase-encode);
+}

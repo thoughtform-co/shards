@@ -78,11 +78,32 @@ type SectorGeom = {
   labelY: number;
 };
 
+/*
+ * Coordinates are quantized to 2dp before they leave `polar`.
+ *
+ * `Math.sin` / `Math.cos` are implementation-defined in ECMAScript, and
+ * Node's V8 and the browser's V8 disagree by one ULP on a handful of
+ * angles. Rendered raw, a chip or tick coordinate then serializes as
+ * `206.22694656773663` on the server and `206.2269465677366` on the
+ * client, and React reports a hydration mismatch across the whole SVG
+ * ("this won't be patched up"). Rounding collapses the divergence: the
+ * two values agree long before the 2nd decimal.
+ *
+ * `sectorPath` below already rounded its own path data to 2dp for this
+ * reason; the tick, chip, and label coordinates never got the same
+ * treatment. Doing it here covers every consumer at once. In a 720-unit
+ * viewBox 0.01 user units is well under a rendered pixel, so nothing
+ * moves.
+ */
+function round2(n: number): number {
+  return Math.round(n * 100) / 100;
+}
+
 function polar(cx: number, cy: number, r: number, deg: number) {
   const rad = ((deg - 90) * Math.PI) / 180;
   return {
-    x: cx + r * Math.cos(rad),
-    y: cy + r * Math.sin(rad),
+    x: round2(cx + r * Math.cos(rad)),
+    y: round2(cy + r * Math.sin(rad)),
   };
 }
 
