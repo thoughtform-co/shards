@@ -1,0 +1,195 @@
+/* ─────────────────────────────────────────────────────────────────────
+ * /exalate-ai-workshop — Exalate accent remap + route-local sections.
+ *
+ * Loads AFTER creative-ai-workshop.css (page.tsx import order). The
+ * shell carries BOTH modifiers:
+ *
+ *   .aiop-shell--tf-light   Thoughtform light palette (shared, do not edit)
+ *   .aiop-shell--exalate    this file's remap
+ *
+ * Scope of the remap: the ACCENT LANE ONLY. --aiop-gold /
+ * --aiop-violet / legacy --gold move to Exalate purple #8f64f9
+ * (brand value read from exalate.com's logo SVG + theme CSS;
+ * #383689 is their deep indigo). --aiop-gold-bright (filled
+ * buttons, markers) and --aiop-amber (diagnosis card 02 stripe)
+ * deliberately KEEP the Thoughtform gold, so the page reads
+ * purple × gold — the same pairing as Exalate's own logo.
+ *
+ * Selectors double up (.aiop-shell--tf-light.aiop-shell--exalate)
+ * so they outrank the tf-light block regardless of which route
+ * caused the shared stylesheet to be emitted first.
+ * ─────────────────────────────────────────────────────────────────── */
+
+.aiop-shell--tf-light.aiop-shell--exalate {
+  --aiop-gold: #8f64f9;
+  --aiop-gold-soft: rgba(143, 100, 249, 0.16);
+  --aiop-gold-edge: rgba(143, 100, 249, 0.32);
+
+  --aiop-violet: #8f64f9;
+  --aiop-violet-soft: rgba(143, 100, 249, 0.14);
+
+  /* Legacy bridge tokens (TheShift / DegreesOfFreedom / SiteFooter
+     lane). The deep step lands on Exalate indigo rather than a
+     darkened purple so small deep-accent text keeps its contrast
+     on the parchment. */
+  --gold: #8f64f9;
+  --gold-deep: #383689;
+  --gold-soft: rgba(143, 100, 249, 0.18);
+  --gold-edge: rgba(143, 100, 249, 0.32);
+
+  /* HUD rail minor ticks. */
+  --cw-tick-color: rgba(143, 100, 249, 0.4);
+}
+
+/* Stage ambient glow — tf-light hardcodes its gold radial
+   (creative-ai-workshop.css §2); repaint the warm corner purple,
+   keep the sage counterweight. */
+.aiop-shell--tf-light.aiop-shell--exalate .aiop-stage::before {
+  background:
+    radial-gradient(ellipse 60% 45% at 12% 10%, rgba(143, 100, 249, 0.1), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 88% 6%, rgba(91, 122, 78, 0.06), transparent 60%),
+    linear-gradient(180deg, var(--aiop-paper) 0%, var(--aiop-paper-2) 100%);
+}
+
+/* ca-approach stage 02 — tf-light re-spreads the three stage
+   accents and hardcodes this one to deep gold #6B5320; keep the
+   deep lane on Exalate indigo instead. */
+.aiop-shell--tf-light.aiop-shell--exalate
+  .ca-approach__stages
+  > .ca-approach__stage--every-record {
+  --aiop-violet: #383689;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * Scoped-skills section (ExalateScopedSkills)
+ *
+ * The card grid + cards come wholesale from claude-adoption.css
+ * (.ca-team__cards / .ca-skill). Only the spacing that SkillsByTeam's
+ * inner chrome normally provides needs restating here.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.exalate-skills .exalate-skills__cards {
+  margin-top: clamp(20px, 3vw, 32px);
+}
+
+.exalate-skills .exalate-skills__more-tail {
+  margin-top: clamp(14px, 2vw, 18px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * TLDR modal content (WorkshopTldr)
+ *
+ * Rendered through the OperatorModal portal directly under <body>,
+ * OUTSIDE the shell — so these selectors stay top-level and read
+ * their neutrals from the base .aiop-modal-overlay tokens
+ * (operator.css §tokens: warm paper #f3ece0, ink #1a1612). The
+ * font custom properties arrive via the fontClassName wrapper.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.exalate-tldr {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vw, 28px);
+  color: var(--aiop-ink);
+  font-family: var(--aiop-body);
+}
+
+.exalate-tldr__head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.exalate-tldr__eyebrow {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #8f64f9;
+}
+
+.exalate-tldr__title {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-size: clamp(26px, 3.4vw, 36px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--aiop-ink);
+}
+
+.exalate-tldr__group {
+  border-top: 1px solid var(--aiop-rule);
+  padding-top: clamp(14px, 2vw, 18px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.exalate-tldr__heading {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.exalate-tldr__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.exalate-tldr__list li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
+/* Covered points: filled purple square. */
+.exalate-tldr__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  background: #8f64f9;
+}
+
+/* Next steps: two columns on wide screens, empty checkbox marker. */
+.exalate-tldr__next {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(16px, 2.4vw, 24px);
+}
+
+@media (min-width: 720px) {
+  .exalate-tldr__next {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.exalate-tldr__list--next li::before {
+  background: transparent;
+  border: 1px solid #8f64f9;
+  width: 7px;
+  height: 7px;
+}
+
+.exalate-tldr__footnote {
+  margin: 0;
+  border-top: 1px solid var(--aiop-rule);
+  padding-top: 14px;
+  font-size: 12.5px;
+  font-style: italic;
+  color: var(--aiop-muted);
+}
