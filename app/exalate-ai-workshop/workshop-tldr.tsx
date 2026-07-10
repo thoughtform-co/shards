@@ -16,10 +16,11 @@ import { OperatorModal } from "@/components/operator/operator-modal";
  *     and we re-declare them on the content wrapper.
  *   - Palette: content classes (`.exalate-tldr__*`) are styled as
  *     top-level selectors in exalate-workshop.css against the base
- *     `.aiop-modal-overlay` tokens, never nested under the shell
- *     modifier. The Exalate purple arrives via the `accent` prop
- *     (close button + top stripe) and hardcoded accents in those
- *     classes.
+ *     `.aiop-modal-overlay` tokens, never nested under the shell.
+ *     The overlay's own `--aiop-gold*` resolve to the base operator
+ *     violet, so the Thoughtform gold is passed explicitly via the
+ *     `accent` prop (close button + top stripe) and hardcoded in
+ *     those classes.
  */
 
 export type WorkshopTldrContent = {
@@ -32,7 +33,8 @@ export type WorkshopTldrContent = {
   footnote?: string;
 };
 
-const EXALATE_PURPLE = "#8f64f9";
+/* Thoughtform gold-bright, matching the page's filled buttons. */
+const MODAL_ACCENT = "#b89348";
 
 export function WorkshopTldr({
   content,
@@ -59,7 +61,7 @@ export function WorkshopTldr({
       <OperatorModal
         open={open}
         onClose={() => setOpen(false)}
-        accent={EXALATE_PURPLE}
+        accent={MODAL_ACCENT}
         ariaLabel={content.ariaLabel}
       >
         <div className={`${fontClassName} exalate-tldr`}>
