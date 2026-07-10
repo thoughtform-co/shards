@@ -58,15 +58,16 @@ import "./exalate-workshop.css";
  *
  * Leave-behind for the 10 July 2026 workshop with the Exalate
  * marketing team (Manoush, Mariana, Radan, Hugo, Farzana). Same
- * Thoughtform light shell and Navigate -> Encode -> Build story as
- * the keynote; diverges in:
+ * Thoughtform light shell, palette, and Navigate -> Encode -> Build
+ * story as the keynote; diverges in:
  *   - Hero: sync-flavored title + lede, plus a WorkshopTldr modal
  *     button (what we covered + next steps, from the meeting notes).
- *   - Accent: `.aiop-shell--exalate` re-points the accent lane to
- *     Exalate purple #8f64f9 (exalate-workshop.css). Filled buttons
- *     and the amber card stripe stay Thoughtform gold on purpose.
  *   - Skills: the Loop donut stays as proof, followed by
  *     ExalateScopedSkills — the six Skills scoped in the room.
+ *
+ * An earlier cut re-pointed the accent lane to Exalate purple via an
+ * `.aiop-shell--exalate` modifier; that was reverted, so the route
+ * runs on the shared Thoughtform gold.
  */
 
 const workshopHero = {
@@ -473,7 +474,7 @@ export const metadata: Metadata = {
 export default function ExalateAiWorkshopPage() {
   return (
     <div
-      className={`${aiopDisplay.variable} ${aiopBody.variable} ${aiopMono.variable} aiop-shell aiop-shell--tf-light aiop-shell--exalate aiop-stage aiop-workshop-v1`}
+      className={`${aiopDisplay.variable} ${aiopBody.variable} ${aiopMono.variable} aiop-shell aiop-shell--tf-light aiop-stage aiop-workshop-v1`}
     >
       <CreativeHud />
       <OperatorScrollReveal />
