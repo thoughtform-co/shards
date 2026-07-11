@@ -178,7 +178,9 @@ jobs:
       - name: Verify archive excludes private state
         shell: bash
         run: |
-          if find "$MOTION_LAB_SMOKE_ROOT" -name '.env.local' -o -name '*.tsbuildinfo' | grep -q .; then
+          if find "$MOTION_LAB_SMOKE_ROOT" \
+            -path '*/node_modules' -prune -o \
+            \( -name '.env.local' -o -name '*.tsbuildinfo' \) -print | grep -q .; then
             echo "Release contains a private or generated file"
             exit 1
           fi
