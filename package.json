@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
-    "video-studio:spike": "tsx scripts/video-studio-spike.ts"
+    "video-studio:spike": "tsx scripts/video-studio-spike.ts",
+    "skill:motion-design": "node scripts/package-motion-skill.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.78.0",

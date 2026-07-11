@@ -1,0 +1,798 @@
+{
+  "version": 1,
+  "meta": {
+    "title": "Two Systems, One Truth",
+    "format": "16:9",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "background": "$background"
+  },
+  "brand": {
+    "colors": {
+      "background": "#0B1220",
+      "surface": "#141F33",
+      "primary": "#F4F7FB",
+      "accent": "#4DA3FF",
+      "text": "#F4F7FB",
+      "muted": "#8CA0BC"
+    },
+    "fonts": {
+      "heading": "'IBM Plex Sans', 'Segoe UI', 'Helvetica Neue', sans-serif",
+      "body": "'IBM Plex Sans', 'Segoe UI', 'Helvetica Neue', sans-serif",
+      "mono": "'IBM Plex Mono', Consolas, monospace"
+    }
+  },
+  "scenes": [
+    {
+      "name": "Hook",
+      "durationInFrames": 162,
+      "transitionIn": { "type": "cut", "durationInFrames": 12 },
+      "elements": [
+        {
+          "kind": "text",
+          "name": "Title",
+          "text": "Two teams. Two trackers.",
+          "fontSize": 92,
+          "font": "heading",
+          "fontWeight": 700,
+          "color": "$text",
+          "x": 960,
+          "y": 500,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 0, "value": 0, "ease": "linear" },
+                { "frame": 18, "value": 1, "ease": "ease-out" },
+                { "frame": 138, "value": 1, "ease": "linear" },
+                { "frame": 156, "value": 0, "ease": "ease-in" }
+              ]
+            },
+            {
+              "property": "y",
+              "keyframes": [
+                { "frame": 0, "value": 540, "ease": "linear" },
+                { "frame": 18, "value": 500, "ease": "ease-out" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "Subtitle",
+          "text": "One source of truth?",
+          "fontSize": 44,
+          "font": "body",
+          "fontWeight": 500,
+          "color": "$muted",
+          "x": 960,
+          "y": 590,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 14, "value": 0, "ease": "linear" },
+                { "frame": 32, "value": 1, "ease": "ease-out" },
+                { "frame": 138, "value": 1, "ease": "linear" },
+                { "frame": 156, "value": 0, "ease": "ease-in" }
+              ]
+            },
+            {
+              "property": "y",
+              "keyframes": [
+                { "frame": 14, "value": 620, "ease": "linear" },
+                { "frame": 32, "value": 590, "ease": "ease-out" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "shape",
+          "name": "Accent rule",
+          "shape": "rect",
+          "width": 72,
+          "height": 6,
+          "fill": "$accent",
+          "radius": 3,
+          "x": 960,
+          "y": 654,
+          "tracks": [
+            {
+              "property": "scale",
+              "keyframes": [
+                { "frame": 8, "value": 0, "ease": "linear" },
+                { "frame": 26, "value": 1, "ease": "overshoot" }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 8, "value": 0, "ease": "linear" },
+                { "frame": 14, "value": 1, "ease": "linear" },
+                { "frame": 138, "value": 1, "ease": "linear" },
+                { "frame": 154, "value": 0, "ease": "ease-in" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Systems",
+      "durationInFrames": 222,
+      "transitionIn": { "type": "crossfade", "durationInFrames": 12 },
+      "elements": [
+        {
+          "kind": "shape",
+          "name": "Card A",
+          "shape": "rect",
+          "width": 460,
+          "height": 300,
+          "fill": "$surface",
+          "radius": 20,
+          "x": 480,
+          "y": 540,
+          "tracks": [
+            {
+              "property": "x",
+              "keyframes": [
+                { "frame": 0, "value": -280, "ease": "linear" },
+                {
+                  "frame": 26,
+                  "value": 480,
+                  "ease": "spring",
+                  "spring": { "damping": 12, "stiffness": 100, "mass": 1 }
+                }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 0, "value": 0, "ease": "linear" },
+                { "frame": 10, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "Label A",
+          "text": "SYSTEM A",
+          "fontSize": 40,
+          "font": "mono",
+          "fontWeight": 600,
+          "letterSpacing": 0.12,
+          "color": "$text",
+          "x": 480,
+          "y": 460,
+          "tracks": [
+            {
+              "property": "x",
+              "keyframes": [
+                { "frame": 2, "value": -280, "ease": "linear" },
+                {
+                  "frame": 28,
+                  "value": 480,
+                  "ease": "spring",
+                  "spring": { "damping": 12, "stiffness": 100, "mass": 1 }
+                }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 2, "value": 0, "ease": "linear" },
+                { "frame": 12, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "shape",
+          "name": "Card B",
+          "shape": "rect",
+          "width": 460,
+          "height": 300,
+          "fill": "$surface",
+          "radius": 20,
+          "x": 1440,
+          "y": 540,
+          "tracks": [
+            {
+              "property": "x",
+              "keyframes": [
+                { "frame": 8, "value": 2200, "ease": "linear" },
+                {
+                  "frame": 34,
+                  "value": 1440,
+                  "ease": "spring",
+                  "spring": { "damping": 12, "stiffness": 100, "mass": 1 }
+                }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 8, "value": 0, "ease": "linear" },
+                { "frame": 18, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "Label B",
+          "text": "SYSTEM B",
+          "fontSize": 40,
+          "font": "mono",
+          "fontWeight": 600,
+          "letterSpacing": 0.12,
+          "color": "$text",
+          "x": 1440,
+          "y": 460,
+          "tracks": [
+            {
+              "property": "x",
+              "keyframes": [
+                { "frame": 10, "value": 2200, "ease": "linear" },
+                {
+                  "frame": 36,
+                  "value": 1440,
+                  "ease": "spring",
+                  "spring": { "damping": 12, "stiffness": 100, "mass": 1 }
+                }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 10, "value": 0, "ease": "linear" },
+                { "frame": 20, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "shape",
+          "name": "Field chip A",
+          "shape": "rect",
+          "width": 300,
+          "height": 64,
+          "fill": "$accent",
+          "radius": 14,
+          "x": 480,
+          "y": 610,
+          "tracks": [
+            {
+              "property": "scale",
+              "keyframes": [
+                { "frame": 70, "value": 0, "ease": "linear" },
+                { "frame": 86, "value": 1, "ease": "overshoot" }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 70, "value": 0, "ease": "linear" },
+                { "frame": 76, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "Field label A",
+          "text": "STATUS: OPEN",
+          "fontSize": 26,
+          "font": "mono",
+          "fontWeight": 600,
+          "color": "$background",
+          "x": 480,
+          "y": 610,
+          "tracks": [
+            {
+              "property": "scale",
+              "keyframes": [
+                { "frame": 72, "value": 0, "ease": "linear" },
+                { "frame": 88, "value": 1, "ease": "overshoot" }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 72, "value": 0, "ease": "linear" },
+                { "frame": 80, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Sync",
+      "durationInFrames": 240,
+      "transitionIn": { "type": "crossfade", "durationInFrames": 12 },
+      "elements": [
+        {
+          "kind": "shape",
+          "name": "Card A (static)",
+          "shape": "rect",
+          "width": 460,
+          "height": 300,
+          "fill": "$surface",
+          "radius": 20,
+          "x": 480,
+          "y": 540,
+          "tracks": []
+        },
+        {
+          "kind": "text",
+          "name": "Label A (static)",
+          "text": "SYSTEM A",
+          "fontSize": 40,
+          "font": "mono",
+          "fontWeight": 600,
+          "letterSpacing": 0.12,
+          "color": "$text",
+          "x": 480,
+          "y": 460,
+          "tracks": []
+        },
+        {
+          "kind": "shape",
+          "name": "Card B (static)",
+          "shape": "rect",
+          "width": 460,
+          "height": 300,
+          "fill": "$surface",
+          "radius": 20,
+          "x": 1440,
+          "y": 540,
+          "tracks": []
+        },
+        {
+          "kind": "text",
+          "name": "Label B (static)",
+          "text": "SYSTEM B",
+          "fontSize": 40,
+          "font": "mono",
+          "fontWeight": 600,
+          "letterSpacing": 0.12,
+          "color": "$text",
+          "x": 1440,
+          "y": 460,
+          "tracks": []
+        },
+        {
+          "kind": "shape",
+          "name": "Field chip A (static)",
+          "shape": "rect",
+          "width": 300,
+          "height": 64,
+          "fill": "$accent",
+          "radius": 14,
+          "x": 480,
+          "y": 610,
+          "tracks": []
+        },
+        {
+          "kind": "text",
+          "name": "Field label A (static)",
+          "text": "STATUS: OPEN",
+          "fontSize": 26,
+          "font": "mono",
+          "fontWeight": 600,
+          "color": "$background",
+          "x": 480,
+          "y": 610,
+          "tracks": []
+        },
+        {
+          "kind": "shape",
+          "name": "Connector",
+          "shape": "rect",
+          "width": 500,
+          "height": 6,
+          "fill": "$accent",
+          "radius": 3,
+          "x": 960,
+          "y": 540,
+          "transformOrigin": "left",
+          "tracks": [
+            {
+              "property": "scale",
+              "keyframes": [
+                { "frame": 20, "value": 0, "ease": "linear" },
+                { "frame": 44, "value": 1, "ease": "ease-in-out" }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 20, "value": 0, "ease": "linear" },
+                { "frame": 26, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "shape",
+          "name": "Sync dot",
+          "shape": "ellipse",
+          "width": 28,
+          "height": 28,
+          "fill": "$primary",
+          "x": 710,
+          "y": 540,
+          "tracks": [
+            {
+              "property": "x",
+              "keyframes": [
+                { "frame": 50, "value": 710, "ease": "linear" },
+                { "frame": 80, "value": 1210, "ease": "ease-in-out" }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 44, "value": 0, "ease": "linear" },
+                { "frame": 50, "value": 1, "ease": "linear" },
+                { "frame": 86, "value": 1, "ease": "linear" },
+                { "frame": 94, "value": 0, "ease": "ease-in" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "shape",
+          "name": "Field chip B",
+          "shape": "rect",
+          "width": 300,
+          "height": 64,
+          "fill": "$accent",
+          "radius": 14,
+          "x": 1440,
+          "y": 610,
+          "tracks": [
+            {
+              "property": "scale",
+              "keyframes": [
+                { "frame": 88, "value": 0, "ease": "linear" },
+                {
+                  "frame": 106,
+                  "value": 1,
+                  "ease": "spring",
+                  "spring": { "damping": 8, "stiffness": 200, "mass": 1 }
+                }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 88, "value": 0, "ease": "linear" },
+                { "frame": 94, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "Field label B",
+          "text": "STATUS: OPEN",
+          "fontSize": 26,
+          "font": "mono",
+          "fontWeight": 600,
+          "color": "$background",
+          "x": 1440,
+          "y": 610,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 94, "value": 0, "ease": "linear" },
+                { "frame": 102, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "Sync caption",
+          "text": "A field changes on one side. It lands on the other.",
+          "fontSize": 40,
+          "font": "body",
+          "fontWeight": 500,
+          "color": "$muted",
+          "x": 960,
+          "y": 880,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 110, "value": 0, "ease": "linear" },
+                { "frame": 128, "value": 1, "ease": "ease-out" }
+              ]
+            },
+            {
+              "property": "y",
+              "keyframes": [
+                { "frame": 110, "value": 904, "ease": "linear" },
+                { "frame": 128, "value": 880, "ease": "ease-out" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Conflict",
+      "durationInFrames": 150,
+      "transitionIn": { "type": "cut", "durationInFrames": 12 },
+      "elements": [
+        {
+          "kind": "shape",
+          "name": "Card A (static)",
+          "shape": "rect",
+          "width": 460,
+          "height": 300,
+          "fill": "$surface",
+          "radius": 20,
+          "x": 480,
+          "y": 540,
+          "tracks": []
+        },
+        {
+          "kind": "text",
+          "name": "Label A (static)",
+          "text": "SYSTEM A",
+          "fontSize": 40,
+          "font": "mono",
+          "fontWeight": 600,
+          "letterSpacing": 0.12,
+          "color": "$text",
+          "x": 480,
+          "y": 460,
+          "tracks": []
+        },
+        {
+          "kind": "shape",
+          "name": "Card B (static)",
+          "shape": "rect",
+          "width": 460,
+          "height": 300,
+          "fill": "$surface",
+          "radius": 20,
+          "x": 1440,
+          "y": 540,
+          "tracks": []
+        },
+        {
+          "kind": "text",
+          "name": "Label B (static)",
+          "text": "SYSTEM B",
+          "fontSize": 40,
+          "font": "mono",
+          "fontWeight": 600,
+          "letterSpacing": 0.12,
+          "color": "$text",
+          "x": 1440,
+          "y": 460,
+          "tracks": []
+        },
+        {
+          "kind": "text",
+          "name": "Edit A",
+          "text": "STATUS: DONE",
+          "fontSize": 30,
+          "font": "mono",
+          "fontWeight": 600,
+          "color": "$accent",
+          "x": 480,
+          "y": 610,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 10, "value": 1, "ease": "linear" },
+                { "frame": 16, "value": 0.25, "ease": "linear" },
+                { "frame": 22, "value": 1, "ease": "linear" },
+                { "frame": 28, "value": 0.25, "ease": "linear" },
+                { "frame": 34, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "Edit B",
+          "text": "STATUS: BLOCKED",
+          "fontSize": 30,
+          "font": "mono",
+          "fontWeight": 600,
+          "color": "$accent",
+          "x": 1440,
+          "y": 610,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 16, "value": 1, "ease": "linear" },
+                { "frame": 22, "value": 0.25, "ease": "linear" },
+                { "frame": 28, "value": 1, "ease": "linear" },
+                { "frame": 34, "value": 0.25, "ease": "linear" },
+                { "frame": 40, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "Conflict headline",
+          "text": "Both sides edit. Nothing breaks.",
+          "fontSize": 64,
+          "font": "heading",
+          "fontWeight": 700,
+          "color": "$text",
+          "x": 960,
+          "y": 180,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 44, "value": 0, "ease": "linear" },
+                { "frame": 58, "value": 1, "ease": "ease-out" }
+              ]
+            },
+            {
+              "property": "y",
+              "keyframes": [
+                { "frame": 44, "value": 210, "ease": "linear" },
+                { "frame": 58, "value": 180, "ease": "ease-out" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Payoff",
+      "durationInFrames": 162,
+      "transitionIn": { "type": "crossfade", "durationInFrames": 12 },
+      "elements": [
+        {
+          "kind": "shape",
+          "name": "Logo dot",
+          "shape": "ellipse",
+          "width": 36,
+          "height": 36,
+          "fill": "$accent",
+          "x": 960,
+          "y": 400,
+          "tracks": [
+            {
+              "property": "scale",
+              "keyframes": [
+                { "frame": 6, "value": 0, "ease": "linear" },
+                {
+                  "frame": 24,
+                  "value": 1,
+                  "ease": "spring",
+                  "spring": { "damping": 8, "stiffness": 200, "mass": 1 }
+                }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 0, "value": 0, "ease": "linear" },
+                { "frame": 8, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "Payoff headline",
+          "text": "Sync. Both ways. Always.",
+          "fontSize": 84,
+          "font": "heading",
+          "fontWeight": 700,
+          "color": "$text",
+          "x": 960,
+          "y": 520,
+          "tracks": [
+            {
+              "property": "y",
+              "keyframes": [
+                { "frame": 10, "value": 560, "ease": "linear" },
+                { "frame": 28, "value": 520, "ease": "overshoot" }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 10, "value": 0, "ease": "linear" },
+                { "frame": 24, "value": 1, "ease": "ease-out" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "Payoff sub",
+          "text": "Set the rules once. Let the sync run.",
+          "fontSize": 40,
+          "font": "body",
+          "fontWeight": 500,
+          "color": "$muted",
+          "x": 960,
+          "y": 610,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 26, "value": 0, "ease": "linear" },
+                { "frame": 42, "value": 1, "ease": "ease-out" }
+              ]
+            },
+            {
+              "property": "y",
+              "keyframes": [
+                { "frame": 26, "value": 634, "ease": "linear" },
+                { "frame": 42, "value": 610, "ease": "ease-out" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "shape",
+          "name": "CTA pill",
+          "shape": "rect",
+          "width": 320,
+          "height": 76,
+          "fill": "$accent",
+          "radius": 38,
+          "x": 960,
+          "y": 730,
+          "tracks": [
+            {
+              "property": "scale",
+              "keyframes": [
+                { "frame": 40, "value": 0, "ease": "linear" },
+                { "frame": 56, "value": 1, "ease": "overshoot" }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 40, "value": 0, "ease": "linear" },
+                { "frame": 48, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "CTA label",
+          "text": "See it live",
+          "fontSize": 32,
+          "font": "heading",
+          "fontWeight": 600,
+          "color": "$background",
+          "x": 960,
+          "y": 730,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 48, "value": 0, "ease": "linear" },
+                { "frame": 58, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

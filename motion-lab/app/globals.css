@@ -1,0 +1,74 @@
+/* Motion Lab — dark studio shell.
+   Gold accent nods to the Thoughtform palette; everything else is
+   tuned for long staring-at-a-timeline sessions. */
+
+:root {
+  --bg: #0e0d0b;
+  --panel: #151310;
+  --panel-2: #1c1915;
+  --panel-3: #232019;
+  --border: #2a2620;
+  --border-strong: #3d372c;
+  --text: #ece7dd;
+  --text-muted: #a29a87;
+  --text-faint: #6f6858;
+  --accent: #c5a059;
+  --accent-strong: #e0bc6e;
+  --accent-dim: rgba(197, 160, 89, 0.16);
+  --danger: #d47b6a;
+  --ok: #8fae8b;
+  --info: #8fa3b8;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --radius: 8px;
+  --radius-sm: 5px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui), system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: inherit;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  color: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 5px;
+  border: 2px solid var(--bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-faint);
+}

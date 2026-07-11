@@ -59,6 +59,13 @@ const SKILLS: Record<string, SkillBundle> = {
     stem: "exalate-landing-pages",
     filename: "exalate-landing-pages.skill",
   },
+  /* Motion-design craft for code-native video. Canonical source:
+     motion-lab/skill/motion-design/ — rebuild the bundle with
+     `npm run skill:motion-design` after editing it. */
+  "motion-design": {
+    stem: "motion-design",
+    filename: "motion-design.skill",
+  },
 };
 
 export const runtime = "nodejs";

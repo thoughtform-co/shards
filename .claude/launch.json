@@ -13,6 +13,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "start", "--", "-p", "3100"],
       "port": 3100
+    },
+    {
+      "name": "motion-lab-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "motion-lab", "run", "dev"],
+      "port": 3210
     }
   ]
 }

@@ -1,0 +1,343 @@
+{
+  "version": 1,
+  "meta": {
+    "title": "Stat Punch — 73%",
+    "format": "9:16",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "background": "$background"
+  },
+  "brand": {
+    "colors": {
+      "background": "#0E0D0B",
+      "surface": "#1C1915",
+      "primary": "#ECE7DD",
+      "accent": "#C5A059",
+      "text": "#ECE7DD",
+      "muted": "#A29A87"
+    },
+    "fonts": {
+      "heading": "'IBM Plex Sans', 'Segoe UI', 'Helvetica Neue', sans-serif",
+      "body": "'IBM Plex Sans', 'Segoe UI', 'Helvetica Neue', sans-serif",
+      "mono": "'IBM Plex Mono', Consolas, monospace"
+    }
+  },
+  "scenes": [
+    {
+      "name": "Punch",
+      "durationInFrames": 140,
+      "transitionIn": { "type": "cut", "durationInFrames": 12 },
+      "elements": [
+        {
+          "kind": "text",
+          "name": "Eyebrow",
+          "text": "CONTEXT SWITCHING",
+          "fontSize": 34,
+          "font": "mono",
+          "fontWeight": 600,
+          "letterSpacing": 0.18,
+          "color": "$accent",
+          "x": 540,
+          "y": 640,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 0, "value": 0, "ease": "linear" },
+                { "frame": 14, "value": 1, "ease": "ease-out" }
+              ]
+            },
+            {
+              "property": "y",
+              "keyframes": [
+                { "frame": 0, "value": 664, "ease": "linear" },
+                { "frame": 14, "value": 640, "ease": "ease-out" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "Mega stat",
+          "text": "73%",
+          "fontSize": 300,
+          "font": "heading",
+          "fontWeight": 700,
+          "color": "$text",
+          "x": 540,
+          "y": 900,
+          "tracks": [
+            {
+              "property": "scale",
+              "keyframes": [
+                { "frame": 6, "value": 0.6, "ease": "linear" },
+                {
+                  "frame": 30,
+                  "value": 1,
+                  "ease": "spring",
+                  "spring": { "damping": 12, "stiffness": 100, "mass": 1 }
+                }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 6, "value": 0, "ease": "linear" },
+                { "frame": 18, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "Caption",
+          "text": "of makers lose a day a week",
+          "fontSize": 44,
+          "font": "body",
+          "fontWeight": 500,
+          "color": "$muted",
+          "x": 540,
+          "y": 1120,
+          "maxWidth": 760,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 34, "value": 0, "ease": "linear" },
+                { "frame": 50, "value": 1, "ease": "ease-out" }
+              ]
+            },
+            {
+              "property": "y",
+              "keyframes": [
+                { "frame": 34, "value": 1146, "ease": "linear" },
+                { "frame": 50, "value": 1120, "ease": "ease-out" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Support",
+      "durationInFrames": 180,
+      "transitionIn": { "type": "crossfade", "durationInFrames": 10 },
+      "elements": [
+        {
+          "kind": "text",
+          "name": "Stat (restaged)",
+          "text": "73%",
+          "fontSize": 240,
+          "font": "heading",
+          "fontWeight": 700,
+          "color": "$text",
+          "x": 540,
+          "y": 700,
+          "tracks": []
+        },
+        {
+          "kind": "shape",
+          "name": "Underline",
+          "shape": "rect",
+          "width": 420,
+          "height": 10,
+          "fill": "$accent",
+          "radius": 5,
+          "x": 540,
+          "y": 850,
+          "transformOrigin": "left",
+          "tracks": [
+            {
+              "property": "scale",
+              "keyframes": [
+                { "frame": 8, "value": 0, "ease": "linear" },
+                { "frame": 26, "value": 1, "ease": "ease-in-out" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "Support line",
+          "text": "to tool ping-pong between trackers",
+          "fontSize": 48,
+          "font": "body",
+          "fontWeight": 500,
+          "color": "$text",
+          "x": 540,
+          "y": 1000,
+          "maxWidth": 800,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 20, "value": 0, "ease": "linear" },
+                { "frame": 36, "value": 1, "ease": "ease-out" }
+              ]
+            },
+            {
+              "property": "y",
+              "keyframes": [
+                { "frame": 20, "value": 1026, "ease": "linear" },
+                { "frame": 36, "value": 1000, "ease": "ease-out" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "Rhythm line",
+          "text": "Copy. Paste. Re-type. Repeat.",
+          "fontSize": 34,
+          "font": "mono",
+          "fontWeight": 500,
+          "color": "$muted",
+          "x": 540,
+          "y": 1150,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 50, "value": 0, "ease": "linear" },
+                { "frame": 66, "value": 1, "ease": "ease-out" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "CTA",
+      "durationInFrames": 150,
+      "transitionIn": { "type": "crossfade", "durationInFrames": 10 },
+      "elements": [
+        {
+          "kind": "shape",
+          "name": "Logo dot",
+          "shape": "ellipse",
+          "width": 32,
+          "height": 32,
+          "fill": "$accent",
+          "x": 540,
+          "y": 760,
+          "tracks": [
+            {
+              "property": "scale",
+              "keyframes": [
+                { "frame": 6, "value": 0, "ease": "linear" },
+                {
+                  "frame": 20,
+                  "value": 1,
+                  "ease": "spring",
+                  "spring": { "damping": 8, "stiffness": 200, "mass": 1 }
+                }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 4, "value": 0, "ease": "linear" },
+                { "frame": 10, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "CTA headline",
+          "text": "Stop the ping-pong.",
+          "fontSize": 76,
+          "font": "heading",
+          "fontWeight": 700,
+          "color": "$text",
+          "x": 540,
+          "y": 880,
+          "tracks": [
+            {
+              "property": "y",
+              "keyframes": [
+                { "frame": 10, "value": 912, "ease": "linear" },
+                { "frame": 26, "value": 880, "ease": "overshoot" }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 10, "value": 0, "ease": "linear" },
+                { "frame": 24, "value": 1, "ease": "ease-out" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "CTA sub",
+          "text": "One sync. Both directions.",
+          "fontSize": 44,
+          "font": "body",
+          "fontWeight": 500,
+          "color": "$muted",
+          "x": 540,
+          "y": 980,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 30, "value": 0, "ease": "linear" },
+                { "frame": 46, "value": 1, "ease": "ease-out" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "shape",
+          "name": "CTA pill",
+          "shape": "rect",
+          "width": 360,
+          "height": 84,
+          "fill": "$accent",
+          "radius": 42,
+          "x": 540,
+          "y": 1120,
+          "tracks": [
+            {
+              "property": "scale",
+              "keyframes": [
+                { "frame": 44, "value": 0, "ease": "linear" },
+                { "frame": 60, "value": 1, "ease": "overshoot" }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 42, "value": 0, "ease": "linear" },
+                { "frame": 52, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "CTA pill label",
+          "text": "motionlab.dev",
+          "fontSize": 32,
+          "font": "mono",
+          "fontWeight": 600,
+          "color": "$background",
+          "x": 540,
+          "y": 1120,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 52, "value": 0, "ease": "linear" },
+                { "frame": 62, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

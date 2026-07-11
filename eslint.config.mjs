@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Standalone module with its own package.json/tsconfig; not part
+    // of the shards app build.
+    "motion-lab/**",
   ]),
 ]);
 

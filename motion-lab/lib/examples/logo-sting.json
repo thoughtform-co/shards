@@ -1,0 +1,196 @@
+{
+  "version": 1,
+  "meta": {
+    "title": "Motion Lab Sting",
+    "format": "1:1",
+    "width": 1080,
+    "height": 1080,
+    "fps": 30,
+    "background": "$background"
+  },
+  "brand": {
+    "colors": {
+      "background": "#0E0D0B",
+      "surface": "#1C1915",
+      "primary": "#ECE7DD",
+      "accent": "#C5A059",
+      "text": "#ECE7DD",
+      "muted": "#A29A87"
+    },
+    "fonts": {
+      "heading": "'IBM Plex Sans', 'Segoe UI', 'Helvetica Neue', sans-serif",
+      "body": "'IBM Plex Sans', 'Segoe UI', 'Helvetica Neue', sans-serif",
+      "mono": "'IBM Plex Mono', Consolas, monospace"
+    }
+  },
+  "scenes": [
+    {
+      "name": "Sting",
+      "durationInFrames": 118,
+      "transitionIn": { "type": "cut", "durationInFrames": 12 },
+      "elements": [
+        {
+          "kind": "shape",
+          "name": "Flash",
+          "shape": "rect",
+          "width": 1080,
+          "height": 1080,
+          "fill": "$surface",
+          "x": 540,
+          "y": 540,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 0, "value": 0, "ease": "linear" },
+                { "frame": 6, "value": 0.9, "ease": "linear" },
+                { "frame": 22, "value": 0, "ease": "ease-out" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "shape",
+          "name": "Dot",
+          "shape": "ellipse",
+          "width": 120,
+          "height": 120,
+          "fill": "$accent",
+          "x": 540,
+          "y": 430,
+          "tracks": [
+            {
+              "property": "scale",
+              "keyframes": [
+                { "frame": 6, "value": 0, "ease": "linear" },
+                {
+                  "frame": 24,
+                  "value": 1,
+                  "ease": "spring",
+                  "spring": { "damping": 8, "stiffness": 200, "mass": 1 }
+                }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 4, "value": 0, "ease": "linear" },
+                { "frame": 10, "value": 1, "ease": "linear" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "Wordmark",
+          "text": "MOTION LAB",
+          "fontSize": 96,
+          "font": "heading",
+          "fontWeight": 700,
+          "letterSpacing": 0.08,
+          "color": "$text",
+          "x": 540,
+          "y": 600,
+          "tracks": [
+            {
+              "property": "y",
+              "keyframes": [
+                { "frame": 18, "value": 640, "ease": "linear" },
+                { "frame": 34, "value": 600, "ease": "overshoot" }
+              ]
+            },
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 18, "value": 0, "ease": "linear" },
+                { "frame": 30, "value": 1, "ease": "ease-out" }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "text",
+          "name": "Tagline",
+          "text": "explainers, rendered from code",
+          "fontSize": 30,
+          "font": "mono",
+          "fontWeight": 500,
+          "color": "$muted",
+          "x": 540,
+          "y": 690,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 44, "value": 0, "ease": "linear" },
+                { "frame": 58, "value": 1, "ease": "ease-out" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Hold & out",
+      "durationInFrames": 70,
+      "transitionIn": { "type": "crossfade", "durationInFrames": 8 },
+      "elements": [
+        {
+          "kind": "shape",
+          "name": "Dot (static)",
+          "shape": "ellipse",
+          "width": 120,
+          "height": 120,
+          "fill": "$accent",
+          "x": 540,
+          "y": 430,
+          "tracks": []
+        },
+        {
+          "kind": "text",
+          "name": "Wordmark (static)",
+          "text": "MOTION LAB",
+          "fontSize": 96,
+          "font": "heading",
+          "fontWeight": 700,
+          "letterSpacing": 0.08,
+          "color": "$text",
+          "x": 540,
+          "y": 600,
+          "tracks": []
+        },
+        {
+          "kind": "text",
+          "name": "Tagline (static)",
+          "text": "explainers, rendered from code",
+          "fontSize": 30,
+          "font": "mono",
+          "fontWeight": 500,
+          "color": "$muted",
+          "x": 540,
+          "y": 690,
+          "tracks": []
+        },
+        {
+          "kind": "shape",
+          "name": "Fade veil",
+          "shape": "rect",
+          "width": 1080,
+          "height": 1080,
+          "fill": "$background",
+          "x": 540,
+          "y": 540,
+          "tracks": [
+            {
+              "property": "opacity",
+              "keyframes": [
+                { "frame": 36, "value": 0, "ease": "linear" },
+                { "frame": 62, "value": 1, "ease": "ease-in" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
