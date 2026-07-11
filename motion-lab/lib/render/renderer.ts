@@ -1,12 +1,5 @@
+import { createRequire } from "node:module";
 import path from "node:path";
-
-import { bundle } from "@remotion/bundler";
-import {
-  ensureBrowser,
-  renderMedia,
-  renderStill,
-  selectComposition,
-} from "@remotion/renderer";
 
 import type { MotionDoc } from "../motiondoc/schema";
 
@@ -24,9 +17,17 @@ declare global {
 
 const COMPOSITION_ID = "MotionDoc";
 
+function remotionRuntime() {
+  const runtimeRequire = createRequire(path.join(process.cwd(), "package.json"));
+  return {
+    bundler: runtimeRequire("@remotion/bundler") as typeof import("@remotion/bundler"),
+    renderer: runtimeRequire("@remotion/renderer") as typeof import("@remotion/renderer"),
+  };
+}
+
 function getServeUrl(): Promise<string> {
   if (!globalThis.__motionLabBundle) {
-    globalThis.__motionLabBundle = bundle({
+    globalThis.__motionLabBundle = remotionRuntime().bundler.bundle({
       entryPoint: path.join(process.cwd(), "remotion", "index.ts"),
       publicDir: path.join(process.cwd(), "public"),
     }).catch((error) => {
@@ -41,21 +42,22 @@ function getServeUrl(): Promise<string> {
 export type ProgressFn = (progress: number, message: string) => void;
 
 async function prepare(doc: MotionDoc, onProgress: ProgressFn) {
+  const { renderer } = remotionRuntime();
   onProgress(
     0.01,
     "Preparing headless browser (first run downloads ~120 MB — one time only)…",
   );
-  await ensureBrowser();
+  await renderer.ensureBrowser();
   onProgress(0.04, "Bundling composition…");
   const serveUrl = await getServeUrl();
   onProgress(0.08, "Resolving composition metadata…");
   const inputProps = { doc };
-  const composition = await selectComposition({
+  const composition = await renderer.selectComposition({
     serveUrl,
     id: COMPOSITION_ID,
     inputProps,
   });
-  return { serveUrl, composition, inputProps };
+  return { serveUrl, composition, inputProps, renderer };
 }
 
 export async function renderMotionDocToFile(opts: {
@@ -63,11 +65,11 @@ export async function renderMotionDocToFile(opts: {
   outputPath: string;
   onProgress: ProgressFn;
 }): Promise<void> {
-  const { serveUrl, composition, inputProps } = await prepare(
+  const { serveUrl, composition, inputProps, renderer } = await prepare(
     opts.doc,
     opts.onProgress,
   );
-  await renderMedia({
+  await renderer.renderMedia({
     serveUrl,
     composition,
     codec: "h264",
@@ -91,11 +93,11 @@ export async function renderMotionDocStill(opts: {
   onProgress?: ProgressFn;
 }): Promise<void> {
   const onProgress = opts.onProgress ?? (() => {});
-  const { serveUrl, composition, inputProps } = await prepare(
+  const { serveUrl, composition, inputProps, renderer } = await prepare(
     opts.doc,
     onProgress,
   );
-  await renderStill({
+  await renderer.renderStill({
     serveUrl,
     composition,
     frame: opts.frame,
