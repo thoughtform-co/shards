@@ -51,13 +51,18 @@ await cp(path.join(root, ".cursor"), path.join(output, ".cursor"), { recursive: 
 
 await rm(path.join(output, "public"), { recursive: true, force: true });
 const uploads = path.resolve(root, "public", "assets", "uploads");
-await cp(path.join(root, "public"), path.join(output, "public"), {
-  recursive: true,
-  filter: (source) => {
-    const resolved = path.resolve(source);
-    return resolved === uploads || !resolved.startsWith(`${uploads}${path.sep}`);
-  },
-});
+try {
+  await stat(path.join(root, "public"));
+  await cp(path.join(root, "public"), path.join(output, "public"), {
+    recursive: true,
+    filter: (source) => {
+      const resolved = path.resolve(source);
+      return resolved === uploads || !resolved.startsWith(`${uploads}${path.sep}`);
+    },
+  });
+} catch (error) {
+  if (error.code !== "ENOENT") throw error;
+}
 await mkdir(path.join(output, "public", "assets", "uploads"), { recursive: true });
 
 const editableFiles = [
