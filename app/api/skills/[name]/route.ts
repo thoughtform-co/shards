@@ -52,6 +52,13 @@ const SKILLS: Record<string, SkillBundle> = {
     stem: "plain-english",
     filename: "plain-english.skill",
   },
+  /* Full-code landing-page builder for Exalate's marketing team.
+     Canonical source: ~/.claude/skills/exalate-landing-pages/ —
+     rebuild the flat bundle from there after editing it. */
+  "exalate-landing-pages": {
+    stem: "exalate-landing-pages",
+    filename: "exalate-landing-pages.skill",
+  },
 };
 
 export const runtime = "nodejs";
