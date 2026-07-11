@@ -5,9 +5,10 @@ import { useState } from "react";
 import { OperatorModal } from "@/components/operator/operator-modal";
 
 /*
- * WorkshopTldr — third hero action on /exalate-ai-workshop: a ghost
- * button that opens the workshop TLDR (what we covered + next steps)
- * in the shared OperatorModal.
+ * WorkshopTldr — second hero action on /exalate-ai-workshop: a ghost
+ * button that opens the workshop recap (what we covered + next steps)
+ * in the shared OperatorModal, with Copy / Download-as-Markdown export
+ * so attendees can take the recap into their own Claude.
  *
  * Two portal caveats handled here (the modal mounts under <body>,
  * outside the shell):
@@ -36,6 +37,69 @@ export type WorkshopTldrContent = {
 /* Thoughtform gold-bright, matching the page's filled buttons. */
 const MODAL_ACCENT = "#b89348";
 
+const DOWNLOAD_FILENAME = "ai-capability-workshop-recap.md";
+
+/* Single source of truth for the export: the same content object that
+   renders the modal serializes straight to Markdown, so the copied /
+   downloaded file never drifts from what's on screen. */
+function tldrToMarkdown(content: WorkshopTldrContent): string {
+  const out: string[] = [];
+  out.push("# AI Capability Workshop — TLDR");
+  out.push(content.eyebrow);
+  out.push("");
+  for (const group of content.groups) {
+    out.push(`## ${group.heading}`);
+    for (const bullet of group.bullets) out.push(`- ${bullet}`);
+    out.push("");
+  }
+  for (const steps of content.nextSteps) {
+    out.push(`## Next steps · ${steps.owner}`);
+    for (const item of steps.items) out.push(`- ${item}`);
+    out.push("");
+  }
+  if (content.footnote) {
+    out.push("---");
+    out.push(`_${content.footnote}_`);
+  }
+  return out.join("\n").trimEnd() + "\n";
+}
+
+async function copyText(text: string): Promise<boolean> {
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {
+    /* fall through to the legacy path (insecure context / denied) */
+  }
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand("copy");
+    ta.remove();
+    return ok;
+  } catch {
+    return false;
+  }
+}
+
+function downloadMarkdown(text: string): void {
+  const blob = new Blob([text], { type: "text/markdown;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = DOWNLOAD_FILENAME;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
 export function WorkshopTldr({
   content,
   fontClassName,
@@ -44,6 +108,15 @@ export function WorkshopTldr({
   fontClassName: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const onCopy = async () => {
+    const ok = await copyText(tldrToMarkdown(content));
+    if (ok) {
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    }
+  };
 
   return (
     <>
@@ -65,6 +138,24 @@ export function WorkshopTldr({
         ariaLabel={content.ariaLabel}
       >
         <div className={`${fontClassName} exalate-tldr`}>
+          <div className="exalate-tldr__actions">
+            <button
+              type="button"
+              className="exalate-tldr__action"
+              onClick={onCopy}
+              aria-live="polite"
+            >
+              {copied ? "Copied ✓" : "Copy as Markdown"}
+            </button>
+            <button
+              type="button"
+              className="exalate-tldr__action"
+              onClick={() => downloadMarkdown(tldrToMarkdown(content))}
+            >
+              Download .md
+            </button>
+          </div>
+
           <header className="exalate-tldr__head">
             <p className="exalate-tldr__eyebrow">{content.eyebrow}</p>
             <h3 className="exalate-tldr__title">{content.title}</h3>

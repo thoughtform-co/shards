@@ -77,16 +77,15 @@ const workshopHero = {
   ] as const,
   actions: [
     {
-      id: "see-how",
-      label: "See how it works",
+      id: "get-started",
+      label: "Get Started",
       href: "#diagnosis",
       primary: true,
     },
-    { id: "proof", label: "See the proof", href: "#signal" },
   ] as const,
 };
 
-const workshopBrandSub = "Exalate AI Workshop";
+const workshopBrandSub = "AI Capability Workshop";
 
 const workshopDiagnosisCards: readonly DiagnosisCard[] = [
   {
@@ -345,33 +344,96 @@ const exalateSkillsSection: ExalateSkillsSection = {
     "On the stretch list: a plain-language pass for AI output, and the After Effects to Remotion pipeline once these six are live.",
 };
 
-/* Hero modal: the workshop in one screen. Bullets and next steps
-   come from the two meeting notes (adoption session 09:34, tools
-   session 11:51). */
+/* Hero modal: the whole workshop in one screen, drawn from both
+   sessions' full transcripts (adoption + tools deep-dive). Principles
+   and tool guidance only — no Loop internals. Attendees copy or
+   download it as Markdown and take it into their own Claude. */
 const exalateTldr: WorkshopTldrContent = {
   buttonLabel: "Workshop TLDR",
   ariaLabel: "Workshop TLDR: what we covered and next steps",
-  eyebrow: "Exalate × Thoughtform · 10 July 2026",
+  eyebrow: "AI Capability Workshop · 10 July 2026",
   title: "The TLDR.",
   groups: [
     {
       heading: "The frame",
       bullets: [
-        "AI sits somewhere between a tool and a collaborator. Treat it as plain software and adoption stalls.",
-        "It gets an asset to 80%. The judgment that closes the gap is where the team earns its keep.",
-        "A Skill is a markdown briefing that holds that judgment. Write it once and every chat starts warm.",
-        "Loop shot a full AI brand film for €8k instead of €30k, then stopped anyway. AI carries conversion content; audiences don’t want it as brand storytelling.",
-        "Turn on Claude’s memory, clean it monthly, and add standing instructions: confidence levels, pushback, no cheerleading.",
+        "AI is the first technology that sits between a tool and a collaborator. Treat it as plain software and adoption stalls.",
+        "It looks like software: an account, a subscription, buttons. It is an intelligence that can build software, and that gap is the whole game.",
+        "It automates tasks, not jobs. If your job is one single task, that is a different conversation.",
+        "AI commodified average design, so good design and a human eye to curate matter more than before.",
+        "Human-in-the-loop is a business argument, not a sentimental one. AI gets the asset to 80%, and the judgment that closes the last 20% is where the team earns its keep.",
+        "A designer’s job is not making logos, it is helping people choose. Three strong options beat a hundred.",
       ],
     },
     {
-      heading: "The tools",
+      heading: "Set Claude up right",
       bullets: [
-        "Semantic editing (change one element, keep the rest) exists in exactly two models: Nano Banana and GPT-Image-2. Everything else is text-to-image.",
-        "Krea covers day-to-day generation at roughly €20 per seat. Generate at 4K straight away; upscaling degrades.",
-        "For UI-style visuals and the permutation pages, code beats image generation. SVG from Claude is lighter, editable, and it ranks.",
-        "Video: Seedance leads. For stop-motion, give it a start frame and an end frame and let it interpolate; chain the last frame into the next clip.",
-        "Hyperframes and Remotion animate code directly, and After Effects exports JSON that Claude can read. Stretch project; run it in parallel.",
+        "Turn on memory: Settings → Capabilities → generate memory from chat history. The more you use it, the more it pays back.",
+        "Clean the memory monthly. Delete finished clients and dead projects so Claude stops dragging them back into unrelated chats.",
+        "Set standing preferences in Settings → General → Instructions, but do not globally ban em dashes. They are entangled with good writing. Strip them at the end like an editor’s pass.",
+        "Add two instructions everyone should steal: label confidence as certain, likely, or unknown; and push back instead of agreeing.",
+        "Always feed context. Without it an LLM predicts the average, and the average is generic.",
+      ],
+    },
+    {
+      heading: "Work in Markdown",
+      bullets: [
+        "Models love Markdown, which is why they love Obsidian. Use it wherever you can.",
+        "You no longer have to pre-structure data. Newer models brute-force a messy CSV or an unstructured Figma file.",
+        "Brief Claude the way you would brief a colleague: the big picture first, then scroll through the detail.",
+      ],
+    },
+    {
+      heading: "Skills = encoded judgment",
+      bullets: [
+        "A Skill is a Markdown briefing that holds how your team judges work. Write it once and every chat starts warm.",
+        "Cluster skills by what they actually do and most of them collapse into one thing: judgment. Build one meta-skill and layer the nuances on top, instead of maintaining 47 separate agents.",
+        "The pipeline: record the meeting, turn the transcript into a Skill, land it in a shared ledger like Monday or Notion, then ask Claude for the patterns across teams.",
+        "Build a plain-English skill that translates dense model output back into words a person would actually say.",
+        "Getting started is genuinely easy. Anthropic’s skill documentation is enough to begin.",
+      ],
+    },
+    {
+      heading: "The AI-video proof",
+      bullets: [
+        "Loop shot a full AI brand film for about €8k against roughly €30k for live action.",
+        "It looked good because the creative director, editor and colorist judged it with the same critical eye they bring to live action, not because the AI output was good on its own.",
+        "Loop stopped anyway. Audiences want authenticity, and AI content has hit a saturation point.",
+        "The EU AI Act, plus New York and California, now forces visible labeling when you feature a human, and the label itself adds bias.",
+        "Where AI image and video win: conversion content, product shots, stock replacement. Brand storytelling is not on that list.",
+      ],
+    },
+    {
+      heading: "Image generation",
+      bullets: [
+        "Only two models do true semantic editing, changing one element while keeping the rest: Nano Banana and GPT-Image-2. Everything else is text-to-image.",
+        "Talk to those two like an LLM. The rest are blunt models that need very descriptive prompts.",
+        "Generate at 4K from the start. Never upscale, because it predicts pixels and hallucinates.",
+        "When you cannot control the output, ask Claude for a hundred versions of the prompt, run them all, and curate what comes back.",
+        "AI does not make layers. Generate flat, then have Cowork segment the result into a clean PSD afterward (text rasterizes).",
+        "GPT-Image-2 is strong at UI mockups. Get the direction there, then hand it to Claude to build the working HTML.",
+        "Krea is a convenient wrapper at about €20 per seat a month, roughly a 5× markup on the API. Wire your own with OpenAI and Gemini keys if you want. Skip Higgsfield; ComfyUI and Weavy are node tools for repeatable pipelines.",
+      ],
+    },
+    {
+      heading: "Pages in code, not image-gen",
+      bullets: [
+        "For simple pages of blocks and logos, like the two-tracker permutation pages, code beats generation. SVG and HTML are lighter, editable, trackable, and they rank.",
+        "Document your Elementor blocks once so Claude can rebuild them in pure code.",
+        "For an exact logo or gradient, use code. If Claude keeps redrawing it wrong, drop the PNG on top as-is.",
+        "Build a website QA agent that catches the broken SEO and code a non-technical review can’t see. (That one is already scoped below.)",
+      ],
+    },
+    {
+      heading: "Video & animation",
+      bullets: [
+        "Seedance leads video right now. OpenAI’s Sora bowed out, and Google has Veo 3 with Veo 4 pending.",
+        "Stop-motion trick: give a start frame with only the background and an end frame with the final composition. AI interpolates the elements into view.",
+        "The last frame freezes, so chain it as the start frame of the next clip to keep a sequence moving.",
+        "Gemini is the only model that reads what is on screen in a video, not just the audio.",
+        "After Effects timelines export to JSON. Feed your best and worst performers in, ask for the patterns, and generate a new scene script to test.",
+        "Hyperframes and Remotion animate code and HTML directly, and Fable pairs well with them. About three months old, so rough, but worth a parallel experiment.",
+        "ElevenLabs handles voiceover and voice cloning. Loop’s UGC dubbing runs transcribe, double-check the audio and the on-screen captions, translate, agency review, then ElevenLabs and caption placement.",
       ],
     },
   ],
@@ -379,9 +441,10 @@ const exalateTldr: WorkshopTldrContent = {
     {
       owner: "Exalate",
       items: [
-        "Drop reference visuals and permutation-page examples in Slack.",
-        "Share one Exalate video plus the zipped After Effects project for analysis.",
-        "Upload the brand book to Claude and fork the Gen-AI prompting skill into an Exalate one.",
+        "Drop reference visuals in Slack: the tech and UI-style outputs you want, icons and logos included.",
+        "Share the use-case and permutation page examples.",
+        "Radan: share an Exalate video plus the zipped After Effects package for analysis.",
+        "Upload the brand book and fork the Gen-AI prompting skill into an Exalate one, paired with a tone-of-voice skill.",
         "Try Hyperframes and Remotion on one existing animation.",
       ],
     },
@@ -391,14 +454,17 @@ const exalateTldr: WorkshopTldrContent = {
         "Share the forward-deployed AI reading list.",
         "Share the confidence-levels and pushback instructions.",
         "Share Anthropic’s guide to building Skills.",
+        "Share the curated prompt variants from the shopping-cart shot.",
+        "Share the Hyperframes and Remotion link.",
       ],
     },
   ],
-  footnote: "Full notes are in the meeting doc. This is the version you screenshot.",
+  footnote:
+    "Copy or download this as Markdown and drop it into Claude to turn the next steps into a plan.",
 };
 
 const workshopFooter = {
-  line: "Thoughtform · Exalate AI Workshop · A speed layer on the creative process.",
+  line: "Thoughtform · AI Capability Workshop · A speed layer on the creative process.",
   signature: "Scoped with the Exalate marketing team · 10 July 2026.",
 };
 
@@ -465,9 +531,9 @@ const aiopMono = PT_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Thoughtform · Exalate AI Workshop",
+  title: "Thoughtform · AI Capability Workshop",
   description:
-    "Exalate AI workshop recap: the adoption frame, the tools that matter, and the first six Skills scoped for the marketing team.",
+    "AI Capability Workshop recap: the adoption frame, the tools that matter, and the first six Skills scoped for the marketing team.",
   robots: { index: false, follow: false },
 };
 
