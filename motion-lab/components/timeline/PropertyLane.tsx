@@ -73,7 +73,7 @@ export function PropertyLane({
             left: geometry.frameToPx(sceneStart + track.keyframes[0].frame),
             width: Math.max(
               2,
-              geometry.frameToPx(
+              geometry.framesToPx(
                 track.keyframes[track.keyframes.length - 1].frame -
                   track.keyframes[0].frame,
               ),

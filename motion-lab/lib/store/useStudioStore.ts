@@ -48,6 +48,8 @@ interface StudioState {
 
   /* --- document lifecycle --- */
   loadDoc: (doc: MotionDoc) => void;
+  /** Apply a disk edit as one undoable change. */
+  applyExternalDoc: (doc: MotionDoc) => void;
   /** Committed edit: current doc goes to history, next becomes doc. */
   commitDoc: (next: MotionDoc) => void;
   /** Transient edit (mid-drag): no history entry. */
@@ -97,6 +99,20 @@ export const useStudioStore = create<StudioState>((set, get) => ({
       playhead: 0,
     });
     get().playerHandle?.seekTo(0);
+  },
+
+  applyExternalDoc: (doc) => {
+    const { doc: current, past, playhead } = get();
+    const nextPlayhead = clampFrame(doc, playhead);
+    set({
+      doc,
+      past: pushHistory(past, current),
+      future: [],
+      gestureBase: null,
+      selection: { type: "none" },
+      playhead: nextPlayhead,
+    });
+    get().playerHandle?.seekTo(nextPlayhead);
   },
 
   commitDoc: (next) => {

@@ -3,6 +3,7 @@ import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
 
 import "./globals.css";
 import "./studio.css";
+import "./studio-v2.css";
 
 const plexSans = IBM_Plex_Sans({
   subsets: ["latin"],

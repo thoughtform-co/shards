@@ -4,7 +4,7 @@ import path from "node:path";
 import { NextResponse } from "next/server";
 
 import { motionDocToHyperframes } from "../../../../lib/export/motionDocToHyperframes";
-import { motionDocSchema } from "../../../../lib/motiondoc/schema";
+import { safeParseMotionDoc } from "../../../../lib/motiondoc/migrate";
 
 export const runtime = "nodejs";
 
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const parsed = motionDocSchema.safeParse((body as { doc?: unknown })?.doc);
+  const parsed = safeParseMotionDoc((body as { doc?: unknown })?.doc);
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid motion doc" }, { status: 422 });
   }

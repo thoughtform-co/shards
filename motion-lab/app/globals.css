@@ -3,21 +3,21 @@
    tuned for long staring-at-a-timeline sessions. */
 
 :root {
-  --bg: #0e0d0b;
-  --panel: #151310;
-  --panel-2: #1c1915;
-  --panel-3: #232019;
-  --border: #2a2620;
-  --border-strong: #3d372c;
-  --text: #ece7dd;
-  --text-muted: #a29a87;
-  --text-faint: #6f6858;
-  --accent: #c5a059;
-  --accent-strong: #e0bc6e;
-  --accent-dim: rgba(197, 160, 89, 0.16);
+  --bg: #090b10;
+  --panel: #11141b;
+  --panel-2: #171b24;
+  --panel-3: #1e2430;
+  --border: #252b38;
+  --border-strong: #394154;
+  --text: #f4f6fb;
+  --text-muted: #aab2c3;
+  --text-faint: #6f788c;
+  --accent: #6d5dfc;
+  --accent-strong: #8e83ff;
+  --accent-dim: rgba(109, 93, 252, 0.18);
   --danger: #d47b6a;
   --ok: #8fae8b;
-  --info: #8fa3b8;
+  --info: #4f8cff;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
   --radius: 8px;
   --radius-sm: 5px;

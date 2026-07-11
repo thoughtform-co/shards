@@ -2,10 +2,17 @@
 
 import { useEffect } from "react";
 
-import { addKeyframe, deleteElement, deleteKeyframe } from "../motiondoc/mutate";
+import {
+  addKeyframe,
+  deleteElement,
+  deleteKeyframe,
+  duplicateElement,
+  duplicateScene,
+} from "../motiondoc/mutate";
 import { sampleElementValues } from "../motiondoc/sample";
 import { computeSceneStarts } from "../motiondoc/timing";
 import { findSelection, useStudioStore } from "../store/useStudioStore";
+import { useStudioUiStore } from "../store/useStudioUiStore";
 
 function isTypingTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
@@ -66,6 +73,23 @@ export function useKeyboardShortcuts(): void {
         s.redo();
         return;
       }
+      if (e.shiftKey && e.key.toLowerCase() === "m") {
+        e.preventDefault();
+        const ui = useStudioUiStore.getState();
+        ui.setSnapping(!ui.snapping);
+        return;
+      }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "d") {
+        const sel = s.selection;
+        if (sel.type === "element") {
+          e.preventDefault();
+          s.commitDoc(duplicateElement(s.doc, sel.sceneId, sel.elementId));
+        } else if (sel.type === "scene") {
+          e.preventDefault();
+          s.commitDoc(duplicateScene(s.doc, sel.sceneId));
+        }
+        return;
+      }
       if (e.key === "Escape") {
         s.cancelGesture();
         s.select({ type: "none" });
@@ -75,6 +99,8 @@ export function useKeyboardShortcuts(): void {
       if (e.key === "Delete" || e.key === "Backspace") {
         const sel = s.selection;
         if (sel.type === "keyframe") {
+          const resolved = findSelection(s.doc, sel);
+          if (resolved.element?.locked) return;
           e.preventDefault();
           s.commitDoc(
             deleteKeyframe(
@@ -93,6 +119,8 @@ export function useKeyboardShortcuts(): void {
             elementId: sel.elementId,
           });
         } else if (sel.type === "element") {
+          const resolved = findSelection(s.doc, sel);
+          if (resolved.element?.locked) return;
           e.preventDefault();
           s.commitDoc(deleteElement(s.doc, sel.sceneId, sel.elementId));
           s.select({ type: "scene", sceneId: sel.sceneId });

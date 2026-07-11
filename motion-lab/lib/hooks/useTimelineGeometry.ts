@@ -17,13 +17,17 @@ export function useTimelineGeometry(doc: MotionDoc) {
   return useMemo(() => {
     const starts = computeSceneStarts(doc);
     const total = totalDurationInFrames(doc);
+    const labelWidth = 232;
     return {
       zoom,
       starts,
       total,
-      contentWidth: total * zoom + 240,
-      frameToPx: (frame: number) => frame * zoom,
-      pxToFrame: (px: number) => px / zoom,
+      labelWidth,
+      contentWidth: total * zoom + labelWidth + 48,
+      frameToPx: (frame: number) => labelWidth + frame * zoom,
+      framesToPx: (frames: number) => frames * zoom,
+      pxToFrame: (px: number) => (px - labelWidth) / zoom,
+      pxDeltaToFrames: (px: number) => px / zoom,
     };
   }, [doc, zoom]);
 }

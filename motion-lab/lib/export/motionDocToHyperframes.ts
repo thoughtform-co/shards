@@ -1,5 +1,6 @@
 import { resolveColor } from "../motiondoc/colors";
-import { sampleElementValues } from "../motiondoc/sample";
+import { assetFontFamily, findAsset, publicAssetPath } from "../motiondoc/assets";
+import { initialElementValues } from "../motiondoc/initialValues";
 import type { MotionDoc, MotionElement } from "../motiondoc/schema";
 import { computeSceneStarts, overlapIn, totalDurationInFrames } from "../motiondoc/timing";
 
@@ -64,10 +65,15 @@ function elementMarkup(
   element: MotionElement,
   elId: string,
   doc: MotionDoc,
+  globalStartFrame: number,
+  durationInFrames: number,
+  trackIndex: number,
 ): string {
+  const timing = `data-start="${sec(globalStartFrame, doc.meta.fps)}" data-duration="${sec(durationInFrames, doc.meta.fps)}" data-track-index="${trackIndex}"`;
   if (element.kind === "text") {
+    const fontAsset = findAsset(doc.assets, element.fontAssetId);
     const style = [
-      `font-family:${doc.brand.fonts[element.font]}`,
+      `font-family:${fontAsset?.kind === "font" ? `'${assetFontFamily(fontAsset)}'` : doc.brand.fonts[element.font]}`,
       `font-size:${element.fontSize}px`,
       `font-weight:${element.fontWeight}`,
       `color:${resolveColor(element.color, doc.brand)}`,
@@ -82,18 +88,18 @@ function elementMarkup(
     ]
       .filter(Boolean)
       .join(";");
-    return `<div class="el" id="${elId}" style="${style}">${escapeHtml(element.text)}</div>`;
+    return `<div class="el clip" id="${elId}" ${timing} style="${style}">${escapeHtml(element.text)}</div>`;
   }
   if (element.kind === "shape") {
     const radius = element.shape === "ellipse" ? "50%" : `${element.radius}px`;
     const style = `width:${element.width}px;height:${element.height}px;background:${resolveColor(element.fill, doc.brand)};border-radius:${radius}`;
-    return `<div class="el" id="${elId}" style="${style}"></div>`;
+    return `<div class="el clip" id="${elId}" ${timing} style="${style}"></div>`;
   }
   const src = element.src.startsWith("/")
     ? element.src.replace(/^\/+/, "")
     : element.src;
   const style = `width:${element.width}px;height:${element.height}px;object-fit:${element.fit};border-radius:${element.radius}px`;
-  return `<img class="el" id="${elId}" src="${escapeHtml(src)}" style="${style}">`;
+  return `<img class="el clip" id="${elId}" ${timing} src="${escapeHtml(src)}" style="${style}">`;
 }
 
 export function motionDocToHyperframes(doc: MotionDoc): HyperframesExport {
@@ -121,14 +127,27 @@ export function motionDocToHyperframes(doc: MotionDoc): HyperframesExport {
       : "";
 
     const els = scene.elements
-      .map((element, ei) => elementMarkup(element, `s${si}-e${ei}`, doc))
+      .map((element, ei) => {
+        if (!element.visible) return "";
+        const effectiveOut = Math.min(scene.durationInFrames, element.outFrame);
+        const duration = Math.max(1, effectiveOut - element.inFrame);
+        return elementMarkup(
+          element,
+          `s${si}-e${ei}`,
+          doc,
+          starts[si] + element.inFrame,
+          duration,
+          1 + si * 100 + ei,
+        );
+      })
+      .filter(Boolean)
       .join("\n      ");
 
     /* class="clip" lets the HyperFrames runtime window visibility by
        data-start/duration; the timeline's opacity tweens agree with it
        (and carry the crossfades). */
     sceneDivs.push(
-      `    <div class="scene clip" id="${sceneId}" data-start="${startSec}" data-duration="${durSec}" style="${bg}">\n      ${els}\n    </div>`,
+      `    <div class="scene clip" id="${sceneId}" data-start="${startSec}" data-duration="${durSec}" data-track-index="${si}" style="${bg}">\n      ${els}\n    </div>`,
     );
 
     /* --- scene visibility in the timeline (cut / crossfade) --- */
@@ -164,13 +183,18 @@ export function motionDocToHyperframes(doc: MotionDoc): HyperframesExport {
     /* --- elements: base state + keyframe tweens --- */
     scene.elements.forEach((element, ei) => {
       const elSel = `"#s${si}-e${ei}"`;
-      const initial = sampleElementValues(element, 0, fps);
+      if (!element.visible) return;
+      const initial = initialElementValues(element);
       setLines.push(
         `  gsap.set(${elSel}, { x: ${initial.x}, y: ${initial.y}, xPercent: -50, yPercent: -50, scale: ${initial.scale}, rotation: ${initial.rotation}, opacity: ${initial.opacity}, transformOrigin: "${ORIGIN_CSS[element.transformOrigin]}" });`,
       );
 
       if (element.kind === "image" && element.src.startsWith("/")) {
         localAssets.push(element.src);
+      }
+      if (element.kind === "text" && element.fontAssetId) {
+        const fontAsset = findAsset(doc.assets, element.fontAssetId);
+        if (fontAsset?.kind === "font") localAssets.push(fontAsset.src);
       }
 
       element.tracks.forEach((track) => {
@@ -219,6 +243,12 @@ export function motionDocToHyperframes(doc: MotionDoc): HyperframesExport {
   const fontLink = usesPlex
     ? `\n  <link rel="preconnect" href="https://fonts.googleapis.com">\n  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">`
     : "";
+  const localFontCss = doc.assets
+    .filter((asset) => asset.kind === "font")
+    .map(
+      (asset) => `@font-face { font-family: '${assetFontFamily(asset)}'; src: url('${publicAssetPath(asset.src)}'); font-weight: ${asset.fontWeight ?? 400}; font-style: ${asset.fontStyle ?? "normal"}; font-display: block; }`,
+    )
+    .join("\n    ");
 
   const html = `<!doctype html>
 <html lang="en">
@@ -226,6 +256,7 @@ export function motionDocToHyperframes(doc: MotionDoc): HyperframesExport {
   <meta charset="utf-8">
   <title>${escapeHtml(doc.meta.title)}</title>${fontLink}
   <style>
+    ${localFontCss}
     html, body { margin: 0; padding: 0; background: #000; }
     #stage {
       position: relative;
@@ -255,5 +286,5 @@ ${tweenLines.join("\n")}
 </html>
 `;
 
-  return { html, notes: [...new Set(notes)], localAssets, stats: { sceneTweens, keyframeTweens } };
+  return { html, notes: [...new Set(notes)], localAssets: [...new Set(localAssets)], stats: { sceneTweens, keyframeTweens } };
 }

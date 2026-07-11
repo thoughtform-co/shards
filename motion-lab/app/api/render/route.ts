@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 
 import { NextResponse } from "next/server";
 
-import { motionDocSchema } from "../../../lib/motiondoc/schema";
+import { safeParseMotionDoc } from "../../../lib/motiondoc/migrate";
 import { createJob, updateJob } from "../../../lib/render/jobs";
 import { renderMotionDocToFile } from "../../../lib/render/renderer";
 import { ensureRendersDir, renderOutputPath } from "../../../lib/render/workspace";
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
-  const parsed = motionDocSchema.safeParse((body as { doc?: unknown })?.doc);
+  const parsed = safeParseMotionDoc((body as { doc?: unknown })?.doc);
   if (!parsed.success) {
     return NextResponse.json(
       {

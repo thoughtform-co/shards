@@ -4,5 +4,8 @@ node_modules/
 .env*.local
 .renders/
 exports/
+dist/
+workspace/
+.agent-dev-ready
 *.tsbuildinfo
 next-env.d.ts

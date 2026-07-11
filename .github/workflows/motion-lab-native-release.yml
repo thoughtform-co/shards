@@ -1,0 +1,193 @@
+name: Motion Lab native release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: ${{ matrix.label }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: Windows x64
+            runner: windows-latest
+            platform: win32
+            arch: x64
+            suffix: Windows-x64
+          - label: macOS Apple Silicon
+            runner: macos-15
+            platform: darwin
+            arch: arm64
+            suffix: macOS-arm64
+          - label: macOS Intel
+            runner: macos-15-intel
+            platform: darwin
+            arch: x64
+            suffix: macOS-x64
+    runs-on: ${{ matrix.runner }}
+    defaults:
+      run:
+        working-directory: motion-lab
+    env:
+      NODE_VERSION: 22.16.0
+      RELEASE_NAME: Motion-Lab-AE-Lite-Agent-Ready-${{ matrix.suffix }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.16.0
+          cache: npm
+          cache-dependency-path: motion-lab/package-lock.json
+
+      - name: Assert native architecture
+        shell: bash
+        run: |
+          actual="$(node -p 'process.arch')"
+          test "$actual" = "${{ matrix.arch }}" || {
+            echo "Expected ${{ matrix.arch }}, got $actual"
+            exit 1
+          }
+
+      - name: Install and check
+        shell: bash
+        run: |
+          npm ci
+          npm run typecheck
+          npm run validate:examples
+          npm run check:exporter
+          npm run check:v2
+          npm run check:workspace
+          npm run build
+
+      - name: Download embedded Node runtime (Windows)
+        if: matrix.platform == 'win32'
+        shell: pwsh
+        run: |
+          $archive = Join-Path $env:RUNNER_TEMP "node-runtime.zip"
+          $url = "https://nodejs.org/dist/v$env:NODE_VERSION/node-v$env:NODE_VERSION-win-x64.zip"
+          Invoke-WebRequest -Uri $url -OutFile $archive
+          Expand-Archive -LiteralPath $archive -DestinationPath $env:RUNNER_TEMP -Force
+          $runtime = Join-Path $env:RUNNER_TEMP "node-v$env:NODE_VERSION-win-x64"
+          $out = Join-Path $PWD "dist\$env:RELEASE_NAME"
+          node scripts/package-release.mjs --platform win32 --arch x64 --runtime $runtime --out $out
+
+      - name: Download embedded Node runtime (macOS)
+        if: matrix.platform == 'darwin'
+        shell: bash
+        run: |
+          runtime_archive="$RUNNER_TEMP/node-runtime.tar.gz"
+          runtime_name="node-v${NODE_VERSION}-darwin-${{ matrix.arch }}"
+          curl -fsSL "https://nodejs.org/dist/v${NODE_VERSION}/${runtime_name}.tar.gz" -o "$runtime_archive"
+          tar -xzf "$runtime_archive" -C "$RUNNER_TEMP"
+          node scripts/package-release.mjs \
+            --platform darwin \
+            --arch "${{ matrix.arch }}" \
+            --runtime "$RUNNER_TEMP/$runtime_name" \
+            --out "$PWD/dist/$RELEASE_NAME"
+          chmod +x "$PWD/dist/$RELEASE_NAME/"*.command
+
+      - name: Create release archive (Windows)
+        if: matrix.platform == 'win32'
+        shell: pwsh
+        run: |
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $source = Join-Path $PWD "dist\$env:RELEASE_NAME"
+          $zip = Join-Path $PWD "dist\$env:RELEASE_NAME.zip"
+          [System.IO.Compression.ZipFile]::CreateFromDirectory(
+            $source,
+            $zip,
+            [System.IO.Compression.CompressionLevel]::Optimal,
+            $true
+          )
+          $hash = (Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  $env:RELEASE_NAME.zip" | Set-Content -LiteralPath "$zip.sha256" -Encoding ascii
+
+      - name: Create release archive (macOS)
+        if: matrix.platform == 'darwin'
+        shell: bash
+        run: |
+          ditto -c -k --sequesterRsrc --keepParent \
+            "$PWD/dist/$RELEASE_NAME" \
+            "$PWD/dist/$RELEASE_NAME.zip"
+          cd "$PWD/dist"
+          shasum -a 256 "$RELEASE_NAME.zip" > "$RELEASE_NAME.zip.sha256"
+
+      - name: Extract archive for smoke test (Windows)
+        if: matrix.platform == 'win32'
+        shell: pwsh
+        run: |
+          $smoke = Join-Path $env:RUNNER_TEMP "motion-lab-smoke"
+          Expand-Archive -LiteralPath "$PWD\dist\$env:RELEASE_NAME.zip" -DestinationPath $smoke -Force
+          "MOTION_LAB_SMOKE_ROOT=$smoke\$env:RELEASE_NAME" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Extract archive for smoke test (macOS)
+        if: matrix.platform == 'darwin'
+        shell: bash
+        run: |
+          smoke="$RUNNER_TEMP/motion-lab-smoke"
+          mkdir -p "$smoke"
+          ditto -x -k "$PWD/dist/$RELEASE_NAME.zip" "$smoke"
+          echo "MOTION_LAB_SMOKE_ROOT=$smoke/$RELEASE_NAME" >> "$GITHUB_ENV"
+
+      - name: Start packaged server (Windows)
+        if: matrix.platform == 'win32'
+        shell: pwsh
+        run: |
+          $env:PORT = "3221"
+          $env:HOSTNAME = "127.0.0.1"
+          $node = Join-Path $env:MOTION_LAB_SMOKE_ROOT "runtime\node\node.exe"
+          $process = Start-Process -FilePath $node -ArgumentList "server.js" -WorkingDirectory $env:MOTION_LAB_SMOKE_ROOT -WindowStyle Hidden -PassThru
+          "MOTION_LAB_SERVER_PID=$($process.Id)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Start packaged server (macOS)
+        if: matrix.platform == 'darwin'
+        shell: bash
+        run: |
+          cd "$MOTION_LAB_SMOKE_ROOT"
+          PORT=3221 HOSTNAME=127.0.0.1 ./runtime/node/bin/node server.js > "$RUNNER_TEMP/motion-lab-server.log" 2>&1 &
+          echo "MOTION_LAB_SERVER_PID=$!" >> "$GITHUB_ENV"
+
+      - name: Smoke test packaged runtime
+        shell: bash
+        env:
+          MOTION_LAB_URL: http://127.0.0.1:3221
+          MOTION_LAB_ROOT: ${{ env.MOTION_LAB_SMOKE_ROOT }}
+        run: |
+          npm run check:project-api
+          npm run smoke:release
+
+      - name: Stop packaged server
+        if: always() && env.MOTION_LAB_SERVER_PID != ''
+        shell: bash
+        run: |
+          if [[ "${{ matrix.platform }}" == "win32" ]]; then
+            taskkill //PID "$MOTION_LAB_SERVER_PID" //T //F || true
+          else
+            kill "$MOTION_LAB_SERVER_PID" || true
+          fi
+
+      - name: Verify archive excludes private state
+        shell: bash
+        run: |
+          if find "$MOTION_LAB_SMOKE_ROOT" -name '.env.local' -o -name '*.tsbuildinfo' | grep -q .; then
+            echo "Release contains a private or generated file"
+            exit 1
+          fi
+          test -f "$MOTION_LAB_SMOKE_ROOT/AGENTS.md"
+          test -f "$MOTION_LAB_SMOKE_ROOT/skill/motion-design/SKILL.md"
+          test -f "$MOTION_LAB_SMOKE_ROOT/runtime/node/bin/node" -o -f "$MOTION_LAB_SMOKE_ROOT/runtime/node/node.exe"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.RELEASE_NAME }}
+          path: |
+            motion-lab/dist/${{ env.RELEASE_NAME }}.zip
+            motion-lab/dist/${{ env.RELEASE_NAME }}.zip.sha256
+          if-no-files-found: error
+          compression-level: 0

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Motion Design"
+  short_description: "Design and edit code-native motion videos"
+  default_prompt: "Use $motion-design to improve the active Motion Lab video with clear timing and choreography."

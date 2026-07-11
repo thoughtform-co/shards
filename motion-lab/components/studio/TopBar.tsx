@@ -1,9 +1,12 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
-import { motionDocSchema } from "../../lib/motiondoc/schema";
+import { safeParseMotionDoc } from "../../lib/motiondoc/migrate";
+import type { MotionDoc } from "../../lib/motiondoc/schema";
 import { useStudioStore } from "../../lib/store/useStudioStore";
+import { useStudioUiStore } from "../../lib/store/useStudioUiStore";
+import { useWorkspaceSyncStore } from "../../lib/store/useWorkspaceSyncStore";
 
 function slugify(title: string): string {
   return (
@@ -14,106 +17,139 @@ function slugify(title: string): string {
   );
 }
 
+function downloadBlob(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  anchor.click();
+  URL.revokeObjectURL(url);
+}
+
 export function TopBar({
   renderSlot,
   exportSlot,
 }: {
-  /** Render button mounts here (P3). */
   renderSlot?: React.ReactNode;
-  /** HyperFrames export button mounts here (P8). */
   exportSlot?: React.ReactNode;
 }) {
-  const doc = useStudioStore((s) => s.doc);
-  const canUndo = useStudioStore((s) => s.past.length > 0);
-  const canRedo = useStudioStore((s) => s.future.length > 0);
-  const undo = useStudioStore((s) => s.undo);
-  const redo = useStudioStore((s) => s.redo);
-  const loadDoc = useStudioStore((s) => s.loadDoc);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const doc = useStudioStore((state) => state.doc);
+  const canUndo = useStudioStore((state) => state.past.length > 0);
+  const canRedo = useStudioStore((state) => state.future.length > 0);
+  const undo = useStudioStore((state) => state.undo);
+  const redo = useStudioStore((state) => state.redo);
+  const loadDoc = useStudioStore((state) => state.loadDoc);
+  const leftOpen = useStudioUiStore((state) => state.leftOpen);
+  const rightOpen = useStudioUiStore((state) => state.rightOpen);
+  const setLeftOpen = useStudioUiStore((state) => state.setLeftOpen);
+  const setRightOpen = useStudioUiStore((state) => state.setRightOpen);
+  const jsonInput = useRef<HTMLInputElement>(null);
+  const bundleInput = useRef<HTMLInputElement>(null);
+  const [status, setStatus] = useState("");
+  const workspaceStatus = useWorkspaceSyncStore((state) => state.status);
 
-  const exportJson = () => {
-    const blob = new Blob([JSON.stringify(doc, null, 2)], {
-      type: "application/json",
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${slugify(doc.meta.title)}.motion.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
+  const exportJson = () =>
+    downloadBlob(
+      new Blob([JSON.stringify(doc, null, 2)], { type: "application/json" }),
+      `${slugify(doc.meta.title)}.motion.json`,
+    );
 
   const importJson = async (file: File) => {
     try {
-      const parsed = motionDocSchema.safeParse(JSON.parse(await file.text()));
-      if (!parsed.success) {
-        window.alert(
-          `Not a valid motion doc:\n${parsed.error.issues
-            .slice(0, 5)
-            .map((i) => `${i.path.join(".")}: ${i.message}`)
-            .join("\n")}`,
-        );
-        return;
-      }
+      const parsed = safeParseMotionDoc(JSON.parse(await file.text()));
+      if (!parsed.success) throw new Error(parsed.error.issues[0]?.message);
       loadDoc(parsed.data);
-    } catch {
-      window.alert("Could not parse that file as JSON.");
+      setStatus("JSON loaded");
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Invalid JSON file");
     }
+  };
+
+  const exportBundle = async () => {
+    setStatus("Packing project…");
+    const response = await fetch("/api/project/export", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ doc }),
+    });
+    if (!response.ok) {
+      const body = (await response.json()) as { error?: string };
+      setStatus(body.error ?? "Could not export project");
+      return;
+    }
+    downloadBlob(await response.blob(), `${slugify(doc.meta.title)}.motion.zip`);
+    setStatus("Project saved");
+  };
+
+  const importBundle = async (file: File) => {
+    setStatus("Opening project…");
+    const form = new FormData();
+    form.append("file", file);
+    const response = await fetch("/api/project/import", { method: "POST", body: form });
+    const body = (await response.json()) as { doc?: MotionDoc; error?: string };
+    if (!response.ok || !body.doc) {
+      setStatus(body.error ?? "Could not import project");
+      return;
+    }
+    loadDoc(body.doc);
+    setStatus("Project opened");
   };
 
   return (
     <header className="ml-topbar">
       <div className="ml-topbar__brand">
-        <span className="ml-topbar__dot" />
-        <span className="ml-topbar__wordmark">MOTION LAB</span>
-        <span className="ml-topbar__title" title={doc.meta.title}>
-          {doc.meta.title}
-        </span>
+        <span className="ml-topbar__mark">ML</span>
+        <span className="ml-topbar__wordmark">Motion Lab</span>
+        <span className="ml-topbar__title" title={doc.meta.title}>{doc.meta.title}</span>
       </div>
 
       <div className="ml-topbar__group">
-        <button
-          type="button"
-          className="ml-btn"
-          onClick={undo}
-          disabled={!canUndo}
-          title="Undo (Ctrl+Z)"
-        >
-          ↩ Undo
-        </button>
-        <button
-          type="button"
-          className="ml-btn"
-          onClick={redo}
-          disabled={!canRedo}
-          title="Redo (Ctrl+Shift+Z)"
-        >
-          Redo ↪
-        </button>
+        <button className="ml-btn ml-btn--icon" onClick={() => setLeftOpen(!leftOpen)} title="Toggle tools">▤</button>
+        <button className="ml-btn ml-btn--icon" onClick={() => setRightOpen(!rightOpen)} title="Toggle inspector">▥</button>
+        <button className="ml-btn" onClick={undo} disabled={!canUndo} title="Undo (Ctrl+Z)">Undo</button>
+        <button className="ml-btn" onClick={redo} disabled={!canRedo} title="Redo (Ctrl+Shift+Z)">Redo</button>
       </div>
 
       <div className="ml-topbar__group ml-topbar__group--right">
-        <button
-          type="button"
-          className="ml-btn"
-          onClick={() => fileInputRef.current?.click()}
+        <span
+          className={`ml-workspace-badge ml-workspace-badge--${workspaceStatus}`}
+          title="Agent workspace synchronization status"
         >
-          Import JSON
-        </button>
+          {workspaceStatus === "synced" ? "Workspace synced" : workspaceStatus}
+        </span>
+        {status ? <span className="ml-topbar__status" title={status}>{status}</span> : null}
+        <details className="ml-file-menu">
+          <summary className="ml-btn">File</summary>
+          <div className="ml-file-menu__popover">
+            <button onClick={() => bundleInput.current?.click()}>Open project bundle</button>
+            <button onClick={() => jsonInput.current?.click()}>Import JSON</button>
+            <hr />
+            <button onClick={() => void exportBundle()}>Save project bundle</button>
+            <button onClick={exportJson}>Export JSON</button>
+          </div>
+        </details>
         <input
-          ref={fileInputRef}
+          ref={jsonInput}
+          hidden
           type="file"
           accept=".json,application/json"
-          style={{ display: "none" }}
-          onChange={(e) => {
-            const file = e.target.files?.[0];
+          onChange={(event) => {
+            const file = event.target.files?.[0];
             if (file) void importJson(file);
-            e.target.value = "";
+            event.target.value = "";
           }}
         />
-        <button type="button" className="ml-btn" onClick={exportJson}>
-          Export JSON
-        </button>
+        <input
+          ref={bundleInput}
+          hidden
+          type="file"
+          accept=".zip,.motion.zip,application/zip"
+          onChange={(event) => {
+            const file = event.target.files?.[0];
+            if (file) void importBundle(file);
+            event.target.value = "";
+          }}
+        />
         {exportSlot}
         {renderSlot}
       </div>

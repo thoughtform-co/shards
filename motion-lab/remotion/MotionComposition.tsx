@@ -6,6 +6,7 @@ import type { MotionDoc } from "../lib/motiondoc/schema";
 import { computeSceneStarts, overlapIn } from "../lib/motiondoc/timing";
 
 import { loadBundledFonts } from "./fonts";
+import { loadAssetFonts } from "./assetFonts";
 import { SceneRenderer } from "./SceneRenderer";
 
 loadBundledFonts();
@@ -21,6 +22,7 @@ export type MotionCompositionProps = {
  * overlap window.
  */
 export function MotionComposition({ doc }: MotionCompositionProps) {
+  loadAssetFonts(doc.assets);
   const starts = useMemo(() => computeSceneStarts(doc), [doc]);
 
   return (
@@ -42,6 +44,7 @@ export function MotionComposition({ doc }: MotionCompositionProps) {
             <SceneRenderer
               scene={scene}
               brand={doc.brand}
+              assets={doc.assets}
               incomingOverlap={i > 0 ? overlapIn(scene, prev) : 0}
               outgoingOverlap={next ? overlapIn(next, scene) : 0}
             />

@@ -1,8 +1,6 @@
 ---
 name: motion-design
-description: Motion design craft for code-native video (Remotion, HyperFrames, Motion Lab motion docs). Use when planning or building explainer videos, animated social cuts, logo stings, or product animations in code; when choosing easing, timing, or choreography; when translating After Effects habits (keyframes, easy ease, precomps, graph editor) into code-based motion; when deriving a brand's motion language from a brand book; or when deciding between Remotion, HyperFrames, and After Effects for a job. Covers beat structure, duration and easing vocabulary, keyframe budgets, brand motion tokens, and motion-doc authoring. For raw engine mechanics defer to the hyperframes, gsap, css-animations, and remotion-best-practices skills when they are installed.
-metadata:
-  tags: [motion-design, video, remotion, hyperframes, explainer, animation]
+description: Motion design craft and agent workflow for code-native video in Motion Lab, Remotion, and HyperFrames. Use when planning, creating, critiquing, or revising explainer videos, social cuts, logo stings, product motion, MotionDoc JSON, timing, easing, choreography, brand motion language, After Effects translations, assets, workspace/project.motion.json, or Motion Lab editor source. Covers MotionDoc v2 authoring, the designer-agent edit loop, validation, and engine choice.
 ---
 
 # Motion Design in Code
@@ -114,6 +112,12 @@ When generating or editing a motion doc, obey the contract in [references/motion
 - Elements holding after their last keyframe is the mechanism for "animate in, then stay".
 - Colors reference brand tokens (`$accent`), never raw hex, unless intentionally off-brand.
 - Scene durations sum (minus crossfade overlaps) to the brief's target length; the final scene holds ≥45 frames after its last keyframe.
+
+For work inside a Motion Lab checkout or portable release, read
+[references/agent-workflow.md](references/agent-workflow.md) before editing files. Treat
+`workspace/project.motion.json` as the active project and use the repository guidance for
+source changes. Never edit `.next/`, traced production dependencies, rendered outputs, or a
+user's `.env.local`.
 
 ## Self-critique checklist
 

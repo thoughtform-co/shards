@@ -4,6 +4,52 @@
 
 This exists to answer one question honestly: **is code-based motion design quicker than After Effects?** For structured formats — explainers, social cuts, stings, anything with variants — the bet is yes, especially from the second video onwards. You be the judge; that's the point of the tool.
 
+## Standalone releases
+
+The agent-ready release ships as separate Windows x64, macOS Apple Silicon, and macOS Intel ZIPs.
+Extract the complete archive, then run `Start Motion Lab` for normal editing. The production server
+uses the embedded Node runtime; no system Node installation or `npm install` is required.
+
+The macOS package is unsigned. If Gatekeeper blocks it, right-click `Start Motion Lab.command`,
+choose **Open**, and confirm once. If macOS retains the quarantine flag, run
+`xattr -dr com.apple.quarantine <extracted-folder>` in Terminal.
+
+The first MP4 render may download Remotion's browser runtime. AI generation remains optional and
+requires a user-created `.env.local`; no API key is embedded in a release.
+
+## Work alongside Codex, Claude Code, or Cursor
+
+Motion Lab is designed to run next to an external coding agent, not to embed one. Open the extracted
+Motion Lab folder in your agent and ask it to read `AGENTS.md`. Codex, Claude Code, and Cursor also
+receive tool-specific guidance from the files included in the folder.
+
+The active video is `workspace/project.motion.json`. Motion Lab writes UI edits there, detects agent
+edits within two seconds, validates them, and imports each external revision as one undo step. The
+Agent tab shows the exact path, synchronization state, a starter prompt, and conflict controls.
+
+Example prompts:
+
+- “Read AGENTS.md, then make scene three calmer and give the payoff another half-second hold.”
+- “Use the motion-design skill to add a restrained logo sting without changing accepted scenes.”
+- “Extend the editor with a reusable line layer, keep both render paths equivalent, and run checks.”
+
+Use `Agent Dev` when the agent changes application source. Its first run installs locked dependencies
+with the embedded Node/npm toolchain and then starts hot reload. Normal project JSON edits work while
+the production launcher is running and need no rebuild.
+
+## AE-lite editor workspace
+
+Motion Lab now uses a desktop editing layout instead of a prompt-first dashboard:
+
+- **Assets** imports PNG, JPEG, WebP, SVG, WOFF/WOFF2, TTF, and OTF files into a content-addressed local library.
+- **Create** adds text, shapes, images, and blank scenes without regenerating the document.
+- **AI** contains Brief → Draft and the example documents; generation supports the edit loop instead of occupying the workspace.
+- The **canvas** selects, moves, scales, rotates, and snaps layers. Animated properties write a keyframe at the playhead; static properties update their base value.
+- The **timeline** keeps the scene strip and adds reorderable layer clips, non-destructive in/out trims, visibility/lock controls, and expandable property lanes.
+- **File → Save project bundle** creates a portable `.motion.zip` with the v2 MotionDoc and all local image/font assets.
+
+The left tools, right inspector, and bottom timeline are resizable and collapsible. Panel layout is saved separately from the motion document.
+
 ## Requirements
 
 - **Node.js 22+** — check with `node --version` (download: https://nodejs.org)
@@ -58,6 +104,8 @@ Prefer working raw? **Import/Export JSON** round-trips the motion doc — hand-e
 | `K` | Pin keyframe at playhead (on the selected keyframe's track) |
 | `Delete` | Delete selected keyframe / element |
 | `Ctrl+Z` / `Ctrl+Shift+Z` | Undo / redo |
+| `Ctrl+D` | Duplicate selected scene / layer |
+| `Shift+M` | Toggle timeline and canvas snapping |
 | `Esc` | Clear selection |
 | `Ctrl+scroll` on timeline | Zoom (anchored at cursor) |
 

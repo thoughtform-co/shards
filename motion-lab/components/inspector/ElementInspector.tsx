@@ -5,6 +5,7 @@ import {
   deleteElement,
   duplicateElement,
   patchElement,
+  setElementPropertyAtFrame,
 } from "../../lib/motiondoc/mutate";
 import { sampleElementValues } from "../../lib/motiondoc/sample";
 import type {
@@ -65,6 +66,26 @@ export function ElementInspector({
   const patch = (fields: Record<string, unknown>, phase: ChangePhase) =>
     apply(patchElement(doc, scene.id, element.id, fields), phase);
 
+  const localFrame = Math.max(
+    0,
+    Math.min(Math.round(playhead - sceneStart), scene.durationInFrames),
+  );
+
+  const patchTransform = (
+    property: AnimatableProp,
+    value: number,
+    phase: ChangePhase,
+  ) =>
+    apply(
+      setElementPropertyAtFrame(
+        doc,
+        { sceneId: scene.id, elementId: element.id, property },
+        localFrame,
+        value,
+      ),
+      phase,
+    );
+
   /* Pin a keyframe at the playhead with the current sampled value —
      the stopwatch: starts (or extends) a track without visibly
      changing the animation. */
@@ -89,6 +110,25 @@ export function ElementInspector({
     });
   };
 
+  if (element.locked) {
+    return (
+      <section className="ml-panel ml-inspector-panel">
+        <h2 className="ml-panel__title">Element · {element.kind}</h2>
+        <p className="ml-panel__hint">
+          {element.name} is locked. It remains visible in the render but cannot
+          be changed until it is unlocked.
+        </p>
+        <button
+          type="button"
+          className="ml-btn ml-btn--primary"
+          onClick={() => patch({ locked: false }, "commit")}
+        >
+          Unlock layer
+        </button>
+      </section>
+    );
+  }
+
   return (
     <section className="ml-panel">
       <h2 className="ml-panel__title">
@@ -99,6 +139,37 @@ export function ElementInspector({
         value={element.name}
         onCommit={(v) => patch({ name: v }, "commit")}
       />
+      <div className="ml-panel__toggles">
+        <button
+          type="button"
+          className={`ml-toggle-chip${element.visible ? " is-active" : ""}`}
+          onClick={() => patch({ visible: !element.visible }, "commit")}
+        >
+          {element.visible ? "Visible" : "Hidden"}
+        </button>
+        <button
+          type="button"
+          className={`ml-toggle-chip${element.locked ? " is-active" : ""}`}
+          onClick={() => patch({ locked: !element.locked }, "commit")}
+        >
+          {element.locked ? "Locked" : "Unlocked"}
+        </button>
+      </div>
+      <div className="ml-field-pair">
+        <NumberField
+          label="in"
+          value={element.inFrame}
+          min={0}
+          max={element.outFrame - 1}
+          onChange={(value, phase) => patch({ inFrame: Math.round(value) }, phase)}
+        />
+        <NumberField
+          label="out"
+          value={element.outFrame}
+          min={element.inFrame + 1}
+          onChange={(value, phase) => patch({ outFrame: Math.round(value) }, phase)}
+        />
+      </div>
 
       {element.kind === "text" ? (
         <>
@@ -116,13 +187,23 @@ export function ElementInspector({
           />
           <SelectField
             label="font"
-            value={element.font}
+            value={element.fontAssetId ? `asset:${element.fontAssetId}` : element.font}
             options={[
               { value: "heading", label: "heading" },
               { value: "body", label: "body" },
               { value: "mono", label: "mono" },
+              ...doc.assets
+                .filter((asset) => asset.kind === "font")
+                .map((asset) => ({
+                  value: `asset:${asset.id}`,
+                  label: asset.fontFamily ?? asset.originalName,
+                })),
             ]}
-            onCommit={(v) => patch({ font: v }, "commit")}
+            onCommit={(value) =>
+              value.startsWith("asset:")
+                ? patch({ fontAssetId: value.slice(6) }, "commit")
+                : patch({ font: value, fontAssetId: undefined }, "commit")
+            }
           />
           <NumberField
             label="weight"
@@ -244,7 +325,7 @@ export function ElementInspector({
               precision={field.precision}
               min={field.min}
               max={field.max}
-              onChange={(v, p) => patch({ [property]: v }, p)}
+              onChange={(v, p) => patchTransform(property, v, p)}
               title={
                 hasTrack
                   ? "Base value (a track overrides this while animating)"

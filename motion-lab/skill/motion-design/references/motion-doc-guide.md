@@ -1,6 +1,9 @@
 # Motion doc authoring guide
 
-The contract for generating and editing Motion Lab documents. When generating, you return `{ title, brand, scenes }` — the app owns `meta` (canvas size, fps, format) and assigns ids. When editing an existing doc, preserve ids of everything you keep.
+The stored contract is MotionDoc v2: `{ version: 2, meta, brand, assets, scenes }`. The
+in-app generator may return `{ title, brand, scenes }` because the app supplies `meta`, assets,
+layer bounds, visibility, locks, and IDs. When editing a stored document, preserve IDs of
+everything you keep.
 
 ## Canvas & coordinates
 
@@ -10,12 +13,15 @@ The contract for generating and editing Motion Lab documents. When generating, y
 - 9:16 verticals: bottom ~15% is caption territory on social — keep CTAs above it.
 - `scale` is uniform, 1 = designed size. `rotation` in degrees. `opacity` 0–1.
 - Stacking: element array order, later = on top.
+- Every element has `inFrame`, `outFrame`, `visible`, and `locked`. Bounds are scene-relative;
+  rendering clamps them without deleting keyframes beyond the current scene duration.
 
 ## Text sizing (1080p reference)
 
 - Hero headline 72–110px · headline 56–84 · subline 36–48 · body/caption 32–44 · eyebrow/mono labels 26–40 with `letterSpacing` 0.08–0.2.
 - Single line unless `maxWidth` is set; set `maxWidth` whenever copy exceeds ~28 characters. Estimate line width ≈ fontSize × 0.55 × characters — it must fit inside the safe margins.
 - `font` is a ROLE: `heading` | `body` | `mono` (resolved through brand.fonts). Mono = system labels, data, technical eyebrows.
+- A text layer may set `fontAssetId` to an uploaded font. Keep the brand role as its fallback.
 
 ## Scenes & time
 
@@ -33,6 +39,15 @@ The contract for generating and editing Motion Lab documents. When generating, y
 - Elements reference tokens (`"$accent"`), never hex, unless intentionally off-palette.
 - `brand.fonts` are CSS stacks. Default stacks (always render-safe): `'IBM Plex Sans', 'Segoe UI', 'Helvetica Neue', sans-serif` and `'IBM Plex Mono', Consolas, monospace`.
 - Accent color does ONE job per video (CTAs, or data, or connective motion).
+
+## Assets
+
+- Keep the mandatory top-level `assets` array, even when it is empty.
+- Local images use `assetId` and retain `src`; remote images may use `src` alone.
+- Uploaded fonts use `fontAssetId` while retaining the text layer's brand font role.
+- Local sources live under `/assets/uploads/<sha256>.<ext>` and the asset record's `sha256` must
+  match the file. Import through Motion Lab rather than inventing records by hand.
+- Do not delete an asset that a layer references.
 
 ## Budgets (hard)
 

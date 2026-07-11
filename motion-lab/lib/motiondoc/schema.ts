@@ -106,7 +106,7 @@ export type TransformOrigin = z.infer<typeof transformOriginSchema>;
  */
 const colorValue = z.string();
 
-const elementBaseFields = {
+const elementVisualBaseFields = {
   name: z.string(),
   /** Center position on the canvas, in px. */
   x: z.number(),
@@ -118,6 +118,15 @@ const elementBaseFields = {
   transformOrigin: transformOriginSchema.default("center"),
 } as const;
 
+const elementTimelineFields = {
+  /** Scene-relative visibility bounds. Keyframes remain scene-relative. */
+  inFrame: z.number().int().min(0),
+  outFrame: z.number().int().min(1),
+  /** Hidden layers do not render. Locked layers render but cannot be edited. */
+  visible: z.boolean().default(true),
+  locked: z.boolean().default(false),
+} as const;
+
 const textFields = {
   kind: z.literal("text"),
   text: z.string(),
@@ -125,6 +134,8 @@ const textFields = {
   /** Resolved through brand.fonts. */
   font: z.enum(["heading", "body", "mono"]).default("heading"),
   fontWeight: z.number().default(600),
+  /** Uploaded font override. The semantic brand role remains the fallback. */
+  fontAssetId: z.string().optional(),
   color: colorValue.default("$text"),
   align: z.enum(["left", "center", "right"]).default("center"),
   /** Wrapping width in px; omit for a single line. */
@@ -146,6 +157,8 @@ const shapeFields = {
 
 const imageFields = {
   kind: z.literal("image"),
+  /** Stable link into MotionDoc.assets for local/bundled images. */
+  assetId: z.string().optional(),
   /** Absolute URL or "/assets/…" (motion-lab/public/assets). */
   src: z.string(),
   width: z.number().min(1),
@@ -156,19 +169,22 @@ const imageFields = {
 
 export const textElementSchema = z.object({
   id: z.string(),
-  ...elementBaseFields,
+  ...elementVisualBaseFields,
+  ...elementTimelineFields,
   ...textFields,
   tracks: z.array(trackSchema).default([]),
 });
 export const shapeElementSchema = z.object({
   id: z.string(),
-  ...elementBaseFields,
+  ...elementVisualBaseFields,
+  ...elementTimelineFields,
   ...shapeFields,
   tracks: z.array(trackSchema).default([]),
 });
 export const imageElementSchema = z.object({
   id: z.string(),
-  ...elementBaseFields,
+  ...elementVisualBaseFields,
+  ...elementTimelineFields,
   ...imageFields,
   tracks: z.array(trackSchema).default([]),
 });
@@ -184,17 +200,17 @@ export type ImageElement = z.infer<typeof imageElementSchema>;
 export type MotionElement = z.infer<typeof elementSchema>;
 
 const genTextElementSchema = z.object({
-  ...elementBaseFields,
+  ...elementVisualBaseFields,
   ...textFields,
   tracks: z.array(genTrackSchema).default([]),
 });
 const genShapeElementSchema = z.object({
-  ...elementBaseFields,
+  ...elementVisualBaseFields,
   ...shapeFields,
   tracks: z.array(genTrackSchema).default([]),
 });
 const genImageElementSchema = z.object({
-  ...elementBaseFields,
+  ...elementVisualBaseFields,
   ...imageFields,
   tracks: z.array(genTrackSchema).default([]),
 });
@@ -275,10 +291,30 @@ export const metaSchema = z.object({
 });
 export type MotionMeta = z.infer<typeof metaSchema>;
 
+/* ------------------------------------------------------------------ *
+ * Local assets
+ * ------------------------------------------------------------------ */
+
+export const assetSchema = z.object({
+  id: z.string(),
+  kind: z.enum(["image", "font"]),
+  originalName: z.string(),
+  src: z.string(),
+  mimeType: z.string(),
+  sha256: z.string().regex(/^[a-f0-9]{64}$/),
+  width: z.number().int().positive().optional(),
+  height: z.number().int().positive().optional(),
+  fontFamily: z.string().optional(),
+  fontWeight: z.number().int().min(100).max(900).optional(),
+  fontStyle: z.enum(["normal", "italic"]).optional(),
+});
+export type MotionAsset = z.infer<typeof assetSchema>;
+
 export const motionDocSchema = z.object({
-  version: z.literal(1),
+  version: z.literal(2),
   meta: metaSchema,
   brand: brandSchema,
+  assets: z.array(assetSchema).default([]),
   scenes: z.array(sceneSchema).min(1),
 });
 export type MotionDoc = z.infer<typeof motionDocSchema>;

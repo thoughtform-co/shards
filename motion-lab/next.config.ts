@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  output: "standalone",
   /* @remotion/bundler wraps webpack and @remotion/renderer ships a
      native compositor binary — neither survives being crawled by the
      app bundler. Same posture as the parent shards app. */

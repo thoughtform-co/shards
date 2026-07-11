@@ -1,7 +1,12 @@
 import type { CSSProperties } from "react";
 
 import { sampleElementValues } from "../lib/motiondoc/sample";
-import type { Brand, MotionElement, TransformOrigin } from "../lib/motiondoc/schema";
+import type {
+  Brand,
+  MotionAsset,
+  MotionElement,
+  TransformOrigin,
+} from "../lib/motiondoc/schema";
 
 import { ImageLayer } from "./elements/ImageLayer";
 import { ShapeLayer } from "./elements/ShapeLayer";
@@ -24,14 +29,23 @@ const ORIGIN_CSS: Record<TransformOrigin, string> = {
 export function ElementRenderer({
   element,
   brand,
+  assets,
   frame,
   fps,
 }: {
   element: MotionElement;
   brand: Brand;
+  assets: MotionAsset[];
   frame: number;
   fps: number;
 }) {
+  if (
+    !element.visible ||
+    frame < element.inFrame ||
+    frame >= element.outFrame
+  ) {
+    return null;
+  }
   const v = sampleElementValues(element, frame, fps);
   if (v.opacity <= 0) return null;
 
@@ -47,7 +61,7 @@ export function ElementRenderer({
   return (
     <div style={style}>
       {element.kind === "text" ? (
-        <TextLayer element={element} brand={brand} />
+        <TextLayer element={element} brand={brand} assets={assets} />
       ) : element.kind === "shape" ? (
         <ShapeLayer element={element} brand={brand} />
       ) : (

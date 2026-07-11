@@ -1,9 +1,11 @@
 import { newId } from "./ids";
 import type {
+  Brand,
   AnimatableProp,
   EasePreset,
   Keyframe,
   MotionDoc,
+  MotionAsset,
   MotionElement,
   Scene,
   SpringConfig,
@@ -85,6 +87,62 @@ export function moveScene(
   return next;
 }
 
+export function patchMeta(
+  doc: MotionDoc,
+  patch: Partial<MotionDoc["meta"]>,
+): MotionDoc {
+  const next = structuredClone(doc);
+  Object.assign(next.meta, patch);
+  return next;
+}
+
+export function patchBrand(
+  doc: MotionDoc,
+  patch: { colors?: Partial<Brand["colors"]>; fonts?: Partial<Brand["fonts"]> },
+): MotionDoc {
+  const next = structuredClone(doc);
+  if (patch.colors) Object.assign(next.brand.colors, patch.colors);
+  if (patch.fonts) Object.assign(next.brand.fonts, patch.fonts);
+  return next;
+}
+
+export function moveSceneToIndex(
+  doc: MotionDoc,
+  sceneId: string,
+  targetIndex: number,
+): MotionDoc {
+  const next = structuredClone(doc);
+  const index = next.scenes.findIndex((scene) => scene.id === sceneId);
+  if (index < 0) return doc;
+  const [scene] = next.scenes.splice(index, 1);
+  next.scenes.splice(
+    Math.max(0, Math.min(Math.round(targetIndex), next.scenes.length)),
+    0,
+    scene,
+  );
+  return next;
+}
+
+export function addBlankScene(doc: MotionDoc, afterSceneId?: string): MotionDoc {
+  const next = structuredClone(doc);
+  const afterIndex = afterSceneId
+    ? next.scenes.findIndex((scene) => scene.id === afterSceneId)
+    : next.scenes.length - 1;
+  const scene: Scene = {
+    id: newId("sc"),
+    name: "New scene",
+    durationInFrames: Math.max(45, next.meta.fps * 3),
+    background: undefined,
+    transitionIn: {
+      type: next.scenes.length === 0 ? "cut" : "crossfade",
+      durationInFrames: 12,
+    },
+    elements: [],
+  };
+  next.scenes.splice(Math.max(0, afterIndex + 1), 0, scene);
+  return next;
+}
+
 export function duplicateScene(doc: MotionDoc, sceneId: string): MotionDoc {
   const next = structuredClone(doc);
   const i = next.scenes.findIndex((s) => s.id === sceneId);
@@ -148,6 +206,76 @@ export function addElement(
 ): MotionDoc {
   const next = structuredClone(doc);
   mustFindScene(next, sceneId).elements.push(element);
+  return next;
+}
+
+export function moveElementToIndex(
+  doc: MotionDoc,
+  sceneId: string,
+  elementId: string,
+  targetIndex: number,
+): MotionDoc {
+  const next = structuredClone(doc);
+  const scene = mustFindScene(next, sceneId);
+  const index = scene.elements.findIndex((element) => element.id === elementId);
+  if (index < 0) return doc;
+  const [element] = scene.elements.splice(index, 1);
+  scene.elements.splice(
+    Math.max(0, Math.min(Math.round(targetIndex), scene.elements.length)),
+    0,
+    element,
+  );
+  return next;
+}
+
+/** Move a complete layer bar and every keyframe by the same delta. */
+export function shiftElementInTime(
+  doc: MotionDoc,
+  sceneId: string,
+  elementId: string,
+  requestedDelta: number,
+): MotionDoc {
+  const next = structuredClone(doc);
+  const scene = mustFindScene(next, sceneId);
+  const element = mustFindElement(scene, elementId);
+  const minDelta = -element.inFrame;
+  const maxDelta = scene.durationInFrames - element.outFrame;
+  const delta = Math.round(
+    maxDelta >= minDelta
+      ? Math.max(minDelta, Math.min(requestedDelta, maxDelta))
+      : 0,
+  );
+  element.inFrame += delta;
+  element.outFrame += delta;
+  element.tracks.forEach((track) => {
+    track.keyframes.forEach((keyframe) => {
+      keyframe.frame += delta;
+    });
+  });
+  return next;
+}
+
+export function trimElement(
+  doc: MotionDoc,
+  sceneId: string,
+  elementId: string,
+  edge: "in" | "out",
+  frame: number,
+): MotionDoc {
+  const next = structuredClone(doc);
+  const scene = mustFindScene(next, sceneId);
+  const element = mustFindElement(scene, elementId);
+  if (edge === "in") {
+    element.inFrame = Math.max(
+      0,
+      Math.min(Math.round(frame), element.outFrame - 1),
+    );
+  } else {
+    element.outFrame = Math.max(
+      element.inFrame + 1,
+      Math.min(Math.round(frame), scene.durationInFrames),
+    );
+  }
   return next;
 }
 
@@ -300,5 +428,57 @@ export function removeTrack(doc: MotionDoc, addr: TrackAddress): MotionDoc {
     addr.elementId,
   );
   el.tracks = el.tracks.filter((t) => t.property !== addr.property);
+  return next;
+}
+
+/**
+ * Editor transform rule: tracked properties edit the value at the current
+ * frame; untracked properties edit the static base value.
+ */
+export function setElementPropertyAtFrame(
+  doc: MotionDoc,
+  addr: TrackAddress,
+  frame: number,
+  value: number,
+): MotionDoc {
+  const scene = doc.scenes.find((item) => item.id === addr.sceneId);
+  const element = scene?.elements.find((item) => item.id === addr.elementId);
+  const hasTrack = element?.tracks.some(
+    (track) => track.property === addr.property,
+  );
+  if (hasTrack) {
+    return addKeyframe(doc, addr, { frame, value }).doc;
+  }
+  return patchElement(doc, addr.sceneId, addr.elementId, {
+    [addr.property]: value,
+  });
+}
+
+/* ------------------------------------------------------------------ *
+ * Assets
+ * ------------------------------------------------------------------ */
+
+export function upsertAssets(doc: MotionDoc, assets: MotionAsset[]): MotionDoc {
+  const next = structuredClone(doc);
+  const byHash = new Map(next.assets.map((asset) => [asset.sha256, asset]));
+  assets.forEach((asset) => byHash.set(asset.sha256, asset));
+  next.assets = [...byHash.values()];
+  return next;
+}
+
+export function isAssetReferenced(doc: MotionDoc, assetId: string): boolean {
+  return doc.scenes.some((scene) =>
+    scene.elements.some(
+      (element) =>
+        (element.kind === "image" && element.assetId === assetId) ||
+        (element.kind === "text" && element.fontAssetId === assetId),
+    ),
+  );
+}
+
+export function removeAsset(doc: MotionDoc, assetId: string): MotionDoc {
+  if (isAssetReferenced(doc, assetId)) return doc;
+  const next = structuredClone(doc);
+  next.assets = next.assets.filter((asset) => asset.id !== assetId);
   return next;
 }

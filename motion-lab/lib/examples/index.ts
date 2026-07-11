@@ -35,6 +35,10 @@ function withStableIds(scene: GenScene, si: number): Scene {
     elements: scene.elements.map((el, ei) => ({
       ...el,
       id: `sc${si}-el${ei}`,
+      inFrame: 0,
+      outFrame: scene.durationInFrames,
+      visible: true,
+      locked: false,
       tracks: el.tracks.map((track) => ({
         ...track,
         keyframes: track.keyframes.map((kf, ki) => ({
@@ -49,9 +53,10 @@ function withStableIds(scene: GenScene, si: number): Scene {
 function loadExample(raw: unknown): MotionDoc {
   const file = exampleFileSchema.parse(raw);
   return motionDocSchema.parse({
-    version: 1,
+    version: 2,
     meta: file.meta,
     brand: file.brand,
+    assets: [],
     scenes: file.scenes.map(withStableIds),
   });
 }

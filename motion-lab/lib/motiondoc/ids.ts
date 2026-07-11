@@ -23,6 +23,10 @@ export function withIdsScene(gen: GenScene): Scene {
     elements: gen.elements.map((el) => ({
       ...el,
       id: newId("el"),
+      inFrame: 0,
+      outFrame: gen.durationInFrames,
+      visible: true,
+      locked: false,
       tracks: el.tracks.map((track) => ({
         ...track,
         keyframes: track.keyframes.map((kf) => ({ ...kf, id: newId("kf") })),
@@ -37,7 +41,7 @@ export function assembleDoc(
   opts: { format: VideoFormat; width: number; height: number; fps: number },
 ): MotionDoc {
   return {
-    version: 1,
+    version: 2,
     meta: {
       title: gen.title,
       format: opts.format,
@@ -47,6 +51,7 @@ export function assembleDoc(
       background: "$background",
     },
     brand: gen.brand,
+    assets: [],
     scenes: gen.scenes.map(withIdsScene),
   };
 }

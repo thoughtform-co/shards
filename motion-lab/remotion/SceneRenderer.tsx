@@ -1,7 +1,7 @@
 import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig } from "remotion";
 
 import { resolveColor } from "../lib/motiondoc/colors";
-import type { Brand, Scene } from "../lib/motiondoc/schema";
+import type { Brand, MotionAsset, Scene } from "../lib/motiondoc/schema";
 
 import { ElementRenderer } from "./ElementRenderer";
 
@@ -16,11 +16,13 @@ import { ElementRenderer } from "./ElementRenderer";
 export function SceneRenderer({
   scene,
   brand,
+  assets,
   incomingOverlap,
   outgoingOverlap,
 }: {
   scene: Scene;
   brand: Brand;
+  assets: MotionAsset[];
   /** Frames this scene fades in over (its own crossfade overlap). */
   incomingOverlap: number;
   /** Frames it fades out over (the NEXT scene's crossfade overlap). */
@@ -59,6 +61,7 @@ export function SceneRenderer({
           key={element.id}
           element={element}
           brand={brand}
+          assets={assets}
           frame={frame}
           fps={fps}
         />

@@ -18,13 +18,16 @@ export function SceneBlock({
   scene,
   index,
   geometry,
+  onSceneDrop,
 }: {
   doc: MotionDoc;
   scene: Scene;
   index: number;
   geometry: TimelineGeometry;
+  onSceneDrop: (sceneId: string) => void;
 }) {
   const select = useStudioStore((s) => s.select);
+  const seek = useStudioStore((s) => s.seek);
   const selection = useStudioStore((s) => s.selection);
   const beginGesture = useStudioStore((s) => s.beginGesture);
   const endGesture = useStudioStore((s) => s.endGesture);
@@ -40,7 +43,7 @@ export function SceneBlock({
     selection.type !== "none" && selection.sceneId === scene.id;
 
   const left = geometry.frameToPx(geometry.starts[index]);
-  const width = geometry.frameToPx(scene.durationInFrames);
+  const width = geometry.framesToPx(scene.durationInFrames);
   const crossfade =
     index > 0 && scene.transitionIn.type === "crossfade"
       ? scene.transitionIn.durationInFrames
@@ -60,7 +63,7 @@ export function SceneBlock({
   const onEdgePointerMove = (e: React.PointerEvent) => {
     const drag = dragState.current;
     if (!drag) return;
-    const deltaFrames = geometry.pxToFrame(e.clientX - drag.startX);
+    const deltaFrames = geometry.pxDeltaToFrames(e.clientX - drag.startX);
     const next = Math.max(10, Math.round(drag.startDuration + deltaFrames));
     transientDoc(retimeScene(drag.base, scene.id, next));
   };
@@ -76,16 +79,27 @@ export function SceneBlock({
     <div
       className={`ml-scene${selected ? " ml-scene--selected" : ""}`}
       style={{ left, width }}
+      draggable
+      onDragStart={(event) =>
+        event.dataTransfer.setData("text/motion-scene", scene.id)
+      }
+      onDragOver={(event) => event.preventDefault()}
+      onDrop={(event) => {
+        event.preventDefault();
+        const draggedId = event.dataTransfer.getData("text/motion-scene");
+        if (draggedId) onSceneDrop(draggedId);
+      }}
       onPointerDown={(e) => {
         e.stopPropagation();
         select({ type: "scene", sceneId: scene.id });
+        seek(geometry.starts[index]);
       }}
       title={`${scene.name} · ${scene.durationInFrames}f`}
     >
       {crossfade > 0 ? (
         <span
           className="ml-scene__xfade"
-          style={{ width: Math.max(10, geometry.frameToPx(crossfade)) }}
+          style={{ width: Math.max(10, geometry.framesToPx(crossfade)) }}
           title={`crossfade ${crossfade}f`}
         />
       ) : null}

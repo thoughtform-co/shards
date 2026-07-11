@@ -4,7 +4,9 @@ import { useEffect, useRef } from "react";
 
 import { useTimelineGeometry } from "../../lib/hooks/useTimelineGeometry";
 import { sceneIndexAtFrame } from "../../lib/motiondoc/timing";
+import { addBlankScene } from "../../lib/motiondoc/mutate";
 import { useStudioStore } from "../../lib/store/useStudioStore";
+import { useStudioUiStore } from "../../lib/store/useStudioUiStore";
 
 import { ElementLanes } from "./ElementLanes";
 import { Playhead } from "./Playhead";
@@ -26,6 +28,10 @@ export function Timeline() {
   const seek = useStudioStore((s) => s.seek);
   const zoom = useStudioStore((s) => s.zoom);
   const setZoom = useStudioStore((s) => s.setZoom);
+  const commitDoc = useStudioStore((s) => s.commitDoc);
+  const select = useStudioStore((s) => s.select);
+  const snapping = useStudioUiStore((s) => s.snapping);
+  const setSnapping = useStudioUiStore((s) => s.setSnapping);
 
   const geometry = useTimelineGeometry(doc);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -52,17 +58,19 @@ export function Timeline() {
       const rect = container.getBoundingClientRect();
       const cursorOffset = e.clientX - rect.left;
       const frameAtCursor =
-        (container.scrollLeft + cursorOffset) / state.zoom;
+        (container.scrollLeft + cursorOffset - geometry.labelWidth) /
+        state.zoom;
       const factor = Math.exp(-e.deltaY * 0.0016);
       const next = Math.max(0.25, Math.min(8, state.zoom * factor));
       state.setZoom(next);
       requestAnimationFrame(() => {
-        container.scrollLeft = frameAtCursor * next - cursorOffset;
+        container.scrollLeft =
+          geometry.labelWidth + frameAtCursor * next - cursorOffset;
       });
     };
     container.addEventListener("wheel", onWheel, { passive: false });
     return () => container.removeEventListener("wheel", onWheel);
-  }, []);
+  }, [geometry.labelWidth]);
 
   const contentFrameFromEvent = (e: React.PointerEvent): number => {
     const inner = innerRef.current;
@@ -93,7 +101,7 @@ export function Timeline() {
   const fit = () => {
     const container = scrollRef.current;
     if (!container) return;
-    const usable = container.clientWidth - 260;
+    const usable = container.clientWidth - geometry.labelWidth - 48;
     setZoom(usable / geometry.total);
   };
 
@@ -109,6 +117,28 @@ export function Timeline() {
           ctrl+scroll = zoom
         </span>
         <div className="ml-timeline__zoom">
+          <button
+            type="button"
+            className={`ml-btn${snapping ? " ml-btn--active" : ""}`}
+            onClick={() => setSnapping(!snapping)}
+            title="Toggle snapping"
+          >
+            Magnet
+          </button>
+          <button
+            type="button"
+            className="ml-btn"
+            onClick={() => {
+              const next = addBlankScene(doc, activeScene.id);
+              const index = next.scenes.findIndex((scene) => scene.id === activeScene.id);
+              const created = next.scenes[index + 1];
+              commitDoc(next);
+              if (created) select({ type: "scene", sceneId: created.id });
+            }}
+            title="Add scene after the active scene"
+          >
+            + Scene
+          </button>
           <button
             type="button"
             className="ml-btn"

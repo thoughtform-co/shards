@@ -1,0 +1,9 @@
+---
+description: Motion Lab project and source-editing rules
+alwaysApply: true
+---
+
+Read `AGENTS.md` before editing. For motion work, read `skill/motion-design/SKILL.md` and its
+relevant references. Treat `workspace/project.motion.json` as the active project, preserve stable
+IDs, keep MotionDoc v2 valid, and run the documented checks. Never edit generated build output or
+expose `.env.local`.

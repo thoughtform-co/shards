@@ -5,6 +5,7 @@ import { findSelection, useStudioStore } from "../../lib/store/useStudioStore";
 
 import { ElementInspector } from "./ElementInspector";
 import { KeyframeInspector } from "./KeyframeInspector";
+import { ProjectInspector } from "./ProjectInspector";
 import { SceneInspector } from "./SceneInspector";
 
 export function Inspector({
@@ -18,15 +19,7 @@ export function Inspector({
   const resolved = findSelection(doc, selection);
 
   if (selection.type === "none" || !resolved.scene) {
-    return (
-      <section className="ml-panel">
-        <h2 className="ml-panel__title">Inspector</h2>
-        <p className="ml-panel__hint">
-          Select a scene block, an element row, or a keyframe diamond on the
-          timeline.
-        </p>
-      </section>
-    );
+    return <ProjectInspector doc={doc} />;
   }
 
   const scene = resolved.scene;

@@ -62,14 +62,14 @@ export function KeyframeDiamond({
   const onPointerMove = (e: React.PointerEvent) => {
     const drag = dragState.current;
     if (!drag) return;
-    const deltaFrames = geometry.pxToFrame(e.clientX - drag.startX);
+    const deltaFrames = geometry.pxDeltaToFrames(e.clientX - drag.startX);
     let frame = Math.round(keyframe.frame + deltaFrames);
     frame = Math.max(0, Math.min(frame, sceneDuration));
 
     if (!e.altKey) {
       const playheadLocal = useStudioStore.getState().playhead - sceneStart;
       const magnets = [0, sceneDuration, playheadLocal, ...siblingFrames];
-      const threshold = geometry.pxToFrame(5);
+      const threshold = geometry.pxDeltaToFrames(5);
       for (const magnet of magnets) {
         if (magnet >= 0 && Math.abs(frame - magnet) <= threshold) {
           frame = Math.round(magnet);

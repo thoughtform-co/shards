@@ -9,14 +9,21 @@
     "typecheck": "tsc --noEmit",
     "setup:browser": "remotion browser ensure",
     "validate:examples": "tsx scripts/validate-examples.ts",
-    "check:exporter": "tsx scripts/check-exporter.ts"
+    "check:exporter": "tsx scripts/check-exporter.ts",
+    "check:v2": "tsx scripts/check-v2.ts",
+    "check:workspace": "tsx scripts/check-workspace.ts",
+    "check:project-api": "tsx scripts/check-project-api.ts",
+    "package:release": "node scripts/package-release.mjs",
+    "smoke:release": "tsx scripts/smoke-release.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "0.78.0",
     "@remotion/bundler": "4.0.473",
+    "@remotion/fonts": "^4.0.473",
     "@remotion/google-fonts": "4.0.473",
     "@remotion/player": "4.0.473",
     "@remotion/renderer": "4.0.473",
+    "fflate": "^0.8.2",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
