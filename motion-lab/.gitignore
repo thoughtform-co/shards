@@ -5,7 +5,7 @@ node_modules/
 .renders/
 exports/
 dist/
-workspace/
+/workspace/
 .agent-dev-ready
 *.tsbuildinfo
 next-env.d.ts
