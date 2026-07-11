@@ -45,9 +45,44 @@
 .exalate-tldr {
   display: flex;
   flex-direction: column;
-  gap: clamp(20px, 3vw, 28px);
+  gap: clamp(16px, 2.4vw, 22px);
   color: var(--aiop-ink);
   font-family: var(--aiop-body);
+}
+
+/* Export row, pinned to the top of the scroll area. padding-right
+   keeps the buttons clear of the modal's absolute close (X) at
+   top-right. Sticky so Copy / Download stay reachable through the
+   long recap. */
+.exalate-tldr__actions {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  gap: 8px;
+  padding-right: 52px;
+  margin-bottom: 2px;
+  background: var(--aiop-paper);
+  padding-bottom: 8px;
+}
+
+.exalate-tldr__action {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9a7a2e;
+  background: transparent;
+  border: 1px solid var(--aiop-rule-strong);
+  padding: 7px 12px;
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+
+.exalate-tldr__action:hover {
+  background: #9a7a2e;
+  color: var(--aiop-paper);
+  border-color: #9a7a2e;
 }
 
 .exalate-tldr__head {
