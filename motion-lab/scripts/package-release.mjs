@@ -1,4 +1,5 @@
 import { cp, mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { spawn } from "node:child_process";
 import path from "node:path";
 import process from "node:process";
 
@@ -82,6 +83,30 @@ for (const file of editableFiles) {
 
 await rm(path.join(output, "runtime"), { recursive: true, force: true });
 await cp(runtime, path.join(output, "runtime", "node"), { recursive: true });
+
+const runtimeNode = path.join(
+  output,
+  "runtime",
+  "node",
+  platform === "win32" ? "node.exe" : "bin/node",
+);
+const npmCli = path.join(
+  output,
+  "runtime",
+  "node",
+  platform === "win32" ? "node_modules/npm/bin/npm-cli.js" : "lib/node_modules/npm/bin/npm-cli.js",
+);
+await new Promise((resolve, reject) => {
+  const child = spawn(runtimeNode, [npmCli, "ci", "--omit=dev"], {
+    cwd: output,
+    env: { ...process.env, NODE_ENV: "production" },
+    stdio: "inherit",
+  });
+  child.on("error", reject);
+  child.on("exit", (code) =>
+    code === 0 ? resolve() : reject(new Error(`Production dependency install failed (${code})`)),
+  );
+});
 await rm(path.join(output, ".renders"), { recursive: true, force: true });
 await rm(path.join(output, "exports"), { recursive: true, force: true });
 await rm(path.join(output, "workspace"), { recursive: true, force: true });
