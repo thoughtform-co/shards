@@ -9,14 +9,38 @@ import styles from "./login.module.css";
  * Shards site gate.
  *
  * Posts the access key to /api/unlock; on 200 the proxy stops
- * rewriting to /login and the visitor lands on the workshop page.
- * Keyboard-first UX: input is
+ * rewriting to /login and the visitor lands on the page they
+ * originally requested. Keyboard-first UX: input is
  * autofocused, submit reveals an inline error and shakes the card on
  * 401.
  */
+
+/* Where to land when we can't recover an intended destination — e.g.
+   someone navigated straight to /login. */
+const DEFAULT_DESTINATION = "/creative-ai-workshop";
+
+/* The proxy `rewrite`s locked visitors to /login while leaving the
+   URL bar on the originally-requested path, so window.location still
+   points at where the visitor was headed. Recover that path, guarding
+   against open redirects (`//host`) and a loop back to the gate. */
+function intendedDestination(): string {
+  if (typeof window === "undefined") return DEFAULT_DESTINATION;
+
+  const path = window.location.pathname + window.location.search;
+
+  if (!path.startsWith("/") || path.startsWith("//")) {
+    return DEFAULT_DESTINATION;
+  }
+  if (path === "/login" || path.startsWith("/login/")) {
+    return DEFAULT_DESTINATION;
+  }
+  return path;
+}
+
 export function LoginForm() {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const destinationRef = useRef(DEFAULT_DESTINATION);
 
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
@@ -24,6 +48,9 @@ export function LoginForm() {
   const [shake, setShake] = useState(false);
 
   useEffect(() => {
+    /* Capture the requested path on mount, before anything can
+       navigate away from it. */
+    destinationRef.current = intendedDestination();
     inputRef.current?.focus();
   }, []);
 
@@ -48,7 +75,7 @@ export function LoginForm() {
       });
 
       if (res.ok) {
-        router.replace("/creative-ai-workshop");
+        router.replace(destinationRef.current);
         router.refresh();
         return;
       }
