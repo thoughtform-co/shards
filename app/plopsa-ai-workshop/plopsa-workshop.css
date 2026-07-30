@@ -1,0 +1,327 @@
+/* ─────────────────────────────────────────────────────────────────────
+ * /plopsa-ai-workshop — Plopsa palette remap + route-local sections.
+ *
+ * Loads AFTER creative-ai-workshop.css (page.tsx import order).
+ *
+ * Unlike its siblings, this route does NOT run on the shared
+ * Thoughtform gold. Section 1 re-points the `--aiop-*` lane to
+ * Plopsa's own brand values, read from plopsa.com's `:root` (their
+ * park domains redirect to the same design system, so it is one
+ * source of truth):
+ *
+ *   paper   #fbf2ef  --color-secondary-beige-200   warm, not white
+ *   deep    #731c52  --color-primary-purple-300
+ *   accent  #ee3d05  --color-primary-orange-300    dominant on their site
+ *   ink     #1a1715  --color-neutral-700           warm near-black
+ *
+ * Two things make this harder than a token swap, and both are handled
+ * in the sections below:
+ *
+ * 1. `.aiop-shell--tf-light` STAYS on the element. ~1800 lines of
+ *    section layout in creative-ai-workshop.css are scoped under that
+ *    class; swapping it out for a Plopsa modifier would render the
+ *    page unstyled. So the palette rides on a doubled selector,
+ *    `.aiop-shell--tf-light.aiop-shell--plopsa`, which outranks the
+ *    single-class tf-light block regardless of emission order.
+ *
+ * 2. A handful of colours in the shared CSS are literals, not tokens,
+ *    so `var()` never reaches them — the stage gradient, the sticky
+ *    header glass, the "pattern" substrate pill, three legacy bridge
+ *    tokens, and the whole TLDR modal (it portals to <body> outside
+ *    the shell). Section 2 restates those; the modal section keeps
+ *    hardcoding its accent, now Plopsa orange rather than gold.
+ *
+ * Prior art worth knowing: an Exalate-purple version of exactly this
+ * remap was landed (8b6dc5d) and reverted (e829571) because the client
+ * colour "read too hot against the gold buttons and orbit" — it had
+ * remapped the accent lane but left `--aiop-gold-bright` and
+ * `--aiop-amber` on gold. This block moves the FULL lane, so no gold
+ * is left to clash with.
+ * ─────────────────────────────────────────────────────────────────── */
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 1 · Tokens — Plopsa remap over tf-light
+ *
+ * Same variable NAMES as tf-light (house convention: the names are
+ * lanes, not literal colours — `--aiop-gold` has meant "primary
+ * accent" since operator.css:54). Only the values move.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.aiop-shell--tf-light.aiop-shell--plopsa {
+  /* Paper / ink — Plopsa beige + warm neutral ladder. */
+  --aiop-paper: #fbf2ef;
+  --aiop-paper-2: #ebe0dc;
+  --aiop-paper-3: #dedcd3;
+  --aiop-card: #f4f3ee;
+  --aiop-card-2: #ffffff;
+  --aiop-card-soft: #e8e6dd;
+  --aiop-ink: #1a1715;
+  --aiop-ink-2: rgba(26, 23, 21, 0.88);
+  --aiop-ink-soft: rgba(26, 23, 21, 0.7);
+  --aiop-muted: rgba(26, 23, 21, 0.62);
+  --aiop-muted-2: rgba(26, 23, 21, 0.5);
+  --aiop-rule: rgba(26, 23, 21, 0.12);
+  --aiop-rule-soft: rgba(26, 23, 21, 0.06);
+  --aiop-rule-strong: rgba(26, 23, 21, 0.2);
+
+  /* Accent lane → Plopsa orange, all the way through. gold-bright is
+     the filled-button fill and amber is diagnosis card 02; both move
+     with the lane so nothing reads as gold-over-orange. */
+  --aiop-gold: #ee3d05;
+  --aiop-gold-bright: #ec6726;
+  --aiop-gold-soft: rgba(238, 61, 5, 0.16);
+  --aiop-gold-edge: rgba(238, 61, 5, 0.32);
+
+  --aiop-violet: #ee3d05;
+  --aiop-violet-soft: rgba(238, 61, 5, 0.14);
+
+  --aiop-amber: #ee3d05;
+  --aiop-amber-soft: rgba(238, 61, 5, 0.16);
+  --aiop-amber-edge: rgba(238, 61, 5, 0.32);
+
+  /* Secondary lane → Plopsa purple (their deep brand colour, where
+     tf-light used Atreides green). */
+  --aiop-sage: #731c52;
+  --aiop-sage-soft: rgba(115, 28, 82, 0.16);
+  --aiop-sage-edge: rgba(115, 28, 82, 0.32);
+
+  /* Neutral counterpoint → Plopsa blue-300. */
+  --aiop-slate: #3f6576;
+  --aiop-slate-soft: rgba(63, 101, 118, 0.16);
+  --aiop-slate-edge: rgba(63, 101, 118, 0.32);
+
+  /* Legacy bridge tokens. intelligence-layer.css declares these on
+     `.aiop-shell` at Loop values and tf-light only overrides the
+     paper/gold half — so `--violet`, `--emerald` and `--dusk` leak
+     through at Loop values on anything still reading them. Re-point
+     the whole set here. */
+  --paper: #fbf2ef;
+  --paper-2: #ebe0dc;
+  --paper-3: #dedcd3;
+  --gold: #ee3d05;
+  --gold-deep: #80143a;
+  --gold-soft: rgba(238, 61, 5, 0.18);
+  --gold-edge: rgba(238, 61, 5, 0.32);
+  --violet: #ee3d05;
+  --emerald: #731c52;
+  --dusk: #3f6576;
+
+  /* HUD rail + ticks (geometry tokens stay on tf-light values). */
+  --cw-rail-line: rgba(26, 23, 21, 0.3);
+  --cw-tick-color: rgba(238, 61, 5, 0.4);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 2 · Literals the token lane cannot reach
+ *
+ * Each of these is a hardcoded colour in shared CSS. They are restated
+ * here under the doubled selector so no shared file is touched and
+ * /exalate-ai-workshop keeps rendering exactly as before.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+/* Stage wash — creative-ai-workshop.css hardcodes gold + sage rgba in
+   these two radial gradients. Plopsa orange + purple at the same
+   opacities. */
+.aiop-shell--tf-light.aiop-shell--plopsa.aiop-stage::before {
+  background:
+    radial-gradient(
+      ellipse 60% 45% at 12% 10%,
+      rgba(238, 61, 5, 0.1),
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 50% 40% at 88% 6%,
+      rgba(115, 28, 82, 0.06),
+      transparent 60%
+    ),
+    linear-gradient(180deg, var(--aiop-paper) 0%, var(--aiop-paper-2) 100%);
+}
+
+/* Sticky header glass — a literal that has to track --aiop-paper. */
+.aiop-shell--tf-light.aiop-shell--plopsa .aiop-header {
+  background: rgba(251, 242, 239, 0.88);
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+/* Substrate pill — claude-adoption.css paints the "pattern" variant a
+   hardcoded mauve #7c6b9e, and several scoped Skill cards use that
+   substrate, so it is visible. Plopsa purple instead. */
+.aiop-shell--tf-light.aiop-shell--plopsa .ca-skill__substrate-tag--pattern {
+  color: #731c52;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 3 · Scoped-skills section (PlopsaScopedSkills)
+ *
+ * The card grid + cards come wholesale from claude-adoption.css
+ * (.ca-team__cards / .ca-skill). Only the spacing that SkillsByTeam's
+ * inner chrome normally provides needs restating here.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.plopsa-skills .plopsa-skills__cards {
+  margin-top: clamp(20px, 3vw, 32px);
+}
+
+.plopsa-skills .plopsa-skills__more-tail {
+  margin-top: clamp(14px, 2vw, 18px);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * 4 · TLDR modal content (WorkshopTldr)
+ *
+ * Rendered through the OperatorModal portal directly under <body>,
+ * OUTSIDE the shell — so these selectors stay top-level and read
+ * their neutrals from the base .aiop-modal-overlay tokens
+ * (operator.css §tokens: warm paper #f3ece0, ink #1a1612). The
+ * font custom properties arrive via the fontClassName wrapper.
+ *
+ * Accents hardcode Plopsa orange #ee3d05: the overlay's own
+ * --aiop-gold resolves to the base operator violet (#4d3399), and
+ * the section-1 remap above cannot reach out here either, so a
+ * var() would paint the wrong colour. The close button and top
+ * stripe get the same accent through WorkshopTldr's MODAL_ACCENT
+ * prop (#ec6726, the filled-button tone).
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+.plopsa-tldr {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2.4vw, 22px);
+  color: var(--aiop-ink);
+  font-family: var(--aiop-body);
+}
+
+/* Export row, pinned to the top of the scroll area. padding-right
+   keeps the buttons clear of the modal's absolute close (X) at
+   top-right. Sticky so Copy / Download stay reachable through the
+   long recap. */
+.plopsa-tldr__actions {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  gap: 8px;
+  padding-right: 52px;
+  margin-bottom: 2px;
+  background: var(--aiop-paper);
+  padding-bottom: 8px;
+}
+
+.plopsa-tldr__action {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ee3d05;
+  background: transparent;
+  border: 1px solid var(--aiop-rule-strong);
+  padding: 7px 12px;
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+
+.plopsa-tldr__action:hover {
+  background: #ee3d05;
+  color: var(--aiop-paper);
+  border-color: #ee3d05;
+}
+
+.plopsa-tldr__head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.plopsa-tldr__eyebrow {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #ee3d05;
+}
+
+.plopsa-tldr__title {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-size: clamp(26px, 3.4vw, 36px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--aiop-ink);
+}
+
+.plopsa-tldr__group {
+  border-top: 1px solid var(--aiop-rule);
+  padding-top: clamp(14px, 2vw, 18px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.plopsa-tldr__heading {
+  margin: 0;
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-muted);
+}
+
+.plopsa-tldr__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.plopsa-tldr__list li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
+/* Covered points: filled gold square. */
+.plopsa-tldr__list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  background: #ee3d05;
+}
+
+/* Next steps: two columns on wide screens, empty checkbox marker. */
+.plopsa-tldr__next {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(16px, 2.4vw, 24px);
+}
+
+@media (min-width: 720px) {
+  .plopsa-tldr__next {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.plopsa-tldr__list--next li::before {
+  background: transparent;
+  border: 1px solid #ee3d05;
+  width: 7px;
+  height: 7px;
+}
+
+.plopsa-tldr__footnote {
+  margin: 0;
+  border-top: 1px solid var(--aiop-rule);
+  padding-top: 14px;
+  font-size: 12.5px;
+  font-style: italic;
+  color: var(--aiop-muted);
+}
