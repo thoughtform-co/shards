@@ -3,19 +3,17 @@ import { IBM_Plex_Sans, PT_Mono } from "next/font/google";
 import Link from "next/link";
 
 import { AboutVince } from "@/components/creative-workshop/about-vince";
-import { AgentContext } from "@/components/creative-workshop/agent-context";
 import { CreativeHud } from "@/components/creative-workshop/creative-hud";
 import {
-  AgentsInterstitial,
   AiStudioBriefingsProof,
   WorldFirstAiAtlProof,
 } from "@/components/creative-workshop/keynote-proof-sections";
-import { CloseAiop } from "@/components/intelligence-layer/close-aiop";
 import { FlywheelOrbit } from "@/components/operator/flywheel-orbit";
 import { ScrollReveal as OperatorScrollReveal } from "@/components/operator/reveal";
 import { ScrollReveal as SharedScrollReveal } from "@/components/shared/reveal";
 import { SiteFooter } from "@/components/shared/site-footer";
 import { pageMeta } from "@/content/intelligence-layer";
+import { ToolChoiceSection } from "./tool-choice";
 import { NavigatingAiProof, PlopsaShowcaseVideo } from "./video-sections";
 import { WorkshopTldr, type WorkshopTldrContent } from "./workshop-tldr";
 import "@/components/landing/landing.css";
@@ -36,8 +34,15 @@ import "./plopsa-workshop.css";
  * Trimmed from the Exalate route's 27 sections to a short keynote arc:
  *
  *   hero → about → ATL film → briefings proof → Vulpia showcase →
- *   "But how does AI work?" → Navigating AI (Vox) → agents →
- *   agent context → close → footer
+ *   "But how does AI work?" → Navigating AI (Vox) →
+ *   "Which AI tools to use?" → footer
+ *
+ * The page ends on the tools comparison. The agent beats (#agents,
+ * #agent-context) and the closing CTA (#close) were cut too, so there
+ * is no outbound action after the last video — the hero's Get Started
+ * and Workshop TLDR are the only CTAs on the page now. Cutting #close
+ * also removed the "See the deep dive" button, which had been pointing
+ * at #substrate-gallery, a section this route never rendered.
  *
  * The deep-dive half (diagnosis, substrate map, signal, vision, the
  * skills stack, cases, headless shift, surface pick) is gone, along
@@ -215,7 +220,7 @@ const creativeWorkshopNavLinks = [
   { id: "world-first-ai-atl", label: "Receipts", href: "#world-first-ai-atl" },
   { id: "plopsa-showcase", label: "Showcase", href: "#plopsa-showcase" },
   { id: "navigating-ai", label: "How AI works", href: "#navigating-ai" },
-  { id: "agent-context", label: "Agents", href: "#agent-context" },
+  { id: "which-tools", label: "Tools", href: "#which-tools" },
 ] as const;
 
 const aiopDisplay = IBM_Plex_Sans({
@@ -382,11 +387,7 @@ export default function PlopsaAiWorkshopPage() {
         </section>
 
         <NavigatingAiProof />
-
-        <AgentsInterstitial />
-        <AgentContext />
-
-        <CloseAiop />
+        <ToolChoiceSection />
       </main>
 
       <SiteFooter

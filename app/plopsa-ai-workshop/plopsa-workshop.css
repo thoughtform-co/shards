@@ -167,6 +167,41 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
+ * 6 · "Which AI tools to use?" grid (ToolChoiceSection)
+ *
+ * The section rides the shared `cw-keynote-proof` head + card pattern,
+ * which was built for the --studio variant's three ad cards. Two
+ * adjustments for a two-card, portrait-image pair.
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+/* Two columns instead of three, and capped so a pair of portraits does
+   not stretch to a comically large size on a wide viewport.
+
+   The base sheet collapses `__grid` to one column under 640px with a
+   0-2-0 selector; this override is 0-3-0 and would beat it inside that
+   media query, so the mobile collapse is restated below. */
+.aiop-shell--tf-light.aiop-shell--plopsa .cw-keynote-proof__grid--pair {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 880px;
+  margin-inline: auto;
+}
+
+@media (max-width: 640px) {
+  .aiop-shell--tf-light.aiop-shell--plopsa .cw-keynote-proof__grid--pair {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Both example images are portrait 2:3. The shared frame is 4:5 with
+   object-fit: cover, which would crop ~17% off the top and bottom of
+   each — and on these two the full frame IS the point. */
+.aiop-shell--tf-light.aiop-shell--plopsa
+  .cw-keynote-proof--tools
+  .cw-keynote-proof__card-frame {
+  aspect-ratio: 2 / 3;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
  * 3 · Scoped-skills section (PlopsaScopedSkills)
  *
  * The card grid + cards come wholesale from claude-adoption.css
