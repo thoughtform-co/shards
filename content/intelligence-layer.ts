@@ -2545,7 +2545,7 @@ export const pageQuestionInterstitialSection = {
  * pre-reads the framework about to resolve in Vision below.
  *
  * Ported from the Shards `quoteBridgeSection` in
- * `00_shards/app/ai-operator/content.ts` so the two repos stay
+ * `01_thoughtform_shards/app/ai-operator/content.ts` so the two repos stay
  * conceptually in sync. The lane mapping is identical because
  * Aether's Vision uses the same Navigate / Encode / Build
  * vocabulary the Shards page does.
@@ -2600,7 +2600,7 @@ export const pageEvansBridgeSection = {
  * answer.
  *
  * Ported from Shards `aiRealitySection` in
- * `00_shards/app/ai-operator/content.ts`. The slider visual is
+ * `01_thoughtform_shards/app/ai-operator/content.ts`. The slider visual is
  * lifted from the Thoughtform Continuum Spectrum.
  * ─────────────────────────────────────────────────────────────────── */
 

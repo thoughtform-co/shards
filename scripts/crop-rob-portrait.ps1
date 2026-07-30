@@ -9,8 +9,9 @@
 
 Add-Type -AssemblyName System.Drawing
 
-$srcPath = "C:\Users\buyss\Manifold Delta\Artifacts\00_shards\public\images\rob-weston-source.png"
-$dstPath = "C:\Users\buyss\Manifold Delta\Artifacts\00_shards\public\images\rob-weston.png"
+$repoRoot = Split-Path -Parent $PSScriptRoot
+$srcPath = Join-Path $repoRoot "public\images\rob-weston-source.png"
+$dstPath = Join-Path $repoRoot "public\images\rob-weston.png"
 
 $img = [System.Drawing.Image]::FromFile($srcPath)
 

@@ -21,7 +21,7 @@ import { pageToolCollabSection } from "@/content/intelligence-layer";
  *      before the Vision flywheel reads as the answer.
  *
  * Ported from the Shards `AiIsNotSoftware` component in
- * `00_shards/app/ai-operator/ai-is-not-software.tsx`. The Shards
+ * `01_thoughtform_shards/app/ai-operator/ai-is-not-software.tsx`. The Shards
  * version sat inside the `.aiop-bridge-and-reality` parallax pair
  * and slid up over the frozen Evans bridge; on Aether the
  * spectrum is the second-to-last chapter slide before Vision and
