@@ -29,10 +29,16 @@ import { NextResponse } from "next/server";
  */
 
 interface SkillBundle {
-  /* Stem of the file in data/skills/ — `{stem}.skill`. */
+  /* Stem of the file in data/skills/ — `{stem}.skill` unless `file`
+     overrides the whole name. */
   stem: string;
   /* Human-friendly filename the browser uses on save. */
   filename: string;
+  /* Full filename in data/skills/, for bundles that are not `.skill`
+     archives — the Plopsa support packs ship as plain `.zip` because
+     they hold reference material rather than an uploadable Skill.
+     Defaults to `{stem}.skill`. */
+  file?: string;
 }
 
 const SKILLS: Record<string, SkillBundle> = {
@@ -66,6 +72,35 @@ const SKILLS: Record<string, SkillBundle> = {
     stem: "motion-design",
     filename: "motion-design.skill",
   },
+  /* The three Skills built for the Plopsa workshops (30 July 2026)
+     and handed to the team from /plopsa-ai-workshop. Canonical
+     source folders live outside the repo, under
+     04_Arcs/02_Workshops/20260730_Plopasaland/02_Creation/Skills/.
+     Each `-pack` entry carries that folder's supporting material —
+     prompt packs, reference renders, a logo sheet — as a plain zip,
+     separate from the uploadable Skill itself. */
+  "plopsa-brand": {
+    stem: "plopsa-brand",
+    filename: "plopsa-brand.skill",
+  },
+  "plopsa-brand-pack": {
+    stem: "plopsa-brand-pack",
+    filename: "plopsa-brand-pack.zip",
+    file: "plopsa-brand-pack.zip",
+  },
+  "genai-prompting-plopsaland-de": {
+    stem: "genai-prompting-plopsaland-de",
+    filename: "genai-prompting-plopsaland-de.skill",
+  },
+  "genai-prompting-plopsaland-de-pack": {
+    stem: "genai-prompting-plopsaland-de-pack",
+    filename: "genai-prompting-plopsaland-de-pack.zip",
+    file: "genai-prompting-plopsaland-de-pack.zip",
+  },
+  "plopsa-menuprijzen": {
+    stem: "plopsa-menuprijzen",
+    filename: "plopsa-menuprijzen.skill",
+  },
 };
 
 export const runtime = "nodejs";
@@ -86,7 +121,12 @@ export async function GET(_request: Request, { params }: RouteContext) {
     return NextResponse.json({ ok: false, reason: "unknown" }, { status: 404 });
   }
 
-  const filePath = join(process.cwd(), "data", "skills", `${bundle.stem}.skill`);
+  const filePath = join(
+    process.cwd(),
+    "data",
+    "skills",
+    bundle.file ?? `${bundle.stem}.skill`,
+  );
 
   let data: Buffer;
   try {

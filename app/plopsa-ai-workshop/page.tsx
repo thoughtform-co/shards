@@ -2,18 +2,24 @@ import type { Metadata } from "next";
 import { IBM_Plex_Sans, PT_Mono } from "next/font/google";
 import Link from "next/link";
 
+import { SkillsByTeam } from "@/components/claude-adoption/skills-by-team";
+import { ClaudeSkillAnatomy } from "@/components/claude-workshop/claude-skill-anatomy";
 import { AboutVince } from "@/components/creative-workshop/about-vince";
 import { CreativeHud } from "@/components/creative-workshop/creative-hud";
 import {
   AiStudioBriefingsProof,
   WorldFirstAiAtlProof,
 } from "@/components/creative-workshop/keynote-proof-sections";
+import { VideoSection } from "@/components/creative-workshop/video-section";
 import { FlywheelOrbit } from "@/components/operator/flywheel-orbit";
 import { ScrollReveal as OperatorScrollReveal } from "@/components/operator/reveal";
 import { ScrollReveal as SharedScrollReveal } from "@/components/shared/reveal";
 import { SiteFooter } from "@/components/shared/site-footer";
+import { caSkillsByTeamSection } from "@/content/claude-adoption";
 import { pageMeta } from "@/content/intelligence-layer";
+import { KreaModelsSection, KreaVideoCraftSection } from "./krea-sections";
 import { SemanticExamplesSection } from "./semantic-examples";
+import { TakeHomeSkills } from "./take-home-skills";
 import { ToolChoiceSection } from "./tool-choice";
 import { NavigatingAiProof, PlopsaShowcaseVideo } from "./video-sections";
 import { WorkshopTldr, type WorkshopTldrContent } from "./workshop-tldr";
@@ -37,9 +43,16 @@ import "./plopsa-workshop.css";
  *   hero → about → ATL film → briefings proof → Vulpia showcase →
  *   "But how does AI work?" → Navigating AI (Vox) →
  *   "Which AI tools to use?" → "Semantic editing, in practice." →
- *   footer
+ *   Krea (models, then video craft) → Loop's 42 Skills →
+ *   the three Plopsa Skills as downloads → skill anatomy →
+ *   Anthropic prompting video → footer
  *
- * The page ends on the worked examples. The agent beats (#agents,
+ * The Skills tail was restored after the 30 July workshops, where the
+ * room got as far as Claude and Skills and three real Skills came out
+ * of it. It renders flat — see the note at the render site for why the
+ * providers did not come back with it.
+ *
+ * The agent beats (#agents,
  * #agent-context) and the closing CTA (#close) were cut too, so there
  * is no outbound action after the last video — the hero's Get Started
  * and Workshop TLDR are the only CTAs on the page now. Cutting #close
@@ -88,6 +101,15 @@ const workshopHero = {
 };
 
 const workshopBrandSub = "AI Capability Workshop";
+
+/* Restored with the Skills beat. Spreads the shared Loop section —
+   note `id: "skills"` comes from there, not from this override. */
+const workshopSkillsSection = {
+  ...caSkillsByTeamSection,
+  ariaLabel: "Skills shipped at Loop Earplugs, shown as a workshop case study",
+  titleAccentLine: "At Loop",
+  sub: "A real rollout at Loop Earplugs. Forty-two Skills across every team — each one captures how that team handles a specific piece of work, so people and agents can build on what the company already knows.",
+};
 
 /* Hero modal: the whole workshop in one screen, drawn from both
    sessions' full transcripts (adoption + tools deep-dive). Principles
@@ -224,6 +246,8 @@ const creativeWorkshopNavLinks = [
   { id: "navigating-ai", label: "How AI works", href: "#navigating-ai" },
   { id: "which-tools", label: "Tools", href: "#which-tools" },
   { id: "semantic-examples", label: "Examples", href: "#semantic-examples" },
+  { id: "krea-video", label: "Video", href: "#krea-video" },
+  { id: "take-home-skills", label: "Skills", href: "#take-home-skills" },
 ] as const;
 
 const aiopDisplay = IBM_Plex_Sans({
@@ -392,6 +416,37 @@ export default function PlopsaAiWorkshopPage() {
         <NavigatingAiProof />
         <ToolChoiceSection />
         <SemanticExamplesSection />
+
+        <KreaModelsSection />
+        <KreaVideoCraftSection />
+
+        {/* Skills tail, restored from d0c92a0. These render as flat
+            siblings on purpose: none of them consume useRole or
+            useUseCase, so UseCasesProvider / RoleProvider / Suspense
+            stay gone. UseCasesProvider itself calls useRole and would
+            throw without RoleProvider, which in turn needs the
+            Suspense boundary for useSearchParams. */}
+        <SkillsByTeam
+          section={workshopSkillsSection}
+          showBreakdown={false}
+          showRepo={false}
+        />
+        <TakeHomeSkills />
+        <ClaudeSkillAnatomy />
+
+        <VideoSection
+          id="encode-anthropic"
+          lane="encode"
+          title="The lab's own"
+          titleEm="prompting advice"
+          titleAfter="."
+          body="Anthropic walks through how to brief Claude well — context, examples, constraints, iteration. Watch it once, then stop re-teaching the model every chat: encode the patterns into a Skill and let every conversation start from there."
+          videoSrc="/videos/anthropic-prompting-advice.mp4"
+          speaker="Anthropic"
+          speakerRole="Prompting advice for Claude (with subtitles)"
+          sourceLabel="anthropic.com"
+          sourceHref="https://www.anthropic.com/"
+        />
       </main>
 
       <SiteFooter

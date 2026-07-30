@@ -202,19 +202,183 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
- * 3 · Scoped-skills section (PlopsaScopedSkills)
+ * 3 · Take-home Skills + Krea beats
  *
- * The card grid + cards come wholesale from claude-adoption.css
- * (.ca-team__cards / .ca-skill). Only the spacing that SkillsByTeam's
- * inner chrome normally provides needs restating here.
+ * The download cards ride the shared `aiop-claude-skills-at-loop__*`
+ * classes (claude-workshop.css §668) so the card, button and source
+ * line need no new CSS. Everything below is the delta.
+ *
+ * Replaced the old PlopsaScopedSkills rules — that section was cut with
+ * the rest of the Exalate-derived placeholders; the take-home section
+ * supersedes it.
  * ═══════════════════════════════════════════════════════════════════════ */
 
-.plopsa-skills .plopsa-skills__cards {
-  margin-top: clamp(20px, 3vw, 32px);
+/* The shared grid is `repeat(4, …)` hardcoded, which leaves three cards
+   ragged. Restate the responsive steps too: the base sheet drops to 2
+   columns at 1180px and 1 at 520px with 0-1-0 selectors, and this
+   override is 0-3-0, so it would otherwise win inside those queries. */
+.aiop-shell--tf-light.aiop-shell--plopsa
+  .aiop-claude-skills-at-loop__grid--trio {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.plopsa-skills .plopsa-skills__more-tail {
-  margin-top: clamp(14px, 2vw, 18px);
+@media (max-width: 1180px) {
+  .aiop-shell--tf-light.aiop-shell--plopsa
+    .aiop-claude-skills-at-loop__grid--trio {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .aiop-shell--tf-light.aiop-shell--plopsa
+    .aiop-claude-skills-at-loop__grid--trio {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Two downloads stack inside one card (bundle + support pack). */
+.aiop-shell--tf-light.aiop-shell--plopsa
+  .plopsa-take-home
+  .aiop-claude-skills-at-loop__card-download {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.aiop-shell--tf-light.aiop-shell--plopsa .plopsa-take-home__notes {
+  list-style: none;
+  margin: clamp(24px, 3vw, 36px) 0 0;
+  padding: clamp(16px, 2vw, 22px) 0 0;
+  border-top: 1px solid var(--aiop-rule);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 20px);
+  max-width: 1000px;
+}
+
+@media (max-width: 720px) {
+  .aiop-shell--tf-light.aiop-shell--plopsa .plopsa-take-home__notes {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aiop-shell--tf-light.aiop-shell--plopsa .plopsa-take-home__note {
+  position: relative;
+  padding-left: 18px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-shell--tf-light.aiop-shell--plopsa .plopsa-take-home__note::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 6px;
+  height: 6px;
+  background: var(--aiop-gold);
+}
+
+/* ── Krea ─────────────────────────────────────────────────────────── */
+
+/* The model list reuses `__card-stats`, whose dd is right-aligned with
+   tabular numerals for metric values. These are short notes, so pull
+   them back to the left and give the pair a readable measure. */
+.aiop-shell--tf-light.aiop-shell--plopsa .plopsa-krea__models {
+  max-width: 720px;
+  row-gap: 12px;
+}
+
+.aiop-shell--tf-light.aiop-shell--plopsa
+  .plopsa-krea__models
+  .cw-keynote-proof__card-row
+  dd {
+  text-align: left;
+  font-variant-numeric: normal;
+  font-weight: 400;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-shell--tf-light.aiop-shell--plopsa .plopsa-krea__aside {
+  margin: clamp(20px, 2.4vw, 28px) 0 0;
+  padding-top: clamp(14px, 1.8vw, 18px);
+  border-top: 1px solid var(--aiop-rule-soft);
+  font-size: clamp(14px, 1.2vw, 16px);
+  line-height: 1.6;
+  color: var(--aiop-ink-soft);
+  max-width: 68ch;
+}
+
+.aiop-shell--tf-light.aiop-shell--plopsa .plopsa-krea__craft {
+  margin: clamp(24px, 3vw, 36px) 0 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 2.6vw, 32px);
+}
+
+@media (max-width: 860px) {
+  .aiop-shell--tf-light.aiop-shell--plopsa .plopsa-krea__craft {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aiop-shell--tf-light.aiop-shell--plopsa .plopsa-krea__craft-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--aiop-rule);
+}
+
+.aiop-shell--tf-light.aiop-shell--plopsa .plopsa-krea__craft-row dt {
+  font-family: var(--aiop-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-gold);
+}
+
+.aiop-shell--tf-light.aiop-shell--plopsa .plopsa-krea__craft-row dd {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-shell--tf-light.aiop-shell--plopsa .plopsa-krea__traps {
+  list-style: none;
+  margin: clamp(24px, 3vw, 36px) 0 0;
+  padding: clamp(16px, 2vw, 22px) 0 0;
+  border-top: 1px solid var(--aiop-rule);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(12px, 1.6vw, 20px);
+  max-width: 1000px;
+}
+
+@media (max-width: 720px) {
+  .aiop-shell--tf-light.aiop-shell--plopsa .plopsa-krea__traps {
+    grid-template-columns: 1fr;
+  }
+}
+
+.aiop-shell--tf-light.aiop-shell--plopsa .plopsa-krea__trap {
+  position: relative;
+  padding-left: 18px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
+.aiop-shell--tf-light.aiop-shell--plopsa .plopsa-krea__trap::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--aiop-gold);
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
