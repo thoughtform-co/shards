@@ -150,6 +150,22 @@
   color: #731c52;
 }
 
+/* Bottom-left corner bracket — dropped on this route only.
+   creative-hud.tsx anchors the brandmark to the same point as the BL
+   bracket, and creative-ai-workshop.css:349 says the overlap is
+   deliberate. On the Plopsa palette the two read as competing marks
+   rather than one signature, so the bracket goes and the glyph keeps
+   the corner. TL and BR stay.
+
+   Scoped: CreativeHud takes no props and six routes render it — the
+   other five keep their bracket. The rails already terminate above
+   the brandmark (creative-ai-workshop.css:221), so nothing is left
+   hanging. `display: none` rather than nulling the two borders,
+   because the div is decorative and aria-hidden. */
+.aiop-shell--tf-light.aiop-shell--plopsa .cw-hud__corner--bl {
+  display: none;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════
  * 3 · Scoped-skills section (PlopsaScopedSkills)
  *

@@ -48,6 +48,11 @@ yarn-error.log*
 !/public/videos/anthropic-prompting-advice.mp4
 !/public/videos/michael-levin-cognitive-interfaces.mp4
 !/public/videos/loop-smug-owl-ai-atl.mp4
+# /plopsa-ai-workshop cuts. Sources live outside the repo (Vulpia on
+# the I: drive, the Vox explainer in Dropbox); these are the H.264
+# web cuts, encoded to the same ~3.5 Mbps as the ATL film above.
+!/public/videos/vulpia-30-jaar.mp4
+!/public/videos/vox-how-generative-ai-works.mp4
 
 # QA, working notes, browser session captures — kept local, never committed
 .cursor/plans/
