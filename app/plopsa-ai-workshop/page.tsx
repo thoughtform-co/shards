@@ -43,7 +43,8 @@ import "./plopsa-workshop.css";
  *   hero → about → ATL film → briefings proof → Vulpia showcase →
  *   "But how does AI work?" → Navigating AI (Vox) →
  *   "Which AI tools to use?" → "Semantic editing, in practice." →
- *   Krea (models, then video craft) → Loop's 42 Skills →
+ *   Krea (models, then video craft) → "where does the knowing live?" →
+ *   Loop's 42 Skills →
  *   the three Plopsa Skills as downloads → skill anatomy →
  *   Anthropic prompting video → footer
  *
@@ -419,6 +420,36 @@ export default function PlopsaAiWorkshopPage() {
 
         <KreaModelsSection />
         <KreaVideoCraftSection />
+
+        {/* Hinge between the two halves of the day. Everything above is
+            generation — steer the model, judge the frame, run it again.
+            Everything below is encoding. The line lands because the room
+            felt it: Krea makes you re-upload the original on every
+            iteration, so nothing you taught it survives the session.
+            Same markup as the #where-from-there interstitial above. */}
+        <section
+          className="aiop-section aiop-engine-pattern cw-keynote-interstitial cw-keynote-interstitial--question aiop-engine-question"
+          id="what-carries-over"
+          aria-labelledby="what-carries-over-title"
+          aria-label="Where does the knowing live?"
+        >
+          <div className="aiop-engine-pattern__bleed" aria-hidden="true">
+            <span className="aiop-engine-pattern__wash aiop-engine-pattern__wash--a" />
+            <span className="aiop-engine-pattern__wash aiop-engine-pattern__wash--b" />
+            <span className="aiop-engine-pattern__grid" />
+          </div>
+          <div className="aiop-wrap cw-keynote-interstitial__inner aiop-reveal">
+            <span className="cw-keynote-interstitial__eyebrow">
+              Every session starts from nothing.
+            </span>
+            <p
+              id="what-carries-over-title"
+              className="aiop-engine-question__q cw-keynote-interstitial__q"
+            >
+              So where does the <em>knowing</em> live?
+            </p>
+          </div>
+        </section>
 
         {/* Skills tail, restored from d0c92a0. These render as flat
             siblings on purpose: none of them consume useRole or
