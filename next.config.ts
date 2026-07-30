@@ -99,6 +99,41 @@ const nextConfig: NextConfig = {
       "./experiments/video-studio/templates/**/*",
     ],
   },
+  /*
+   * The render route passes `"@": path.resolve(process.cwd())` as a
+   * webpack alias into @remotion/bundler (see
+   * experiments/video-studio/server/renderRemotion.ts:40 and :180) so
+   * templates can import through `@/`. The output file tracer reads
+   * that as "the project root is a module resolution root" and pulls
+   * in essentially the whole repo — 1.19 GB locally, of which 1.10 GB
+   * is static assets and build output that a serverless function can
+   * never use. On Vercel (git-tracked files only) that landed at
+   * 264.73 MB and broke the deploy against the 250 MB function limit.
+   *
+   * These are all runtime-irrelevant to the route: /public is served
+   * from the CDN, never imported as modules; motion-lab is a separate
+   * app with its own build; exports and .video-studio are local
+   * artifacts. The templates the route genuinely needs stay traced via
+   * outputFileTracingIncludes above.
+   *
+   * Keep this in sync if the alias in renderRemotion.ts is ever
+   * narrowed — a tighter alias would make most of this unnecessary.
+   */
+  outputFileTracingExcludes: {
+    "/api/experiments/video-studio/render": [
+      "./public/**",
+      "./motion-lab/**",
+      "./exports/**",
+      "./.video-studio/**",
+      "./.tmp/**",
+      "./data/**",
+      "./scripts/**",
+      "./*.png",
+      "./*.jpg",
+      "./*.html",
+      "./*.pptx",
+    ],
+  },
   async headers() {
     return [
       {
