@@ -11,6 +11,7 @@ import { AboutVince } from "@/components/creative-workshop/about-vince";
 import { AgentContext } from "@/components/creative-workshop/agent-context";
 import { CreativeHud } from "@/components/creative-workshop/creative-hud";
 import {
+  AgentsInterstitial,
   AiStudioBriefingsProof,
   WorldFirstAiAtlProof,
 } from "@/components/creative-workshop/keynote-proof-sections";
@@ -70,7 +71,8 @@ import "./plopsa-workshop.css";
  *   Krea (models, then video craft) → the co-intelligence hinge →
  *   the keynote tail
  *
- * The tail is rebuilt from /ai-keynote's order: agents → diagnosis →
+ * The tail is rebuilt from /ai-keynote's order: agents interstitial →
+ * agent context → diagnosis →
  * intelligence layer → the labs' bet → flywheel → approach → colleague
  * → Levin → encoding → Loop's 42 Skills → Evans → Anthropic → skill
  * anatomy → degrees of freedom → the three Plopsa Skills → software
@@ -714,17 +716,22 @@ export default function PlopsaAiWorkshopPage() {
         <KreaModelsSection />
         <KreaVideoCraftSection />
 
-        {/* Hinge between the two halves of the day. Above is generation
-            — steer the model, judge the frame, run it again. Below is an
-            intelligence you work with. Deliberately does not make the
-            colleague argument itself; #tool-collab does that properly a
-            few beats down, so this only opens the door.
-            Same markup as the #where-from-there interstitial above. */}
+        {/* Hinge between the two halves of the day, and the start of
+            act two. Above is generation — steer the model, judge the
+            frame, run it again. Below is the harder question.
+
+            The co-intelligence turn sits in the eyebrow as a claim
+            rather than a question, because the question has to hand
+            into what actually follows: agents, and why they fail. An
+            earlier cut asked "What if it could think with you?" and
+            then answered with "Everyone wants an agent", which reads as
+            a non-sequitur — and left the real answer stranded nine
+            sections away at #tool-collab. */}
         <section
           className="aiop-section aiop-engine-pattern cw-keynote-interstitial cw-keynote-interstitial--question aiop-engine-question"
           id="co-intelligence"
           aria-labelledby="co-intelligence-title"
-          aria-label="What if it could think with you?"
+          aria-label="So why does most of it stall?"
         >
           <div className="aiop-engine-pattern__bleed" aria-hidden="true">
             <span className="aiop-engine-pattern__wash aiop-engine-pattern__wash--a" />
@@ -733,13 +740,13 @@ export default function PlopsaAiWorkshopPage() {
           </div>
           <div className="aiop-wrap cw-keynote-interstitial__inner aiop-reveal">
             <span className="cw-keynote-interstitial__eyebrow">
-              Krea makes pictures. Claude is different.
+              Krea makes pictures. Claude thinks with you.
             </span>
             <p
               id="co-intelligence-title"
               className="aiop-engine-question__q cw-keynote-interstitial__q"
             >
-              What if it could <em>think with you?</em>
+              So why does most of it <em>stall?</em>
             </p>
           </div>
         </section>
@@ -763,6 +770,12 @@ export default function PlopsaAiWorkshopPage() {
             100dvh rule are unaffected. */}
         <Suspense fallback={null}>
           <RoleProvider>
+            {/* "The answer everyone reaches for / Agents." This is the
+                beat that puts the word on the page. Without it,
+                AgentContext's "Everyone wants an agent" arrives out of
+                nowhere — the noun has never been used. It was left out
+                of the first cut of this tail and the seam showed. */}
+            <AgentsInterstitial />
             <AgentContext />
 
             <DiagnosisWithRoleFilter
