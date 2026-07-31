@@ -106,18 +106,24 @@ import "./plopsa-workshop.css";
  * under it, so dropping it would unstyle the page. See the token block
  * in plopsa-workshop.css for why the selector is doubled.
  *
- * Content status: the TLDR modal, the footer signature and the Skills
- * tail are Plopsa's own, rewritten from the 30 July transcripts. The
- * hero is the last Exalate carry-over — "Make AI sync" was a pun on
- * Exalate's product (issue syncing) and means nothing for a theme-park
- * group. Flagged rather than changed, since it is the page's most
- * visible line.
+ * Content status: no Exalate copy remains. The TLDR modal, the footer
+ * signature and the Skills tail were rewritten from the 30 July
+ * transcripts; the keynote tail is the /ai-keynote original; the hero
+ * has been returned to the keynote line it was punned from. The one
+ * borrowed thing left is Loop wording inside shared components
+ * (WorkshopApproach's "22 workshops", SoftwareForFew's opening, the
+ * Mímir reference in DegreesOfFreedom) — deliberate, since the Loop
+ * rollout is the page's proof.
  */
 
 const workshopHero = {
-  titleLines: ["Make AI sync", { em: "the way you work." }] as const,
+  /* "Make AI sync the way you work" was Exalate's pun on their own
+     product (issue syncing between trackers). The keynote's original
+     line is the un-punned version of exactly this sentence, so the fix
+     is to take it back rather than invent a third one. */
+  titleLines: ["Make AI work", { em: "the way you do." }] as const,
   lede: [
-    "On its own, AI is pretty good, and pretty good is generic. The judgment that makes work feel like Plopsa lives in five people’s heads. Encode it once, and everything you ship after today runs on it.",
+    "On its own, AI is pretty good, and pretty good is generic. The judgment that makes work feel like Plopsa is stuck in people’s heads. Encode it once, and everything you ship after today runs on it.",
   ] as const,
   actions: [
     {
