@@ -38,7 +38,6 @@ import {
 } from "@/content/claude-adoption";
 import {
   type DiagnosisCard,
-  pageMeta,
   pageSubstrateMap,
 } from "@/content/intelligence-layer";
 import { cases, casesSection, signalSection } from "@/content/operator";
@@ -529,20 +528,20 @@ const workshopFooter = {
 };
 
 /* Route-local nav. The inherited `pageMeta.links` pointed at
-   #diagnosis, #substrate-map, #skills and #substrate-gallery — every
-   one of those sections is gone with the deep-dive trim, so the nav is
-   restated here against the anchors this page actually renders.
-   `pageMeta` is still imported for the header status pill. */
+   #substrate-gallery and other sections this route never renders, so
+   the nav is restated here against the anchors that exist.
+
+   One entry per act, not per beat: the proof opening, the tools half,
+   the turn into act two, the argument, and what they leave with. An
+   earlier cut listed ten — every beat got a label, which read as a wall
+   of small caps and forced the type to scale down to fit. Nothing is
+   unreachable; the page scrolls, and the dropped sections sit between
+   the anchors that remain. */
 const creativeWorkshopNavLinks = [
   { id: "world-first-ai-atl", label: "Receipts", href: "#world-first-ai-atl" },
-  { id: "plopsa-showcase", label: "Showcase", href: "#plopsa-showcase" },
-  { id: "navigating-ai", label: "How AI works", href: "#navigating-ai" },
   { id: "which-tools", label: "Tools", href: "#which-tools" },
-  { id: "semantic-examples", label: "Examples", href: "#semantic-examples" },
-  { id: "krea-video", label: "Video", href: "#krea-video" },
   { id: "diagnosis", label: "Diagnosis", href: "#diagnosis" },
   { id: "substrate-map", label: "The layer", href: "#substrate-map" },
-  { id: "vision", label: "Flywheel", href: "#vision" },
   { id: "take-home-skills", label: "Skills", href: "#take-home-skills" },
 ] as const;
 
@@ -606,10 +605,10 @@ export default function PlopsaAiWorkshopPage() {
             ))}
           </nav>
 
-          <span className="aiop-header__status" aria-label={pageMeta.status}>
-            <span className="aiop-header__status-dot" aria-hidden="true" />
-            <span>{pageMeta.status}</span>
-          </span>
+          {/* No status pill on this route. It read "Running · 13 teams",
+              which is Loop's rollout state carried over from the shared
+              content — wrong claim on a Plopsa page, and it was taking
+              ~180px the nav needs. */}
         </div>
       </header>
 

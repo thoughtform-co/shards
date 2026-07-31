@@ -150,6 +150,23 @@
   color: #731c52;
 }
 
+/* Sticky nav — stop the labels breaking mid-phrase.
+   The shared rule (operator.css:493) sets no `white-space`, so a
+   multi-word label like "The layer" can compress below its content
+   width and wrap, which is what pushed the header to 85px and made the
+   text look cut off. Nowrap plus a no-shrink basis keeps each label on
+   one line.
+
+   Size and gap are deliberately NOT overridden. An earlier cut scaled
+   them down to fit ten links; the nav is five now, one per act, so it
+   fits at the shared 11.5px and this route stops looking different from
+   its siblings for no reason. Scoped anyway — the guard is cheap and
+   the other five routes are fine as they are. */
+.aiop-shell--tf-light.aiop-shell--plopsa .aiop-nav a {
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
 /* Bottom-left corner bracket — dropped on this route only.
    creative-hud.tsx anchors the brandmark to the same point as the BL
    bracket, and creative-ai-workshop.css:349 says the overlap is
