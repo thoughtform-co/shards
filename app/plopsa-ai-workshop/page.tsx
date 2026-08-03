@@ -118,11 +118,24 @@ import "./plopsa-workshop.css";
  */
 
 const workshopHero = {
-  /* "Make AI sync the way you work" was Exalate's pun on their own
-     product (issue syncing between trackers). The keynote's original
-     line is the un-punned version of exactly this sentence, so the fix
-     is to take it back rather than invent a third one. */
-  titleLines: ["Make AI work", { em: "the way you do." }] as const,
+  /* Names the craft. The keynote's "Make AI work / the way you do" is
+     the generic version — true of any team — and this page is about the
+     one thing the room spent two sessions on.
+
+     Three lines, not two. The hero copy column is ~590px against an
+     84px title, which holds roughly fifteen characters per line;
+     "Make AI image and video" is twenty-three and wrapped on its own,
+     giving four ragged lines. These breaks are explicit so each line is
+     set rather than reflowed. The accent stays on the closing phrase,
+     as on /ai-keynote.
+
+     (The line before this was "Make AI sync the way you work", Exalate's
+     pun on their own product. Gone since a26338c.) */
+  titleLines: [
+    "Make AI image",
+    "and video work",
+    { em: "the way you do." },
+  ] as const,
   lede: [
     "On its own, AI is pretty good, and pretty good is generic. The judgment that makes work feel like Plopsa is stuck in people’s heads. Encode it once, and everything you ship after today runs on it.",
   ] as const,
@@ -531,18 +544,31 @@ const workshopFooter = {
    #substrate-gallery and other sections this route never renders, so
    the nav is restated here against the anchors that exist.
 
-   One entry per act, not per beat: the proof opening, the tools half,
-   the turn into act two, the argument, and what they leave with. An
-   earlier cut listed ten — every beat got a label, which read as a wall
-   of small caps and forced the type to scale down to fit. Nothing is
-   unreachable; the page scrolls, and the dropped sections sit between
-   the anchors that remain. */
+   Labelled by subject, not by argument. An earlier cut used the
+   keynote's framing — Diagnosis, The layer, Flywheel — which describes
+   the case being made rather than what the room actually worked on.
+   These name the craft: the tools, the two media, the technique, and
+   what they leave with. Kept in page order.
+
+   "Tools" is the late software-for-few beat, not the earlier "Which AI
+   tools to use?" — that one is "Image", since it is where the image
+   models get compared. */
 const creativeWorkshopNavLinks = [
-  { id: "world-first-ai-atl", label: "Receipts", href: "#world-first-ai-atl" },
-  { id: "which-tools", label: "Tools", href: "#which-tools" },
-  { id: "diagnosis", label: "Diagnosis", href: "#diagnosis" },
-  { id: "substrate-map", label: "The layer", href: "#substrate-map" },
+  {
+    id: "world-first-ai-atl",
+    label: "Loop Earplugs",
+    href: "#world-first-ai-atl",
+  },
+  { id: "which-tools", label: "Image", href: "#which-tools" },
+  {
+    id: "semantic-examples",
+    label: "Semantic editing",
+    href: "#semantic-examples",
+  },
+  { id: "krea-models", label: "Krea", href: "#krea-models" },
+  { id: "krea-video", label: "Video", href: "#krea-video" },
   { id: "take-home-skills", label: "Skills", href: "#take-home-skills" },
+  { id: "software-for-few", label: "Tools", href: "#software-for-few" },
 ] as const;
 
 const aiopDisplay = IBM_Plex_Sans({
