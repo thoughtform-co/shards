@@ -886,6 +886,28 @@ export type FlywheelOrbitSection = {
     ring: "outer" | "middle" | "inner";
   }[];
   satellite?: { id: string; label: string };
+  /* Optional palette layer. Where `orbits` names the three moves of the
+     arc, `nodes` names the parts each move contributes to a
+     configuration — the intelligence palette from the strategy
+     doctrine (person, model, context, Skill, evals, tools, agents).
+     A route opts in by supplying them; orbits without them render
+     exactly as before.
+
+     `angle` is degrees clockwise from 12 o'clock, and the ring
+     supplies the radius, so a label is repositioned by changing one
+     number here rather than by adding a CSS selector. `ticks` are the
+     same coordinate pair without a label: unnamed marks that make the
+     rings read as measured orbits rather than plain circles. */
+  nodes?: readonly {
+    id: string;
+    label: string;
+    ring: "outer" | "middle" | "inner";
+    angle: number;
+  }[];
+  ticks?: readonly {
+    ring: "outer" | "middle" | "inner";
+    angle: number;
+  }[];
 };
 
 /* ─────────────────────────────────────────────────────────────────────

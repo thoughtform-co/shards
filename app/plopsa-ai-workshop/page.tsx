@@ -40,7 +40,13 @@ import {
   type DiagnosisCard,
   pageSubstrateMap,
 } from "@/content/intelligence-layer";
-import { cases, casesSection, signalSection } from "@/content/operator";
+import {
+  cases,
+  casesSection,
+  type FlywheelOrbitSection,
+  signalSection,
+  visionSection,
+} from "@/content/operator";
 import { KreaModelsSection, KreaVideoCraftSection } from "./krea-sections";
 import { SemanticExamplesSection } from "./semantic-examples";
 import { TakeHomeSkills } from "./take-home-skills";
@@ -152,6 +158,82 @@ const workshopHero = {
 };
 
 const workshopBrandSub = "AI Capability Workshop";
+
+/* ─────────────────────────────────────────────────────────────────────
+ * Hero orbit — one word per ring.
+ *
+ * The shared `visionSection` orbit names three moves and puts the
+ * layer at the centre. That is the method, but not what the method
+ * works on, so each ring gains a single chip:
+ *
+ *   outer  · Navigate → CONTEXT    (what you steer with)
+ *   middle · Encode   → JUDGMENT   (what gets retained)
+ *   inner  · Build    → CRAFT      (what gets made)
+ *
+ * One, not several. An earlier cut put the whole intelligence palette
+ * here — people, models, context, Skills, evals, tools, agents — which
+ * is accurate and reads as an inventory: twelve labels competing with
+ * the core instead of pointing at it. The palette belongs in a section
+ * that can afford prose, not in a hero figure.
+ *
+ * `judgment` is the hero lede's own word ("The judgment that makes
+ * work feel like Plopsa is stuck in people's heads"), so the figure
+ * and the copy land the same idea rather than two adjacent ones. Its
+ * near-synonyms — taste, judgment, craft — cannot share the diagram:
+ * at chip size a reader takes three words for three concepts. Taste is
+ * the live alternative to `judgment` if the lede ever changes; both
+ * are named chokepoints in `02-navigate-encode-build.md`.
+ *
+ * No satellite. Headless was demoted to assumed infrastructure in the
+ * strategy skill (V37), and a satellite plus a connector spine is the
+ * loudest position in the figure — the opposite of demoted.
+ *
+ * Angles are degrees clockwise from 12 o'clock; the ring supplies the
+ * radius. Pills sit at 0 / 120 / 240, so the chips take 45 / 180 / 300
+ * to sweep the clock evenly. Anything that moves a pill will need
+ * these re-checked.
+ *
+ * Route-local, not pushed into `visionSection`: six other routes render
+ * that orbit, and they keep the satellite.
+ * ─────────────────────────────────────────────────────────────────── */
+const plopsaOrbit: FlywheelOrbitSection = {
+  centerLabel: visionSection.centerLabel,
+  /* The shared list names a Loop Skill, which is the wrong artefact on
+     a Plopsa page. These three are real: `plopsa-brand.skill` is
+     downloadable further down this page, and the workshop transcripts
+     are what the Skills were written from. */
+  centerFiles: [
+    "how-teams-work.md",
+    "plopsa-brand.skill",
+    "workshop-transcript.txt",
+  ],
+  orbits: visionSection.orbits,
+  /* `satellite` deliberately omitted — see the Headless note above. */
+};
+
+const plopsaHeroOrbit: FlywheelOrbitSection = {
+  ...plopsaOrbit,
+  nodes: [
+    { id: "context", label: "Context", ring: "outer", angle: 45 },
+    { id: "judgment", label: "Judgment", ring: "middle", angle: 180 },
+    { id: "craft", label: "Craft", ring: "inner", angle: 300 },
+  ],
+  /* Unlabelled marks. With only three chips left the rings need
+     something to make them read as measured orbits rather than plain
+     circles, and a tick costs no reading load. Kept off the four
+     angles that carry a pill or a chip. */
+  ticks: [
+    { ring: "outer", angle: 90 },
+    { ring: "outer", angle: 225 },
+    { ring: "outer", angle: 315 },
+    { ring: "middle", angle: 60 },
+    /* 270, not 300: at 300 this tick shares Craft's angle one ring
+       out, which reads fine at 450px and collides once the orbit
+       drops to ~366px. */
+    { ring: "middle", angle: 270 },
+    { ring: "inner", angle: 150 },
+  ],
+};
 
 /* ─────────────────────────────────────────────────────────────────────
  * Keynote tail content.
@@ -554,11 +636,10 @@ const workshopFooter = {
    tools to use?" — that one is "Image", since it is where the image
    models get compared. */
 const creativeWorkshopNavLinks = [
-  {
-    id: "world-first-ai-atl",
-    label: "Loop Earplugs",
-    href: "#world-first-ai-atl",
-  },
+  /* No entry for #world-first-ai-atl. The section stays — it is the
+     first beat after the hero and the Get Started button lands on it —
+     but the nav now opens on the craft rather than on another
+     client's name. */
   { id: "which-tools", label: "Image", href: "#which-tools" },
   {
     id: "semantic-examples",
@@ -567,6 +648,13 @@ const creativeWorkshopNavLinks = [
   },
   { id: "krea-models", label: "Krea", href: "#krea-models" },
   { id: "krea-video", label: "Video", href: "#krea-video" },
+  /* Head of the Claude run, not the middle of it. The run is
+     #encode-anthropic (the lab's own prompting video) →
+     #claude-skill-anatomy → #freedom, and only then the three Skills
+     the room takes home. Pointing at #claude-skill-anatomy would name
+     the subject more literally but drop the visitor past the video
+     that introduces it. */
+  { id: "encode-anthropic", label: "Claude", href: "#encode-anthropic" },
   { id: "take-home-skills", label: "Skills", href: "#take-home-skills" },
   { id: "software-for-few", label: "Tools", href: "#software-for-few" },
 ] as const;
@@ -681,7 +769,11 @@ export default function PlopsaAiWorkshopPage() {
             </div>
 
             <div className="aiop-hero__orbit-stage aiop-reveal">
-              <FlywheelOrbit variant="compact" bloom />
+              <FlywheelOrbit
+                variant="compact"
+                bloom
+                section={plopsaHeroOrbit}
+              />
             </div>
           </div>
         </section>
@@ -826,7 +918,10 @@ export default function PlopsaAiWorkshopPage() {
                   </p>
                 </header>
 
-                <FlywheelOrbit variant="centered" />
+                {/* Same core as the hero (no palette — that layer is
+                    hero-only), so one page never shows two different
+                    file lists inside the same layer. */}
+                <FlywheelOrbit variant="centered" section={plopsaOrbit} />
               </div>
             </section>
 

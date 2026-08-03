@@ -2771,7 +2771,7 @@
   display: none;
 }
 
-.aiop-orbit--nested::after {
+.aiop-orbit--nested[data-aiop-spine]::after {
   /* Vertical hairline from below the satellite cluster down to the
      substrate's top edge (~37% from container top). The 50px we
      subtract / add in the calcs accounts for the cluster's
@@ -2790,6 +2790,98 @@
   transform: translateX(-50%);
   z-index: 1;
   pointer-events: none;
+}
+
+/* ─── Palette nodes + ring ticks ───────────────────────────────────
+ * Opt-in layer (`section.nodes` / `section.ticks`). The three phase
+ * pills name the moves of the arc; these name what each move
+ * contributes to a configuration — person, model, context on the
+ * Navigate ring, Skills and evals on the Encode ring, tools and
+ * agents on the Build ring.
+ *
+ * They are deliberately a quieter register than the pills: mono caps
+ * at satellite size on a hairline chip, no dot, no shadow. The pills
+ * stay the loudest thing on each ring, the nodes read as annotation,
+ * and the substrate core stays the centre of gravity.
+ *
+ * `top` / `left` arrive as inline styles from `ringPoint()` in
+ * `flywheel-orbit.tsx`; everything here is chrome. The cluster is
+ * centred ON its ring point rather than hung off it, which keeps the
+ * furthest chip (outer ring, r=46) about 3% clear of the container
+ * edge instead of overflowing it.
+ * ─────────────────────────────────────────────────────────────── */
+
+.aiop-orbit__node {
+  position: absolute;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  padding: 4px 8px;
+  /* Opaque, unlike the satellite's 88% chip. A node sits ON its ring
+     rather than beside one, and the inner ring is a heavy ink stroke —
+     at 88% it ghosts through the label as a grey band. Full card
+     colour makes the ring read as passing behind the chip. */
+  background: var(--aiop-card);
+  border: 1px solid var(--aiop-rule);
+  color: var(--aiop-ink-soft);
+  font-family: var(--aiop-mono);
+  font-size: clamp(7.5px, 0.78vw, 9px);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Ring tint on the chip's leading edge — the same violet / amber /
+   sage lane colours the pill dots carry, so a node's ring is
+   readable without tracing the circle it sits on. */
+.aiop-orbit__node--ring-outer {
+  border-left: 2px solid color-mix(in oklab, var(--aiop-violet) 62%, transparent);
+}
+
+.aiop-orbit__node--ring-middle {
+  border-left: 2px solid color-mix(in oklab, var(--aiop-amber) 70%, transparent);
+}
+
+.aiop-orbit__node--ring-inner {
+  border-left: 2px solid color-mix(in oklab, var(--aiop-sage) 70%, transparent);
+}
+
+/* Unlabelled marks. These carry no meaning on their own — they give
+   the rings the texture of a measured orbit so the labelled nodes
+   read as points ON something rather than as floating captions. */
+.aiop-orbit__tick {
+  position: absolute;
+  z-index: 2;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  border: 1.5px solid var(--aiop-card);
+  pointer-events: none;
+}
+
+.aiop-orbit__tick--ring-outer {
+  background: color-mix(in oklab, var(--aiop-violet) 72%, transparent);
+}
+
+.aiop-orbit__tick--ring-middle {
+  background: color-mix(in oklab, var(--aiop-amber) 80%, transparent);
+}
+
+.aiop-orbit__tick--ring-inner {
+  background: color-mix(in oklab, var(--aiop-sage) 80%, transparent);
+}
+
+@media (max-width: 860px) {
+  /* Below this the orbit is small enough that seven chips collide
+     with each other and with the pills. The pills, satellite and core
+     still carry the diagram; the palette layer is the part that can
+     go. Ticks stay — they cost no space and keep the rings reading as
+     orbits rather than plain circles. */
+  .aiop-orbit__node {
+    display: none;
+  }
 }
 
 @media (max-width: 600px) {
@@ -15082,6 +15174,12 @@
 .aiop-orbit__bloom-ring {
   fill: none;
   stroke-linecap: butt;
+  /* The weight the keyframes hold the rings at through the orbit
+     phase. Stated in the base rule so the unanimated render (reduced
+     motion) matches that hold instead of falling back to the SVG
+     default of 1. The keyframes set the property at every step, so
+     they are unaffected. */
+  stroke-width: 1.5;
 }
 
 .aiop-orbit__bloom-ring--outer {
@@ -15163,6 +15261,18 @@
 
   .aiop-hero__orbit-stage.is-in .aiop-orbit[data-aiop-bloom] .aiop-orbit__pill--build {
     animation: aiop-orbit-bloom-pill-build 16s ease-in-out infinite;
+  }
+
+  /* Palette layer — last in, first out, so the cascade finishes on
+     the annotation rather than starting with it. Ticks land a beat
+     before the chips: the rings acquire their marks, then the marks
+     get named. */
+  .aiop-hero__orbit-stage.is-in .aiop-orbit[data-aiop-bloom] .aiop-orbit__tick {
+    animation: aiop-orbit-bloom-tick 16s ease-in-out infinite;
+  }
+
+  .aiop-hero__orbit-stage.is-in .aiop-orbit[data-aiop-bloom] .aiop-orbit__node {
+    animation: aiop-orbit-bloom-node 16s ease-in-out infinite;
   }
 }
 
@@ -15274,18 +15384,50 @@
   100%      { opacity: 0; }
 }
 
-/* ─── Reduced motion ──────────────────────────────────────────────────
- * Skip the bloom entirely. The persistent rings, core, satellite,
- * connector, and pills already render at their settled state by
- * default (their base rules carry no `opacity: 0`), so all we need
- * to do is hide the bloom SVG layer.
- * ─────────────────────────────────────────────────────────────────── */
-
-@media (prefers-reduced-motion: reduce) {
-  .aiop-hero__orbit-stage .aiop-orbit__bloom {
-    display: none;
-  }
+/* Ring ticks — in just behind the last pill. They hold a shorter
+   window than the rings themselves so the marks never outlive the
+   circles they sit on. */
+@keyframes aiop-orbit-bloom-tick {
+  0%, 30%   { opacity: 0; }
+  35%       { opacity: 1; }
+  64%       { opacity: 1; }
+  69%       { opacity: 0; }
+  100%      { opacity: 0; }
 }
+
+/* Palette chips — the tail of the cascade in and the head of the
+   fold out, so the diagram assembles pills-then-annotation and
+   sheds annotation-then-pills. Their hold sits fully inside the
+   pills' hold, which is what makes the fade read as ordered rather
+   than as everything leaving at once. */
+@keyframes aiop-orbit-bloom-node {
+  0%, 33%   { opacity: 0; }
+  39%       { opacity: 1; }
+  62%       { opacity: 1; }
+  67%       { opacity: 0; }
+  100%      { opacity: 0; }
+}
+
+/* ─── Reduced motion ──────────────────────────────────────────────────
+ * Nothing to switch off. Every animation above is already inside a
+ * `prefers-reduced-motion: no-preference` block, so under `reduce`
+ * the bloom SVG renders unanimated — and its four primitives are
+ * authored at their orbit destinations (r=46 / 36 / 26, core r=15),
+ * which IS the settled full-flywheel state. The core text, satellite,
+ * connector, pills, and palette layer carry no `opacity: 0` in their
+ * base rules, so they simply show.
+ *
+ * This block previously hid the bloom SVG here, on the reasoning that
+ * the persistent HTML rings and core would take over. They cannot:
+ * `.aiop-orbit[data-aiop-bloom] .aiop-orbit__ring` is `display: none`
+ * unconditionally and the HTML core is stripped of its disc in the
+ * same place, so hiding the SVG left reduced-motion visitors a
+ * ringless orbit — pills and a label floating on blank paper. On the
+ * tf-light routes the HTML fallback could not have worked in any
+ * case: their shape law (`creative-ai-workshop.css`, zero radius
+ * across the route) squares every HTML circle, so the rings and the
+ * substrate disc have to come from the SVG.
+ * ─────────────────────────────────────────────────────────────────── */
 
 /* ─── 33b · Section title balance ──────────────────────────────── */
 
