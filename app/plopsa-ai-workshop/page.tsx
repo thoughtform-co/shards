@@ -166,9 +166,9 @@ const workshopBrandSub = "AI Capability Workshop";
  * layer at the centre. That is the method, but not what the method
  * works on, so each ring gains a single chip:
  *
- *   outer  · Navigate → CONTEXT    (what you steer with)
- *   middle · Encode   → JUDGMENT   (what gets retained)
- *   inner  · Build    → CRAFT      (what gets made)
+ *   outer  · Navigate → CONTEXT   (what you steer with)
+ *   middle · Encode   → WORK      (where encoding happens)
+ *   inner  · Build    → MODEL     (what runs it)
  *
  * One, not several. An earlier cut put the whole intelligence palette
  * here — people, models, context, Skills, evals, tools, agents — which
@@ -176,13 +176,19 @@ const workshopBrandSub = "AI Capability Workshop";
  * the core instead of pointing at it. The palette belongs in a section
  * that can afford prose, not in a hero figure.
  *
- * `judgment` is the hero lede's own word ("The judgment that makes
- * work feel like Plopsa is stuck in people's heads"), so the figure
- * and the copy land the same idea rather than two adjacent ones. Its
- * near-synonyms — taste, judgment, craft — cannot share the diagram:
- * at chip size a reader takes three words for three concepts. Taste is
- * the live alternative to `judgment` if the lede ever changes; both
- * are named chokepoints in `02-navigate-encode-build.md`.
+ * The three read as the columns of the map at the centre: which model
+ * runs which work, with what context. `01-intelligence-architecture.md`
+ * defines the map as which intelligence runs which work across a
+ * declared scope, so the figure is that sentence drawn. WORK on the
+ * Encode ring also echoes the page's own encoding section, "Encode it
+ * once, inside the work."
+ *
+ * MODEL on the Build ring is the one to watch. The doctrine is explicit
+ * that the model is one field in the configuration and not the starting
+ * point, so a reader who takes the chip as "Build = pick a model" has
+ * taken the opposite of the argument. It survives here because the
+ * centre says map rather than layer, which frames the chip as a column
+ * of the map rather than as the output of Build.
  *
  * No satellite. Headless was demoted to assumed infrastructure in the
  * strategy skill (V37), and a satellite plus a connector spine is the
@@ -197,7 +203,16 @@ const workshopBrandSub = "AI Capability Workshop";
  * that orbit, and they keep the satellite.
  * ─────────────────────────────────────────────────────────────────── */
 const plopsaOrbit: FlywheelOrbitSection = {
-  centerLabel: visionSection.centerLabel,
+  /* "Map", not the shared "Intelligence Layer". They are different
+     objects in the doctrine, not synonyms: Encode produces the layer,
+     Build produces the map, and only the map answers which intelligence
+     runs which work. The chips around it are that answer's columns.
+     Note this does NOT contradict #substrate-map further down the page,
+     which still argues for the layer — a team holding one without the
+     other has routing with nothing underneath it, or judgment with
+     nowhere to run. Route-local; `visionSection` keeps "Layer" for the
+     six other routes. */
+  centerLabel: "Intelligence Map",
   /* The shared list names a Loop Skill, which is the wrong artefact on
      a Plopsa page. These three are real: `plopsa-brand.skill` is
      downloadable further down this page, and the workshop transcripts
@@ -215,8 +230,8 @@ const plopsaHeroOrbit: FlywheelOrbitSection = {
   ...plopsaOrbit,
   nodes: [
     { id: "context", label: "Context", ring: "outer", angle: 45 },
-    { id: "judgment", label: "Judgment", ring: "middle", angle: 180 },
-    { id: "craft", label: "Craft", ring: "inner", angle: 300 },
+    { id: "work", label: "Work", ring: "middle", angle: 180 },
+    { id: "model", label: "Model", ring: "inner", angle: 300 },
   ],
   /* Unlabelled marks. With only three chips left the rings need
      something to make them read as measured orbits rather than plain
