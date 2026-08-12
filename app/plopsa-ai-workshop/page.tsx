@@ -22,6 +22,7 @@ import { DiagnosisWithRoleFilter } from "@/components/intelligence-layer/diagnos
 import { RoleProvider } from "@/components/intelligence-layer/role-context";
 import { SubstrateMap } from "@/components/intelligence-layer/substrate-map";
 import { Cases } from "@/components/operator/cases";
+import { ConstellationOrbit } from "@/components/operator/constellation-orbit";
 import { EncodingInterstitial } from "@/components/operator/encoding-interstitial";
 import { EvansBridge } from "@/components/operator/evans-bridge";
 import { FlywheelOrbit } from "@/components/operator/flywheel-orbit";
@@ -55,6 +56,8 @@ import { NavigatingAiProof, PlopsaShowcaseVideo } from "./video-sections";
 import { WorkshopTldr, type WorkshopTldrContent } from "./workshop-tldr";
 import "@/components/landing/landing.css";
 import "@/components/operator/operator.css";
+import "@/components/operator/hero-figure.css";
+import "@/components/operator/constellation-orbit.css";
 import "@/components/intelligence-layer/intelligence-layer.css";
 import "@/components/claude-workshop/claude-workshop.css";
 import "@/components/claude-adoption/claude-adoption.css";
@@ -160,59 +163,34 @@ const workshopHero = {
 const workshopBrandSub = "AI Capability Workshop";
 
 /* ─────────────────────────────────────────────────────────────────────
- * Hero orbit — one word per ring.
+ * Hero figure — `<ConstellationOrbit />`, shared with /ai-keynote.
  *
- * The shared `visionSection` orbit names three moves and puts the
- * layer at the centre. That is the method, but not what the method
- * works on, so each ring gains a single chip:
+ * Two figures have stood here. A `<FlywheelOrbit />` drew the METHOD
+ * (Navigate / Encode / Build) plus ingredient labels plus a portfolio
+ * label at the centre — three altitudes in one circle, resolving to
+ * none. A `<ConfigurationOrbit />` replaced it with the right subject
+ * and the wrong voice: four long captions floating on two rings, which
+ * reads as a framework checklist rather than as a mark.
  *
- *   outer  · Navigate → CONTEXT   (what you steer with)
- *   middle · Encode   → WORK      (where encoding happens)
- *   inner  · Build    → MODEL     (what runs it)
+ * What is here now says one thing in three registers, reading outward:
+ * a workflow and the domain experts accountable for it, the four things
+ * that perform it (skill, model, data, interface), and a named boundary
+ * around all of it. Its content lives in `workflowFigure`
+ * (`components/operator/hero-figure.ts`) rather than on this route,
+ * because /ai-keynote runs the same figure and the two must not drift.
  *
- * One, not several. An earlier cut put the whole intelligence palette
- * here — people, models, context, Skills, evals, tools, agents — which
- * is accurate and reads as an inventory: twelve labels competing with
- * the core instead of pointing at it. The palette belongs in a section
- * that can afford prose, not in a hero figure.
- *
- * The three read as the columns of the map at the centre: which model
- * runs which work, with what context. `01-intelligence-architecture.md`
- * defines the map as which intelligence runs which work across a
- * declared scope, so the figure is that sentence drawn. WORK on the
- * Encode ring also echoes the page's own encoding section, "Encode it
- * once, inside the work."
- *
- * MODEL on the Build ring is the one to watch. The doctrine is explicit
- * that the model is one field in the configuration and not the starting
- * point, so a reader who takes the chip as "Build = pick a model" has
- * taken the opposite of the argument. It survives here because the
- * centre says map rather than layer, which frames the chip as a column
- * of the map rather than as the output of Build.
- *
- * No satellite. Headless was demoted to assumed infrastructure in the
- * strategy skill (V37), and a satellite plus a connector spine is the
- * loudest position in the figure — the opposite of demoted.
- *
- * Angles are degrees clockwise from 12 o'clock; the ring supplies the
- * radius. Pills sit at 0 / 120 / 240, so the chips take 45 / 180 / 300
- * to sweep the clock evenly. Anything that moves a pill will need
- * these re-checked.
- *
- * Route-local, not pushed into `visionSection`: six other routes render
- * that orbit, and they keep the satellite.
+ * The Loop-mark morph is unchanged — the cycle still opens on the black
+ * brandmark and folds back into it — so the page reads the same at a
+ * glance and means something a good deal more specific.
  * ─────────────────────────────────────────────────────────────────── */
+
+/* The Vision-section orbit further down is still the METHOD figure, and
+   correctly so — it sits under "Adoption and Automation are the same
+   flywheel". Its centre goes back to the layer: Encode produces the
+   layer, Build produces the map, and the map is not what a single
+   flywheel turns around. */
 const plopsaOrbit: FlywheelOrbitSection = {
-  /* "Map", not the shared "Intelligence Layer". They are different
-     objects in the doctrine, not synonyms: Encode produces the layer,
-     Build produces the map, and only the map answers which intelligence
-     runs which work. The chips around it are that answer's columns.
-     Note this does NOT contradict #substrate-map further down the page,
-     which still argues for the layer — a team holding one without the
-     other has routing with nothing underneath it, or judgment with
-     nowhere to run. Route-local; `visionSection` keeps "Layer" for the
-     six other routes. */
-  centerLabel: "Intelligence Map",
+  centerLabel: visionSection.centerLabel,
   /* The shared list names a Loop Skill, which is the wrong artefact on
      a Plopsa page. These three are real: `plopsa-brand.skill` is
      downloadable further down this page, and the workshop transcripts
@@ -223,31 +201,7 @@ const plopsaOrbit: FlywheelOrbitSection = {
     "workshop-transcript.txt",
   ],
   orbits: visionSection.orbits,
-  /* `satellite` deliberately omitted — see the Headless note above. */
-};
-
-const plopsaHeroOrbit: FlywheelOrbitSection = {
-  ...plopsaOrbit,
-  nodes: [
-    { id: "context", label: "Context", ring: "outer", angle: 45 },
-    { id: "work", label: "Work", ring: "middle", angle: 180 },
-    { id: "model", label: "Model", ring: "inner", angle: 300 },
-  ],
-  /* Unlabelled marks. With only three chips left the rings need
-     something to make them read as measured orbits rather than plain
-     circles, and a tick costs no reading load. Kept off the four
-     angles that carry a pill or a chip. */
-  ticks: [
-    { ring: "outer", angle: 90 },
-    { ring: "outer", angle: 225 },
-    { ring: "outer", angle: 315 },
-    { ring: "middle", angle: 60 },
-    /* 270, not 300: at 300 this tick shares Craft's angle one ring
-       out, which reads fine at 450px and collides once the orbit
-       drops to ~366px. */
-    { ring: "middle", angle: 270 },
-    { ring: "inner", angle: 150 },
-  ],
+  satellite: visionSection.satellite,
 };
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -783,12 +737,8 @@ export default function PlopsaAiWorkshopPage() {
               </div>
             </div>
 
-            <div className="aiop-hero__orbit-stage aiop-reveal">
-              <FlywheelOrbit
-                variant="compact"
-                bloom
-                section={plopsaHeroOrbit}
-              />
+            <div className="aiop-hero__orbit-stage aiop-hero__orbit-stage--figure aiop-reveal">
+              <ConstellationOrbit loop labels="named" />
             </div>
           </div>
         </section>
@@ -933,9 +883,10 @@ export default function PlopsaAiWorkshopPage() {
                   </p>
                 </header>
 
-                {/* Same core as the hero (no palette — that layer is
-                    hero-only), so one page never shows two different
-                    file lists inside the same layer. */}
+                {/* The method figure, unchanged. The hero now carries
+                    the unit (one configuration); this carries the loop
+                    that produces and renews it. Two figures, two
+                    altitudes, neither pretending to be the other. */}
                 <FlywheelOrbit variant="centered" section={plopsaOrbit} />
               </div>
             </section>

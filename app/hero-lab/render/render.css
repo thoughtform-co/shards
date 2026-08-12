@@ -1,0 +1,54 @@
+/* ═════════════════════════════════════════════════════════════════════
+ * /hero-lab/render — video capture surface.
+ *
+ * Everything here exists to make a screenshot of this page a usable
+ * video frame. Nothing in it should be lifted onto a client route.
+ * ═════════════════════════════════════════════════════════════════════ */
+
+.tf-render {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--aiop-paper);
+}
+
+/* `.aiop-stage::before` lays two radial tints and a vertical gradient
+   over the whole shell. On a web page that is atmosphere; in a 1080x1450
+   crop it is a visible wash across one corner, and it made the figure's
+   own paper ground read as a lighter rectangle sitting on top of it.
+   Flat paper here — which also spares H.264 a full-frame gradient it
+   would band across thirty seconds. The class itself stays: it carries
+   the type colour and font stack. */
+.tf-render.aiop-stage::before {
+  display: none;
+}
+
+/* The dev-server overlay renders in a portal outside the shell and was
+   being composited into the frames — a black disc in the bottom-left
+   corner of the video. This stylesheet is only loaded by this route, so
+   the unscoped selector reaches it without touching any other page. */
+nextjs-portal,
+[data-nextjs-toast],
+#__next-build-watcher {
+  display: none !important;
+}
+
+/* 470px inside a 540px frame: 35px of margin either side, and the
+   figure's own labels reach to about 96% of its box, so nothing sits
+   flush against the edge of the video. */
+.tf-render__stage {
+  width: 470px;
+  background: var(--aiop-paper);
+}
+
+/* Two cycles at 15s come to exactly the 30 seconds the export is for.
+   Set here rather than on `.tf-fig` in `hero-figure.css` so the web
+   figure keeps its 16s and only the render moves — the difference is
+   a 6% speed-up and reads as the same animation.
+
+   The per-facet cascade cues stay in absolute seconds and therefore run
+   fractionally longer in proportion. At 0.13s against a 15s cycle that
+   is under a tenth of a percent of the timeline. */
+.tf-render .tf-fig {
+  --tf-fig-dur: 15s;
+}

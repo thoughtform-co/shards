@@ -1,0 +1,212 @@
+/* ═════════════════════════════════════════════════════════════════════
+ * hero-figure — the chrome the three candidate hero figures share.
+ *
+ * Owned by `components/operator/hero-figure.ts` and the three figures
+ * that import it (`aperture-orbit`, `quatrefoil-orbit`,
+ * `constellation-orbit`). Each of those ships its own stylesheet
+ * carrying only its strokes and its geometry keyframes; the container,
+ * the centre word and the cycle's shared beats live here so the three
+ * are comparable rather than accidentally different.
+ *
+ * ── The 16s cycle ───────────────────────────────────────────────────
+ * Every figure runs the same phase map, which is also the map
+ * `.aiop-orbit`'s bloom and `.tf-config` already run — so a page
+ * carrying two of them never beats against itself:
+ *
+ *   0-8%     the Loop mark holds — a heavy small stroke around a
+ *            transparent hole, which IS the brandmark
+ *   8-21%    it opens: radii grow, strokes thin, the second geometry
+ *            emerges out of the mark rather than fading in over it
+ *   21-29%   the centre word lands
+ *   29-62%   HOLD
+ *   62-72%   the word leaves
+ *   72-88%   everything collapses back into the mark
+ *   88-100%  the mark holds, and 100% is 0%
+ *
+ * ── Two rules, both already paid for in bugs ────────────────────────
+ *
+ * 1. Animations live inside `prefers-reduced-motion: no-preference`,
+ *    and the BASE state is the settled figure — circles authored at
+ *    their open radii, nothing carrying `opacity: 0`. Under `reduce` a
+ *    visitor gets the complete figure, not a stripped one. `.aiop-orbit`
+ *    shipped the opposite for months (see the note at the foot of
+ *    `operator.css`).
+ *
+ * 2. Every circle is SVG. The tf-light routes run a zero-radius shape
+ *    law (`creative-ai-workshop.css`) that squares every HTML
+ *    `border-radius`, so an HTML ring renders as a box on exactly the
+ *    routes these figures are built for.
+ *
+ * Nothing here gates on `.is-in`. The flywheel's bloom only runs once
+ * the `ScrollReveal` observer fires, which is fine in a hero and wrong
+ * anywhere the observer is absent; these figures animate off their own
+ * `data-tf-loop` attribute.
+ * ═════════════════════════════════════════════════════════════════════ */
+
+.tf-fig {
+  --tf-fig-dur: 16s;
+  /* Set by /hero-lab's scrubber. In production it stays 0s. */
+  --tf-fig-delay: 0s;
+
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  aspect-ratio: 1 / 1;
+  /* So the centre word can size against the FIGURE rather than the
+     viewport — see `.tf-fig__core`. Safe next to the absolutely
+     positioned children: the element is already `position: relative`,
+     so the layout containment this implies changes nothing. */
+  container-type: inline-size;
+}
+
+.tf-fig__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* The Loop mark's heavy stroke reaches outside the nominal radius,
+     and the quatrefoil's lobes sit near the viewBox edge. */
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* Rotations are authored around the centre of the viewBox, not around
+   each element's own bounding box — `fill-box` would rotate an arc
+   about the middle of the arc. */
+.tf-fig__svg * {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+}
+
+/* ─── The centre word ─────────────────────────────────────────────────
+ * One word. It is the only thing written on any of these figures: the
+ * four facets are carried by `aria-label` and by the marks, because a
+ * mark that needs four captions is a diagram.
+ *
+ * Sized in `cqw` — a percentage of the FIGURE's own width, not of the
+ * viewport. A `vw` clamp is what every other diagram on the site uses
+ * and it is wrong here: the ring the word sits inside is a fixed
+ * fraction of the container, so when a narrow column shrinks the figure
+ * at a constant viewport width the type does not follow it and the word
+ * closes on the ring. In `cqw` the word and its ring shrink together at
+ * every size, which is the whole relationship.
+ * ─────────────────────────────────────────────────────────────────── */
+
+.tf-fig__core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  /* Grid so a figure that carries a second register (`__core-sub`) can
+     stack it under the first and centre both. A figure that passes a
+     bare string still works — the text becomes an anonymous grid item.
+
+     The gap is load-bearing on the constellation: its horizontal spokes
+     run at exactly this height, so they pass BETWEEN the two lines
+     rather than under a single block that covers them. Narrow it below
+     about 6px and the hairline starts clipping the type. */
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  font-family: var(--aiop-mono);
+  /* Sized for WORKFLOW — eight characters inside a ring 64 units across,
+     which leaves it plenty of air. An earlier cut set CONFIGURATION here
+     and had to run 11px to fit thirteen characters; the shorter word is
+     what buys the size back. */
+  font-size: clamp(9px, 3.6cqw, 16px);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: var(--aiop-ink);
+  pointer-events: none;
+}
+
+/* Each register carries its OWN paper ground rather than sharing one
+   block, which is what leaves the gap between them transparent. On the
+   constellation that gap is where the horizontal spokes run, so MODEL
+   and DATA are joined by one unbroken hairline that passes through the
+   centre and doubles as the rule under the work. A single block behind
+   both lines swallowed those two spokes entirely.
+
+   Any surface hosting a figure with a centre sub-line therefore paints
+   `--aiop-paper` — the same debt the constellation's bodies and the
+   quatrefoil's clearing already owe it. */
+.tf-fig__core-main,
+.tf-fig__core-sub {
+  padding: 2px 10px;
+  background: var(--aiop-paper);
+}
+
+/* The second register: who owns the thing named above it. SAME SIZE as
+   the line above — the people are not a footnote to the work — so the
+   two are separated by colour and by the line between them, not by
+   scale. */
+.tf-fig__core-sub {
+  color: var(--aiop-muted);
+}
+
+/* ─── The name of the whole figure ────────────────────────────────────
+ * Shared, because two figures now carry it and it has to look like the
+ * same statement on both: the constellation sits it in the gap it cuts
+ * at the top of its boundary ring, the nested orbits set it below every
+ * circle as a caption.
+ *
+ * FRAMED, because it names everything rather than one part — and a box
+ * is the one piece of chrome that says so without a word. Nothing else
+ * on either figure carries a border, which is what keeps the frame
+ * meaning something.
+ *
+ * Padding in `em` so the box keeps its proportions at 240px, where the
+ * type has bottomed out on the clamp minimum and fixed padding would
+ * swell the frame around it.
+ * ─────────────────────────────────────────────────────────────────── */
+
+.tf-fig__boundary-label {
+  position: absolute;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  width: max-content;
+  max-width: 74%;
+  padding: 0.5em 0.9em;
+  background: var(--aiop-paper);
+  border: 1px solid color-mix(in oklab, var(--aiop-sage) 44%, transparent);
+  font-family: var(--aiop-mono);
+  font-size: clamp(6px, 2.35cqw, 10px);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--aiop-sage) 76%, var(--aiop-ink));
+  pointer-events: none;
+}
+
+/* The LOOK of the boundary label is shared; its TIMING is not. It has to
+   land after the last of a figure's own labels, and the two figures
+   reveal on different chains — the constellation cascades four facets
+   through bud, slot, wire and word, the nested orbits unfurl four rings
+   from the inside out. Each owns its own keyframe (`tf-cn-boundary-label`,
+   `tf-nest-caption`) rather than sharing one that fits neither. */
+
+@media (prefers-reduced-motion: no-preference) {
+  .tf-fig[data-tf-loop] .tf-fig__core {
+    animation: tf-fig-core var(--tf-fig-dur) ease-in-out infinite;
+    animation-delay: var(--tf-fig-delay);
+  }
+}
+
+
+/* Lands with the open figure and leaves before it folds, so the word is
+   never legible over a shape that is still moving. It is the subject, so
+   it is also the first thing on the figure that can be read — ahead of
+   every label. */
+@keyframes tf-fig-core {
+  0%, 18% { opacity: 0; }
+  24%     { opacity: 1; }
+  65%     { opacity: 1; }
+  71%     { opacity: 0; }
+  100%    { opacity: 0; }
+}

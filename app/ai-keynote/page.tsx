@@ -24,6 +24,7 @@ import { RoleProvider } from "@/components/intelligence-layer/role-context";
 import { SubstrateMap } from "@/components/intelligence-layer/substrate-map";
 import { UseCasesProvider } from "@/components/intelligence-layer/use-cases-context";
 import { Cases } from "@/components/operator/cases";
+import { ConstellationOrbit } from "@/components/operator/constellation-orbit";
 import { EncodingInterstitial } from "@/components/operator/encoding-interstitial";
 import { EvansBridge } from "@/components/operator/evans-bridge";
 import { FlywheelOrbit } from "@/components/operator/flywheel-orbit";
@@ -45,6 +46,8 @@ import {
 import { signalSection } from "@/content/operator";
 import "@/components/landing/landing.css";
 import "@/components/operator/operator.css";
+import "@/components/operator/hero-figure.css";
+import "@/components/operator/constellation-orbit.css";
 import "@/components/intelligence-layer/intelligence-layer.css";
 import "@/components/claude-workshop/claude-workshop.css";
 import "@/components/claude-adoption/claude-adoption.css";
@@ -409,8 +412,15 @@ export default function AiKeynotePage() {
               </div>
             </div>
 
-            <div className="aiop-hero__orbit-stage aiop-reveal">
-              <FlywheelOrbit variant="compact" bloom />
+            {/* The workflow configuration, not the method. `<FlywheelOrbit
+                bloom />` stood here and drew Navigate / Encode / Build —
+                the right figure for the Vision section further down,
+                where the method IS the subject, and the wrong one for a
+                hero that opens on what the room is actually looking at.
+                Both keep the same Loop-mark morph, so the page reads the
+                same at a glance and means something different. */}
+            <div className="aiop-hero__orbit-stage aiop-hero__orbit-stage--figure aiop-reveal">
+              <ConstellationOrbit loop labels="named" />
             </div>
           </div>
         </section>

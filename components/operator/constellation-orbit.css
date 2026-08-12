@@ -1,0 +1,472 @@
+/* ═════════════════════════════════════════════════════════════════════
+ * ConstellationOrbit — candidate C. One boundary with four bodies
+ * attached.
+ *
+ * Owned by `components/operator/constellation-orbit.tsx`. Container,
+ * centre word and cycle map live in `hero-figure.css`.
+ *
+ * The four bodies differ in KIND. That is the only thing distinguishing
+ * them, so the four kinds have to stay genuinely distinct at hero size
+ * and at 240px: filled, hollow, dotted, accented. Adding a fifth
+ * variation, or tinting all four, collapses the distinction back into
+ * decoration.
+ * ═════════════════════════════════════════════════════════════════════ */
+
+/* The fit being designed: the heaviest line here, and the morph anchor.
+   At the ends of the cycle this same circle is the Loop mark, so the
+   stroke has to read as a brand form and not as a faint lane line. */
+.tf-cn__ring {
+  fill: none;
+  stroke: var(--aiop-ink);
+  stroke-width: 1.1;
+}
+
+/* The edge of the whole thing — the configuration, as opposed to the
+   workflow at r=26 or the four things on it. Dotted and tinted apart so
+   it never reads as a second boundary competing with the ring.
+
+   An earlier cut dropped this whenever labels were on, because the
+   labels and the ring wanted the same band. Pulling the constellation in
+   to r=26 gave the labels their own annulus and let the boundary come
+   back — which is what makes it possible to NAME it. */
+.tf-cn__boundary {
+  fill: none;
+  stroke: color-mix(in oklab, var(--aiop-sage) 46%, transparent);
+  stroke-width: 1.1;
+  stroke-linecap: butt;
+  stroke-dasharray: 0.5 1.7;
+}
+
+/* The four spokes converge exactly where the centre sits, and the two
+   axes are handled differently on purpose.
+ *
+ * The VERTICAL pair is knocked out: each of the two centre registers
+ * carries its own paper ground (`hero-figure.css`), so SKILL's spoke
+ * stops at the top line and INTERFACE's at the bottom one, and the
+ * wiring still reads as reaching the centre.
+ *
+ * The HORIZONTAL pair is not, because it runs at exactly the height of
+ * the gap between those two registers. MODEL and DATA are joined by one
+ * unbroken hairline through the middle of the figure, and that line is
+ * also the rule under the work. Nothing is drawn twice: an earlier cut
+ * gave the sub-line its own `border-top` and put a second hairline two
+ * pixels from this one. */
+
+/* Hairlines, and quiet enough that the figure still reads as a ring with
+   marks on it rather than as a wheel with spokes. */
+.tf-cn__spoke {
+  stroke: color-mix(in oklab, var(--aiop-ink) 26%, transparent);
+  stroke-width: 0.5;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 0;
+}
+
+/* ─── The four kinds ────────────────────────────────────────────────
+ * Paper fill on the hollow and dotted bodies, not `none`: the boundary
+ * ring runs straight through where each body sits, and an unfilled body
+ * has that line crossing its middle. The fill punches the ring out and
+ * the body reads as sitting ON the orbit rather than being pierced by
+ * it. Any surface hosting this candidate therefore paints
+ * `--aiop-paper` — see `.tf-lab__stage`.
+ * ─────────────────────────────────────────────────────────────────── */
+
+/* Each body's own colours go on CUSTOM PROPERTIES rather than straight
+   onto `fill` and `stroke`, so the emergence keyframe can hold all four
+   at ink while they are still inside the brandmark and hand them their
+   own character on the way out. One keyframe, four appearances. Set the
+   properties, never `fill`/`stroke`, or the animation stops reaching
+   that body. */
+.tf-cn__body {
+  --tf-cn-fill: var(--aiop-paper);
+  --tf-cn-stroke: var(--aiop-ink);
+
+  fill: var(--tf-cn-fill);
+  stroke: var(--tf-cn-stroke);
+  stroke-width: 0.9;
+}
+
+/* THE SETTLED STATE. Under `prefers-reduced-motion: reduce` no keyframe
+   runs, so the base CSS is what a visitor sees — and without this the
+   four bodies sit stacked on the centre and the figure renders as a
+   ring with a dot in the middle of it. Same omission, same symptom, in
+   `.tf-qf__bud`. */
+.tf-cn__ride {
+  transform: translate(0, -26px);
+}
+
+/* Settled: no sweep. The body sits square on its clock position. */
+.tf-cn__sweep {
+  transform: rotate(0deg);
+}
+
+/* Model — solid. The engine: the part actually generating the work. */
+.tf-cn__body[data-tf-facet="model"] {
+  --tf-cn-fill: var(--aiop-ink);
+}
+
+/* Data — hollow. An opening onto things that live outside the
+   workflow. (The default, stated anyway so all four read as a set.) */
+.tf-cn__body[data-tf-facet="data"] {
+  --tf-cn-fill: var(--aiop-paper);
+}
+
+/* Interface — dotted. A surface, not a thing.
+
+   Six dashes, not ten. The body's circumference is only ~21 units, so a
+   fine dash pattern puts so many marks on it that the circle reads as a
+   smudge at hero size and as an asterisk at 240px. Six is the fewest
+   that still reads as "dotted" rather than as "broken". */
+.tf-cn__body[data-tf-facet="interface"] {
+  --tf-cn-fill: var(--aiop-paper);
+
+  stroke-dasharray: 1.9 1.7;
+}
+
+/* Skill — the one accent. It is the field the practice actually
+   produces, and a figure with a single warm mark has a subject. */
+.tf-cn__body[data-tf-facet="skill"] {
+  --tf-cn-fill: var(--aiop-amber);
+  --tf-cn-stroke: var(--aiop-amber);
+}
+
+/* ─── Labels ──────────────────────────────────────────────────────────
+ * Each one is anchored OUTWARD from its body — above, below, or reading
+ * away to the side — rather than centred on a point. A centred
+ * horizontal label would put half its own width past the edge of a
+ * square figure, and that single constraint is what sets the label
+ * radius, the type size and the max-width together.
+ *
+ * `width: max-content` with a `max-width` cap: an absolutely positioned
+ * box with `left` set and no `right` otherwise shrink-to-fits against
+ * whatever space is left to the container edge, which at 3 o'clock is a
+ * sliver and breaks the label mid-phrase. The cap then keeps the longest
+ * of them from reaching past the figure.
+ *
+ * Sized in `cqw` for the same reason the centre word is — the label and
+ * the ring it hangs off have to shrink together.
+ * ─────────────────────────────────────────────────────────────────── */
+
+.tf-cn__label {
+  position: absolute;
+  z-index: 3;
+  width: max-content;
+  font-family: var(--aiop-mono);
+  /* The size and the em-based tracking live on the SAME element, which
+     is the whole of the fix for an earlier bug: with the size on a child
+     and `letter-spacing: 0.13em` up here, the tracking computed against
+     this box's inherited 16px and was inherited down as a fixed 2.08px
+     onto 6.5px text — roughly triple what was intended, and enough to
+     wrap a two-word label into three lines. An em value only means
+     anything on the element that owns the font-size it is relative to.
+
+     12.5px because MODEL, five characters, has to set on one line inside
+     the 12% cap below. That is the binding constraint on the type here,
+     and it is the reason the labels are single words: at four questions
+     the same cap forced 6.5px, which nobody reads at hero distance. */
+  font-size: clamp(7.5px, 3cqw, 12.5px);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--aiop-ink) 88%, transparent);
+  pointer-events: none;
+}
+
+/* The two caps are different because the two axes are.
+ *
+ * A horizontal label starts at r=31 and has to stay clear of the
+ * boundary at 45, so it has 14% of the width to sit in. A vertical one
+ * is centred and has the whole figure under it. Holding both to the
+ * narrow number would size the type for a constraint only half the
+ * labels are under.
+ *
+ * 14 is a real limit again rather than the old 13, which was set by the
+ * edge of the figure: shrinking the ring moved the constraint from "must
+ * not fall off the page" to "must not touch the boundary", and MODEL now
+ * uses about two thirds of what it is given. */
+.tf-cn__label--left,
+.tf-cn__label--right {
+  max-width: 14%;
+}
+
+.tf-cn__label--top,
+.tf-cn__label--bottom {
+  max-width: 40%;
+  text-align: center;
+}
+
+.tf-cn__label--top {
+  transform: translate(-50%, -100%);
+}
+
+.tf-cn__label--bottom {
+  transform: translate(-50%, 0);
+}
+
+.tf-cn__label--right {
+  transform: translate(0, -50%);
+  text-align: left;
+}
+
+.tf-cn__label--left {
+  transform: translate(-100%, -50%);
+  text-align: right;
+}
+
+/* The framed name of the whole figure lives in `hero-figure.css` — the
+   nested orbits carry the same statement and it has to read as the same
+   statement. Only its position is this figure's business, and that comes
+   from `polarPercent` in the TSX. */
+
+/* ─── The cascade ─────────────────────────────────────────────────────
+ * ONE cue per facet, inherited by everything that belongs to it. Set on
+ * the outermost per-facet group in the SVG (so the spoke, the sweep and
+ * the body all pick it up) and on the label span, which lives outside
+ * the SVG and has to be named separately.
+ *
+ * Clockwise from 12, the order the eye takes anyway. 0.13s is a shade
+ * under one percent of the cycle — enough that the four do not land on
+ * the same frame, small enough that it never reads as four separate
+ * animations. It was 0.16s; the cascade is the last thing standing
+ * between the first word and the last, so it pays for itself in how
+ * quickly the whole figure becomes readable.
+ * ─────────────────────────────────────────────────────────────────── */
+
+.tf-cn [data-tf-facet="skill"] { --tf-cn-cue: 0s; }
+.tf-cn [data-tf-facet="data"] { --tf-cn-cue: 0.13s; }
+.tf-cn [data-tf-facet="interface"] { --tf-cn-cue: 0.26s; }
+.tf-cn [data-tf-facet="model"] { --tf-cn-cue: 0.39s; }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The two shared elements. Neither belongs to a facet, so neither
+     takes the cue. */
+  .tf-cn[data-tf-loop] .tf-cn__ring {
+    animation: tf-cn-ring var(--tf-fig-dur) ease-in-out infinite;
+    animation-delay: var(--tf-fig-delay);
+  }
+
+  .tf-cn[data-tf-loop] .tf-cn__boundary {
+    animation: tf-cn-boundary var(--tf-fig-dur) ease-in-out infinite;
+    animation-delay: var(--tf-fig-delay);
+  }
+
+
+  /* THE RIDE IS NOT CUED, and that is not an oversight. It carries the
+     radial travel, locked beat for beat to the ring's own radius — delay
+     it and the body lags the boundary and floats loose inside it. Every
+     other property of a facet can be offset safely, because rotation,
+     radius, opacity and dash offset cannot change a body's distance from
+     the centre. */
+  .tf-cn[data-tf-loop] .tf-cn__ride {
+    animation: tf-cn-ride var(--tf-fig-dur) ease-in-out infinite;
+    animation-delay: var(--tf-fig-delay);
+  }
+
+  /* The four cued animations: bud, slot, wire, name. Same offset, so
+     each facet reads as one gesture rather than four things that happen
+     to overlap.
+   *
+   * `backwards` is not optional on any of these. During a POSITIVE
+   * animation-delay an element renders its BASE style, and the base
+   * style of this figure is the settled state — so for the first 390ms
+   * of the slowest facet the page showed a fully formed constellation
+   * before collapsing to the Loop mark. Invisible enough on load to go
+   * unnoticed for a while; obvious the moment a frame renderer seeks to
+   * 167ms and captures four labels floating around a torus. `backwards`
+   * holds the 0% keyframe through the delay instead. */
+  .tf-cn[data-tf-loop] .tf-cn__body {
+    animation: tf-cn-body var(--tf-fig-dur) ease-in-out infinite backwards;
+    animation-delay: calc(var(--tf-fig-delay) + var(--tf-cn-cue, 0s));
+  }
+
+  .tf-cn[data-tf-loop] .tf-cn__sweep {
+    animation: tf-cn-sweep var(--tf-fig-dur) ease-in-out infinite backwards;
+    animation-delay: calc(var(--tf-fig-delay) + var(--tf-cn-cue, 0s));
+  }
+
+  .tf-cn[data-tf-loop] .tf-cn__spoke {
+    animation: tf-cn-spoke var(--tf-fig-dur) ease-in-out infinite backwards;
+    animation-delay: calc(var(--tf-fig-delay) + var(--tf-cn-cue, 0s));
+  }
+
+  .tf-cn[data-tf-loop] .tf-cn__label {
+    animation: tf-cn-label var(--tf-fig-dur) ease-in-out infinite backwards;
+    animation-delay: calc(var(--tf-fig-delay) + var(--tf-cn-cue, 0s));
+  }
+
+  /* Un-cued: it names the whole figure, not a facet. */
+  .tf-cn[data-tf-loop] .tf-fig__boundary-label {
+    animation: tf-cn-boundary-label var(--tf-fig-dur) ease-in-out infinite;
+    animation-delay: var(--tf-fig-delay);
+  }
+}
+
+/* The Loop mark and the configuration boundary are the same circle: at
+   r=6.6 with stroke-width 3.6 the stroke reads as the torus and the
+   unfilled interior as its hole; opening to r=32 thins it to a single
+   orbit line. */
+@keyframes tf-cn-ring {
+  0%   { r: 6.6; stroke-width: 3.6; }
+  8%   { r: 6.6; stroke-width: 3.6; }
+  21%  { r: 26;  stroke-width: 1.1; }
+  72%  { r: 26;  stroke-width: 1.1; }
+  88%  { r: 6.6; stroke-width: 3.6; }
+  100% { r: 6.6; stroke-width: 3.6; }
+}
+
+/* Emerges from behind the mark at zero weight rather than fading in over
+   it — the stroke-width IS the transition. */
+@keyframes tf-cn-boundary {
+  0%   { r: 6.6; stroke-width: 0; }
+  10%  { r: 6.6; stroke-width: 0; }
+  23%  { r: 45;  stroke-width: 1.1; }
+  70%  { r: 45;  stroke-width: 1.1; }
+  85%  { r: 6.6; stroke-width: 0; }
+  100% { r: 6.6; stroke-width: 0; }
+}
+
+/* The ride out. Authored straight up; the static rotation on the wrapper
+   group carries each body to its own clock position, so these numbers
+   are the same numbers for all four. px in an SVG transform are user
+   units, i.e. viewBox units here.
+
+   These offsets TRACK `tf-cn-ring` beat for beat — 6.6 at the mark, 32
+   in the open figure, on the same 8/21/72/88 timings. That is the point:
+   a body is on the orbit or it is nowhere. An earlier cut trailed the
+   ring by a beat "so the bodies follow the boundary out", and every
+   frame of the opening had three dots floating loose inside a
+   full-size circle. */
+@keyframes tf-cn-ride {
+  0%   { transform: translate(0, -6.6px); }
+  8%   { transform: translate(0, -6.6px); }
+  21%  { transform: translate(0, -26px); }
+  72%  { transform: translate(0, -26px); }
+  88%  { transform: translate(0, -6.6px); }
+  100% { transform: translate(0, -6.6px); }
+}
+
+/* The bud, and the whole of why the bodies do not appear from nowhere.
+ *
+ * Radius holds at 0 through the entire mark phase, so the brandmark is
+ * never carrying four pips. It then grows while the body is still on the
+ * mark's circumference, where the stroke is 3.6 wide — and a body
+ * narrower than half that stroke is INSIDE the line. Measured against
+ * `tf-cn-ring`: at 12% the stroke is 3.11 (half 1.55) and the body 0.79,
+ * buried; at 15% the stroke is 2.18 (half 1.09) and the body 2.61, clear.
+ * So somewhere around 13-14% each bead separates from the line it was
+ * hiding in. There is no frame in which it was not already there.
+ *
+ * COLOUR IS PART OF THAT. Being narrower than the stroke only hides a
+ * body if it is the same colour as the stroke, and two of the four are
+ * not — the first cut of this had SKILL showing as a gold pip on the
+ * black torus and INTERFACE as a pale speck. So all four leave the mark
+ * as ink and take their own fill between 15% and 23%, once they are out
+ * in the open. They come out as part of the brandmark and then become
+ * themselves, which is also the truer description of what the figure is
+ * saying. On the fold they hand the colour back before they shrink.
+ *
+ * Full size by 18%, three beats before the ring settles, so the bodies
+ * ride the last of the expansion at their proper weight. */
+@keyframes tf-cn-body {
+  0%, 9% { r: 0;   fill: var(--aiop-ink); stroke: var(--aiop-ink); }
+  /* Ink to paper interpolates through mid-grey, which reads as a state
+     of its own if it is on screen long enough to notice. Five beats,
+     not eight: quick enough to pass for the bodies settling, slow
+     enough not to be a cut. */
+  15%    {         fill: var(--aiop-ink); stroke: var(--aiop-ink); }
+  18%    { r: 2.9; }
+  20%    {         fill: var(--tf-cn-fill); stroke: var(--tf-cn-stroke); }
+  /* Out early enough that the slowest of the four — carrying a 3% cue —
+     is still gone before the ring folds back into the mark at 88%. */
+  68%    { r: 2.9; fill: var(--tf-cn-fill); stroke: var(--tf-cn-stroke); }
+  74%    {         fill: var(--aiop-ink); stroke: var(--aiop-ink); }
+  82%    { r: 0; }
+  100%   { r: 0;   fill: var(--aiop-ink); stroke: var(--aiop-ink); }
+}
+
+/* The slot.
+ *
+ * Each body starts 30° behind its clock position and unwinds into it,
+ * arriving at 26% — five beats after the ring stopped growing at 21%.
+ * The ordering is deliberate: the boundary lands first and holds still,
+ * and the last movement in the whole opening is four beads sliding along
+ * a stationary orbit into their places.
+ *
+ * The sweep also scales itself. At the mark the bodies sit at radius
+ * 6.6, where 30° is under three units of arc and the emergence reads as
+ * straight outward; by the time the ring is at 32 the same 30° is a
+ * seventeen-unit slide. One number, and it is quiet exactly when it
+ * should be. */
+@keyframes tf-cn-sweep {
+  0%   { transform: rotate(-30deg); }
+  9%   { transform: rotate(-30deg); }
+  /* 19%, not 24%. The slot is the last thing that has to finish before
+     the figure can start naming itself, so every beat it holds is a beat
+     the words wait. Ten beats is still a slide rather than a snap. */
+  19%  { transform: rotate(0deg); }
+  70%  { transform: rotate(0deg); }
+  86%  { transform: rotate(-30deg); }
+  100% { transform: rotate(-30deg); }
+}
+
+/* The wiring, and it belongs to its own body rather than to the figure.
+ * It picks up the same cue, so it starts the instant THAT body has
+ * finished slotting at 26% — not once all four have.
+ *
+ * It draws from the body INWARD. A negative offset puts the dash beyond
+ * the far end of the line, so shrinking it to zero fills the path back
+ * from distance 100 (the ring) to 0 (the centre). The eye is already at
+ * the bead, having just watched it slide into place, and the wire
+ * carries it back to the middle — the opposite direction reads as the
+ * centre chasing a body that has already arrived.
+ *
+ * `pathLength="100"` on the markup is what makes this one offset work
+ * for a spoke of any length. */
+@keyframes tf-cn-spoke {
+  0%, 16% { stroke-dashoffset: -100; }
+  24%     { stroke-dashoffset: 0; }
+  60%     { stroke-dashoffset: 0; }
+  68%     { stroke-dashoffset: -100; }
+  100%    { stroke-dashoffset: -100; }
+}
+
+/* The naming, last of the four moves and cued with them, so a word
+   arrives just behind its own wire rather than with everyone else's.
+   Per facet the order is bud → slot → wire → name, and the whole gesture
+   repeats four times, a beat apart, clockwise from SKILL.
+ *
+ * THE MOVES OVERLAP, which is what makes the figure readable early. The
+ * first cut ran them strictly end to end — slot done at 26%, wire from
+ * 26 to 35, word from 32 to 39 — and the first word a viewer could read
+ * arrived 6.2 seconds into a 16-second loop, the last at 6.7. Starting
+ * each move before the one ahead of it has quite finished, and tightening
+ * the slot it waits on, brings the first word to 4.0s and the last to
+ * 4.4s. It costs nothing: a label fading up while its bead is still
+ * settling reads as the bead being named, not as two things at once.
+ *
+ * This is close to the floor. The bodies are not full size until 18% and
+ * the ring does not settle until 21%; naming a part before it exists is
+ * the one thing worth more than a second.
+ *
+ * Leaves at 58%: the last of the four carries a 2.4% cue on top, and
+ * every label has to be gone before the ring folds at 72%. */
+@keyframes tf-cn-label {
+  0%, 19% { opacity: 0; }
+  25%     { opacity: 1; }
+  58%     { opacity: 1; }
+  64%     { opacity: 0; }
+  100%    { opacity: 0; }
+}
+
+/* The conclusion, and the only thing on this figure that waits for
+   everything else: in after the last facet label has landed (25% plus a
+   2.4% cue), out before any of them leave, so the figure sheds from the
+   outside in. */
+@keyframes tf-cn-boundary-label {
+  0%, 25% { opacity: 0; }
+  30%     { opacity: 1; }
+  57%     { opacity: 1; }
+  62%     { opacity: 0; }
+  100%    { opacity: 0; }
+}
+

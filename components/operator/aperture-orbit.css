@@ -1,0 +1,96 @@
+/* ═════════════════════════════════════════════════════════════════════
+ * ApertureOrbit — candidate A. One boundary, four faces of the same
+ * thing.
+ *
+ * Owned by `components/operator/aperture-orbit.tsx`. Container, centre
+ * word and cycle map live in `hero-figure.css`; this file carries only
+ * the strokes and the aperture's own geometry.
+ *
+ * The four arcs share one radius, which is the entire argument: this is
+ * ONE circle, read from four sides. Nothing else is drawn — no bodies,
+ * no spokes, no labels. If the figure needs an addition to be legible,
+ * the addition is the answer to a different question and belongs on a
+ * different candidate.
+ *
+ * The numbers below restate `APERTURE_GEOMETRY` in the TSX. They have to
+ * agree: the markup ships the settled state as presentation attributes
+ * (which is what reduced-motion visitors get) and the keyframes restate
+ * it as the animation's destination.
+ * ═════════════════════════════════════════════════════════════════════ */
+
+.tf-ap__arc {
+  fill: none;
+  stroke: var(--aiop-ink);
+  stroke-width: 1.1;
+  /* Butt, not round. Round caps put a half-stroke bulge on both ends of
+     every arc, which at the Loop-mark end of the cycle — where the
+     stroke is 3.6 wide — makes the torus look chewed. */
+  stroke-linecap: butt;
+}
+
+/* One accent, on one face. Skill carries it: it is the field the
+   practice actually produces, and a figure with a single warm mark reads
+   as having a subject. Four tinted arcs would read as a legend for a key
+   that is not there. */
+.tf-ap__arc[data-tf-facet="skill"] {
+  stroke: var(--aiop-amber);
+}
+
+/* The halo holds the composition and is not one of the four. Dotted and
+   tinted apart so it never reads as a fifth face. */
+.tf-ap__halo {
+  fill: none;
+  stroke: color-mix(in oklab, var(--aiop-sage) 46%, transparent);
+  stroke-width: 1.1;
+  stroke-linecap: butt;
+  stroke-dasharray: 0.5 1.7;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tf-ap[data-tf-loop] .tf-ap__arc {
+    animation: tf-ap-arc var(--tf-fig-dur) ease-in-out infinite;
+    animation-delay: var(--tf-fig-delay);
+  }
+
+  .tf-ap[data-tf-loop] .tf-ap__halo {
+    animation: tf-ap-halo var(--tf-fig-dur) ease-in-out infinite;
+    animation-delay: var(--tf-fig-delay);
+  }
+}
+
+/* The iris.
+ *
+ * At 0% every arc carries `stroke-dasharray: 100 0` — a complete circle
+ * — at r=6.6 with a 3.6 stroke. Four coincident complete circles is a
+ * solid torus around a transparent hole, and that is the Loop mark. No
+ * separate mark element exists anywhere in this figure.
+ *
+ * Opening animates three things at once: the radius out to 32, the
+ * stroke down to a single orbit line, and the dash from the whole
+ * circumference down to 22 units of it. The offset moves from 75 to 36
+ * in step so the dash shrinks symmetrically about the arc's own centre —
+ * hold the offset still and the ring erodes from one side instead of
+ * opening.
+ *
+ * `pathLength="100"` on the markup is what keeps the gaps the same
+ * angular size while `r` nearly quintuples. */
+@keyframes tf-ap-arc {
+  0%   { r: 6.6; stroke-width: 3.6; stroke-dasharray: 100 0; stroke-dashoffset: 75; }
+  8%   { r: 6.6; stroke-width: 3.6; stroke-dasharray: 100 0; stroke-dashoffset: 75; }
+  21%  { r: 32;  stroke-width: 1.1; stroke-dasharray: 22 78; stroke-dashoffset: 36; }
+  72%  { r: 32;  stroke-width: 1.1; stroke-dasharray: 22 78; stroke-dashoffset: 36; }
+  88%  { r: 6.6; stroke-width: 3.6; stroke-dasharray: 100 0; stroke-dashoffset: 75; }
+  100% { r: 6.6; stroke-width: 3.6; stroke-dasharray: 100 0; stroke-dashoffset: 75; }
+}
+
+/* Emerges from behind the mark rather than fading in over it: at the
+   boundary it shares the mark's radius at zero weight, so the
+   stroke-width IS the transition. */
+@keyframes tf-ap-halo {
+  0%   { r: 6.6; stroke-width: 0; }
+  10%  { r: 6.6; stroke-width: 0; }
+  23%  { r: 44;  stroke-width: 1.1; }
+  70%  { r: 44;  stroke-width: 1.1; }
+  85%  { r: 6.6; stroke-width: 0; }
+  100% { r: 6.6; stroke-width: 0; }
+}

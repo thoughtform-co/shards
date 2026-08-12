@@ -1,0 +1,224 @@
+/* ═════════════════════════════════════════════════════════════════════
+ * /hero-lab — comparison surface for the three candidate hero figures.
+ *
+ * Loaded LAST (see the import order in page.tsx), after
+ * creative-ai-workshop.css and the Plopsa remap, so the few places this
+ * has to outrank the shared route CSS can do it on specificity alone.
+ *
+ * This stylesheet is scaffolding. Nothing in it should ever be lifted
+ * onto a client route — the figures themselves are the deliverable and
+ * they carry their own stylesheets.
+ * ═════════════════════════════════════════════════════════════════════ */
+
+.tf-lab {
+  min-height: 100vh;
+  background: var(--aiop-paper);
+  color: var(--aiop-ink);
+  font-family: var(--aiop-body);
+}
+
+/* `.aiop-shell--tf-light main > section` sets `min-height: 100dvh` — the
+   chapter scale a workshop route wants and a comparison sheet does not.
+   Three viewport-tall panels means never seeing two candidates at once,
+   which is the one thing this route is for. */
+.aiop-shell--tf-light .tf-lab__main > .tf-lab__panel {
+  min-height: 0;
+}
+
+/* ─── Transport ─────────────────────────────────────────────────────── */
+
+.tf-lab__bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px 28px;
+  padding: 14px clamp(18px, 4vw, 56px);
+  background: color-mix(in oklab, var(--aiop-paper) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+.tf-lab__bar-title,
+.tf-lab__eyebrow,
+.tf-lab__button,
+.tf-lab__mark,
+.tf-lab__scrub-label,
+.tf-lab__size {
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.tf-lab__bar-title {
+  color: var(--aiop-muted);
+  margin-right: auto;
+}
+
+.tf-lab__controls {
+  display: flex;
+  gap: 8px;
+}
+
+.tf-lab__button {
+  padding: 7px 13px;
+  color: var(--aiop-ink);
+  background: transparent;
+  border: 1px solid var(--aiop-rule-strong);
+  cursor: pointer;
+}
+
+.tf-lab__button[aria-pressed="true"] {
+  color: var(--aiop-paper);
+  background: var(--aiop-ink);
+  border-color: var(--aiop-ink);
+}
+
+.tf-lab__scrub {
+  display: grid;
+  gap: 6px;
+  min-width: min(360px, 100%);
+}
+
+.tf-lab__scrub-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--aiop-muted);
+}
+
+.tf-lab__scrub-value {
+  color: var(--aiop-gold, var(--aiop-amber));
+}
+
+.tf-lab__range {
+  width: 100%;
+  accent-color: var(--aiop-ink);
+}
+
+.tf-lab__marks {
+  display: flex;
+  gap: 6px;
+}
+
+.tf-lab__mark {
+  padding: 3px 8px;
+  color: var(--aiop-muted);
+  background: transparent;
+  border: 1px solid var(--aiop-rule);
+  cursor: pointer;
+}
+
+/* ─── Panels ────────────────────────────────────────────────────────── */
+
+.tf-lab__main {
+  display: grid;
+  gap: 0;
+}
+
+.tf-lab__panel {
+  display: grid;
+  grid-template-columns: minmax(280px, 34%) 1fr;
+  gap: clamp(24px, 5vw, 72px);
+  align-items: center;
+  padding: clamp(40px, 7vh, 88px) clamp(18px, 4vw, 56px);
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+@media (max-width: 899px) {
+  .tf-lab__panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tf-lab__divider {
+  margin: 0;
+  padding: 28px clamp(18px, 4vw, 56px);
+  font-family: var(--aiop-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aiop-muted-2);
+  border-bottom: 1px solid var(--aiop-rule);
+}
+
+.tf-lab__note {
+  display: grid;
+  gap: 12px;
+}
+
+.tf-lab__eyebrow {
+  color: var(--aiop-gold, var(--aiop-amber));
+  margin: 0;
+}
+
+.tf-lab__claim {
+  margin: 0;
+  font-family: var(--aiop-display);
+  font-size: clamp(20px, 2.1vw, 28px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.tf-lab__watch {
+  margin: 0;
+  max-width: 42ch;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--aiop-ink-soft);
+}
+
+/* ─── Stages ────────────────────────────────────────────────────────── */
+
+.tf-lab__stages {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(24px, 4vw, 56px);
+}
+
+/* Paper, explicitly. Two of the three candidates knock a hole in
+   themselves with a `--aiop-paper` fill — the quatrefoil's clearing and
+   the constellation's hollow bodies — so a stage on any other surface
+   shows those fills as discs. Anything hosting these figures owes them a
+   paper ground. */
+.tf-lab__stage {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  background: var(--aiop-paper);
+}
+
+.tf-lab__stage--hero {
+  width: min(420px, 82vw);
+}
+
+.tf-lab__stage--small {
+  width: 240px;
+}
+
+.tf-lab__size {
+  color: var(--aiop-muted-2);
+}
+
+/* ─── Pause + scrub ───────────────────────────────────────────────────
+ * Nothing here. Both live in `hero-lab.tsx`, through the Web Animations
+ * API.
+ *
+ * The CSS-only version this replaced wrote a negative `animation-delay`
+ * onto the figures and set `animation-play-state: paused` alongside it.
+ * It looked right and was wrong: `animation-delay` positions an
+ * animation when it starts and does nothing to one already running, so
+ * the delay and the elapsed time added and every frame was offset by the
+ * age of the tab. See the block at the top of `hero-lab.tsx`.
+ *
+ * `--tf-fig-delay` stays in the figure stylesheets — it is 0s in every
+ * real use and carries the constellation's per-facet sweep stagger.
+ * ─────────────────────────────────────────────────────────────────── */

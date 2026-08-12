@@ -15001,6 +15001,33 @@
   }
 }
 
+/* ─── `--figure`: hosting a `.tf-fig` rather than an `.aiop-orbit` ────
+ * The hero figures in `components/operator/hero-figure.*` do not draw
+ * their negative space, they KNOCK IT OUT with `--aiop-paper` — the
+ * centre registers, the hollow and dotted bodies, the framed boundary
+ * label. That is what lets a spoke pass under a word and a body sit on
+ * an orbit rather than be pierced by it, and it holds on any surface
+ * that is actually painted `--aiop-paper`.
+ *
+ * This stage was not. Between `.aiop-stage::before`, `.aiop-grid-bg`
+ * and the violet halo below, the local ground here is several layers
+ * warmer and darker than flat paper — so every knockout rendered as a
+ * pale rectangle sitting on top of the hero. The halo is the loudest of
+ * the three and the only one this element owns, so it comes off, and a
+ * paper wash replaces it: a radial that is opaque across the middle
+ * where the knockouts are and gone before the edge, so it reads as the
+ * same soft weight behind the figure and never as a card.
+ * ─────────────────────────────────────────────────────────────────── */
+
+.aiop-hero__orbit-stage--figure::before {
+  background: radial-gradient(
+    circle at 50% 50%,
+    var(--aiop-paper) 0%,
+    var(--aiop-paper) 62%,
+    transparent 88%
+  );
+}
+
 /* Hero-scoped orbit overrides — bigger overall, thicker rings,
    true-circle substrate core (the file list is hidden so the core
    collapses to its natural circular aspect-ratio). The full file

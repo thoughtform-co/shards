@@ -1,0 +1,109 @@
+/* ═════════════════════════════════════════════════════════════════════
+ * QuatrefoilOrbit — candidate B. Four things composed on one piece of
+ * work; the overlap is the work.
+ *
+ * Owned by `components/operator/quatrefoil-orbit.tsx`. Container, centre
+ * word and cycle map live in `hero-figure.css`.
+ *
+ * Strokes here are a step lighter than the other two candidates. Four
+ * overlapping circles put two strokes through every diagonal and four
+ * through the middle; at the 1.1 the aperture uses, the crossings clot.
+ * ═════════════════════════════════════════════════════════════════════ */
+
+.tf-qf__lobe {
+  fill: none;
+  stroke: var(--aiop-ink);
+  stroke-width: 0.9;
+}
+
+/* THE SETTLED STATE, and the reason this rule exists at all: under
+   `prefers-reduced-motion: reduce` no keyframe runs, so whatever the
+   base CSS says is what a visitor sees. Without this the four lobes sit
+   stacked on the centre and the figure renders as one circle. Same
+   omission, same symptom, in `.tf-cn__ride`. */
+.tf-qf__bud {
+  transform: translate(0, -11px);
+}
+
+/* One accent, on one face — the same choice the aperture makes, and for
+   the same reason: skill is the field the practice produces, and a
+   single warm mark gives the figure a subject. */
+.tf-qf__lobe[data-tf-facet="skill"] {
+  stroke: var(--aiop-amber);
+}
+
+/* The clearing. Paper fading to nothing, no edge: the work is the space
+   the four cover at once, not another ring in the figure. The gradient
+   is declared in the markup so its stops can read `--aiop-paper`.
+
+   It has to match whatever the figure is sitting on, so any surface
+   hosting this candidate paints `--aiop-paper` — see `.tf-lab__stage`. */
+.tf-qf__clearing {
+  fill: url(#tf-qf-clearing);
+  stroke: none;
+}
+
+/* The word rides inside the clearing's solid core — about 23 units
+   across — rather than the 64-unit ring the other two give it, so it
+   steps down a size from the shared `.tf-fig__core`. */
+.tf-qf .tf-fig__core {
+  font-size: clamp(7px, 2.7cqw, 12px);
+  letter-spacing: 0.16em;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tf-qf[data-tf-loop] .tf-qf__bud {
+    animation: tf-qf-bud var(--tf-fig-dur) ease-in-out infinite;
+    animation-delay: var(--tf-fig-delay);
+  }
+
+  .tf-qf[data-tf-loop] .tf-qf__lobe {
+    animation: tf-qf-lobe var(--tf-fig-dur) ease-in-out infinite;
+    animation-delay: var(--tf-fig-delay);
+  }
+
+  .tf-qf[data-tf-loop] .tf-qf__clearing {
+    animation: tf-qf-clearing var(--tf-fig-dur) ease-in-out infinite;
+    animation-delay: var(--tf-fig-delay);
+  }
+}
+
+/* The bud. Every lobe is authored pushed straight UP; the static
+   rotation on the wrapper group carries it to its own clock position, so
+   these eleven units are the same eleven units for all four.
+
+   px in an SVG transform are user units, i.e. viewBox units here. */
+@keyframes tf-qf-bud {
+  0%   { transform: translate(0, 0); }
+  8%   { transform: translate(0, 0); }
+  21%  { transform: translate(0, -11px); }
+  72%  { transform: translate(0, -11px); }
+  88%  { transform: translate(0, 0); }
+  100% { transform: translate(0, 0); }
+}
+
+/* At 0% all four lobes are stacked on the centre at r=6.6 with a 3.6
+   stroke. Four coincident circles is a solid torus around a transparent
+   hole — the Loop mark, with no separate mark element anywhere in this
+   figure. The bud above and this radius run on the same beats, so the
+   lobes grow as they travel rather than growing and then moving. */
+@keyframes tf-qf-lobe {
+  0%   { r: 6.6; stroke-width: 3.6; }
+  8%   { r: 6.6; stroke-width: 3.6; }
+  21%  { r: 19;  stroke-width: 0.9; }
+  72%  { r: 19;  stroke-width: 0.9; }
+  88%  { r: 6.6; stroke-width: 3.6; }
+  100% { r: 6.6; stroke-width: 3.6; }
+}
+
+/* The clearing has to be invisible at the cycle boundary or the Loop
+   mark's hole fills with a paper disc and the brandmark reads as a
+   filled blot. It opens a beat behind the lobes — the space only exists
+   once there is something around it — and closes a beat ahead of them. */
+@keyframes tf-qf-clearing {
+  0%, 17% { r: 4.8; opacity: 0; }
+  25%     { r: 17; opacity: 1; }
+  70%     { r: 17; opacity: 1; }
+  78%     { r: 4.8; opacity: 0; }
+  100%    { r: 4.8; opacity: 0; }
+}
