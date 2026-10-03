@@ -49,8 +49,8 @@ const portrait: Record<string, { title: string; scale: number; visual: ReactNode
   },
   flow: {
     title: copy.flow,
-    scale: 0.9,
-    visual: <Beats />,
+    scale: 0.92,
+    visual: <Beats stack />,
   },
   endpoint: {
     title: copy.endpoint,

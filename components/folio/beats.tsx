@@ -1,20 +1,19 @@
 import { problem } from "@/content/folio-copy";
 
 /*
- * The problem told in four beats: paying is solved, the invoice is not,
- * flow loses, and email won't rescue it. Each beat carries a status dot so
- * the row reads green, red, amber, amber at a glance.
+ * The problem in four steps, read left to right: paying is solved, the
+ * invoice is not, so it waits, and email won't rescue it. A dot, a line,
+ * a sentence; no boxes.
  */
 
 const TONE = ["ok", "red", "warn", "warn"] as const;
 
-export function Beats() {
+export function Beats({ stack = false }: { stack?: boolean }) {
   return (
     <div className="fo-mock" data-mock="beats">
-      <ol className="fo-beats">
+      <ol className={`fo-beats${stack ? " fo-beats--stack" : ""}`}>
         {problem.beats.map((b, i) => (
-          <li className="fo-beat" key={b.kicker}>
-            <span className={`fo-beat__kicker fo-beat__kicker--${TONE[i]}`}>{b.kicker}</span>
+          <li className={`fo-beat fo-beat--${TONE[i]}`} key={b.title}>
             <h3>{b.title}</h3>
             <p>{b.text}</p>
           </li>

@@ -141,26 +141,10 @@ export const problem = {
   strong: "While paying for software got easy, the invoice still waits behind a login.",
   soft: "You want to be building. The month wants you on {vendors} billing pages.",
   beats: [
-    {
-      kicker: "Paying",
-      title: "Solved, and then some",
-      text: "Stripe and Link made paying online so smooth that an agent can now do it for you, with your approval. A lot of businesses exist because of that.",
-    },
-    {
-      kicker: "The invoice",
-      title: "Still behind a login",
-      text: "Every vendor keeps it on its own billing page, in its own format. Some hand you a PDF. Some hand you a pop-up and a screenshot.",
-    },
-    {
-      kicker: "Your flow",
-      title: "Interrupted, then postponed",
-      text: "It takes a few minutes, in theory. In practice you're mid-build, so it waits until the quarter closes and your accountant asks. Then asks again.",
-    },
-    {
-      kicker: "Your inbox",
-      title: "Won't save you",
-      text: "Vendors that still email a PDF are easy to forward automatically. But phishing loves a fake invoice, so fewer vendors send one every year.",
-    },
+    { title: "Paying is solved", text: "Stripe and Link made it smooth enough for an agent to do it for you." },
+    { title: "The invoice is behind a login", text: "A different billing page, format and sign-in at every vendor." },
+    { title: "So it gets postponed", text: "You're mid-build, so it waits until your accountant asks. Twice." },
+    { title: "And email won't fix it", text: "Phishing loves a fake invoice, so fewer vendors send the PDF." },
   ],
   payTitle: "Paying for a tool",
   payCaption: "One approval, any vendor.",
