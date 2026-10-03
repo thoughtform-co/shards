@@ -1,0 +1,158 @@
+/*
+ * Folio social artboards. Fixed CSS sizes, captured at 2x. The ledger paper
+ * and the margin rule repeat the hero so a post reads as the same object.
+ */
+
+.fo-frames-solo {
+  display: inline-block;
+  line-height: 0;
+}
+
+.fo-frames-sheet {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  padding: 32px;
+  align-items: flex-start;
+}
+
+.fo-frames-sheet figure {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.fo-frames-sheet figcaption {
+  font-family: var(--fo-mono);
+  font-size: 12px;
+  color: var(--fo-ink-3);
+}
+
+.fo-frame {
+  position: relative;
+  isolation: isolate;
+  width: var(--fw);
+  height: var(--fh);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 32px 22px 40px;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 27px, var(--fo-rule) 27px 28px),
+    var(--fo-paper);
+  line-height: 1.5;
+}
+
+.fo-frame::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 20px;
+  width: 4px;
+  border-left: 1px solid var(--fo-accent-rule);
+  border-right: 1px solid var(--fo-accent-rule);
+  z-index: -1;
+}
+
+.fo-frame__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.fo-frame__head .fo-badge {
+  margin-left: 0;
+}
+
+.fo-frame__title {
+  margin: 22px 0 0;
+  font-family: var(--fo-serif);
+  font-weight: 400;
+  font-size: 38px;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  color: var(--fo-ink);
+}
+
+/* No clip here: a clipped box-shadow shows as a hard grey edge. The
+   artboard itself clips, and each mock is scaled to fit inside it. */
+.fo-frame__visual {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  margin: 24px -8px 0 0;
+}
+
+.fo-frame__visual--fade {
+  mask-image: linear-gradient(180deg, #000 78%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 78%, transparent 100%);
+}
+
+/* Lay a mock out at its natural width, then scale it to the artboard.
+   Chrome clips a transformed layer's shadows at the layer's own box, so
+   the layer carries 48px of padding on every side for the shadow to fall
+   into, and a negative margin puts the mock back where it belongs. */
+.fo-frame__scaler {
+  --pad: 48px;
+  width: calc((100% - 16px) / var(--s) + 2 * var(--pad));
+  padding: 0 var(--pad) calc(var(--pad) * 1.5);
+  margin-left: calc(-1 * var(--pad) * var(--s));
+  transform: scale(var(--s));
+  transform-origin: top left;
+}
+
+.fo-frame__foot {
+  margin: 14px 0 0;
+  font-family: var(--fo-mono);
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  color: var(--fo-ink-3);
+}
+
+/* The Open Graph card: copy left, a crop of the inbox bleeding off right. */
+.fo-frame--og {
+  flex-direction: row;
+  padding: 28px 0 0 40px;
+}
+
+.fo-frame__og-copy {
+  flex: none;
+  width: 270px;
+  display: flex;
+  flex-direction: column;
+}
+
+.fo-frame__og-title {
+  margin: 26px 0 0;
+  font-family: var(--fo-serif);
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 0.98;
+  letter-spacing: -0.032em;
+  color: var(--fo-ink);
+}
+
+.fo-frame__og-title span {
+  display: block;
+}
+
+.fo-frame__og-sub {
+  margin: 16px 0 0;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--fo-ink-2);
+  max-width: 230px;
+}
+
+.fo-frame__og-visual {
+  position: relative;
+  flex: 1;
+  margin-left: 18px;
+  padding-top: 18px;
+}
+
+.fo-frame__og-visual .fo-frame__scaler {
+  width: calc(440px / var(--s) + 2 * var(--pad));
+}

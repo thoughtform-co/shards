@@ -1,0 +1,7 @@
+[
+  { "slug": "month", "w": 540, "h": 675, "out": "exports/folio/folio-01-month-1080x1350.png" },
+  { "slug": "endpoint", "w": 540, "h": 675, "out": "exports/folio/folio-02-endpoint-1080x1350.png" },
+  { "slug": "approval", "w": 540, "h": 675, "out": "exports/folio/folio-03-approval-1080x1350.png" },
+  { "slug": "agent", "w": 540, "h": 675, "out": "exports/folio/folio-04-agent-1080x1350.png" },
+  { "slug": "og", "w": 600, "h": 315, "out": "public/folio/og.png" }
+]

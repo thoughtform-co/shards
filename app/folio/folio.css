@@ -1,0 +1,1017 @@
+/*
+ * Folio. Route-local styles for /folio and its frames.
+ *
+ * The Shards root is dark (color-scheme, body gradient, letter-spacing,
+ * a violet selection, a near-invisible border colour). Folio is paper and
+ * ink, so this file lifts the page out of the root's defaults first and
+ * then defines its own tokens on `.folio-shell`, the wrapper the route
+ * layout renders. Everything is prefixed `fo-`.
+ *
+ * Identity: the document is the hero. Paper, ink, one accent (stamp
+ * vermilion). Newsreader for headlines, Instrument Sans for interface
+ * text, Geist Mono for figures. No italics anywhere.
+ */
+
+/* ── Lift the page off the Shards root ─────────────────────────────── */
+
+html:has(.folio-shell) {
+  color-scheme: light;
+  background: #f4f1e9;
+}
+
+body:has(.folio-shell) {
+  background: #f4f1e9;
+  color: #17150f;
+  letter-spacing: normal;
+}
+
+/* ── Tokens ──────────────────────────────────────────────────────────── */
+
+.folio-shell {
+  --fo-paper: #f4f1e9;
+  --fo-paper-2: #ebe6da;
+  --fo-sheet: #fffdf8;
+  --fo-ink: #17150f;
+  --fo-ink-2: rgba(23, 21, 15, 0.76);
+  --fo-ink-3: rgba(23, 21, 15, 0.56);
+  --fo-ink-4: rgba(23, 21, 15, 0.38);
+  --fo-line: rgba(23, 21, 15, 0.14);
+  --fo-line-2: rgba(23, 21, 15, 0.08);
+  --fo-rule: rgba(23, 21, 15, 0.05);
+  --fo-accent: #d2421d;
+  --fo-accent-ink: #b0341a;
+  --fo-accent-soft: #f8e2d8;
+  --fo-accent-rule: rgba(210, 66, 29, 0.32);
+  --fo-ok: #1d6644;
+  --fo-ok-soft: #e1eee5;
+  --fo-warn: #8e5c0e;
+  --fo-warn-soft: #f4e8cf;
+
+  --fo-serif: var(--fo-font-serif), "Iowan Old Style", Georgia, serif;
+  --fo-sans: var(--fo-font-sans), "Helvetica Neue", Arial, sans-serif;
+  --fo-mono: var(--fo-font-mono), ui-monospace, Menlo, Consolas, monospace;
+
+  --fo-max: 1320px;
+  --fo-gutter: clamp(16px, 4vw, 56px);
+  --fo-radius: 10px;
+  --fo-shadow-sheet: 0 1px 0 rgba(23, 21, 15, 0.04), 0 18px 40px -18px rgba(23, 21, 15, 0.28),
+    0 40px 80px -40px rgba(23, 21, 15, 0.22);
+
+  /* The root sets `* { border-color: var(--border) }`. */
+  --border: var(--fo-line);
+
+  min-height: 100vh;
+  background: var(--fo-paper);
+  color: var(--fo-ink);
+  font-family: var(--fo-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: normal;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "kern", "liga";
+  overflow-x: clip;
+}
+
+.folio-shell ::selection {
+  background: var(--fo-accent-soft);
+  color: var(--fo-ink);
+}
+
+.folio-shell *,
+.folio-shell *::before,
+.folio-shell *::after {
+  font-style: normal;
+}
+
+.fo-num {
+  font-family: var(--fo-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ── Wordmark ────────────────────────────────────────────────────────── */
+
+.fo-wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--wm) * 0.34);
+  font-family: var(--fo-serif);
+  font-size: var(--wm);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--fo-ink);
+}
+
+.fo-mark {
+  flex: none;
+  color: var(--fo-ink);
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────── */
+
+.fo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 20px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-family: var(--fo-sans);
+  font-size: 15px;
+  font-weight: 550;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.fo-btn--ink {
+  background: var(--fo-ink);
+  color: var(--fo-paper);
+}
+
+.fo-btn--ink:hover {
+  background: var(--fo-accent-ink);
+}
+
+.fo-btn--line {
+  border-color: var(--fo-line);
+  color: var(--fo-ink);
+  background: transparent;
+}
+
+.fo-btn--line:hover {
+  border-color: var(--fo-ink);
+}
+
+.fo-btn--sm {
+  height: 30px;
+  padding: 0 12px;
+  font-size: 12.5px;
+}
+
+.fo-btn .fo-arrow {
+  transition: transform 160ms ease;
+}
+
+.fo-btn:hover .fo-arrow {
+  transform: translateX(3px);
+}
+
+/* ── Nav ─────────────────────────────────────────────────────────────── */
+
+.fo-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--fo-paper) 86%, transparent);
+  backdrop-filter: blur(10px) saturate(1.1);
+  -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  border-bottom: 1px solid var(--fo-line-2);
+}
+
+.fo-nav__inner {
+  max-width: var(--fo-max);
+  margin: 0 auto;
+  padding: 0 var(--fo-gutter);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.fo-badge {
+  font-family: var(--fo-mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--fo-accent-ink);
+  border: 1px solid var(--fo-accent-rule);
+  border-radius: 999px;
+  padding: 3px 9px 2px;
+  margin-left: -14px;
+}
+
+.fo-nav__links {
+  display: flex;
+  gap: 26px;
+  margin-left: auto;
+  font-size: 14.5px;
+  color: var(--fo-ink-2);
+}
+
+.fo-nav__links a:hover {
+  color: var(--fo-ink);
+}
+
+.fo-nav__cta {
+  height: 36px;
+  font-size: 14px;
+  padding: 0 16px;
+}
+
+/* ── Hero ────────────────────────────────────────────────────────────── */
+
+.fo-hero {
+  position: relative;
+  isolation: isolate;
+  padding: clamp(48px, 7vw, 104px) 0 clamp(56px, 8vw, 120px);
+}
+
+/* Ledger paper: faint horizontal rules and a double margin rule in the
+   accent, fading out toward the fold. */
+.fo-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: repeating-linear-gradient(180deg, transparent 0 35px, var(--fo-rule) 35px 36px);
+  mask-image: linear-gradient(180deg, #000 0%, #000 55%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 55%, transparent 100%);
+}
+
+.fo-hero__inner {
+  position: relative;
+  max-width: var(--fo-max);
+  margin: 0 auto;
+  padding: 0 var(--fo-gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 4.6fr) minmax(0, 6.4fr);
+  grid-template-areas:
+    "title title"
+    "copy desk";
+  column-gap: clamp(32px, 5vw, 88px);
+  align-items: start;
+}
+
+.fo-hero__title {
+  grid-area: title;
+}
+
+.fo-hero__copy {
+  grid-area: copy;
+  padding-top: 34px;
+}
+
+.fo-hero__inner > .fo-desk {
+  grid-area: desk;
+  /* The desk rises beside the headline's second line. */
+  margin-top: calc(-1 * clamp(60px, 6.4vw, 124px));
+}
+
+.fo-hero__inner::before {
+  content: "";
+  position: absolute;
+  top: calc(-1 * clamp(48px, 7vw, 104px));
+  bottom: calc(-1 * clamp(56px, 8vw, 120px));
+  left: calc(var(--fo-gutter) - 22px);
+  width: 4px;
+  border-left: 1px solid var(--fo-accent-rule);
+  border-right: 1px solid var(--fo-accent-rule);
+  mask-image: linear-gradient(180deg, #000 0%, #000 60%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 60%, transparent 100%);
+}
+
+.fo-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--fo-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--fo-ink-3);
+  margin-bottom: 28px;
+}
+
+.fo-eyebrow::before {
+  content: "";
+  width: 18px;
+  height: 1px;
+  background: var(--fo-accent);
+}
+
+.fo-h1 {
+  font-family: var(--fo-serif);
+  font-weight: 400;
+  font-size: clamp(48px, 7.4vw, 124px);
+  line-height: 0.94;
+  letter-spacing: -0.034em;
+  font-optical-sizing: auto;
+  color: var(--fo-ink);
+  margin: 0;
+  text-wrap: balance;
+}
+
+.fo-h1 .fo-accent {
+  color: var(--fo-accent);
+}
+
+.fo-h1 .fo-h1__line {
+  display: block;
+}
+
+.fo-lede {
+  margin: 0;
+  max-width: 30em;
+  font-size: clamp(17px, 1.3vw, 19.5px);
+  line-height: 1.55;
+  color: var(--fo-ink-2);
+  text-wrap: pretty;
+}
+
+.fo-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 38px;
+}
+
+.fo-hero__note {
+  margin-top: 34px;
+  padding-top: 18px;
+  border-top: 1px solid var(--fo-line-2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  font-size: 13.5px;
+  color: var(--fo-ink-3);
+}
+
+.fo-hero__note strong {
+  color: var(--fo-ink);
+  font-weight: 600;
+}
+
+/* The table: the vendor's PDF underneath, Folio's inbox on top. */
+.fo-desk {
+  position: relative;
+  padding: 192px 0 0 0;
+}
+
+.fo-desk .fo-invoice {
+  position: absolute;
+  top: 0;
+  right: 3%;
+  width: min(372px, 58%);
+  transform: rotate(2.6deg);
+  transform-origin: 60% 20%;
+  z-index: 0;
+}
+
+.fo-desk .fo-app {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.fo-desk__tag {
+  position: absolute;
+  z-index: 2;
+  top: 176px;
+  left: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px 7px 10px;
+  background: var(--fo-ink);
+  color: var(--fo-paper);
+  border-radius: 999px;
+  font-family: var(--fo-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.01em;
+  box-shadow: 0 10px 24px -12px rgba(23, 21, 15, 0.55);
+  white-space: nowrap;
+}
+
+.fo-desk__tag::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--fo-accent);
+}
+
+/* ── Load choreography (motion only when the visitor allows it) ─────── */
+
+@media (prefers-reduced-motion: no-preference) {
+  .fo-rise {
+    animation: fo-rise 900ms cubic-bezier(0.2, 0.7, 0.1, 1) both;
+    animation-delay: calc(var(--i, 0) * 90ms + 60ms);
+  }
+
+  .fo-desk .fo-invoice {
+    animation: fo-sheet 1100ms cubic-bezier(0.2, 0.7, 0.1, 1) both 380ms;
+  }
+
+  .fo-desk .fo-app {
+    animation: fo-rise 1000ms cubic-bezier(0.2, 0.7, 0.1, 1) both 220ms;
+  }
+
+  .fo-desk__tag {
+    animation: fo-pop 600ms cubic-bezier(0.3, 1.4, 0.5, 1) both 1150ms;
+  }
+}
+
+@keyframes fo-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@keyframes fo-sheet {
+  from {
+    opacity: 0;
+    transform: translate(28px, 30px) rotate(0deg);
+  }
+}
+
+@keyframes fo-pop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.94);
+  }
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+
+@media (max-width: 1080px) {
+  .fo-hero__inner {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "title"
+      "copy"
+      "desk";
+  }
+
+  .fo-hero__inner > .fo-desk {
+    margin-top: 56px;
+    max-width: 760px;
+  }
+}
+
+@media (max-width: 860px) {
+  .fo-nav__links {
+    display: none;
+  }
+
+  .fo-nav__cta {
+    margin-left: auto;
+  }
+
+  .fo-hero__inner::before {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .fo-desk {
+    padding-top: 150px;
+  }
+
+  .fo-desk .fo-invoice {
+    width: 82%;
+    right: 0;
+  }
+
+  .fo-desk__tag {
+    top: 128px;
+    left: 0;
+    font-size: 10.5px;
+  }
+
+  .fo-nav__cta {
+    display: none;
+  }
+}
+
+/* ── Sections ────────────────────────────────────────────────────────── */
+
+.fo-section {
+  position: relative;
+  padding: clamp(72px, 9vw, 144px) 0;
+  border-top: 1px solid var(--fo-line-2);
+  scroll-margin-top: 64px;
+}
+
+.fo-section--sheet {
+  background: var(--fo-sheet);
+}
+
+.fo-wrap {
+  max-width: var(--fo-max);
+  margin: 0 auto;
+  padding: 0 var(--fo-gutter);
+}
+
+.fo-split {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(36px, 6vw, 104px);
+  align-items: center;
+}
+
+/* Text stays first in the markup (and first on a phone); on a wide screen
+   the visual moves to the left column. */
+.fo-split--flip {
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+}
+
+.fo-split--flip > :last-child {
+  order: -1;
+}
+
+.fo-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--fo-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fo-accent-ink);
+}
+
+.fo-label b {
+  font-weight: 500;
+  color: var(--fo-ink-3);
+}
+
+.fo-h2 {
+  margin: 18px 0 0;
+  font-family: var(--fo-serif);
+  font-weight: 400;
+  font-size: clamp(36px, 4vw, 66px);
+  line-height: 1.02;
+  letter-spacing: -0.028em;
+  font-optical-sizing: auto;
+  text-wrap: balance;
+  color: var(--fo-ink);
+}
+
+.fo-prose p {
+  margin: 22px 0 0;
+  max-width: 33em;
+  font-size: clamp(16.5px, 1.2vw, 18.5px);
+  line-height: 1.62;
+  color: var(--fo-ink-2);
+  text-wrap: pretty;
+}
+
+.fo-src {
+  font-family: var(--fo-mono);
+  font-size: 0.72em;
+  vertical-align: super;
+  line-height: 0;
+  margin-left: 2px;
+  color: var(--fo-accent-ink);
+}
+
+.fo-src a:hover {
+  text-decoration: underline;
+}
+
+/* The month's facts, set like footnotes on a ledger page. */
+.fo-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
+  margin-top: clamp(48px, 6vw, 88px);
+  border-top: 1px solid var(--fo-ink);
+}
+
+.fo-fact {
+  padding: 20px 28px 0 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--fo-ink-2);
+}
+
+.fo-fact + .fo-fact {
+  padding-left: 28px;
+  border-left: 1px solid var(--fo-line);
+}
+
+.fo-fact__src {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--fo-mono);
+  font-size: 11.5px;
+  color: var(--fo-ink-3);
+}
+
+.fo-fact__src a {
+  border-bottom: 1px solid var(--fo-line);
+}
+
+.fo-fact__src a:hover {
+  color: var(--fo-accent-ink);
+  border-color: var(--fo-accent-rule);
+}
+
+/* How it works */
+.fo-steps {
+  display: grid;
+  gap: 0;
+  margin-top: 36px;
+  border-top: 1px solid var(--fo-line);
+}
+
+.fo-step {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 4px 16px;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--fo-line);
+}
+
+.fo-step__n {
+  font-family: var(--fo-mono);
+  font-size: 12px;
+  color: var(--fo-accent-ink);
+  padding-top: 6px;
+}
+
+.fo-step h3 {
+  margin: 0;
+  font-family: var(--fo-serif);
+  font-weight: 500;
+  font-size: 24px;
+  letter-spacing: -0.02em;
+}
+
+.fo-step p {
+  grid-column: 2;
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--fo-ink-2);
+  max-width: 34em;
+}
+
+.fo-stage {
+  display: grid;
+  place-items: center;
+  padding: clamp(28px, 4vw, 56px);
+  border-radius: 18px;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 27px, var(--fo-rule) 27px 28px),
+    var(--fo-paper-2);
+}
+
+/* The record */
+.fo-bridge-wrap {
+  margin-top: clamp(40px, 5vw, 72px);
+}
+
+.fo-head-row {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(36px, 6vw, 104px);
+  align-items: end;
+}
+
+.fo-head-row .fo-prose p:first-child {
+  margin-top: 0;
+}
+
+/* Agent tools */
+.fo-tools {
+  margin: 30px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--fo-line);
+}
+
+.fo-tools li {
+  display: grid;
+  grid-template-columns: minmax(150px, auto) minmax(0, 1fr);
+  gap: 4px 20px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--fo-line);
+  font-size: 15px;
+  color: var(--fo-ink-2);
+}
+
+.fo-tools code {
+  font-family: var(--fo-mono);
+  font-size: 13.5px;
+  color: var(--fo-ink);
+}
+
+.fo-tools__args {
+  color: var(--fo-ink-3);
+}
+
+.fo-tools li:last-child code {
+  color: var(--fo-accent-ink);
+}
+
+.fo-note {
+  margin-top: 14px;
+  font-size: 12.5px;
+  color: var(--fo-ink-3);
+}
+
+/* The grant */
+.fo-grant {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  margin-top: clamp(40px, 5vw, 64px);
+  border: 1px solid var(--fo-ink);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--fo-sheet);
+}
+
+.fo-grant__col {
+  padding: clamp(22px, 3vw, 36px);
+}
+
+.fo-grant__col + .fo-grant__col {
+  border-left: 1px solid var(--fo-ink);
+  background: color-mix(in srgb, var(--fo-accent-soft) 35%, var(--fo-sheet));
+}
+
+.fo-grant__col h3 {
+  margin: 0 0 18px;
+  font-family: var(--fo-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fo-ok);
+}
+
+.fo-grant__col + .fo-grant__col h3 {
+  color: var(--fo-accent-ink);
+}
+
+.fo-grant__col ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 14px;
+}
+
+.fo-grant__col li {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 10px;
+  font-size: 16.5px;
+  line-height: 1.45;
+  color: var(--fo-ink);
+}
+
+.fo-grant__mark {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  border-radius: 50%;
+  background: var(--fo-ok-soft);
+  color: var(--fo-ok);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.fo-grant__col + .fo-grant__col .fo-grant__mark {
+  background: var(--fo-accent-soft);
+  color: var(--fo-accent-ink);
+}
+
+.fo-built {
+  margin-top: 22px;
+  font-size: 15px;
+  color: var(--fo-ink-2);
+  max-width: 52em;
+}
+
+/* The limits */
+.fo-limits {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin-top: clamp(40px, 5vw, 64px);
+  border-top: 1px solid var(--fo-ink);
+}
+
+.fo-limit {
+  padding: 22px 24px 0 0;
+}
+
+.fo-limit + .fo-limit {
+  padding-left: 24px;
+  border-left: 1px solid var(--fo-line);
+}
+
+.fo-limit h3 {
+  margin: 0;
+  font-family: var(--fo-serif);
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+.fo-limit p {
+  margin: 12px 0 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--fo-ink-2);
+}
+
+.fo-limit:last-child h3 {
+  color: var(--fo-accent-ink);
+}
+
+/* For Stripe: the closing section, ink on paper turned over. */
+.fo-section--ink {
+  background: var(--fo-ink);
+  color: var(--fo-paper);
+  border-top: 0;
+}
+
+.fo-section--ink .fo-label {
+  color: #f08a6c;
+}
+
+.fo-section--ink .fo-label b {
+  color: rgba(244, 241, 233, 0.5);
+}
+
+.fo-section--ink .fo-h2 {
+  color: var(--fo-paper);
+}
+
+.fo-section--ink .fo-prose p {
+  color: rgba(244, 241, 233, 0.78);
+}
+
+.fo-section--ink .fo-src {
+  color: #f08a6c;
+}
+
+.fo-closer {
+  margin: 34px 0 0;
+  font-family: var(--fo-serif);
+  font-size: clamp(30px, 3vw, 46px);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--fo-paper);
+}
+
+.fo-btn--paper {
+  margin-top: 30px;
+  background: var(--fo-paper);
+  color: var(--fo-ink);
+}
+
+.fo-btn--paper:hover {
+  background: #fff;
+}
+
+.fo-section--ink .fo-wallet-split__label {
+  color: rgba(244, 241, 233, 0.6);
+}
+
+.fo-section--ink .fo-wallet-split__label--after {
+  color: #f08a6c;
+}
+
+/* Footer */
+.fo-footer {
+  padding: clamp(48px, 6vw, 80px) 0 56px;
+  border-top: 1px solid var(--fo-line-2);
+  font-size: 14px;
+  color: var(--fo-ink-3);
+}
+
+.fo-footer__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  gap: clamp(32px, 5vw, 88px);
+}
+
+.fo-footer__about p {
+  margin: 16px 0 0;
+  max-width: 30em;
+  line-height: 1.55;
+}
+
+.fo-footer h2 {
+  margin: 0 0 14px;
+  font-family: var(--fo-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fo-ink-2);
+}
+
+.fo-sources {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: src;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 32px;
+}
+
+.fo-sources li {
+  counter-increment: src;
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr);
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.fo-sources li::before {
+  content: counter(src);
+  font-family: var(--fo-mono);
+  font-size: 12px;
+  color: var(--fo-accent-ink);
+}
+
+.fo-sources a {
+  color: var(--fo-ink-2);
+}
+
+.fo-sources a:hover {
+  color: var(--fo-ink);
+  text-decoration: underline;
+}
+
+.fo-sources small {
+  display: block;
+  color: var(--fo-ink-3);
+  font-size: 12px;
+}
+
+@media (max-width: 1080px) {
+  .fo-split,
+  .fo-head-row,
+  .fo-footer__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fo-split--flip {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fo-split--flip > :last-child {
+    order: 0;
+  }
+
+  .fo-limits {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .fo-limit:nth-child(3) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .fo-limit:nth-child(n + 3) {
+    margin-top: 28px;
+  }
+}
+
+@media (max-width: 760px) {
+  .fo-facts,
+  .fo-grant,
+  .fo-limits,
+  .fo-sources {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fo-fact + .fo-fact,
+  .fo-limit + .fo-limit {
+    padding-left: 0;
+    border-left: 0;
+    border-top: 1px solid var(--fo-line);
+    margin-top: 20px;
+  }
+
+  .fo-limit:nth-child(n + 3) {
+    margin-top: 20px;
+  }
+
+  .fo-grant__col + .fo-grant__col {
+    border-left: 0;
+    border-top: 1px solid var(--fo-ink);
+  }
+
+  .fo-tools li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fo-stage {
+    padding: 16px;
+  }
+}

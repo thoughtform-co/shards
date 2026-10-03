@@ -45,6 +45,9 @@ const PUBLIC_PATHS = [
   STRIPE_GATE_PATH,
   "/api/stripe/unlock",
   "/api/stripe/lock",
+  /* Folio, a public concept page for a fictional startup, and its social
+     frames (noindex). Nothing behind it is private. */
+  "/folio",
 ];
 
 function isPublic(pathname: string): boolean {
