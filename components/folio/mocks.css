@@ -1,8 +1,9 @@
 /*
- * Folio mockups. Shared by the /folio page and the social frames, so every
- * mock is a container: its layout answers to its own width (container
- * queries), never the viewport, and lays out the same in a 540px artboard
- * and in a page column. Tokens come from `.folio-shell` (app/folio/folio.css).
+ * Folio mockups, in the register of a Stripe dashboard: white cards on a
+ * hairline border, slate labels, tabular figures, small rounded pills.
+ * Shared by the /folio page and the social frames, so every mock is a
+ * container: its layout answers to its own width (container queries),
+ * never the viewport. Tokens come from `.folio-shell` (app/folio/folio.css).
  */
 
 .fo-mock {
@@ -22,12 +23,12 @@
   flex: none;
   width: var(--tile);
   height: var(--tile);
-  border-radius: calc(var(--tile) * 0.28);
+  border-radius: calc(var(--tile) * 0.24);
   background: var(--tile-bg);
   color: var(--tile-fg);
-  font-family: var(--fo-serif);
-  font-size: calc(var(--tile) * 0.54);
-  font-weight: 500;
+  font-family: var(--fo-sans);
+  font-size: calc(var(--tile) * 0.5);
+  font-weight: 650;
   line-height: 1;
   letter-spacing: -0.02em;
 }
@@ -37,29 +38,29 @@
   align-items: center;
   gap: 5px;
   height: 22px;
-  padding: 0 9px;
-  border-radius: 999px;
-  font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: 0.005em;
+  padding: 0 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 550;
   white-space: nowrap;
 }
 
 .fo-pill--ok { background: var(--fo-ok-soft); color: var(--fo-ok); }
 .fo-pill--warn { background: var(--fo-warn-soft); color: var(--fo-warn); }
 .fo-pill--muted { background: var(--fo-paper-2); color: var(--fo-ink-3); }
-.fo-pill--accent { background: var(--fo-accent-soft); color: var(--fo-accent-ink); }
-.fo-pill--ink { background: var(--fo-ink); color: var(--fo-paper); }
+.fo-pill--accent { background: var(--fo-accent-soft); color: var(--fo-accent); }
+.fo-pill--red { background: var(--fo-red-soft); color: var(--fo-red); }
+.fo-pill--ink { background: var(--fo-ink); color: #fff; }
 
 .fo-check { flex: none; }
 .fo-docglyph { flex: none; }
+.fo-nowrap { white-space: nowrap; }
 
-/* ── App window (Folio's own product surface) ───────────────────────── */
+/* ── Folio's own app window ─────────────────────────────────────────── */
 
 .fo-app {
-  background: var(--fo-sheet);
-  border: 1px solid var(--fo-line);
-  border-radius: 14px;
+  background: #fff;
+  border-radius: 10px;
   box-shadow: var(--fo-shadow-sheet);
   overflow: hidden;
 }
@@ -67,39 +68,39 @@
 .fo-app__bar {
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 20px;
   height: 52px;
   padding: 0 20px;
   border-bottom: 1px solid var(--fo-line-2);
-  background: color-mix(in srgb, var(--fo-paper) 45%, var(--fo-sheet));
 }
 
 .fo-app__tabs {
   display: flex;
-  gap: 4px;
-  font-size: 13px;
+  gap: 2px;
+  font-size: 13.5px;
+  font-weight: 500;
   color: var(--fo-ink-3);
 }
 
 .fo-app__tabs span {
   padding: 5px 10px;
-  border-radius: 7px;
+  border-radius: 4px;
 }
 
 .fo-app__tabs .is-active {
-  color: var(--fo-ink);
-  background: var(--fo-paper-2);
-  font-weight: 550;
+  color: var(--fo-accent);
+  background: var(--fo-accent-soft);
 }
 
 .fo-app__period {
   margin-left: auto;
-  font-family: var(--fo-mono);
-  font-size: 12px;
+  font-size: 13px;
+  font-weight: 500;
   color: var(--fo-ink-2);
   border: 1px solid var(--fo-line);
-  border-radius: 7px;
-  padding: 5px 10px;
+  border-radius: 4px;
+  padding: 4px 10px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
 
 .fo-app__body {
@@ -114,54 +115,50 @@
   padding-bottom: 18px;
 }
 
-.fo-app__h {
-  font-family: var(--fo-serif);
-  font-size: 23px;
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-}
-
-.fo-app__sub {
-  margin-top: 5px;
-  font-size: 12.5px;
-  color: var(--fo-ink-3);
-  white-space: nowrap;
-}
-
 .fo-app__title > div:first-child {
   min-width: 0;
 }
 
+.fo-app__h {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.fo-app__sub {
+  margin-top: 5px;
+  font-size: 13px;
+  color: var(--fo-ink-3);
+  white-space: nowrap;
+}
+
 .fo-app__figures {
   display: flex;
-  gap: 22px;
+  gap: 24px;
 }
 
 .fo-app__figures > div {
   display: grid;
-  gap: 2px;
+  gap: 3px;
   text-align: right;
 }
 
 .fo-app__figures span {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--fo-ink-3);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
 }
 
 .fo-app__figures strong {
-  font-family: var(--fo-mono);
   font-size: 17px;
-  font-weight: 500;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
   white-space: nowrap;
 }
 
-@container (max-width: 760px) {
-  .fo-app__figures > div:nth-child(2) { display: none; }
+.fo-app__figures strong.fo-num {
+  font-family: var(--fo-sans);
 }
 
 .fo-app__foot {
@@ -170,11 +167,15 @@
   justify-content: space-between;
   gap: 12px;
   margin: 0 -22px;
-  padding: 13px 22px;
+  padding: 12px 22px;
   border-top: 1px solid var(--fo-line-2);
-  background: color-mix(in srgb, var(--fo-paper) 45%, var(--fo-sheet));
-  font-size: 12.5px;
+  background: var(--fo-paper);
+  font-size: 13px;
   color: var(--fo-ink-3);
+}
+
+@container (max-width: 760px) {
+  .fo-app__figures > div:nth-child(2) { display: none; }
 }
 
 /* ── Table ───────────────────────────────────────────────────────────── */
@@ -185,21 +186,19 @@
 
 .fo-table__row {
   display: grid;
-  grid-template-columns: minmax(0, 2.6fr) 0.8fr 1.1fr 1.15fr 1.2fr;
+  grid-template-columns: minmax(0, 2.6fr) 0.7fr 1.1fr 1.15fr 1.2fr;
   align-items: center;
   gap: 12px;
-  min-height: 56px;
-  padding: 8px 0;
+  min-height: 50px;
+  padding: 7px 0;
   border-bottom: 1px solid var(--fo-line-2);
   font-size: 13.5px;
 }
 
 .fo-table__row--head {
-  min-height: 36px;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--fo-ink-3);
+  min-height: 34px;
+  font-size: 12px;
+  font-weight: 550;
 }
 
 .fo-table__row--head > span {
@@ -210,13 +209,21 @@
   border-bottom: 0;
 }
 
-.fo-nowrap {
-  white-space: nowrap;
+.fo-table__more {
+  padding: 12px 0;
+  font-size: 13px;
+  color: var(--fo-ink-3);
 }
 
 .fo-col-charges,
 .fo-col-amount {
   text-align: right;
+}
+
+.fo-col-amount.fo-num,
+.fo-col-charges.fo-num {
+  font-family: var(--fo-sans);
+  font-variant-numeric: tabular-nums;
 }
 
 .fo-col-docs {
@@ -241,7 +248,7 @@
 }
 
 .fo-vendor strong {
-  font-weight: 600;
+  font-weight: 550;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -257,7 +264,6 @@
 
 @container (max-width: 620px) {
   .fo-app__tabs span:not(.is-active) { display: none; }
-  .fo-app__figures > div:nth-child(2) { display: none; }
   .fo-table__row { grid-template-columns: minmax(0, 2.4fr) 1.1fr 1.2fr; }
   .fo-col-charges, .fo-col-docs { display: none; }
 }
@@ -278,8 +284,8 @@
 .fo-invoice {
   background: #fff;
   border-radius: 4px;
-  box-shadow: 0 1px 0 rgba(23, 21, 15, 0.05), 0 22px 46px -22px rgba(23, 21, 15, 0.35);
-  padding: 26px 26px 20px;
+  box-shadow: var(--fo-shadow-sm);
+  padding: 24px 24px 18px;
   font-family: "Helvetica Neue", Arial, sans-serif;
   font-size: 10.5px;
   line-height: 1.45;
@@ -371,12 +377,13 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  margin-top: 18px;
+  margin-top: 16px;
   padding-top: 10px;
   border-top: 1px dashed var(--fo-accent-rule);
-  font-family: var(--fo-mono);
-  font-size: 9.5px;
-  color: var(--fo-accent-ink);
+  font-family: var(--fo-sans);
+  font-size: 10.5px;
+  font-weight: 550;
+  color: var(--fo-accent);
 }
 
 .fo-invoice__attach-dot {
@@ -386,6 +393,49 @@
   background: var(--fo-accent);
 }
 
+/* ── The agent's note, floating in the hero ─────────────────────────── */
+
+.fo-note-card {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 12px;
+  padding: 14px 16px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: var(--fo-shadow-sm);
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.fo-note-card__avatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--fo-navy);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.fo-note-card strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.fo-note-card small {
+  color: var(--fo-ink-4);
+  font-weight: 400;
+  margin-left: 6px;
+}
+
+.fo-note-card p {
+  margin: 2px 0 0;
+  color: var(--fo-ink-2);
+}
+
 /* ── Mockup A: the payment wallet's Activity page ───────────────────── */
 
 .fo-wallet {
@@ -393,9 +443,8 @@
   --w-muted: #6a7078;
   --w-line: #eceef0;
   background: #fff;
-  border: 1px solid rgba(23, 21, 15, 0.1);
-  border-radius: 12px;
-  box-shadow: var(--fo-shadow-sheet);
+  border-radius: 10px;
+  box-shadow: var(--fo-shadow-sm);
   overflow: hidden;
   font-family: var(--fo-sans);
   color: var(--w-ink);
@@ -405,7 +454,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  height: 52px;
+  height: 50px;
   padding: 0 18px;
   border-bottom: 1px solid var(--w-line);
 }
@@ -445,8 +494,8 @@
   gap: 7px;
   height: 30px;
   padding: 0 12px;
-  border-radius: 8px;
-  background: var(--fo-ink);
+  border-radius: 4px;
+  background: var(--fo-accent);
   color: #fff;
   font-size: 12.5px;
   font-weight: 600;
@@ -499,7 +548,12 @@
 
 .fo-wallet__amt {
   text-align: right;
-  font-size: 12.5px;
+  font-size: 13px;
+}
+
+.fo-wallet__amt.fo-num {
+  font-family: var(--fo-sans);
+  font-variant-numeric: tabular-nums;
 }
 
 .fo-wallet__doc {
@@ -509,9 +563,9 @@
   gap: 6px;
   height: 24px;
   padding: 0 9px;
-  border-radius: 7px;
-  background: #effaf4;
-  color: #0b7a43;
+  border-radius: 4px;
+  background: var(--fo-accent-soft);
+  color: var(--fo-accent);
   font-size: 11.5px;
   font-weight: 600;
 }
@@ -522,20 +576,16 @@
 }
 
 .fo-wallet-split__label {
-  font-family: var(--fo-mono);
-  font-size: 11.5px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 550;
   color: var(--fo-ink-3);
 }
 
 .fo-wallet-split__label--after {
   margin-top: 14px;
-  color: var(--fo-accent-ink);
+  color: var(--fo-accent);
 }
 
-/* Side by side, the two panels keep the same columns so the only visible
-   difference is the document. */
 .fo-wallet-split .fo-wallet__card {
   display: none;
 }
@@ -576,12 +626,360 @@
   }
 }
 
+/* ── The one-tap purchase approval (the problem's left column) ──────── */
+
+.fo-pay {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: var(--fo-shadow-sm);
+  padding: 18px 18px 16px;
+  color: #1b1f24;
+}
+
+.fo-pay__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #6a7078;
+}
+
+.fo-pay__who {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0 14px;
+}
+
+.fo-pay__who strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.fo-pay__who small {
+  font-size: 12.5px;
+  color: #6a7078;
+}
+
+.fo-pay__amount {
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.fo-pay__card {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid #e6e8eb;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.fo-pay__card span:last-child {
+  color: #6a7078;
+}
+
+.fo-pay__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  margin-top: 14px;
+  border-radius: 8px;
+  background: #1b1f24;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.fo-pay__done {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: var(--fo-ok);
+  font-weight: 550;
+}
+
+/* ── The scavenger hunt (the problem's right column) ────────────────── */
+
+.fo-hunt {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: var(--fo-shadow-sm);
+  overflow: hidden;
+}
+
+.fo-hunt__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.8fr) minmax(0, 1.45fr) minmax(0, 0.9fr);
+  align-items: center;
+  gap: 14px;
+  min-height: 44px;
+  padding: 6px 18px;
+  border-bottom: 1px solid var(--fo-line-2);
+  font-size: 13px;
+}
+
+.fo-hunt__row:last-child {
+  border-bottom: 0;
+}
+
+.fo-hunt__row--head {
+  min-height: 38px;
+  background: var(--fo-paper);
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--fo-ink-3);
+}
+
+.fo-hunt__vendor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  font-weight: 550;
+}
+
+.fo-hunt__vendor span:last-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fo-hunt__path {
+  font-family: var(--fo-mono);
+  font-size: 11.5px;
+  color: var(--fo-ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fo-hunt__get {
+  justify-self: start;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fo-hunt__sign {
+  font-size: 12.5px;
+  color: var(--fo-ink-3);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@container (max-width: 640px) {
+  .fo-hunt__row { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); padding: 8px 14px; }
+  .fo-hunt__path, .fo-hunt__sign { display: none; }
+  .fo-hunt__row--head span:nth-child(2), .fo-hunt__row--head span:nth-child(4) { display: none; }
+}
+
+/* ── The permission table ───────────────────────────────────────────── */
+
+.fo-perm {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid var(--fo-line);
+  overflow: hidden;
+}
+
+.fo-perm__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) minmax(0, 1.35fr);
+  gap: 20px;
+  align-items: center;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--fo-line-2);
+  font-size: 14.5px;
+}
+
+.fo-perm__row:last-child {
+  border-bottom: 0;
+}
+
+.fo-perm__row--head {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background: var(--fo-paper);
+  font-size: 12.5px;
+  font-weight: 550;
+  color: var(--fo-ink-3);
+}
+
+.fo-perm__row--head span:last-child {
+  color: var(--fo-accent);
+}
+
+.fo-perm__task {
+  font-weight: 550;
+}
+
+.fo-perm__cell {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  color: var(--fo-ink-2);
+  line-height: 1.4;
+}
+
+.fo-perm__mark {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.fo-perm__mark--yes { background: var(--fo-ok-soft); color: var(--fo-ok); }
+.fo-perm__mark--no { background: var(--fo-red-soft); color: var(--fo-red); }
+
+.fo-perm__cell--folio {
+  color: var(--fo-ink);
+}
+
+@container (max-width: 620px) {
+  .fo-perm__row { grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 14px 16px; }
+  .fo-perm__row--head { display: none; }
+  .fo-perm__cell::before { display: none; }
+}
+
+/* ── Workflow cards (chat check-ins) ────────────────────────────────── */
+
+.fo-flows {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.fo-flow {
+  display: grid;
+  gap: 10px;
+  padding: 18px 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: var(--fo-shadow-sm);
+}
+
+.fo-flow__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--fo-ink-3);
+}
+
+.fo-flow__meta b {
+  font-weight: 600;
+  color: var(--fo-ink-2);
+}
+
+.fo-flow__meta .fo-pill {
+  margin-left: auto;
+}
+
+.fo-flow__msg {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 12px;
+}
+
+.fo-flow__avatar {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: linear-gradient(140deg, #ffb24d 0%, #ff5b8a 38%, #8a5cff 68%, #4f7bff 100%);
+}
+
+.fo-flow__msg strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.fo-flow__msg p {
+  margin: 3px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--fo-ink-2);
+}
+
+.fo-flow__actions {
+  display: flex;
+  gap: 8px;
+  padding-left: 42px;
+}
+
+@container (max-width: 700px) {
+  .fo-flows { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ── Code sample ────────────────────────────────────────────────────── */
+
+.fo-code {
+  background: #0d1f3c;
+  border-radius: 12px;
+  box-shadow: var(--fo-shadow-sheet);
+  overflow: hidden;
+  color: #c9d7e8;
+}
+
+.fo-code__bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 44px;
+  padding: 0 14px;
+  background: #11284a;
+  font-size: 13px;
+}
+
+.fo-code__bar span {
+  padding: 5px 10px;
+  border-radius: 4px;
+  color: #8fa6c2;
+}
+
+.fo-code__bar .is-active {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.fo-code pre {
+  margin: 0;
+  padding: 18px 20px 22px;
+  font-family: var(--fo-mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.fo-code .k { color: #c792ea; }
+.fo-code .f { color: #82aaff; }
+.fo-code .s { color: #addb67; }
+.fo-code .n { color: #f78c6c; }
+.fo-code .p { color: #7fdbca; }
+.fo-code .c { color: #637d9a; }
+
 /* ── Mockup B: the consent sheet ─────────────────────────────────────── */
 
 .fo-consent {
   background: #fff;
-  border: 1px solid rgba(23, 21, 15, 0.1);
-  border-radius: 18px;
+  border-radius: 14px;
   box-shadow: var(--fo-shadow-sheet);
   padding: 20px 22px 22px;
   color: #1b1f24;
@@ -606,13 +1004,6 @@
 
 .fo-consent__app {
   flex: none;
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: var(--fo-paper);
-  border: 1px solid var(--fo-line);
 }
 
 .fo-consent__who p {
@@ -634,12 +1025,13 @@
   gap: 12px;
   padding: 11px 12px;
   border: 1px solid #e6e8eb;
-  border-radius: 11px;
+  border-radius: 10px;
   color: #6a7078;
 }
 
 .fo-consent__card.is-on {
-  border-color: var(--fo-ink);
+  border-color: var(--fo-accent);
+  box-shadow: 0 0 0 3px var(--fo-accent-soft);
   color: #1b1f24;
 }
 
@@ -654,8 +1046,8 @@
 }
 
 .fo-consent__card.is-on .fo-consent__box {
-  background: var(--fo-ink);
-  border-color: var(--fo-ink);
+  background: var(--fo-accent);
+  border-color: var(--fo-accent);
 }
 
 .fo-consent__cardname {
@@ -693,21 +1085,22 @@
 }
 
 .fo-consent__terms dt {
-  font-family: var(--fo-mono);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--fo-ok);
+}
+
+.fo-consent__terms div:nth-child(2) dt {
+  color: var(--fo-red);
+}
+
+.fo-consent__terms div:nth-child(3) dt {
   color: #6a7078;
-  padding-top: 1px;
 }
 
 .fo-consent__terms dd {
   margin: 0;
   color: #1b1f24;
-}
-
-.fo-consent__terms div:nth-child(2) dt {
-  color: var(--fo-accent-ink);
 }
 
 .fo-consent__actions {
@@ -723,7 +1116,7 @@
   justify-content: center;
   gap: 9px;
   height: 46px;
-  border-radius: 12px;
+  border-radius: 10px;
   background: #1b1f24;
   color: #fff;
   font-weight: 600;
@@ -738,9 +1131,8 @@
 /* ── Mockup D: the agent ─────────────────────────────────────────────── */
 
 .fo-agent {
-  background: var(--fo-sheet);
-  border: 1px solid var(--fo-line);
-  border-radius: 14px;
+  background: #fff;
+  border-radius: 12px;
   box-shadow: var(--fo-shadow-sheet);
   overflow: hidden;
 }
@@ -797,8 +1189,8 @@
 .fo-agent__tool,
 .fo-agent__approve {
   border: 1px solid var(--fo-line);
-  border-radius: 10px;
-  background: #fff;
+  border-radius: 8px;
+  background: var(--fo-paper);
   padding: 10px 12px;
   display: grid;
   gap: 6px;
@@ -817,7 +1209,7 @@
   font-family: var(--fo-mono);
   font-size: 12px;
   color: var(--fo-ink);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .fo-agent__result {
@@ -828,11 +1220,11 @@
 
 .fo-agent__approve {
   border-color: var(--fo-accent-rule);
-  background: color-mix(in srgb, var(--fo-accent-soft) 40%, #fff);
+  background: var(--fo-accent-soft);
 }
 
 .fo-agent__approve .fo-agent__call code {
-  color: var(--fo-accent-ink);
+  color: var(--fo-accent);
 }
 
 .fo-agent__buttons {
@@ -853,7 +1245,6 @@
 
 .fo-acct {
   background: #fff;
-  border: 1px solid rgba(23, 21, 15, 0.1);
   border-radius: 12px;
   box-shadow: var(--fo-shadow-sheet);
   overflow: hidden;
@@ -908,7 +1299,7 @@
   font-size: 11.5px;
   color: #56616c;
   border: 1px solid #e1e5e9;
-  border-radius: 6px;
+  border-radius: 4px;
   padding: 3px 8px;
   white-space: nowrap;
 }
@@ -930,9 +1321,8 @@
 .fo-acct__row--head {
   padding-top: 9px;
   padding-bottom: 9px;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-size: 12px;
+  font-weight: 550;
   color: #7a8590;
   background: #fafbfc;
 }
@@ -994,179 +1384,4 @@
   .fo-acct__row > .fo-acct__doc { grid-column: 1; grid-row: 2; }
   .fo-acct__row > .fo-acct__status { grid-column: 2; grid-row: 1 / span 2; }
   .fo-acct__row--head > span:nth-child(2) { display: none; }
-}
-
-/* ── The bridge diagram ──────────────────────────────────────────────── */
-
-.fo-bridge {
-  margin: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 96px minmax(0, 1.25fr) 80px minmax(0, 1fr);
-  align-items: center;
-}
-
-.fo-bridge__col {
-  display: grid;
-  gap: 10px;
-}
-
-.fo-bridge__head {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--fo-mono);
-  font-size: 11.5px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--fo-ink-3);
-  margin-bottom: 4px;
-}
-
-.fo-bridge__node {
-  display: grid;
-  gap: 3px;
-  padding: 14px 16px;
-  background: var(--fo-sheet);
-  border: 1px solid var(--fo-line);
-  border-radius: 10px;
-  font-size: 13.5px;
-}
-
-.fo-bridge__node small {
-  font-size: 11.5px;
-  color: var(--fo-ink-3);
-}
-
-.fo-bridge__node strong {
-  font-weight: 600;
-}
-
-.fo-bridge__node span {
-  color: var(--fo-ink-2);
-  font-size: 12.5px;
-}
-
-.fo-bridge__join {
-  justify-self: center;
-  position: relative;
-  font-family: var(--fo-mono);
-  font-size: 11px;
-  color: var(--fo-ink-3);
-  padding: 6px 0;
-}
-
-.fo-bridge__link {
-  position: relative;
-  height: 1px;
-  background: var(--fo-ink-4);
-  margin: 0 10px;
-}
-
-.fo-bridge__link::after {
-  content: "";
-  position: absolute;
-  right: -1px;
-  top: -4px;
-  border-left: 7px solid var(--fo-ink-4);
-  border-top: 4.5px solid transparent;
-  border-bottom: 4.5px solid transparent;
-}
-
-.fo-bridge__link span {
-  position: absolute;
-  left: 50%;
-  bottom: 8px;
-  transform: translateX(-50%);
-  font-family: var(--fo-mono);
-  font-size: 10.5px;
-  color: var(--fo-ink-3);
-  text-align: center;
-  line-height: 1.3;
-  width: 90px;
-}
-
-.fo-bridge__link--grant {
-  background: var(--fo-accent);
-}
-
-.fo-bridge__link--grant::after {
-  border-left-color: var(--fo-accent);
-}
-
-.fo-bridge__link--grant span {
-  color: var(--fo-accent-ink);
-}
-
-.fo-bridge__col--record {
-  background: var(--fo-sheet);
-  border: 1px solid var(--fo-ink);
-  border-radius: 12px;
-  padding: 16px 18px 12px;
-  box-shadow: 6px 6px 0 var(--fo-paper-2);
-}
-
-.fo-bridge__col--record .fo-bridge__head {
-  color: var(--fo-ink);
-}
-
-.fo-bridge__record {
-  margin: 0;
-  display: grid;
-}
-
-.fo-bridge__record div {
-  display: grid;
-  grid-template-columns: 78px minmax(0, 1fr);
-  gap: 10px;
-  padding: 7px 0;
-  border-top: 1px solid var(--fo-line-2);
-  font-size: 12.5px;
-}
-
-.fo-bridge__record dt {
-  color: var(--fo-ink-3);
-}
-
-.fo-bridge__record dd {
-  margin: 0;
-  font-family: var(--fo-mono);
-  font-size: 12px;
-  color: var(--fo-ink);
-  overflow-wrap: anywhere;
-}
-
-@media (max-width: 1000px) {
-  .fo-bridge {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .fo-bridge__link {
-    width: 1px;
-    height: 56px;
-    margin: 6px auto;
-  }
-
-  .fo-bridge__link::after {
-    right: -4px;
-    top: auto;
-    bottom: -1px;
-    border-left: 4.5px solid transparent;
-    border-right: 4.5px solid transparent;
-    border-top: 7px solid var(--fo-ink-4);
-    border-bottom: 0;
-  }
-
-  .fo-bridge__link--grant::after {
-    border-left-color: transparent;
-    border-top-color: var(--fo-accent);
-  }
-
-  .fo-bridge__link span {
-    left: 14px;
-    bottom: auto;
-    top: 50%;
-    transform: translateY(-50%);
-    text-align: left;
-    width: 200px;
-  }
 }

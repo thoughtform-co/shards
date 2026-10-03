@@ -1,6 +1,7 @@
 /*
- * Folio social artboards. Fixed CSS sizes, captured at 2x. The ledger paper
- * and the margin rule repeat the hero so a post reads as the same object.
+ * Folio social artboards. Fixed CSS sizes, captured at 2x. White paper,
+ * Stripe's guide lines, a corner of the ribbon, so a post reads as the
+ * same object as the page.
  */
 
 .fo-frames-solo {
@@ -14,6 +15,7 @@
   gap: 32px;
   padding: 32px;
   align-items: flex-start;
+  background: var(--fo-paper);
 }
 
 .fo-frames-sheet figure {
@@ -36,58 +38,61 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  padding: 30px 32px 22px 40px;
-  background:
-    repeating-linear-gradient(180deg, transparent 0 27px, var(--fo-rule) 27px 28px),
-    var(--fo-paper);
+  padding: 32px 34px 22px;
+  background: #fff;
   line-height: 1.5;
 }
 
-.fo-frame::before {
+/* Guide lines at the content edges, as on the page. */
+.fo-frame::before,
+.fo-frame::after {
   content: "";
   position: absolute;
   top: 0;
   bottom: 0;
-  left: 20px;
-  width: 4px;
-  border-left: 1px solid var(--fo-accent-rule);
-  border-right: 1px solid var(--fo-accent-rule);
+  width: 1px;
+  background: var(--fo-guide);
   z-index: -1;
+}
+
+.fo-frame::before { left: 34px; }
+.fo-frame::after { right: 34px; }
+
+.fo-frame__ribbon {
+  position: absolute;
+  z-index: -1;
+  top: -110px;
+  right: -210px;
+  width: 520px;
+  height: auto;
+  opacity: 0.95;
+  mask-image: linear-gradient(180deg, #000 38%, transparent 70%);
+  -webkit-mask-image: linear-gradient(180deg, #000 38%, transparent 70%);
 }
 
 .fo-frame__head {
   display: flex;
   align-items: center;
-  gap: 14px;
-}
-
-.fo-frame__head .fo-badge {
-  margin-left: 0;
+  gap: 12px;
 }
 
 .fo-frame__title {
-  margin: 22px 0 0;
-  font-family: var(--fo-serif);
+  margin: 26px 0 0;
+  max-width: 420px;
+  font-family: var(--fo-sans);
   font-weight: 400;
-  font-size: 38px;
-  line-height: 1.02;
-  letter-spacing: -0.03em;
+  font-size: 34px;
+  line-height: 1.1;
+  letter-spacing: -0.026em;
   text-wrap: balance;
   color: var(--fo-ink);
 }
 
-/* No clip here: a clipped box-shadow shows as a hard grey edge. The
-   artboard itself clips, and each mock is scaled to fit inside it. */
 .fo-frame__visual {
   position: relative;
   flex: 1;
   min-height: 0;
   margin: 24px -8px 0 0;
-}
-
-.fo-frame__visual--fade {
-  mask-image: linear-gradient(180deg, #000 78%, transparent 100%);
-  -webkit-mask-image: linear-gradient(180deg, #000 78%, transparent 100%);
 }
 
 /* Lay a mock out at its natural width, then scale it to the artboard.
@@ -105,32 +110,38 @@
 
 .fo-frame__foot {
   margin: 14px 0 0;
-  font-family: var(--fo-mono);
-  font-size: 10px;
-  letter-spacing: 0.02em;
-  color: var(--fo-ink-3);
+  font-size: 10.5px;
+  color: var(--fo-ink-4);
 }
 
 /* The Open Graph card: copy left, a crop of the inbox bleeding off right. */
 .fo-frame--og {
   flex-direction: row;
-  padding: 28px 0 0 40px;
+  padding: 30px 0 0 34px;
+}
+
+.fo-frame--og .fo-frame__ribbon {
+  top: -120px;
+  right: -160px;
+  width: 460px;
+  mask-image: linear-gradient(180deg, #000 40%, transparent 80%);
+  -webkit-mask-image: linear-gradient(180deg, #000 40%, transparent 80%);
 }
 
 .fo-frame__og-copy {
   flex: none;
-  width: 270px;
+  width: 300px;
   display: flex;
   flex-direction: column;
 }
 
 .fo-frame__og-title {
-  margin: 26px 0 0;
-  font-family: var(--fo-serif);
+  margin: 34px 0 0;
+  font-family: var(--fo-sans);
   font-weight: 400;
-  font-size: 40px;
-  line-height: 0.98;
-  letter-spacing: -0.032em;
+  font-size: 30px;
+  line-height: 1.1;
+  letter-spacing: -0.026em;
   color: var(--fo-ink);
 }
 
@@ -138,21 +149,17 @@
   display: block;
 }
 
-.fo-frame__og-sub {
-  margin: 16px 0 0;
-  font-size: 12.5px;
-  line-height: 1.45;
-  color: var(--fo-ink-2);
-  max-width: 230px;
+.fo-frame__og-title span + span {
+  color: var(--fo-soft);
 }
 
 .fo-frame__og-visual {
   position: relative;
   flex: 1;
-  margin-left: 18px;
-  padding-top: 18px;
+  margin-left: 10px;
+  padding-top: 30px;
 }
 
 .fo-frame__og-visual .fo-frame__scaler {
-  width: calc(440px / var(--s) + 2 * var(--pad));
+  width: calc(460px / var(--s) + 2 * var(--pad));
 }

@@ -29,7 +29,27 @@ export interface Vendor {
   monogram: string;
   tile: { bg: string; fg: string };
   docPrefix: string;
+  /* Where this vendor keeps its invoice, what you actually get there,
+     and how you have to sign in first. Invented, but every mechanism is
+     one a real billing page uses. */
+  portal: { path: string; get: GetKind; signIn: string };
 }
+
+export type GetKind = "pdf" | "pdf-each" | "hosted" | "popup" | "email" | "receipt" | "owner" | "per-project" | "image" | "statement" | "zip";
+
+export const GET_LABEL: Record<GetKind, string> = {
+  pdf: "PDF download",
+  "pdf-each": "One PDF per top-up",
+  hosted: "Hosted page, link expires",
+  popup: "Pop-up, no download",
+  email: "Emailed link, expires",
+  receipt: "Receipt only",
+  owner: "PDF, account owner only",
+  "per-project": "One PDF per project",
+  image: "Invoice as an image",
+  statement: "Statement, VAT on request",
+  zip: "ZIP of every invoice",
+};
 
 export interface Charge {
   id: string;
@@ -60,60 +80,18 @@ export const cards: Card[] = [
 ];
 
 export const vendors: Vendor[] = [
-  {
-    id: "kestrel",
-    statement: "KESTREL AI IRELAND DUBLIN",
-    name: "Kestrel AI",
-    legalName: "Kestrel AI Ireland Ltd",
-    monogram: "K",
-    tile: { bg: "#1d2433", fg: "#f5f2ea" },
-    docPrefix: "4C1E07B2",
-  },
-  {
-    id: "cobalt",
-    statement: "COBALT CODE INC",
-    name: "Cobalt Code",
-    legalName: "Cobalt Code, Inc.",
-    monogram: "C",
-    tile: { bg: "#2f4a8a", fg: "#f5f2ea" },
-    docPrefix: "C0B7A11D",
-  },
-  {
-    id: "pagecraft",
-    statement: "PAGECRAFT BV AMSTERDAM",
-    name: "Pagecraft",
-    legalName: "Pagecraft B.V.",
-    monogram: "P",
-    tile: { bg: "#e6dfcf", fg: "#17150f" },
-    docPrefix: "9A0F33E1",
-  },
-  {
-    id: "ferry",
-    statement: "FERRY MAIL INC",
-    name: "Ferry Mail",
-    legalName: "Ferry Mail, Inc.",
-    monogram: "F",
-    tile: { bg: "#145a52", fg: "#f5f2ea" },
-    docPrefix: "FE77D204",
-  },
-  {
-    id: "tally",
-    statement: "TALLY TASKS LTD LONDON",
-    name: "Tally Tasks",
-    legalName: "Tally Tasks Ltd",
-    monogram: "T",
-    tile: { bg: "#b4482c", fg: "#f5f2ea" },
-    docPrefix: "7A11E5C9",
-  },
-  {
-    id: "meshwork",
-    statement: "MESHWORK LABS SG",
-    name: "Meshwork 3D",
-    legalName: "Meshwork Labs Pte. Ltd.",
-    monogram: "M",
-    tile: { bg: "#3b3a36", fg: "#f5f2ea" },
-    docPrefix: "2207-1184",
-  },
+  { id: "kestrel", name: "Kestrel AI", legalName: "Kestrel AI Ireland Ltd", statement: "KESTREL AI IRELAND DUBLIN", monogram: "K", tile: { bg: "#0a2540", fg: "#ffffff" }, docPrefix: "4C1E07B2", portal: { path: "/settings/billing", get: "pdf-each", signIn: "Password + 2FA" } },
+  { id: "cobalt", name: "Cobalt Code", legalName: "Cobalt Code, Inc.", statement: "COBALT CODE INC", monogram: "C", tile: { bg: "#2e5bff", fg: "#ffffff" }, docPrefix: "C0B7A11D", portal: { path: "/dashboard/account/billing", get: "hosted", signIn: "GitHub sign-in" } },
+  { id: "pagecraft", name: "Pagecraft", legalName: "Pagecraft B.V.", statement: "PAGECRAFT BV AMSTERDAM", monogram: "P", tile: { bg: "#ece7dc", fg: "#0a2540" }, docPrefix: "9A0F33E1", portal: { path: "/sites/studio-merel/settings/plan", get: "pdf", signIn: "Password" } },
+  { id: "ferry", name: "Ferry Mail", legalName: "Ferry Mail, Inc.", statement: "FERRY MAIL INC", monogram: "F", tile: { bg: "#0f766e", fg: "#ffffff" }, docPrefix: "FE77D204", portal: { path: "/settings/subscription", get: "popup", signIn: "Google sign-in" } },
+  { id: "tally", name: "Tally Tasks", legalName: "Tally Tasks Ltd", statement: "TALLY TASKS LTD LONDON", monogram: "T", tile: { bg: "#e5484d", fg: "#ffffff" }, docPrefix: "7A11E5C9", portal: { path: "/account?tab=billing", get: "email", signIn: "Magic link" } },
+  { id: "meshwork", name: "Meshwork 3D", legalName: "Meshwork Labs Pte. Ltd.", statement: "MESHWORK LABS SG", monogram: "M", tile: { bg: "#3c3a35", fg: "#ffffff" }, docPrefix: "2207-1184", portal: { path: "/credits/history", get: "receipt", signIn: "Password" } },
+  { id: "halftone", name: "Halftone Image", legalName: "Halftone Labs, Inc.", statement: "HALFTONE LABS INC", monogram: "H", tile: { bg: "#f59e0b", fg: "#0a2540" }, docPrefix: "HT0921", portal: { path: "/billing/history", get: "owner", signIn: "Google sign-in" } },
+  { id: "relay", name: "Relay Agents", legalName: "Relay Agents, Inc.", statement: "RELAY AGENTS INC", monogram: "R", tile: { bg: "#7c3aed", fg: "#ffffff" }, docPrefix: "RLY", portal: { path: "/org/studio-merel/usage/invoices", get: "per-project", signIn: "SSO" } },
+  { id: "sable", name: "Sable Video", legalName: "Sable Video SAS", statement: "SABLE VIDEO PARIS", monogram: "S", tile: { bg: "#111827", fg: "#ffffff" }, docPrefix: "SBL-26", portal: { path: "/me/plan", get: "image", signIn: "Password + 2FA" } },
+  { id: "quarry", name: "Quarry Search", legalName: "Quarry Search, Inc.", statement: "QUARRY SEARCH INC", monogram: "Q", tile: { bg: "#0ea5e9", fg: "#ffffff" }, docPrefix: "QS", portal: { path: "/console/billing/statements", get: "statement", signIn: "API console login" } },
+  { id: "lumen", name: "Lumen Voice", legalName: "Lumen Voice Ltd", statement: "LUMEN VOICE LTD", monogram: "L", tile: { bg: "#db2777", fg: "#ffffff" }, docPrefix: "LV", portal: { path: "/subscription", get: "email", signIn: "Magic link" } },
+  { id: "orbit", name: "Orbit Notes", legalName: "Orbit Notes GmbH", statement: "ORBIT NOTES GMBH BERLIN", monogram: "O", tile: { bg: "#16a34a", fg: "#ffffff" }, docPrefix: "ON", portal: { path: "/workspace/admin/billing", get: "zip", signIn: "SSO" } },
 ];
 
 /* Kestrel bills a monthly plan plus small automatic top-ups whenever the
@@ -175,6 +153,30 @@ function buildCharges(): Charge[] {
          the only document that exists is the receipt. */
       id: "meshwork-1", vendorId: "meshwork", date: iso(27), cents: 1999, currency: "EUR",
       item: "Credit pack", card: "biz", doc: { kind: "receipt", number: "2207-1184" },
+    },
+    {
+      id: "halftone-1", vendorId: "halftone", date: iso(3), cents: 2400, currency: "EUR",
+      item: "Studio, monthly", card: "biz", doc: { kind: "invoice", number: "HT0921-3307" },
+    },
+    {
+      id: "sable-1", vendorId: "sable", date: iso(12), cents: 3500, currency: "EUR",
+      item: "Creator, monthly", card: "biz", doc: { kind: "invoice", number: "SBL-26-09-1142" },
+    },
+    {
+      id: "quarry-1", vendorId: "quarry", date: iso(16), cents: 1900, currency: "USD",
+      item: "API, usage", card: "biz", doc: { kind: "invoice", number: "QS-2026-09-0088" },
+    },
+    {
+      id: "lumen-1", vendorId: "lumen", date: iso(18), cents: 1100, currency: "EUR",
+      item: "Starter, monthly", card: "biz", doc: { kind: "invoice", number: "LV-55120" },
+    },
+    {
+      id: "orbit-1", vendorId: "orbit", date: iso(20), cents: 1000, currency: "EUR",
+      item: "Plus, monthly", card: "biz", doc: { kind: "invoice", number: "ON-2026-0920" },
+    },
+    {
+      id: "relay-1", vendorId: "relay", date: iso(30), cents: 4860, currency: "USD",
+      item: "Agent hosting, usage", card: "biz", doc: { kind: "invoice", number: "RLY-000914" },
     },
   );
 
@@ -257,6 +259,9 @@ export function byVendor(list: Charge[] = charges): VendorMonth[] {
 }
 
 export const month = {
+  addresses: new Set(vendors.filter((v) => charges.some((c) => c.vendorId === v.id)).map((v) => v.portal.path)).size,
+  formats: new Set(vendors.filter((v) => charges.some((c) => c.vendorId === v.id)).map((v) => v.portal.get)).size,
+  signIns: new Set(vendors.filter((v) => charges.some((c) => c.vendorId === v.id)).map((v) => v.portal.signIn)).size,
   charges: charges.length,
   vendors: new Set(charges.map((c) => c.vendorId)).size,
   invoices: charges.filter((c) => c.doc.kind === "invoice").length,

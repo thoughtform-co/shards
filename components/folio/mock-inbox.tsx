@@ -70,6 +70,13 @@ export function MockInbox({ maxRows }: { maxRows?: number }) {
               </span>
             </div>
           ))}
+          {rows.length > shown.length && (
+            <div className="fo-table__more" role="row">
+              <span role="cell">
+                + {rows.length - shown.length} more vendors, all collected
+              </span>
+            </div>
+          )}
         </div>
 
         <footer className="fo-app__foot">

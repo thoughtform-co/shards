@@ -1,11 +1,14 @@
 import type { ReactNode } from "react";
 import specs from "@/content/folio-frames.json";
 import { fill, frames as copy, hero } from "@/content/folio-copy";
+import { HuntTable } from "./hunt-table";
 import { MockActivity } from "./mock-activity";
 import { MockAgent } from "./mock-agent";
 import { MockConsent } from "./mock-consent";
 import { MockInbox } from "./mock-inbox";
 import { vars, Wordmark } from "./primitives";
+import { Ribbon } from "./ribbon";
+import { WorkflowCards } from "./workflow-cards";
 
 /*
  * Social artboards. Each renders at a fixed CSS size and is captured at 2x
@@ -22,26 +25,31 @@ export interface FrameSpec {
 
 export const frameSpecs: FrameSpec[] = specs;
 
-const portrait: Record<string, { title: string; scale: number; fade?: boolean; visual: ReactNode }> = {
-  month: {
-    title: fill(copy.month),
-    scale: 0.92,
-    visual: <MockActivity state="before" rows={9} />,
+const portrait: Record<string, { title: string; scale: number; visual: ReactNode }> = {
+  hunt: {
+    title: copy.hunt,
+    scale: 0.66,
+    visual: <HuntTable />,
   },
-  endpoint: {
-    title: copy.endpoint,
-    scale: 0.84,
-    visual: <MockActivity split rows={3} />,
+  agent: {
+    title: copy.agent,
+    scale: 0.9,
+    visual: <MockAgent />,
   },
   approval: {
     title: fill(copy.approval),
     scale: 0.86,
     visual: <MockConsent />,
   },
-  agent: {
-    title: copy.agent,
-    scale: 0.9,
-    visual: <MockAgent />,
+  workflows: {
+    title: copy.workflows,
+    scale: 0.72,
+    visual: <WorkflowCards only={["close", "price", "missing"]} />,
+  },
+  endpoint: {
+    title: copy.endpoint,
+    scale: 0.84,
+    visual: <MockActivity split rows={3} />,
   },
 };
 
@@ -51,20 +59,20 @@ export function FrameArtboard({ spec }: { spec: FrameSpec }) {
   if (spec.slug === "og") {
     return (
       <div className="fo-frame fo-frame--og" data-folio-frame="og" style={size}>
+        <Ribbon id={`fo-rb-${spec.slug}`} className="fo-frame__ribbon" />
         <div className="fo-frame__og-copy">
           <div className="fo-frame__head">
-            <Wordmark size={20} />
+            <Wordmark size={18} />
             <span className="fo-badge">Concept</span>
           </div>
           <h2 className="fo-frame__og-title">
-            {hero.titleLines.map((l) => (
-              <span key={l}>{l}</span>
+            {hero.strong.split(". ").map((l, i, a) => (
+              <span key={l}>{i < a.length - 1 ? `${l}.` : l}</span>
             ))}
           </h2>
-          <p className="fo-frame__og-sub">One read-only grant at the payment layer, for your agent and your accountant.</p>
         </div>
         <div className="fo-frame__og-visual">
-          <div className="fo-frame__scaler" style={vars({ "--s": 0.72 })}>
+          <div className="fo-frame__scaler" style={vars({ "--s": 0.66 })}>
             <MockInbox maxRows={5} />
           </div>
         </div>
@@ -77,12 +85,13 @@ export function FrameArtboard({ spec }: { spec: FrameSpec }) {
 
   return (
     <div className="fo-frame" data-folio-frame={spec.slug} style={size}>
+      <Ribbon id={`fo-rb-${spec.slug}`} className="fo-frame__ribbon" />
       <div className="fo-frame__head">
         <Wordmark size={18} />
         <span className="fo-badge">Concept</span>
       </div>
       <h2 className="fo-frame__title">{f.title}</h2>
-      <div className={`fo-frame__visual${f.fade ? " fo-frame__visual--fade" : ""}`}>
+      <div className="fo-frame__visual">
         <div className="fo-frame__scaler" style={vars({ "--s": f.scale })}>
           {f.visual}
         </div>

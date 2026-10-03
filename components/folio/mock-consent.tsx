@@ -1,5 +1,5 @@
 import { cards, charges, persona } from "@/content/folio";
-import { Check, FolioMark } from "./primitives";
+import { AppIcon, Check, PasskeyGlyph } from "./primitives";
 
 /*
  * Mockup B: the one approval. Shown by the payment wallet, not by Folio,
@@ -7,16 +7,6 @@ import { Check, FolioMark } from "./primitives";
  * revocable, approved with a passkey.
  */
 
-function PasskeyGlyph() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-      <circle cx="7" cy="5.5" r="3" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M1.5 15.5c.4-3 2.6-5 5.5-5 1.2 0 2.3.3 3.2.9" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      <circle cx="13.5" cy="11" r="2" fill="none" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M13.5 13v3.5m0-1.5h1.6" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  );
-}
 
 export function MockConsent() {
   const counts = new Map<string, number>();
@@ -34,7 +24,7 @@ export function MockConsent() {
 
       <div className="fo-consent__who">
         <span className="fo-consent__app">
-          <FolioMark size={22} />
+          <AppIcon size={44} />
         </span>
         <p>
           <strong>Folio</strong> wants to read the invoices and receipts behind payments you make with these
