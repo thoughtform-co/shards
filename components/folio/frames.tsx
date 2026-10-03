@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import specs from "@/content/folio-frames.json";
 import { fill, frames as copy, hero } from "@/content/folio-copy";
+import { Beats } from "./beats";
 import { HuntTable } from "./hunt-table";
 import { MockActivity } from "./mock-activity";
 import { MockAgent } from "./mock-agent";
@@ -45,6 +46,11 @@ const portrait: Record<string, { title: string; scale: number; visual: ReactNode
     title: copy.workflows,
     scale: 0.72,
     visual: <WorkflowCards only={["close", "price", "missing"]} />,
+  },
+  flow: {
+    title: copy.flow,
+    scale: 0.9,
+    visual: <Beats />,
   },
   endpoint: {
     title: copy.endpoint,

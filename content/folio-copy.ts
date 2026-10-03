@@ -126,35 +126,57 @@ export const nav = {
 };
 
 export const hero = {
-  statLabel: "Documents collected for September",
-  statValue: "{docs} of {charges}",
+  statLabel: "Billing pages visited this month",
+  statValue: "0",
   strong: "Your agent can pay for your software. Now it can fetch the invoices.",
-  soft: "Folio collects the invoice behind every tool you pay for with Link, through one read-only permission, and hands it to your agent and your accountant.",
+  soft: "Folio collects the invoice behind every tool you pay for with Link, through one read-only permission, for your agent and your accountant.",
   primary: "See how it works",
   secondary: "Read the pitch to Stripe",
-  note: "Built for MCP clients such as Claude and ChatGPT. Illustrative account: every name and number on this page is invented.",
+  note: "Built for MCP clients such as Claude and ChatGPT. Every name and number on this page is invented.",
   agentLine: "Sent September to {accountant}: {docs} documents, one receipt flagged.",
 };
 
 export const problem = {
   label: "The problem",
-  strong: "Every vendor hides the invoice somewhere else.",
-  soft: "AI made it normal to try a new tool every week and keep the ones your agents can use. Paying for them takes one tap. The invoice still takes a login, a different address at every vendor, and sometimes a screenshot of a pop-up.",
+  strong: "While paying for software got easy, the invoice still waits behind a login.",
+  soft: "You want to be building. The month wants you on {vendors} billing pages.",
+  beats: [
+    {
+      kicker: "Paying",
+      title: "Solved, and then some",
+      text: "Stripe and Link made paying online so smooth that an agent can now do it for you, with your approval. A lot of businesses exist because of that.",
+    },
+    {
+      kicker: "The invoice",
+      title: "Still behind a login",
+      text: "Every vendor keeps it on its own billing page, in its own format. Some hand you a PDF. Some hand you a pop-up and a screenshot.",
+    },
+    {
+      kicker: "Your flow",
+      title: "Interrupted, then postponed",
+      text: "It takes a few minutes, in theory. In practice you're mid-build, so it waits until the quarter closes and your accountant asks. Then asks again.",
+    },
+    {
+      kicker: "Your inbox",
+      title: "Won't save you",
+      text: "Vendors that still email a PDF are easy to forward automatically. But phishing loves a fake invoice, so fewer vendors send one every year.",
+    },
+  ],
   payTitle: "Paying for a tool",
-  payCaption: "One approval in the wallet, for any vendor.",
+  payCaption: "One approval, any vendor.",
   huntTitle: "Getting its invoice",
-  huntCaption: "{vendors} vendors, {addresses} addresses, {formats} formats and {signIns} ways to sign in, for one card and one company.",
+  huntCaption: "{vendors} vendors, {addresses} addresses, {formats} formats and {signIns} ways to sign in, all for the same card.",
   facts: [
     {
-      text: "The link in an invoice email stops working 30 days after the due date and never lasts longer than 120 days; a receipt link expires after 30.",
+      text: "Emailed invoice links expire 30 days after the due date, 120 at most. Receipt links expire after 30.",
       sources: ["hosted-invoice", "receipts"] as SourceId[],
     },
     {
-      text: "Belgium's Peppol mandate covers invoices between Belgian businesses. Cross-border invoices inside the EU follow by July 2030.",
+      text: "Belgium's Peppol mandate covers invoices between Belgian companies. Cross-border EU invoices follow by July 2030.",
       sources: ["be-mandate", "vida"] as SourceId[],
     },
     {
-      text: "The e-invoicing integration Stripe announced with Billit at Sessions 2026 is built for the business that issues the invoice.",
+      text: "Stripe's e-invoicing integration with Billit, announced at Sessions 2026, is built for the business issuing the invoice.",
       sources: ["sessions"] as SourceId[],
     },
   ],
@@ -163,13 +185,13 @@ export const problem = {
 export const permission = {
   label: "The missing permission",
   strong: "If an agent can pay, it can fetch the invoice.",
-  soft: "Link's wallet for agents already lets you hand an agent the right to spend, approved purchase by purchase. The paperwork behind those purchases needs the same kind of consent, only narrower: read-only, limited to the cards you choose, and unable to move money.",
+  soft: "Link already lets an agent spend with your approval. Fetching the invoice needs the same consent, only narrower: read-only, per card, unable to move money.",
   sources: ["agent-wallet"] as SourceId[],
   columns: ["What your agent does", "Today", "With Folio"],
   rows: [
     { task: "Pay for a tool", today: "Link's agent wallet, one approval per purchase", todayOk: true, folio: "Unchanged" },
-    { task: "Get the invoice", today: "Sign in at each vendor and find its billing page", todayOk: false, folio: "Collected through one read-only grant" },
-    { task: "Send it to the accountant", today: "Download, rename and forward each PDF", todayOk: false, folio: "Delivered on the first of the month, after you approve" },
+    { task: "Get the invoice", today: "Sign in at each vendor and find the billing page", todayOk: false, folio: "Collected through one read-only grant" },
+    { task: "Send it to the accountant", today: "Download, rename, forward, repeat", todayOk: false, folio: "Delivered on the first, after you approve" },
     { task: "Notice a price change", today: "Only if someone reads every invoice", todayOk: false, folio: "Flagged the day the charge posts" },
   ],
 };
@@ -177,36 +199,24 @@ export const permission = {
 export const how = {
   label: "How it works",
   strong: "One approval, then nothing to chase.",
-  soft: "You approve a read-only grant at your payment provider once, with a passkey. Every charge on those cards then arrives in Folio with the vendor's own document attached.",
+  soft: "Approve a read-only grant once, with a passkey. Every charge then arrives with the vendor's own document attached.",
   steps: [
-    {
-      n: "1",
-      title: "Approve once",
-      text: "Pick the cards and approve with a passkey. The grant reads documents and can't pay, cancel or see anything else.",
-    },
-    {
-      n: "2",
-      title: "Collect every charge",
-      text: "Each new charge arrives with the vendor's PDF, the fields read from it, and the card that paid, which most invoices leave out.",
-    },
-    {
-      n: "3",
-      title: "Deliver anywhere",
-      text: "Your agent reads the month over MCP, your accountant's software receives it on the first, and you revoke the grant in one tap.",
-    },
+    { n: "1", title: "Approve once", text: "Pick the cards, approve with a passkey. That's the whole setup." },
+    { n: "2", title: "Collect every charge", text: "Each charge arrives with the vendor's PDF and the card that paid, which most invoices leave out." },
+    { n: "3", title: "Deliver anywhere", text: "To your agent over MCP, to your accountant on the first, or both. Revoke in one tap." },
   ],
 };
 
 export const workflows = {
   label: "Workflows",
   strong: "Your agent checks in when something needs you.",
-  soft: "Folio runs small workflows wherever your agent already lives, in Slack, Claude, ChatGPT or plain email, and most months it asks a single question.",
+  soft: "In Slack, Claude, ChatGPT or plain email. Most months it asks one question, and you stay in flow.",
   cards: {
     close: {
       channel: "#finance",
       when: "1 Oct, 09:00",
       title: "September is ready",
-      text: "{docs} documents from {vendors} vendors. One is a receipt without an invoice. Send them to {accountant}?",
+      text: "{docs} documents from {vendors} vendors, one receipt without an invoice. Send them to {accountant}?",
       actions: ["Send", "Review first"],
     },
     price: {
@@ -227,7 +237,7 @@ export const workflows = {
       channel: "Your agent",
       when: "27 Sep",
       title: "No invoice issued",
-      text: "Meshwork 3D sent a receipt but no invoice for the credit pack. Want me to ask them for one?",
+      text: "Meshwork 3D sent a receipt but no invoice for the credit pack. Want me to ask for one?",
       actions: ["Ask Meshwork", "Receipt is fine"],
     },
   },
@@ -236,11 +246,11 @@ export const workflows = {
 export const agents = {
   label: "For agents",
   strong: "Four tools over MCP.",
-  soft: "Folio is an MCP server. Your agent lists the month, opens any document, asks what's missing and delivers, and the last of those always waits for your approval.",
+  soft: "List the month, open a document, ask what's missing, deliver. The last one always waits for you.",
   tools: [
     { name: "list_documents", args: "period, card", text: "Every charge in a period, with its document." },
     { name: "get_document", args: "id", text: "The vendor's PDF and the fields read from it." },
-    { name: "missing", args: "period", text: "Charges without an invoice, and the reason for each." },
+    { name: "missing", args: "period", text: "Charges without an invoice, and why." },
     { name: "deliver", args: "period, to", text: "Sends the month to your accountant, after you approve." },
   ],
   sources: ["mcp-auth"] as SourceId[],
@@ -249,50 +259,50 @@ export const agents = {
 export const accountants = {
   label: "For accountants",
   strong: "Documents arrive matched to the bank line.",
-  soft: "Each document lands in the purchase inbox beside the one bank line it settles, to the cent, and a dollar charge shows the rate it cleared at. The card that paid decides which company books it, so a charge on the personal card never ends up in the company's ledger.",
+  soft: "Each document sits beside the bank line it settles, to the cent, with the rate for dollar charges. The card that paid decides which company books it.",
   note: "Exchange rate illustrative.",
 };
 
 export const grant = {
   label: "Security",
   strong: "What the grant can and cannot do.",
-  soft: "Every part of it is a standard that exists today: OAuth 2.1 for the grant, passkeys for the approval and the MCP authorization spec for the agent.",
+  soft: "Built only from standards that exist today: OAuth 2.1, passkeys and MCP authorization.",
   softSources: ["oauth", "webauthn", "mcp-auth"] as SourceId[],
   can: [
-    "Read invoices, receipts and credit notes for charges on the cards you chose",
-    "Read the vendor's legal name and VAT details as printed on the document",
-    "See the amount, the date and the card of each of those charges",
+    "Read invoices, receipts and credit notes for the cards you chose",
+    "Read the vendor's name and VAT details on each document",
+    "See each charge's amount, date and card",
   ],
   cannot: [
-    "Make a payment, of any size",
-    "Change, pause or cancel a subscription",
-    "See a card you left out, or keep access after you revoke it",
+    "Pay for anything",
+    "Change or cancel a subscription",
+    "See other cards, or keep access after you revoke it",
   ],
 };
 
 export const limits = {
   label: "Limits",
   strong: "What Folio cannot do.",
-  soft: "Collecting paper is narrower than it sounds, and the edges are worth knowing before you rely on it.",
+  soft: "The edges, so nobody is surprised later.",
   items: [
     {
       title: "Make a vendor issue an invoice",
-      text: "Subscriptions get an invoice automatically, but a one-off checkout gets one only if the vendor turned that on. Otherwise Folio collects the receipt and says so.",
+      text: "A one-off checkout only gets an invoice if the vendor turned that on. Otherwise Folio collects the receipt and says so.",
       sources: ["receipts"] as SourceId[],
     },
     {
       title: "Reach every processor",
-      text: "A vendor that bills through another payment provider, or by bank transfer, stays outside the grant until that provider offers the same consent.",
+      text: "Vendors billing through another provider, or by bank transfer, stay out of reach until that provider offers the same consent.",
       sources: [] as SourceId[],
     },
     {
       title: "Replace the legal invoice",
-      text: "The invoice stays the vendor's. Folio keeps the vendor's own PDF and the fields read from it, and reissues nothing; where an e-invoice is required, the vendor still sends one.",
+      text: "The vendor still issues it. Folio keeps their PDF and reissues nothing.",
       sources: [] as SourceId[],
     },
     {
       title: "Exist without one endpoint",
-      text: "Everything above depends on a consented, read-only endpoint at the payment provider. Nobody offers it yet, so for now this page is a drawing.",
+      text: "It needs a read-only endpoint at the payment provider. Nobody offers one yet, so for now this page is a drawing.",
       sources: [] as SourceId[],
     },
   ],
@@ -301,11 +311,11 @@ export const limits = {
 export const stripe = {
   label: "For Stripe",
   strong: "It is one endpoint.",
-  soft: "Link already shows every charge with its line item, subtotal and tax, and for every invoiced payment Stripe already knows which invoice it settled.",
+  soft: "Link already shows every charge with its line item and tax, and Stripe already knows which invoice each payment settled.",
   softSources: ["link"] as SourceId[],
   body: [
-    "Since 29 April an agent can pay through Link, with an approval for every purchase. The document behind that purchase is one join away: a consented, read-only endpoint on the payer's side, scoped to the cards they choose.",
-    "Folio is that endpoint drawn out in full, from the passkey to the accountant's inbox.",
+    "Since 29 April an agent can pay through Link. The invoice behind that purchase is one consented, read-only endpoint away.",
+    "You took the friction out of paying. Folio takes it out of the paperwork that follows.",
   ],
   bodySources: ["agent-wallet"] as SourceId[],
   closer: "Ship it, or buy us.",
@@ -325,5 +335,6 @@ export const frames = {
   approval: "One approval instead of {vendors} billing portals.",
   agent: "If an agent can pay, it can fetch the invoice.",
   workflows: "Your agent checks in when something needs you.",
+  flow: "On paper it takes a few minutes a month.",
   footnote: "Folio is a concept. Every name and number is invented.",
 };

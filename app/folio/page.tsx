@@ -1,3 +1,4 @@
+import { Beats } from "@/components/folio/beats";
 import { CodeSample } from "@/components/folio/code-sample";
 import { HuntTable } from "@/components/folio/hunt-table";
 import { InvoiceSheet } from "@/components/folio/invoice-sheet";
@@ -181,6 +182,9 @@ export default function FolioPage() {
           <Guides />
           <div className="fo-wrap">
             <Heading id="fo-problem-title" label={problem.label} strong={problem.strong} soft={problem.soft} />
+            <div className="fo-block">
+              <Beats />
+            </div>
             <div className="fo-contrast fo-block">
               <div className="fo-contrast__col">
                 <h3>

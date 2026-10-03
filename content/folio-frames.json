@@ -1,8 +1,9 @@
 [
-  { "slug": "hunt", "w": 540, "h": 675, "out": "exports/folio/folio-01-hunt-1080x1350.png" },
-  { "slug": "agent", "w": 540, "h": 675, "out": "exports/folio/folio-02-agent-1080x1350.png" },
-  { "slug": "approval", "w": 540, "h": 675, "out": "exports/folio/folio-03-approval-1080x1350.png" },
-  { "slug": "workflows", "w": 540, "h": 675, "out": "exports/folio/folio-04-workflows-1080x1350.png" },
-  { "slug": "endpoint", "w": 540, "h": 675, "out": "exports/folio/folio-05-endpoint-1080x1350.png" },
-  { "slug": "og", "w": 600, "h": 315, "out": "public/folio/og.png" }
+  {"slug": "hunt", "w": 540, "h": 675, "out": "exports/folio/folio-01-hunt-1080x1350.png"},
+  {"slug": "agent", "w": 540, "h": 675, "out": "exports/folio/folio-02-agent-1080x1350.png"},
+  {"slug": "approval", "w": 540, "h": 675, "out": "exports/folio/folio-03-approval-1080x1350.png"},
+  {"slug": "workflows", "w": 540, "h": 675, "out": "exports/folio/folio-04-workflows-1080x1350.png"},
+  {"slug": "endpoint", "w": 540, "h": 675, "out": "exports/folio/folio-05-endpoint-1080x1350.png"},
+  {"slug": "flow", "w": 540, "h": 675, "out": "exports/folio/folio-06-flow-1080x1350.png"},
+  {"slug": "og", "w": 600, "h": 315, "out": "public/folio/og.png"}
 ]

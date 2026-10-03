@@ -783,6 +783,69 @@
   .fo-hunt__row--head span:nth-child(2), .fo-hunt__row--head span:nth-child(4) { display: none; }
 }
 
+/* ── The problem in four beats ──────────────────────────────────────── */
+
+.fo-beats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fo-beat {
+  padding: 20px 20px 22px;
+  background: #fff;
+  border: 1px solid var(--fo-line);
+  border-radius: 12px;
+}
+
+.fo-beat__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fo-ink-3);
+}
+
+.fo-beat__kicker::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.fo-beat__kicker--ok { color: var(--fo-ok); }
+.fo-beat__kicker--red { color: var(--fo-red); }
+.fo-beat__kicker--warn { color: var(--fo-warn); }
+
+.fo-beat h3 {
+  margin: 10px 0 0;
+  font-size: 18px;
+  font-weight: 550;
+  letter-spacing: -0.012em;
+  line-height: 1.25;
+  color: var(--fo-ink);
+}
+
+.fo-beat p {
+  margin: 8px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--fo-ink-2);
+}
+
+@container (max-width: 900px) {
+  .fo-beats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@container (max-width: 480px) {
+  .fo-beats { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+}
+
 /* ── The permission table ───────────────────────────────────────────── */
 
 .fo-perm {
