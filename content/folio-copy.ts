@@ -144,15 +144,25 @@ export const problem = {
   payCaption: "One approval, any vendor.",
   collectTitle: "Collecting the invoices",
   collectCaption: "Three weeks of next week.",
-  /* Newest first, the way a lock screen stacks them. The last one is the
-     accountant's first, polite request, collapsed under everything since. */
+  /* Newest first, the way a lock screen shows them. The accountant's three
+     emails form one stack, as a phone groups mail from one sender; the
+     first, polite request sits at the bottom of it. */
   notifications: [
     {
-      app: "mail",
+      app: "phone",
       when: "now",
+      title: "Missed call",
+      subject: "",
+      body: "{accountant}",
+      stack: [] as string[],
+    },
+    {
+      app: "mail",
+      when: "12m ago",
       title: "{accountant}",
       subject: "Re: Re: Re: September invoices",
       body: "Merel, we really need them today to file your VAT return on time.",
+      stack: ["Re: Re: September invoices", "September invoices"],
     },
     {
       app: "calendar",
@@ -160,6 +170,7 @@ export const problem = {
       title: "Do the invoices",
       subject: "",
       body: "16:00 to 16:30, moved for the fourth time",
+      stack: [] as string[],
     },
     {
       app: "mail",
@@ -167,13 +178,7 @@ export const problem = {
       title: "Lumen Voice",
       subject: "Your invoice link has expired",
       body: "Sign in to view your billing history.",
-    },
-    {
-      app: "mail",
-      when: "1w ago",
-      title: "{accountant}",
-      subject: "Re: Re: September invoices",
-      body: "Friendly nudge: I'm still missing {docs} documents.",
+      stack: [] as string[],
     },
     {
       app: "reminders",
@@ -181,13 +186,7 @@ export const problem = {
       title: "Download invoices",
       subject: "",
       body: "{vendors} billing pages, overdue",
-    },
-    {
-      app: "mail",
-      when: "3w ago",
-      title: "{accountant}",
-      subject: "September invoices",
-      body: "Hi Merel, could you send me September's invoices when you get a chance?",
+      stack: [] as string[],
     },
   ],
   facts: [

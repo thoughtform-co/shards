@@ -3,15 +3,15 @@ import { fill, problem } from "@/content/folio-copy";
 
 /*
  * What scattered invoices turn into: a lock screen that keeps filling up.
- * Mail from the accountant, getting shorter each time; a calendar block
- * that keeps moving; a vendor telling you the emailed link has expired; a
- * reminder nobody ticks off. Newest on top, the first polite request
- * collapsed into a pile at the bottom. Generic app glyphs, no brand marks.
+ * A missed call from the accountant; three emails from them, stacked the
+ * way a phone groups mail from one sender; a calendar block that keeps
+ * moving; a vendor saying the emailed link has expired; a reminder nobody
+ * ticks off. Newest on top. Generic app glyphs, no brand marks.
  */
 
-type App = "mail" | "calendar" | "reminders";
+type App = "mail" | "calendar" | "reminders" | "phone";
 
-const APP_NAME: Record<App, string> = { mail: "Mail", calendar: "Calendar", reminders: "Reminders" };
+const APP_NAME: Record<App, string> = { mail: "Mail", calendar: "Calendar", reminders: "Reminders", phone: "Phone" };
 
 const ICON: Record<App, ReactNode> = {
   mail: (
@@ -34,12 +34,23 @@ const ICON: Record<App, ReactNode> = {
       <path d="M5.6 4h6M5.6 7.2h6M5.6 10.4h6" stroke="#fff" strokeWidth="1.4" strokeLinecap="round" />
     </svg>
   ),
+  phone: (
+    <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+      <path
+        d="M4.2 1.8 5.6 4.2c.2.4.1.9-.2 1.2l-.8.8a7.4 7.4 0 0 0 3.2 3.2l.8-.8c.3-.3.8-.4 1.2-.2l2.4 1.4c.4.2.6.7.4 1.1l-.4 1c-.3.7-1 1.1-1.8 1A10 10 0 0 1 1.1 3.6c-.1-.8.3-1.5 1-1.8l1-.4c.4-.2.9 0 1.1.4Z"
+        fill="#fff"
+      />
+    </svg>
+  ),
 };
 
-function Notice({ n, pile = false }: { n: (typeof problem.notifications)[number]; pile?: boolean }) {
+type Item = (typeof problem.notifications)[number];
+
+function Notice({ n }: { n: Item }) {
   const app = n.app as App;
+  const stacked = n.stack.length > 0;
   return (
-    <li className={`fo-notif__item${pile ? " is-pile" : ""}`}>
+    <li className={`fo-notif__item${stacked ? " is-stack" : ""}${app === "phone" ? " is-call" : ""}`}>
       <div className="fo-notif__card">
         <div className="fo-notif__meta">
           <span className={`fo-notif__icon fo-notif__icon--${app}`}>{ICON[app]}</span>
@@ -49,24 +60,26 @@ function Notice({ n, pile = false }: { n: (typeof problem.notifications)[number]
         <strong className="fo-notif__title">{fill(n.title)}</strong>
         {n.subject && <span className="fo-notif__subject">{n.subject}</span>}
         <p className="fo-notif__body">{fill(n.body)}</p>
+        {stacked && (
+          <p className="fo-notif__more">
+            {n.stack.length} more from {fill(n.title)}
+          </p>
+        )}
       </div>
     </li>
   );
 }
 
 export function NotificationStack({ max }: { max?: number }) {
-  const all = problem.notifications;
-  const top = all.slice(0, -1).slice(0, max ?? all.length);
-  const first = all[all.length - 1];
+  const shown = problem.notifications.slice(0, max ?? problem.notifications.length);
 
   return (
     <div className="fo-notif fo-mock" data-mock="notifications">
       <div className="fo-notif__wall">
         <ol className="fo-notif__list" aria-label="Notifications">
-          {top.map((n, i) => (
+          {shown.map((n, i) => (
             <Notice n={n} key={i} />
           ))}
-          <Notice n={first} pile />
         </ol>
       </div>
     </div>

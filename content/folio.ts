@@ -69,7 +69,7 @@ export const persona = {
   city: "Ghent",
   country: "Belgium",
   vat: "BE 0745.218.360",
-  accountant: "Bureau Vermeulen",
+  accountant: "Janssens Accountancy",
   period: "September 2026",
   periodShort: "Sep 2026",
 };

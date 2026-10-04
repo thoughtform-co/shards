@@ -871,37 +871,55 @@
   color: var(--fo-ink-2);
 }
 
-/* The first request, buried: the card sits on two more behind it. */
-.fo-notif__item.is-pile {
-  position: relative;
-  margin-bottom: 12px;
+.fo-notif__icon--phone { background: linear-gradient(180deg, #4cd964, #28b446); }
+
+.fo-notif__item.is-call .fo-notif__title {
+  color: var(--fo-red);
 }
 
-.fo-notif__item.is-pile::before,
-.fo-notif__item.is-pile::after {
+.fo-notif__more {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--fo-ink-3);
+}
+
+/* A group of mail from one sender, collapsed the way a phone stacks it:
+   the newest card on top, two narrower cards showing underneath. */
+.fo-notif__item.is-stack {
+  position: relative;
+  isolation: isolate;
+  margin-bottom: 16px;
+}
+
+.fo-notif__item.is-stack .fo-notif__card {
+  z-index: 2;
+}
+
+/* The cards underneath start just inside the top card's rounded bottom,
+   so through its frosted glass nothing shows but the edges below it. */
+.fo-notif__item.is-stack::before,
+.fo-notif__item.is-stack::after {
   content: "";
   position: absolute;
+  top: calc(100% - 4px);
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 4px 8px -4px rgba(10, 37, 64, 0.25);
+}
+
+.fo-notif__item.is-stack::before {
+  z-index: 1;
   left: 10px;
   right: 10px;
-  height: 100%;
-  border-radius: 14px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.fo-notif__item.is-stack::after {
+  z-index: 0;
+  left: 22px;
+  right: 22px;
+  height: 20px;
   background: rgba(255, 255, 255, 0.55);
-  box-shadow: 0 1px 2px rgba(10, 37, 64, 0.05);
-}
-
-.fo-notif__item.is-pile::before {
-  bottom: -6px;
-}
-
-.fo-notif__item.is-pile::after {
-  left: 20px;
-  right: 20px;
-  bottom: -12px;
-  background: rgba(255, 255, 255, 0.35);
-}
-
-.fo-notif__item.is-pile .fo-notif__card {
-  opacity: 0.92;
 }
 
 /* ── The permission table ───────────────────────────────────────────── */
