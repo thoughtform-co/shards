@@ -1,5 +1,4 @@
 import { CodeSample } from "@/components/folio/code-sample";
-import { HuntTable } from "@/components/folio/hunt-table";
 import { InvoiceSheet } from "@/components/folio/invoice-sheet";
 import { MockAccountant } from "@/components/folio/mock-accountant";
 import { MockActivity } from "@/components/folio/mock-activity";
@@ -10,6 +9,7 @@ import { PayCard } from "@/components/folio/pay-card";
 import { PermissionTable } from "@/components/folio/permission-table";
 import { Arrow, FolioMark, vars, Wordmark } from "@/components/folio/primitives";
 import { Ribbon } from "@/components/folio/ribbon";
+import { SnoozeStack } from "@/components/folio/snooze-stack";
 import { WorkflowCards } from "@/components/folio/workflow-cards";
 import {
   accountants,
@@ -193,10 +193,10 @@ export default function FolioPage() {
               <div className="fo-contrast__col">
                 <h3>
                   <span className="fo-dot" aria-hidden="true" />
-                  {problem.huntTitle}
+                  {problem.collectTitle}
                 </h3>
-                <HuntTable />
-                <p className="fo-caption">{fill(problem.huntCaption)}</p>
+                <SnoozeStack />
+                <p className="fo-caption">{fill(problem.collectCaption)}</p>
               </div>
             </div>
 

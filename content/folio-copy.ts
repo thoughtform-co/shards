@@ -109,6 +109,7 @@ export function fill(text: string): string {
     .replace(/\{addresses\}/g, word(dataMonth.addresses))
     .replace(/\{formats\}/g, word(dataMonth.formats))
     .replace(/\{signIns\}/g, word(dataMonth.signIns))
+    .replace(/\{snoozes\}/g, word(problem.snooze.stops.length))
     .replace(/\{accountant\}/g, persona.accountant)
     .replace(/\{company\}/g, persona.company);
   return out.charAt(0).toUpperCase() + out.slice(1);
@@ -138,18 +139,27 @@ export const hero = {
 
 export const problem = {
   label: "The problem",
-  strong: "While paying got easy, the invoice still sits behind a login.",
-  soft: "So it waits until your accountant asks, and phishing means fewer vendors email it.",
-  beats: [
-    { title: "Paying is solved", text: "Stripe and Link made it smooth enough for an agent to do it for you." },
-    { title: "The invoice is behind a login", text: "A different billing page, format and sign-in at every vendor." },
-    { title: "So it gets postponed", text: "You're mid-build, so it waits until your accountant asks. Twice." },
-    { title: "And email won't fix it", text: "Phishing loves a fake invoice, so fewer vendors send the PDF." },
-  ],
+  strong: "While paying takes one tap, collecting the invoices is the job that keeps moving to next week.",
+  soft: "They're scattered across a dozen billing pages, and phishing means fewer vendors email the PDF.",
   payTitle: "Paying for a tool",
   payCaption: "One approval, any vendor.",
-  huntTitle: "Getting its invoice",
-  huntCaption: "{vendors} vendors, {addresses} addresses, {formats} formats and {signIns} ways to sign in, all for the same card.",
+  collectTitle: "Collecting the invoices",
+  collectCaption: "One reminder, {snoozes} snoozes, {charges} documents waiting by October.",
+  snooze: {
+    title: "Download the invoices",
+    badge: "Snoozed {n} times",
+    stops: [
+      { date: "2026-09-04", label: "Next week" },
+      { date: "2026-09-11", label: "Next week" },
+      { date: "2026-09-18", label: "After this sprint" },
+      { date: "2026-09-25", label: "End of the month" },
+      { date: "2026-10-02", label: "Monday, promise" },
+    ],
+    waiting: "waiting",
+    accountantWhen: "Fri 2 Oct, 16:40",
+    accountantText: "Still missing {docs} documents for September. Can you send them before we file your VAT return?",
+    expired: "Meanwhile the emailed links from {first} have expired.",
+  },
   facts: [
     {
       text: "Emailed invoice links expire 30 days after the due date, 120 at most. Receipt links expire after 30.",

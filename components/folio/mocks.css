@@ -783,78 +783,182 @@
   .fo-hunt__row--head span:nth-child(2), .fo-hunt__row--head span:nth-child(4) { display: none; }
 }
 
-/* ── The problem in four steps ──────────────────────────────────────── */
+/* ── The snoozed reminder (the problem's right panel) ────────────────── */
 
-.fo-beats {
+.fo-snooze {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: var(--fo-shadow-sm);
+  overflow: hidden;
+}
+
+.fo-snooze__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 50px;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--fo-line-2);
+  font-size: 14px;
+}
+
+.fo-snooze__bell {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0 32px;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: var(--fo-warn-soft);
+  color: var(--fo-warn);
+}
+
+.fo-snooze__head strong {
+  font-weight: 600;
+}
+
+.fo-snooze__badge {
+  margin-left: auto;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: var(--fo-warn-soft);
+  color: var(--fo-warn);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.fo-snooze__rows {
   margin: 0;
-  padding: 0;
+  padding: 4px 18px;
   list-style: none;
 }
 
-.fo-beat {
-  padding-top: 16px;
-  border-top: 1px solid var(--fo-line);
+.fo-snooze__row {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--fo-line-2);
 }
 
-.fo-beat h3 {
+.fo-snooze__row:last-child {
+  border-bottom: 0;
+}
+
+.fo-snooze__top {
   display: flex;
   align-items: center;
-  gap: 9px;
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  line-height: 1.3;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.fo-snooze__date {
+  font-weight: 550;
   color: var(--fo-ink);
 }
 
-.fo-beat h3::before {
-  content: "";
-  flex: none;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--dot);
-}
-
-.fo-beat--ok { --dot: var(--fo-ok); }
-.fo-beat--red { --dot: var(--fo-red); }
-.fo-beat--warn { --dot: var(--fo-warn); }
-
-.fo-beat p {
-  margin: 6px 0 0 17px;
-  font-size: 15px;
-  line-height: 1.5;
+.fo-snooze__chip {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--fo-paper-2);
   color: var(--fo-ink-2);
+  font-size: 12px;
+  font-weight: 550;
+  white-space: nowrap;
 }
 
-@container (max-width: 900px) {
-  .fo-beats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 32px; }
+.fo-snooze__row.is-last .fo-snooze__chip {
+  background: var(--fo-red-soft);
+  color: var(--fo-red);
 }
 
-/* One column, for the social frame. */
-.fo-beats.fo-beats--stack {
-  grid-template-columns: minmax(0, 1fr);
-  gap: 22px;
+.fo-snooze__bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 84px;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
 }
 
-.fo-beats--stack .fo-beat {
-  padding-top: 20px;
+.fo-snooze__docs {
+  display: grid;
+  gap: 2px;
 }
 
-.fo-beats--stack .fo-beat h3 {
-  font-size: 20px;
+.fo-snooze__docs span {
+  aspect-ratio: 3 / 4;
+  border-radius: 2px;
+  background: var(--fo-line-2);
 }
 
-.fo-beats--stack .fo-beat p {
-  font-size: 17px;
+.fo-snooze__count {
+  font-size: 12.5px;
+  color: var(--fo-ink-3);
+  text-align: right;
+  white-space: nowrap;
 }
 
-@container (max-width: 480px) {
-  .fo-beats { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.fo-snooze__count b {
+  font-size: 15px;
+  font-weight: 650;
+  color: var(--fo-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.fo-snooze__row.is-last .fo-snooze__count b {
+  color: var(--fo-red);
+}
+
+.fo-snooze__fallout {
+  padding: 14px 18px 16px;
+  background: var(--fo-red-soft);
+  border-top: 1px solid rgba(223, 27, 65, 0.15);
+}
+
+.fo-snooze__msg {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 12px;
+}
+
+.fo-snooze__avatar {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
+  background: #24303b;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.fo-snooze__msg strong {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.fo-snooze__msg small {
+  margin-left: 8px;
+  font-weight: 400;
+  color: var(--fo-ink-3);
+}
+
+.fo-snooze__msg p {
+  margin: 2px 0 0;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--fo-ink);
+}
+
+.fo-snooze__expired {
+  margin: 10px 0 0 42px;
+  font-size: 12.5px;
+  color: var(--fo-red);
+}
+
+@container (max-width: 420px) {
+  .fo-snooze__bar { grid-template-columns: minmax(0, 1fr) 70px; gap: 10px; }
+  .fo-snooze__docs { gap: 1px; }
 }
 
 /* ── The permission table ───────────────────────────────────────────── */

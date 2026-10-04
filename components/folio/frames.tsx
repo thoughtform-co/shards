@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import specs from "@/content/folio-frames.json";
 import { fill, frames as copy, hero } from "@/content/folio-copy";
-import { Beats } from "./beats";
 import { HuntTable } from "./hunt-table";
 import { MockActivity } from "./mock-activity";
 import { MockAgent } from "./mock-agent";
@@ -9,6 +8,7 @@ import { MockConsent } from "./mock-consent";
 import { MockInbox } from "./mock-inbox";
 import { vars, Wordmark } from "./primitives";
 import { Ribbon } from "./ribbon";
+import { SnoozeStack } from "./snooze-stack";
 import { WorkflowCards } from "./workflow-cards";
 
 /*
@@ -49,8 +49,8 @@ const portrait: Record<string, { title: string; scale: number; visual: ReactNode
   },
   flow: {
     title: copy.flow,
-    scale: 0.92,
-    visual: <Beats stack />,
+    scale: 0.86,
+    visual: <SnoozeStack />,
   },
   endpoint: {
     title: copy.endpoint,
