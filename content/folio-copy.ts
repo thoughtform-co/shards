@@ -138,8 +138,8 @@ export const hero = {
 
 export const problem = {
   label: "The problem",
-  strong: "While paying for software got easy, the invoice still waits behind a login.",
-  soft: "You're mid-build, so it gets postponed until your accountant asks, twice. Email won't rescue it either: phishing loves a fake invoice, so fewer vendors send the PDF.",
+  strong: "While paying got easy, the invoice still sits behind a login.",
+  soft: "So it waits until your accountant asks, and phishing means fewer vendors email it.",
   beats: [
     { title: "Paying is solved", text: "Stripe and Link made it smooth enough for an agent to do it for you." },
     { title: "The invoice is behind a login", text: "A different billing page, format and sign-in at every vendor." },
