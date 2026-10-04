@@ -109,7 +109,6 @@ export function fill(text: string): string {
     .replace(/\{addresses\}/g, word(dataMonth.addresses))
     .replace(/\{formats\}/g, word(dataMonth.formats))
     .replace(/\{signIns\}/g, word(dataMonth.signIns))
-    .replace(/\{snoozes\}/g, word(problem.snooze.stops.length))
     .replace(/\{accountant\}/g, persona.accountant)
     .replace(/\{company\}/g, persona.company);
   return out.charAt(0).toUpperCase() + out.slice(1);
@@ -144,22 +143,53 @@ export const problem = {
   payTitle: "Paying for a tool",
   payCaption: "One approval, any vendor.",
   collectTitle: "Collecting the invoices",
-  collectCaption: "One reminder, {snoozes} snoozes, {charges} documents waiting by October.",
-  snooze: {
-    title: "Download the invoices",
-    badge: "Snoozed {n} times",
-    stops: [
-      { date: "2026-09-04", label: "Next week" },
-      { date: "2026-09-11", label: "Next week" },
-      { date: "2026-09-18", label: "After this sprint" },
-      { date: "2026-09-25", label: "End of the month" },
-      { date: "2026-10-02", label: "Monday, promise" },
-    ],
-    waiting: "waiting",
-    accountantWhen: "Fri 2 Oct, 16:40",
-    accountantText: "Still missing {docs} documents for September. Can you send them before we file your VAT return?",
-    expired: "Meanwhile the emailed links from {first} have expired.",
-  },
+  collectCaption: "Three weeks of next week.",
+  /* Newest first, the way a lock screen stacks them. The last one is the
+     accountant's first, polite request, collapsed under everything since. */
+  notifications: [
+    {
+      app: "mail",
+      when: "now",
+      title: "{accountant}",
+      subject: "Re: Re: Re: September invoices",
+      body: "Merel, we really need them today to file your VAT return on time.",
+    },
+    {
+      app: "calendar",
+      when: "1h ago",
+      title: "Do the invoices",
+      subject: "",
+      body: "16:00 to 16:30, moved for the fourth time",
+    },
+    {
+      app: "mail",
+      when: "2d ago",
+      title: "Lumen Voice",
+      subject: "Your invoice link has expired",
+      body: "Sign in to view your billing history.",
+    },
+    {
+      app: "mail",
+      when: "1w ago",
+      title: "{accountant}",
+      subject: "Re: Re: September invoices",
+      body: "Friendly nudge: I'm still missing {docs} documents.",
+    },
+    {
+      app: "reminders",
+      when: "2w ago",
+      title: "Download invoices",
+      subject: "",
+      body: "{vendors} billing pages, overdue",
+    },
+    {
+      app: "mail",
+      when: "3w ago",
+      title: "{accountant}",
+      subject: "September invoices",
+      body: "Hi Merel, could you send me September's invoices when you get a chance?",
+    },
+  ],
   facts: [
     {
       text: "Emailed invoice links expire 30 days after the due date, 120 at most. Receipt links expire after 30.",

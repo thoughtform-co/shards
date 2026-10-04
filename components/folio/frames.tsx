@@ -8,7 +8,7 @@ import { MockConsent } from "./mock-consent";
 import { MockInbox } from "./mock-inbox";
 import { vars, Wordmark } from "./primitives";
 import { Ribbon } from "./ribbon";
-import { SnoozeStack } from "./snooze-stack";
+import { NotificationStack } from "./notification-stack";
 import { WorkflowCards } from "./workflow-cards";
 
 /*
@@ -49,8 +49,8 @@ const portrait: Record<string, { title: string; scale: number; visual: ReactNode
   },
   flow: {
     title: copy.flow,
-    scale: 0.86,
-    visual: <SnoozeStack />,
+    scale: 0.74,
+    visual: <NotificationStack max={4} />,
   },
   endpoint: {
     title: copy.endpoint,

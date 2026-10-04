@@ -9,7 +9,7 @@ import { PayCard } from "@/components/folio/pay-card";
 import { PermissionTable } from "@/components/folio/permission-table";
 import { Arrow, FolioMark, vars, Wordmark } from "@/components/folio/primitives";
 import { Ribbon } from "@/components/folio/ribbon";
-import { SnoozeStack } from "@/components/folio/snooze-stack";
+import { NotificationStack } from "@/components/folio/notification-stack";
 import { WorkflowCards } from "@/components/folio/workflow-cards";
 import {
   accountants,
@@ -195,7 +195,7 @@ export default function FolioPage() {
                   <span className="fo-dot" aria-hidden="true" />
                   {problem.collectTitle}
                 </h3>
-                <SnoozeStack />
+                <NotificationStack />
                 <p className="fo-caption">{fill(problem.collectCaption)}</p>
               </div>
             </div>
