@@ -41,6 +41,9 @@ function Film() {
 
 export function Root() {
   return (
-    <Composition id="FolioLaunch" component={Film} durationInFrames={FRAMES} fps={FPS} width={540} height={675} />
+    <>
+      <Composition id="FolioLaunch" component={Film} durationInFrames={FRAMES} fps={FPS} width={540} height={675} />
+      <Composition id="FolioLaunchWide" component={Film} durationInFrames={FRAMES} fps={FPS} width={960} height={540} />
+    </>
   );
 }

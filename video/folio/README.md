@@ -1,6 +1,7 @@
 # Folio, the launch film
 
-A 26-second fast-cut launch film for `/folio`, 4:5 (1080 × 1350), 30 fps,
+A 26-second fast-cut launch film for `/folio`, in 4:5 (1080 × 1350) and 16:9
+(1920 × 1080), 30 fps,
 drawn in code with Remotion. Made 2026-10-06 on the `ai-motion-design` route
 of Armada: the subject has to be exact, so the screens are the page's own
 components (`components/folio/*`), rendered frame by frame and never redrawn,
@@ -10,7 +11,7 @@ and nothing that moves is generated.
 
 | Question | Answer |
 |---|---|
-| Format, length | 4:5, 26 s: 52 beats at 120 BPM, 15 frames a beat, 780 frames (first cut was 20 s) |
+| Format, length | 4:5, 26 s: 52 beats at 120 BPM, 15 frames a beat, 780 frames (first cut was 20 s). 16:9 added after |
 | Call to action | The page's own closer, "Ship it, or buy us.", with the concept line kept on the card |
 | Sound | Picture cut to the grid; coded UI sound now (`sound.py`); a licensed 120 BPM track replaces the bed later |
 | Pace | Hard and fast, then breathe: act one cuts on half-beats, act two every four to six beats |
@@ -54,21 +55,34 @@ The hunt keeps its half-beat cuts: it is the one stretch meant to feel like
 too much. The numbers live in `beats.ts`; `sound.py` reads the same frames
 through `cues.ts`.
 
+## Two formats
+
+One composition, two frames. `LAYOUT` in `FolioLaunch.tsx` holds every
+placement for each; the scenes, beats and sound are shared. Tall (540 × 675
+CSS, at 2x) stacks type over the screen. Wide (960 × 540 CSS, at 2x) puts the
+type left and the screen right, sets the slabs of type larger, lays the twelve
+tiles out six across, and gives the pile-up a caption beside the phone.
+
 ## Make it
 
 ```bash
 export PATH=$HOME/.nvm/versions/node/v22.22.2/bin:$PATH   # Node 22
-node video/folio/render.mjs stills                         # key stills + out/sheet.jpg
+node video/folio/render.mjs stills [--wide]                # key stills + out/sheet-<format>.jpg
 npx tsx video/folio/cues.ts > video/folio/out/cues.json
 python3 video/folio/sound.py video/folio/out/cues.json video/folio/out/sound.wav
-node video/folio/render.mjs film                           # out/folio-launch-silent.mp4
+node video/folio/render.mjs film                           # out/folio-launch-4x5.mp4
+node video/folio/render.mjs film --wide                    # out/folio-launch-16x9.mp4
 ```
 
-Then mux with a two-pass `loudnorm` over the film's 26 seconds (`I=-16:TP=-1.5`, `linear=true`) into
-`out/folio-launch.mp4`. `out/` is not committed: the recipe is, the pixels are not.
+`film` renders the picture, then muxes `out/sound.wav` with a two-pass
+`loudnorm` (`I=-16:TP=-1.5`, `linear=true`) over the film's own length. `out/`
+is not committed: the recipe is, the pixels are not.
 
 ## What was checked, and how
 
+- The 16:9: its first sheet ran the pile-up's phone off the bottom edge once
+  the push enlarged it; it is set smaller. The 4:5 was re-rendered after the
+  layout moved into the table and matched the previous cut (50.9 dB PSNR).
 - Round two: the pile-up's cut frame opened on an empty wall twice (the first
   notification faded in on time but slid from above the wall's edge); its
   slide and its fade are now both pre-rolled four frames before the cut.
@@ -80,8 +94,8 @@ Then mux with a two-pass `loudnorm` over the film's 26 seconds (`I=-16:TP=-1.5`,
   now begin a few frames before their cut; the cut frames were stilled again.
 - The tap frames stilled one by one: the old and new labels crossfaded into a
   ghost. They now swap: the old label out in three frames, the new one in after.
-- The delivered file: 780 frames at 1080 × 1350; −17.2 LUFS integrated and
-  −1.1 dBFS peak, measured after the AAC encode. Linear normalisation stopped
+- The delivered files: 780 frames each, at 1080 × 1350 and 1920 × 1080;
+  −17.2 LUFS integrated and −1.1 dBFS peak, measured after the AAC encode. Linear normalisation stopped
   short of −16 to hold the peak; the bed is a placeholder until the track.
 
 ## Open
@@ -89,4 +103,3 @@ Then mux with a two-pass `loudnorm` over the film's 26 seconds (`I=-16:TP=-1.5`,
 - The track. Measure its grid (`praxes/ai-motion-design/scripts/music_window.py`),
   move cuts onto its real kicks in `beats.ts`, keep the effects, drop the pad.
 - Not yet seen by a person. Nothing about taste here is settled until it has.
-- A 16:9 cut from the same scenes, if a launch post needs one.

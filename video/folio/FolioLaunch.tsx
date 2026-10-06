@@ -24,7 +24,7 @@ import { fill, frames as frameCopy, problem, stripe } from "@/content/folio-copy
 import { BEAT, events, scenes, type SceneKey } from "./beats";
 
 /*
- * Folio, the launch film. 4:5, 26 seconds, 52 beats at 120 BPM.
+ * Folio, the launch film. 4:5 and 16:9, 26 seconds, 52 beats at 120 BPM.
  *
  * Thesis: paying for software already takes one tap; collecting its invoice
  * is a hunt across a dozen billing pages. The hinge is the tap itself: the
@@ -73,6 +73,72 @@ const HUNT_TONE: Record<GetKind, PillTone> = {
   statement: "warn",
   zip: "muted",
 };
+
+/* ── Layout, per format ──────────────────────────────────────────────── */
+
+/* The same scenes, beats and sound in two frames. Tall (540 x 675 at 2x) is
+   the feed cut; wide (960 x 540 at 2x) puts the type left and the screen
+   right, where a landscape frame has the room. Every placement lives here;
+   the scenes hold no coordinates of their own. */
+type TypeBox = { top: number; size: number; width?: number };
+type MockBox = { width: number; top: number; scale: number; x?: number };
+
+interface Layout {
+  gx: number;
+  pay: { title: TypeBox; card: MockBox };
+  slab: TypeBox;
+  huntPad: number;
+  twelve: { title: TypeBox; cols: number };
+  pile: { phone: MockBox; caption: TypeBox | null };
+  fetch: TypeBox;
+  side: TypeBox;
+  approve: MockBox;
+  arrive: MockBox;
+  ask: MockBox;
+  end: { mark: number; title: TypeBox; sub: number };
+}
+
+const LAYOUT: Record<"tall" | "wide", Layout> = {
+  tall: {
+    gx: 34,
+    pay: { title: { top: 96, size: 60 }, card: { width: 350, top: 262, scale: 1.3 } },
+    slab: { top: 250, size: 60 },
+    huntPad: 34,
+    twelve: { title: { top: 70, size: 48 }, cols: 4 },
+    pile: { phone: { width: 520, top: 78, scale: 0.95 }, caption: null },
+    fetch: { top: 230, size: 48 },
+    side: { top: 92, size: 34 },
+    approve: { width: 440, top: 196, scale: 1 },
+    arrive: { width: 520, top: 196, scale: 0.9 },
+    ask: { width: 400, top: 250, scale: 1.17 },
+    end: { mark: 240, title: { top: 308, size: 60 }, sub: 452 },
+  },
+  wide: {
+    gx: 48,
+    pay: { title: { top: 209, size: 64, width: 400 }, card: { width: 350, top: 96, scale: 1.2, x: 690 } },
+    slab: { top: 186, size: 84 },
+    huntPad: 220,
+    twelve: { title: { top: 78, size: 60 }, cols: 6 },
+    pile: { phone: { width: 520, top: 46, scale: 0.76, x: 650 }, caption: { top: 214, size: 40, width: 300 } },
+    fetch: { top: 196, size: 64 },
+    side: { top: 214, size: 42, width: 360 },
+    approve: { width: 440, top: 34, scale: 0.86, x: 700 },
+    arrive: { width: 520, top: 84, scale: 0.9, x: 690 },
+    ask: { width: 400, top: 176, scale: 1.17, x: 700 },
+    end: { mark: 150, title: { top: 214, size: 84 }, sub: 400 },
+  },
+};
+
+function useLayout(): Layout {
+  const { width, height } = useVideoConfig();
+  return LAYOUT[width > height ? "wide" : "tall"];
+}
+
+const typeAt = (box: TypeBox): CSSProperties => ({
+  top: box.top,
+  fontSize: box.size,
+  ...(box.width ? { right: "auto", width: box.width } : {}),
+});
 
 /* ── Motion vocabulary ──────────────────────────────────────────────── */
 
@@ -150,11 +216,19 @@ function Stage({ children, className, style }: { children: ReactNode; className?
   );
 }
 
-function Mock({ width, top, scale, y = 0, opacity = 1, children }: { width: number; top: number; scale: number; y?: number; opacity?: number; children: ReactNode }) {
+function Mock({ box, y = 0, opacity = 1, children }: { box: MockBox; y?: number; opacity?: number; children: ReactNode }) {
+  const { width, top, scale, x } = box;
   return (
     <div
       className="film-mock"
-      style={{ width, top, marginLeft: -width / 2, opacity, transform: `translateY(${y}px) scale(${scale})` }}
+      style={{
+        width,
+        top,
+        left: x ?? "50%",
+        marginLeft: -width / 2,
+        opacity,
+        transform: `translateY(${y}px) scale(${scale})`,
+      }}
     >
       {children}
     </div>
@@ -169,14 +243,15 @@ function Pay() {
   // Frame 0 is a finished picture: type and card already set. The card
   // breathes so the opening is alive before the tap.
   const bob = Math.sin((f / BEAT) * Math.PI) * 1.5;
+  const L = useLayout();
   return (
     <Stage className="film-tap" style={tapVars(f, at)}>
       <Head />
-      <h1 className="film-type film-type--xl" style={{ top: 96 }}>
+      <h1 className="film-type film-type--xl" style={typeAt(L.pay.title)}>
         <span className="film-line">{film.pay[0]}</span>
         <span className="film-line">{film.pay[1]}</span>
       </h1>
-      <Mock width={350} top={262} scale={1.3} y={bob}>
+      <Mock box={L.pay.card} y={bob}>
         <PayCard />
       </Mock>
     </Stage>
@@ -185,9 +260,10 @@ function Pay() {
 
 function Collect() {
   const f = useCurrentFrame();
+  const L = useLayout();
   return (
     <Stage>
-      <h1 className="film-type film-type--xl" style={{ top: 250 }}>
+      <h1 className="film-type film-type--xl" style={typeAt(L.slab)}>
         <Words text={film.collect[0]} at={-3} frame={f} />
         <Words text={film.collect[1]} at={0} frame={f} className="soft" />
       </h1>
@@ -204,13 +280,14 @@ function Hunt() {
   const local = f - cuts[i];
   // Hard cut with a three-frame punch: the new card lands slightly large.
   const punch = 1 + 0.05 * (1 - ramp(local, 0, 4));
+  const L = useLayout();
   return (
     <Stage>
       <span className="film-hunt__label">Where the invoice is</span>
       <span className="film-hunt__count">
         <b>{String(i + 1).padStart(2, "0")}</b> / {vendors.length}
       </span>
-      <div className="film-hunt" style={{ transform: `scale(${punch})` }}>
+      <div className="film-hunt" style={{ padding: `0 ${L.huntPad}px`, transform: `scale(${punch})` }}>
         <div className="film-hunt__vendor">
           <Monogram vendor={vendor} size={84} />
           <span>{vendor.name}</span>
@@ -235,16 +312,17 @@ function Twelve() {
   const f = useCurrentFrame();
   const swap = rel("twelve", events.twelveB);
   const second = f >= swap;
+  const L = useLayout();
   return (
     <Stage>
-      <h1 className="film-type film-type--l" style={{ top: 70 }}>
+      <h1 className="film-type film-type--l" style={typeAt(L.twelve.title)}>
         {second ? (
           <Words key="b" text={film.twelveB} at={swap - 3} frame={f} />
         ) : (
           <Words key="a" text={film.twelveA} at={-3} frame={f} />
         )}
       </h1>
-      <div className="film-grid">
+      <div className="film-grid" style={{ gridTemplateColumns: `repeat(${L.twelve.cols}, 1fr)` }}>
         {vendors.map((v, i) => {
           const t = ramp(f, i * 0.6, 5);
           const s = ramp(f, swap + i * 0.5, 5);
@@ -286,6 +364,8 @@ function Pile() {
   const f = useCurrentFrame();
   const { fps } = useVideoConfig();
   const { ref, tops } = useItemTops();
+  const L = useLayout();
+  const caption = fill("{vendors} vendors, one month");
   const drops = events.pileDrops.map((d) => rel("pile", d));
   const total = problem.notifications.length;
 
@@ -327,9 +407,16 @@ function Pile() {
       style={vars({ "--ring": ring, "--ring-on": c >= 0 && c < 30 ? 1 : 0, "--list-y": `${offset}px` })}
     >
       <style>{css}</style>
-      <span className="film-hunt__label">{fill("{vendors} vendors, one month")}</span>
+      {L.pile.caption ? (
+        <h2 className="film-type film-type--m" style={typeAt(L.pile.caption)}>
+          <Words text={`${caption.split(", ")[0]},`} at={-3} frame={f} />
+          <Words text={`${caption.split(", ")[1]}.`} at={0} frame={f} className="soft" />
+        </h2>
+      ) : (
+        <span className="film-hunt__label">{caption}</span>
+      )}
       <div className="film-camera" style={{ transform: `scale(${1 + 0.07 * fill01})` }}>
-        <Mock width={520} top={78} scale={0.95} y={knock}>
+        <Mock box={L.pile.phone} y={knock}>
           <div ref={ref} className="film-pile__phone" style={{ transform: `translateX(${buzz}px)` }}>
             <NotificationStack />
           </div>
@@ -342,11 +429,12 @@ function Pile() {
 
 function Weeks() {
   const f = useCurrentFrame();
+  const L = useLayout();
   const cut = film.weeks.indexOf(" of ");
   const [a, b] = [film.weeks.slice(0, cut), film.weeks.slice(cut + 1)];
   return (
     <Stage>
-      <h1 className="film-type film-type--xl" style={{ top: 250 }}>
+      <h1 className="film-type film-type--xl" style={typeAt(L.slab)}>
         <Words text={a} at={-3} frame={f} />
         <Words text={b} at={0} frame={f} className="soft" />
       </h1>
@@ -370,11 +458,12 @@ function Fetch() {
   const f = useCurrentFrame();
   const line2 = rel("fetch", events.fetchLine2);
   const [a, b] = film.fetch.split(", ");
+  const L = useLayout();
   return (
     <Stage>
       <RibbonIn frame={f} />
       <div className="film-camera" style={{ transform: push(f, len("fetch"), 0.02) }}>
-        <h1 className="film-type film-type--l" style={{ top: 230 }}>
+        <h1 className="film-type film-type--l" style={typeAt(L.fetch)}>
           <Words text={`${a},`} at={-3} frame={f} className="soft" />
           <Words text={b} at={line2} frame={f} />
         </h1>
@@ -387,16 +476,17 @@ function Approve() {
   const f = useCurrentFrame();
   const rise = useRise(f, -5);
   const at = rel("approve", events.approveTap);
+  const L = useLayout();
   return (
     <Stage className="film-tap" style={tapVars(f, at)}>
       <RibbonIn frame={f + 30} />
       <Head />
       <div className="film-camera" style={{ transform: push(f, len("approve")) }}>
-        <h2 className="film-type film-type--m" style={{ top: 92 }}>
+        <h2 className="film-type film-type--m" style={typeAt(L.side)}>
           <Words text={film.approve[0]} at={-4} frame={f} />
           <Words text={film.approve[1]} at={0} frame={f} className="soft" />
         </h2>
-        <Mock width={440} top={196} scale={1} y={rise.y} opacity={rise.opacity}>
+        <Mock box={L.approve} y={rise.y} opacity={rise.opacity}>
           <MockConsent />
         </Mock>
       </div>
@@ -409,6 +499,7 @@ function Arrive() {
   const rise = useRise(f, -5);
   const docs = events.arriveDocs.map((d) => rel("arrive", d));
   const total = ramp(f, rel("arrive", events.arriveTotal), 8);
+  const L = useLayout();
   // Each row's invoice drops in on its half-beat, top to bottom.
   const css = docs
     .map((d, i) => {
@@ -422,11 +513,11 @@ function Arrive() {
       <RibbonIn frame={f + 120} />
       <Head />
       <div className="film-camera" style={{ transform: push(f, len("arrive")) }}>
-        <h2 className="film-type film-type--m" style={{ top: 92 }}>
+        <h2 className="film-type film-type--m" style={typeAt(L.side)}>
           <Words text={film.arrive[0]} at={-4} frame={f} />
           <Words text={film.arrive[1]} at={0} frame={f} className="soft" />
         </h2>
-        <Mock width={520} top={196} scale={0.9} y={rise.y} opacity={rise.opacity}>
+        <Mock box={L.arrive} y={rise.y} opacity={rise.opacity}>
           <MockActivity state="after" rows={8} />
         </Mock>
       </div>
@@ -438,16 +529,17 @@ function Ask() {
   const f = useCurrentFrame();
   const rise = useRise(f, -5);
   const at = rel("ask", events.askTap);
+  const L = useLayout();
   return (
     <Stage className="film-tap" style={tapVars(f, at)}>
       <RibbonIn frame={f + 300} />
       <Head />
       <div className="film-camera" style={{ transform: push(f, len("ask")) }}>
-        <h2 className="film-type film-type--m" style={{ top: 92 }}>
+        <h2 className="film-type film-type--m" style={typeAt(L.side)}>
           <Words text={film.ask[0]} at={-4} frame={f} />
           <Words text={film.ask[1]} at={0} frame={f} className="soft" />
         </h2>
-        <Mock width={400} top={250} scale={1.17} y={rise.y} opacity={rise.opacity}>
+        <Mock box={L.ask} y={rise.y} opacity={rise.opacity}>
           <WorkflowCards only={["close"]} />
         </Mock>
       </div>
@@ -459,21 +551,22 @@ function End() {
   const f = useCurrentFrame();
   const mark = ramp(f, -4, 10);
   const [a, b] = film.end.split(", ");
+  const L = useLayout();
   return (
     <Stage>
       <RibbonIn frame={f + 400} className="film-end__ribbon" />
       <div className="film-camera" style={{ transform: push(f, len("end"), 0.015) }}>
-        <div className="film-head" style={{ top: 240, opacity: mark, transform: `translateY(${(1 - mark) * 10}px)` }}>
+        <div className="film-head" style={{ top: L.end.mark, opacity: mark, transform: `translateY(${(1 - mark) * 10}px)` }}>
           <Wordmark size={30} />
           <span className="fo-badge" style={{ fontSize: 15, padding: "4px 11px" }}>
             Concept
           </span>
         </div>
-        <h1 className="film-type film-type--xl" style={{ top: 308 }}>
+        <h1 className="film-type film-type--xl" style={typeAt(L.end.title)}>
           <Words text={`${a},`} at={-2} frame={f} />
           <Words text={b} at={4} frame={f} />
         </h1>
-        <p className="film-end__sub" style={{ top: 452, opacity: ramp(f, 12, 10) }}>
+        <p className="film-end__sub" style={{ top: L.end.sub, opacity: ramp(f, 12, 10) }}>
           {film.endSub}
         </p>
       </div>
@@ -501,10 +594,11 @@ const ORDER: Array<[SceneKey, () => ReactNode]> = [
 ];
 
 export function FolioLaunch() {
+  const L = useLayout();
   return (
     <AbsoluteFill
       className="folio-shell film"
-      style={vars({ "--fo-font-sans": '"Inter Tight"', "--fo-font-mono": '"Source Code Pro"' })}
+      style={vars({ "--fo-font-sans": '"Inter Tight"', "--fo-font-mono": '"Source Code Pro"', "--gx": `${L.gx}px` })}
     >
       {ORDER.map(([key, Scene]) => (
         <Sequence key={key} name={key} from={scenes[key].from} durationInFrames={len(key)} layout="none">
