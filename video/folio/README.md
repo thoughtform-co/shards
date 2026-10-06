@@ -1,0 +1,92 @@
+# Folio, the launch film
+
+A 26-second fast-cut launch film for `/folio`, 4:5 (1080 × 1350), 30 fps,
+drawn in code with Remotion. Made 2026-10-06 on the `ai-motion-design` route
+of Armada: the subject has to be exact, so the screens are the page's own
+components (`components/folio/*`), rendered frame by frame and never redrawn,
+and nothing that moves is generated.
+
+## The decisions
+
+| Question | Answer |
+|---|---|
+| Format, length | 4:5, 26 s: 52 beats at 120 BPM, 15 frames a beat, 780 frames (first cut was 20 s) |
+| Call to action | The page's own closer, "Ship it, or buy us.", with the concept line kept on the card |
+| Sound | Picture cut to the grid; coded UI sound now (`sound.py`); a licensed 120 BPM track replaces the bed later |
+| Pace | Hard and fast, then breathe: act one cuts on half-beats, act two every four to six beats |
+
+**Thesis.** Paying for software already takes one tap; collecting its invoice
+is a hunt across a dozen billing pages. Folio makes collecting one tap too.
+
+**Hinge.** The tap. The same press, ripple and label swap pays (beat 2),
+approves Folio (beat 30) and sends September to the accountant (beat 42).
+
+**Restraint budget.** White paper, navy ink. One purple, for the tap. The
+ribbon is the only colour field and arrives at the switch, never before. Two
+faces, the page's (Inter Tight, Source Code Pro, both variable). Three
+entrances: words rise, mocks spring up, stacked items drop. Act one pushes
+only into the pile-up; act two is never still (a slow push in every scene).
+
+**Copy.** Every on-screen line is the page's own (`content/folio-copy.ts`) or
+a cut of one; the film-only lines sit at the top of `FolioLaunch.tsx`.
+
+## The beat sheet
+
+52 beats, 780 frames, 26 seconds, 13 bars. Lengthened on 2026-10-06 from 40
+beats after the first viewing: the slabs of type left too fast, the pile-up
+wanted weight, and every calm frame wanted a little longer.
+
+| Beats | Frames | Scene | What happens |
+|---|---|---|---|
+| 0–5 | 0–74 | pay | "Paying takes one tap." The pay card; tap on beat 2. Frame 0 is finished |
+| 5–7 | 75–104 | collect | "Now find the invoice.", held two beats |
+| 7–11 | 105–164 | hunt | Eight billing pages, one per half-beat, counter 01–08 / 12 |
+| 11–15 | 165–224 | twelve | "Twelve billing portals." two beats, then "Twelve sign-ins." two beats |
+| 15–21 | 225–314 | pile | One notification a beat, dropped from above, shoving the stack with a small overshoot; a knock, a slow push, a darkening edge; the missed call buzzes and rings red twice |
+| 21–23 | 315–344 | weeks | "Three weeks of next week." The riser stops dead on 345 |
+| 23–26 | 345–389 | fetch | The switch. "If an agent can pay, it can fetch the invoice." Ribbon in |
+| 26–33 | 390–494 | approve | The consent sheet; tap on beat 30, "Approved" |
+| 33–40 | 495–599 | arrive | Activity: each charge's invoice drops in, then "Download September · 44 PDFs" |
+| 40–45 | 600–674 | ask | "One question a month." September is ready; tap on beat 42, "Sent" |
+| 45–52 | 675–779 | end | Folio, Concept, "Ship it, or buy us.", the concept line |
+
+The hunt keeps its half-beat cuts: it is the one stretch meant to feel like
+too much. The numbers live in `beats.ts`; `sound.py` reads the same frames
+through `cues.ts`.
+
+## Make it
+
+```bash
+export PATH=$HOME/.nvm/versions/node/v22.22.2/bin:$PATH   # Node 22
+node video/folio/render.mjs stills                         # key stills + out/sheet.jpg
+npx tsx video/folio/cues.ts > video/folio/out/cues.json
+python3 video/folio/sound.py video/folio/out/cues.json video/folio/out/sound.wav
+node video/folio/render.mjs film                           # out/folio-launch-silent.mp4
+```
+
+Then mux with a two-pass `loudnorm` over the film's 26 seconds (`I=-16:TP=-1.5`, `linear=true`) into
+`out/folio-launch.mp4`. `out/` is not committed: the recipe is, the pixels are not.
+
+## What was checked, and how
+
+- Round two: the pile-up's cut frame opened on an empty wall twice (the first
+  notification faded in on time but slid from above the wall's edge); its
+  slide and its fade are now both pre-rolled four frames before the cut.
+- Stills before motion: two rounds of key-still sheets. The first found the
+  pay, hunt, arrive and ask scenes sitting small over an empty bottom third, and
+  a pay ripple that read as a disabled button.
+- The whole film sheeted every sixth frame: every cut opened on two or three
+  blank white frames, because entrances started at zero on the cut. Entrances
+  now begin a few frames before their cut; the cut frames were stilled again.
+- The tap frames stilled one by one: the old and new labels crossfaded into a
+  ghost. They now swap: the old label out in three frames, the new one in after.
+- The delivered file: 780 frames at 1080 × 1350; −17.2 LUFS integrated and
+  −1.1 dBFS peak, measured after the AAC encode. Linear normalisation stopped
+  short of −16 to hold the peak; the bed is a placeholder until the track.
+
+## Open
+
+- The track. Measure its grid (`praxes/ai-motion-design/scripts/music_window.py`),
+  move cuts onto its real kicks in `beats.ts`, keep the effects, drop the pad.
+- Not yet seen by a person. Nothing about taste here is settled until it has.
+- A 16:9 cut from the same scenes, if a launch post needs one.
