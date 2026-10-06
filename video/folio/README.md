@@ -31,6 +31,27 @@ only into the pile-up; act two is never still (a slow push in every scene).
 **Copy.** Every on-screen line is the page's own (`content/folio-copy.ts`) or
 a cut of one; the film-only lines sit at the top of `FolioLaunch.tsx`.
 
+## The tools
+
+Since 2026-10-06 the page and the film show real tools: twelve Vince pays
+for, chosen from his most-billed software and the ones he named (Claude,
+Superhuman, Slack, Figma, Google Workspace). What is true and what is not:
+
+- **True, from his own records.** Where each tool keeps its invoice and what
+  you meet there, from the portal notes in Ledger, his invoice pipeline:
+  Slack's billing history downloads a ZIP, Notion's billing is a modal with
+  no URL, Webflow bills per workspace, Google Workspace has one admin console
+  per account, Cursor and Midjourney hand over Stripe receipt pages, and so on.
+- **Illustration.** Every amount (a public list price where one is well
+  known, otherwise invented), the accountant, both cards, every document
+  number. His real charges stay in Ledger: none of its database is in this
+  repository.
+- **Marks.** Vector paths in `content/folio-logos.ts`, generated from LobeHub
+  Icons (MIT), Simple Icons (CC0) and SVG Logos (CC0). Google Workspace is
+  shown by Google's G; Superhuman has no mark in any open set, so its tile
+  carries a letter until its own mark is supplied. Each mark stays its
+  owner's trademark and appears only to name the tool; the footer says so.
+
 ## The beat sheet
 
 52 beats, 780 frames, 26 seconds, 13 bars. Lengthened on 2026-10-06 from 40
@@ -41,8 +62,8 @@ wanted weight, and every calm frame wanted a little longer.
 |---|---|---|---|
 | 0–5 | 0–74 | pay | "Paying takes one tap." The pay card; tap on beat 2. Frame 0 is finished |
 | 5–7 | 75–104 | collect | "Now find the invoice.", held two beats |
-| 7–11 | 105–164 | hunt | Eight billing pages, one per half-beat, counter 01–08 / 12 |
-| 11–15 | 165–224 | twelve | "Twelve billing portals." two beats, then "Twelve sign-ins." two beats |
+| 7–11 | 105–164 | hunt | The eight tools whose invoice sits behind a sign-in, one per half-beat, counter 01–08 / 08 |
+| 11–15 | 165–224 | twelve | "Twelve tools." two beats, then "Twelve sign-ins." two beats, all twelve marks |
 | 15–21 | 225–314 | pile | One notification a beat, dropped from above, shoving the stack with a small overshoot; a knock, a slow push, a darkening edge; the missed call buzzes and rings red twice |
 | 21–23 | 315–344 | weeks | "Three weeks of next week." The riser stops dead on 345 |
 | 23–26 | 345–389 | fetch | The switch. "If an agent can pay, it can fetch the invoice." Ribbon in |

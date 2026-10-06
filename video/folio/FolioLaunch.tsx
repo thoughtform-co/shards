@@ -11,14 +11,15 @@ import {
   useVideoConfig,
 } from "remotion";
 
+import { GET_TONE } from "@/components/folio/hunt-table";
 import { MockActivity } from "@/components/folio/mock-activity";
 import { MockConsent } from "@/components/folio/mock-consent";
 import { NotificationStack } from "@/components/folio/notification-stack";
 import { PayCard } from "@/components/folio/pay-card";
-import { Monogram, Pill, Wordmark, type PillTone } from "@/components/folio/primitives";
+import { Monogram, Pill, Wordmark } from "@/components/folio/primitives";
 import { Ribbon } from "@/components/folio/ribbon";
 import { WorkflowCards } from "@/components/folio/workflow-cards";
-import { GET_LABEL, vendorById, vendors, type GetKind } from "@/content/folio";
+import { GET_LABEL, vendorById, vendors } from "@/content/folio";
 import { fill, frames as frameCopy, problem, stripe } from "@/content/folio-copy";
 
 import { BEAT, events, scenes, type SceneKey } from "./beats";
@@ -46,8 +47,8 @@ import { BEAT, events, scenes, type SceneKey } from "./beats";
 const film = {
   pay: ["Paying takes", "one tap."], // problem.strong, cut
   collect: ["Now find", "the invoice."],
-  twelveA: `${fill("{vendors}")} billing portals.`,
-  twelveB: `${fill("{vendors}")} sign-ins.`,
+  twelveA: `${fill("{tools}")} tools.`,
+  twelveB: `${fill("{tools}")} sign-ins.`,
   weeks: problem.collectCaption, // "Three weeks of next week."
   fetch: frameCopy.agent, // "If an agent can pay, it can fetch the invoice."
   approve: ["One approval.", "Read-only, per card."],
@@ -57,22 +58,9 @@ const film = {
   endSub: "Invoices for everything your agent pays for.",
 };
 
-/* The hunt: eight of the twelve, chosen for how differently they fail. */
-const HUNT = ["kestrel", "cobalt", "sable", "ferry", "halftone", "meshwork", "quarry", "lumen"];
+/* The hunt: the eight whose invoice sits behind a sign-in, in dataset order. */
+const HUNT = vendors.filter((v) => v.portal.get !== "email").map((v) => v.id);
 
-const HUNT_TONE: Record<GetKind, PillTone> = {
-  pdf: "muted",
-  "pdf-each": "warn",
-  hosted: "warn",
-  popup: "red",
-  email: "warn",
-  receipt: "red",
-  owner: "warn",
-  "per-project": "muted",
-  image: "red",
-  statement: "warn",
-  zip: "muted",
-};
 
 /* ── Layout, per format ──────────────────────────────────────────────── */
 
@@ -88,6 +76,8 @@ interface Layout {
   pay: { title: TypeBox; card: MockBox };
   slab: TypeBox;
   huntPad: number;
+  /* The hunt card's inner width, which long names and paths are fitted to. */
+  huntWidth: number;
   twelve: { title: TypeBox; cols: number };
   pile: { phone: MockBox; caption: TypeBox | null };
   fetch: TypeBox;
@@ -104,6 +94,7 @@ const LAYOUT: Record<"tall" | "wide", Layout> = {
     pay: { title: { top: 96, size: 60 }, card: { width: 350, top: 262, scale: 1.3 } },
     slab: { top: 250, size: 60 },
     huntPad: 34,
+    huntWidth: 472,
     twelve: { title: { top: 70, size: 48 }, cols: 4 },
     pile: { phone: { width: 520, top: 78, scale: 0.95 }, caption: null },
     fetch: { top: 230, size: 48 },
@@ -118,6 +109,7 @@ const LAYOUT: Record<"tall" | "wide", Layout> = {
     pay: { title: { top: 209, size: 64, width: 400 }, card: { width: 350, top: 96, scale: 1.2, x: 690 } },
     slab: { top: 186, size: 84 },
     huntPad: 220,
+    huntWidth: 520,
     twelve: { title: { top: 78, size: 60 }, cols: 6 },
     pile: { phone: { width: 520, top: 46, scale: 0.76, x: 650 }, caption: { top: 214, size: 40, width: 300 } },
     fetch: { top: 196, size: 64 },
@@ -281,18 +273,23 @@ function Hunt() {
   // Hard cut with a three-frame punch: the new card lands slightly large.
   const punch = 1 + 0.05 * (1 - ramp(local, 0, 4));
   const L = useLayout();
+  // Real names and paths run long: fit them to the card rather than clip
+  // them. Inter Tight sets about 0.52em a character at this weight, Source
+  // Code Pro 0.6em; the bar loses its padding and the lock glyph.
+  const nameSize = Math.min(52, Math.floor((L.huntWidth - 104) / (vendor.name.length * 0.52)));
+  const pathSize = Math.min(22, Math.floor((L.huntWidth - 64) / (vendor.portal.path.length * 0.6)));
   return (
     <Stage>
       <span className="film-hunt__label">Where the invoice is</span>
       <span className="film-hunt__count">
-        <b>{String(i + 1).padStart(2, "0")}</b> / {vendors.length}
+        <b>{String(i + 1).padStart(2, "0")}</b> / {String(HUNT.length).padStart(2, "0")}
       </span>
       <div className="film-hunt" style={{ padding: `0 ${L.huntPad}px`, transform: `scale(${punch})` }}>
-        <div className="film-hunt__vendor">
+        <div className="film-hunt__vendor" style={{ fontSize: nameSize }}>
           <Monogram vendor={vendor} size={84} />
           <span>{vendor.name}</span>
         </div>
-        <div className="film-hunt__bar">
+        <div className="film-hunt__bar" style={{ fontSize: pathSize }}>
           <svg width="14" height="16" viewBox="0 0 14 16" aria-hidden="true">
             <rect x="1.5" y="7" width="11" height="8" rx="2" fill="none" stroke="currentColor" strokeWidth="1.6" />
             <path d="M4 7V4.8a3 3 0 0 1 6 0V7" fill="none" stroke="currentColor" strokeWidth="1.6" />
@@ -300,7 +297,7 @@ function Hunt() {
           {vendor.portal.path}
         </div>
         <div className="film-hunt__get">
-          <Pill tone={HUNT_TONE[vendor.portal.get]}>{GET_LABEL[vendor.portal.get]}</Pill>
+          <Pill tone={GET_TONE[vendor.portal.get]}>{GET_LABEL[vendor.portal.get]}</Pill>
         </div>
         <div className="film-hunt__sign">Sign in: {vendor.portal.signIn}</div>
       </div>
@@ -365,7 +362,7 @@ function Pile() {
   const { fps } = useVideoConfig();
   const { ref, tops } = useItemTops();
   const L = useLayout();
-  const caption = fill("{vendors} vendors, one month");
+  const caption = fill("{tools} tools, one month");
   const drops = events.pileDrops.map((d) => rel("pile", d));
   const total = problem.notifications.length;
 

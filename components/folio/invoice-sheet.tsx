@@ -15,7 +15,7 @@ export function InvoiceSheet({ charge = heroDocument }: { charge?: Charge }) {
       <div className="fo-invoice__head">
         <div>
           <div className="fo-invoice__vendor">{vendor.legalName}</div>
-          <div className="fo-invoice__muted">Dublin, Ireland</div>
+          <div className="fo-invoice__muted">{vendor.hq}</div>
         </div>
         <div className="fo-invoice__title">Invoice</div>
       </div>
@@ -23,7 +23,7 @@ export function InvoiceSheet({ charge = heroDocument }: { charge?: Charge }) {
       <dl className="fo-invoice__meta">
         <div><dt>Invoice number</dt><dd>{charge.doc.number}</dd></div>
         <div><dt>Date of issue</dt><dd>{shortDate(charge.date)}</dd></div>
-        <div><dt>Bill to</dt><dd>{persona.company}<br />{persona.city}, {persona.country}<br />VAT {persona.vat}</dd></div>
+        <div><dt>Bill to</dt><dd>{persona.company}<br />{persona.city ? `${persona.city}, ${persona.country}` : persona.country}<br />VAT {persona.vat}</dd></div>
       </dl>
 
       <div className="fo-invoice__lines">

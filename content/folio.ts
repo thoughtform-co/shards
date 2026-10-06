@@ -3,12 +3,16 @@
  * frame. Totals are computed here, never typed into a component, so no
  * two mockups can disagree about the month.
  *
- * Everything below is invented. The persona, the company, the cards, the
- * vendors and every amount are fictional; the VAT number is built to fail
- * the Belgian mod-97 check so it cannot belong to a real company. The
- * month's shape (one AI vendor billing small auto-recharge top-ups, a
- * handful of flat subscriptions) is the only thing taken from life.
+ * The tools are real: twelve that Vince pays for. Where each keeps its
+ * invoice comes from the portal notes of Ledger, his invoice pipeline,
+ * written in his own sessions. Everything else is illustration: every
+ * amount (a public list price where one is well known, otherwise invented),
+ * the accountant, both cards, every document number, and the VAT number,
+ * which is masked. The month's shape (one AI vendor billing small top-ups
+ * several times a day, a handful of flat subscriptions) is taken from life.
  */
+
+import { LOGOS, type Logo } from "./folio-logos";
 
 export type Currency = "EUR" | "USD";
 export type DocKind = "invoice" | "receipt";
@@ -24,31 +28,41 @@ export interface Vendor {
   id: string;
   name: string;
   legalName: string;
+  /* Where the vendor is based, as its invoices say. */
+  hq: string;
   /* How the charge reads on the bank statement. */
   statement: string;
   monogram: string;
-  tile: { bg: string; fg: string };
+  /* The tile behind the mark; `ring` draws a hairline round a light tile. */
+  tile: { bg: string; fg: string; ring?: boolean };
+  logo?: Logo;
   docPrefix: string;
-  /* Where this vendor keeps its invoice, what you actually get there,
-     and how you have to sign in first. Invented, but every mechanism is
-     one a real billing page uses. */
+  /* Where this vendor keeps its invoice, what you meet there, and how the
+     account is signed in to. From Ledger's portal notes. */
   portal: { path: string; get: GetKind; signIn: string };
 }
 
-export type GetKind = "pdf" | "pdf-each" | "hosted" | "popup" | "email" | "receipt" | "owner" | "per-project" | "image" | "statement" | "zip";
+export type GetKind =
+  | "console-rows"
+  | "zip"
+  | "per-account"
+  | "side-panel"
+  | "modal"
+  | "stripe-view"
+  | "workspaces"
+  | "stripe-receipt"
+  | "email";
 
 export const GET_LABEL: Record<GetKind, string> = {
-  pdf: "PDF download",
-  "pdf-each": "One PDF per top-up",
-  hosted: "Hosted page, link expires",
-  popup: "Pop-up, no download",
-  email: "Emailed link, expires",
-  receipt: "Receipt only",
-  owner: "PDF, account owner only",
-  "per-project": "One PDF per project",
-  image: "Invoice as an image",
-  statement: "Statement, VAT on request",
-  zip: "ZIP of every invoice",
+  "console-rows": "PDF per row, in the console",
+  zip: "Downloads a ZIP",
+  "per-account": "One console per account",
+  "side-panel": "Side panel, then PDF",
+  modal: "Billing is a modal, no URL",
+  "stripe-view": "Opens a Stripe receipt page",
+  workspaces: "One bill per workspace",
+  "stripe-receipt": "Stripe page, receipt download",
+  email: "Emailed by the vendor",
 };
 
 export interface Charge {
@@ -63,12 +77,12 @@ export interface Charge {
 }
 
 export const persona = {
-  person: "Merel Claes",
-  initials: "MC",
-  company: "Studio Merel BV",
-  city: "Ghent",
+  person: "Vince Buyssens",
+  initials: "VB",
+  company: "Thoughtform",
+  city: "",
   country: "Belgium",
-  vat: "BE 0745.218.360",
+  vat: "BE 0•••.•••.•••",
   accountant: "Janssens Accountancy",
   period: "September 2026",
   periodShort: "Sep 2026",
@@ -79,24 +93,29 @@ export const cards: Card[] = [
   { id: "personal", brand: "Visa", last4: "9021", label: "Personal credit" },
 ];
 
+const DARK = { bg: "#000000", fg: "#ffffff" };
+const LIGHT = { bg: "#ffffff", fg: "#000000", ring: true };
+
+/* The eight whose invoice sits behind a sign-in come first, in the order
+   the film's hunt shows them; the four that email theirs follow. */
 export const vendors: Vendor[] = [
-  { id: "kestrel", name: "Kestrel AI", legalName: "Kestrel AI Ireland Ltd", statement: "KESTREL AI IRELAND DUBLIN", monogram: "K", tile: { bg: "#0a2540", fg: "#ffffff" }, docPrefix: "4C1E07B2", portal: { path: "/settings/billing", get: "pdf-each", signIn: "Password + 2FA" } },
-  { id: "cobalt", name: "Cobalt Code", legalName: "Cobalt Code, Inc.", statement: "COBALT CODE INC", monogram: "C", tile: { bg: "#2e5bff", fg: "#ffffff" }, docPrefix: "C0B7A11D", portal: { path: "/dashboard/account/billing", get: "hosted", signIn: "GitHub sign-in" } },
-  { id: "pagecraft", name: "Pagecraft", legalName: "Pagecraft B.V.", statement: "PAGECRAFT BV AMSTERDAM", monogram: "P", tile: { bg: "#ece7dc", fg: "#0a2540" }, docPrefix: "9A0F33E1", portal: { path: "/sites/studio-merel/settings/plan", get: "pdf", signIn: "Password" } },
-  { id: "ferry", name: "Ferry Mail", legalName: "Ferry Mail, Inc.", statement: "FERRY MAIL INC", monogram: "F", tile: { bg: "#0f766e", fg: "#ffffff" }, docPrefix: "FE77D204", portal: { path: "/settings/subscription", get: "popup", signIn: "Google sign-in" } },
-  { id: "tally", name: "Tally Tasks", legalName: "Tally Tasks Ltd", statement: "TALLY TASKS LTD LONDON", monogram: "T", tile: { bg: "#e5484d", fg: "#ffffff" }, docPrefix: "7A11E5C9", portal: { path: "/account?tab=billing", get: "email", signIn: "Magic link" } },
-  { id: "meshwork", name: "Meshwork 3D", legalName: "Meshwork Labs Pte. Ltd.", statement: "MESHWORK LABS SG", monogram: "M", tile: { bg: "#3c3a35", fg: "#ffffff" }, docPrefix: "2207-1184", portal: { path: "/credits/history", get: "receipt", signIn: "Password" } },
-  { id: "halftone", name: "Halftone Image", legalName: "Halftone Labs, Inc.", statement: "HALFTONE LABS INC", monogram: "H", tile: { bg: "#f59e0b", fg: "#0a2540" }, docPrefix: "HT0921", portal: { path: "/billing/history", get: "owner", signIn: "Google sign-in" } },
-  { id: "relay", name: "Relay Agents", legalName: "Relay Agents, Inc.", statement: "RELAY AGENTS INC", monogram: "R", tile: { bg: "#7c3aed", fg: "#ffffff" }, docPrefix: "RLY", portal: { path: "/org/studio-merel/usage/invoices", get: "per-project", signIn: "SSO" } },
-  { id: "sable", name: "Sable Video", legalName: "Sable Video SAS", statement: "SABLE VIDEO PARIS", monogram: "S", tile: { bg: "#111827", fg: "#ffffff" }, docPrefix: "SBL-26", portal: { path: "/me/plan", get: "image", signIn: "Password + 2FA" } },
-  { id: "quarry", name: "Quarry Search", legalName: "Quarry Search, Inc.", statement: "QUARRY SEARCH INC", monogram: "Q", tile: { bg: "#0ea5e9", fg: "#ffffff" }, docPrefix: "QS", portal: { path: "/console/billing/statements", get: "statement", signIn: "API console login" } },
-  { id: "lumen", name: "Lumen Voice", legalName: "Lumen Voice Ltd", statement: "LUMEN VOICE LTD", monogram: "L", tile: { bg: "#db2777", fg: "#ffffff" }, docPrefix: "LV", portal: { path: "/subscription", get: "email", signIn: "Magic link" } },
-  { id: "orbit", name: "Orbit Notes", legalName: "Orbit Notes GmbH", statement: "ORBIT NOTES GMBH BERLIN", monogram: "O", tile: { bg: "#16a34a", fg: "#ffffff" }, docPrefix: "ON", portal: { path: "/workspace/admin/billing", get: "zip", signIn: "SSO" } },
+  { id: "claude", name: "Claude", legalName: "Anthropic, PBC", hq: "San Francisco, United States", statement: "ANTHROPIC", monogram: "C", tile: { bg: "#f0eee6", fg: "#191919" }, logo: LOGOS.claude, docPrefix: "ANT", portal: { path: "console.anthropic.com/settings/bills", get: "console-rows", signIn: "Google sign-in" } },
+  { id: "slack", name: "Slack", legalName: "Slack Technologies Limited", hq: "Dublin, Ireland", statement: "SLACK", monogram: "S", tile: LIGHT, logo: LOGOS.slack, docPrefix: "SLK", portal: { path: "thoughtform-co.slack.com/admin/billing/history", get: "zip", signIn: "Workspace sign-in" } },
+  { id: "google", name: "Google Workspace", legalName: "Google Cloud EMEA Limited", hq: "Dublin, Ireland", statement: "GOOGLE*WORKSPACE", monogram: "G", tile: LIGHT, logo: LOGOS.google, docPrefix: "GWS", portal: { path: "admin.google.com/ac/billing/subscriptions", get: "per-account", signIn: "Per Google account" } },
+  { id: "figma", name: "Figma", legalName: "Figma, Inc.", hq: "San Francisco, United States", statement: "FIGMA", monogram: "F", tile: LIGHT, logo: LOGOS.figma, docPrefix: "FIG", portal: { path: "figma.com/files/team/…/billing/invoices", get: "side-panel", signIn: "Google sign-in" } },
+  { id: "notion", name: "Notion", legalName: "Notion Labs, Inc.", hq: "San Francisco, United States", statement: "NOTION LABS", monogram: "N", tile: LIGHT, logo: LOGOS.notion, docPrefix: "NOT", portal: { path: "notion.so · Settings → Billing", get: "modal", signIn: "Google sign-in" } },
+  { id: "cursor", name: "Cursor", legalName: "Anysphere, Inc.", hq: "San Francisco, United States", statement: "CURSOR AI", monogram: "C", tile: DARK, logo: LOGOS.cursor, docPrefix: "CUR", portal: { path: "cursor.com/dashboard/billing", get: "stripe-view", signIn: "GitHub sign-in" } },
+  { id: "webflow", name: "Webflow", legalName: "Webflow, Inc.", hq: "San Francisco, United States", statement: "WEBFLOW.COM", monogram: "W", tile: { bg: "#146ef5", fg: "#ffffff" }, logo: LOGOS.webflow, docPrefix: "WF", portal: { path: "webflow.com/dashboard → Billing", get: "workspaces", signIn: "Google + 2FA" } },
+  { id: "midjourney", name: "Midjourney", legalName: "Midjourney, Inc.", hq: "San Francisco, United States", statement: "MIDJOURNEY INC.", monogram: "M", tile: LIGHT, logo: LOGOS.midjourney, docPrefix: "MJ", portal: { path: "midjourney.com/account → Billing", get: "stripe-receipt", signIn: "Midjourney account" } },
+  { id: "superhuman", name: "Superhuman", legalName: "Superhuman Labs, Inc.", hq: "San Francisco, United States", statement: "SUPERHUMAN MAIL", monogram: "S", tile: { bg: "#1d1340", fg: "#ffffff" }, docPrefix: "SH", portal: { path: "Inbox · billing@superhuman.com", get: "email", signIn: "Google sign-in" } },
+  { id: "openai", name: "OpenAI", legalName: "OpenAI Ireland Ltd", hq: "Dublin, Ireland", statement: "OPENAI *CHATGPT SUBSCR", monogram: "O", tile: DARK, logo: LOGOS.openai, docPrefix: "OAI", portal: { path: "Inbox · receipts@openai.com", get: "email", signIn: "Google sign-in" } },
+  { id: "supabase", name: "Supabase", legalName: "Supabase Pte. Ltd.", hq: "Singapore", statement: "SUPABASE", monogram: "S", tile: { bg: "#1c1c1c", fg: "#3ecf8e" }, logo: LOGOS.supabase, docPrefix: "SUP", portal: { path: "Inbox · billing@supabase.io", get: "email", signIn: "GitHub sign-in" } },
+  { id: "vercel", name: "Vercel", legalName: "Vercel Inc.", hq: "San Francisco, United States", statement: "VERCEL INC.", monogram: "V", tile: DARK, logo: LOGOS.vercel, docPrefix: "VRC", portal: { path: "Inbox · billing@vercel.com", get: "email", signIn: "GitHub sign-in" } },
 ];
 
-/* Kestrel bills a monthly plan plus small automatic top-ups whenever the
-   credit balance runs low, several on a busy day. */
-const kestrelTopUps: Array<[day: number, cents: number]> = [
+/* Claude's API credits top up whenever the balance runs low, several times
+   on a busy day. Invented amounts, a real shape. */
+const claudeTopUps: Array<[day: number, cents: number]> = [
   [1, 1036], [2, 1058], [2, 1013], [3, 1127], [4, 1049],
   [5, 1008], [5, 1086], [5, 1272], [8, 1031], [9, 1156],
   [10, 1094], [10, 1018], [10, 1309], [10, 1065],
@@ -106,81 +125,56 @@ const kestrelTopUps: Array<[day: number, cents: number]> = [
   [25, 1028], [26, 1055],
 ];
 
+/* One charge each for the rest: [day, vendor, cents, currency, item]. */
+const subscriptions: Array<[number, string, number, Currency, string]> = [
+  [21, "claude", 9000, "EUR", "Subscription, monthly"],
+  [1, "google", 1680, "EUR", "Subscription, monthly"],
+  [3, "notion", 1200, "USD", "Subscription, monthly"],
+  [3, "supabase", 2500, "USD", "Subscription, monthly"],
+  [4, "superhuman", 3000, "USD", "Subscription, monthly"],
+  [5, "cursor", 4000, "USD", "Subscription, monthly, two seats"],
+  [5, "vercel", 2000, "USD", "Subscription, monthly"],
+  [8, "slack", 875, "EUR", "Subscription, monthly"],
+  [9, "openai", 2000, "USD", "Subscription, monthly"],
+  [12, "webflow", 2900, "USD", "Subscription, monthly"],
+  [17, "webflow", 1800, "USD", "Subscription, monthly"],
+  [19, "midjourney", 3000, "USD", "Subscription, monthly"],
+  [24, "figma", 1500, "EUR", "Subscription, monthly"],
+];
+
 const iso = (day: number) => `2026-09-${String(day).padStart(2, "0")}`;
 
+/* Midjourney's billing page hands over a Stripe receipt (Ledger's portal
+   notes); every other vendor here issues an invoice. */
+const RECEIPT_ONLY = new Set(["midjourney"]);
+
 function buildCharges(): Charge[] {
-  const out: Charge[] = [];
-  let seq = 418;
-
-  const kestrel: Array<{ day: number; cents: number; item: string }> = [
-    ...kestrelTopUps.map(([day, cents]) => ({ day, cents, item: "Usage credits, auto-recharge" })),
-    { day: 21, cents: 9000, item: "Kestrel Max, monthly" },
-  ].sort((a, b) => a.day - b.day);
-
-  for (const k of kestrel) {
-    seq += 1;
-    out.push({
-      id: `kestrel-${seq}`,
-      vendorId: "kestrel",
-      date: iso(k.day),
-      cents: k.cents,
-      currency: "EUR",
-      item: k.item,
-      card: "biz",
-      doc: { kind: "invoice", number: `4C1E07B2-${String(seq).padStart(4, "0")}` },
+  const rows: Array<[number, string, number, Currency, string]> = [
+    ...claudeTopUps.map(([day, cents]): [number, string, number, Currency, string] => [day, "claude", cents, "EUR", "API credits"]),
+    ...subscriptions,
+  ];
+  const seq = new Map<string, number>();
+  const out = rows
+    .sort((a, b) => a[0] - b[0])
+    .map(([day, vendorId, cents, currency, item], i): Charge => {
+      const n = (seq.get(vendorId) ?? 0) + 1;
+      seq.set(vendorId, n);
+      const prefix = vendors.find((v) => v.id === vendorId)!.docPrefix;
+      return {
+        id: `${vendorId}-${i}`,
+        vendorId,
+        date: iso(day),
+        cents,
+        currency,
+        item,
+        card: "biz",
+        doc: {
+          kind: RECEIPT_ONLY.has(vendorId) ? "receipt" : "invoice",
+          number: `${prefix}-2609-${String(n).padStart(4, "0")}`,
+        },
+      };
     });
-  }
-
-  out.push(
-    {
-      id: "cobalt-1", vendorId: "cobalt", date: iso(5), cents: 20000, currency: "USD",
-      item: "Pro, monthly", card: "biz", doc: { kind: "invoice", number: "C0B7A11D-0091" },
-    },
-    {
-      id: "pagecraft-1", vendorId: "pagecraft", date: iso(7), cents: 3600, currency: "EUR",
-      item: "Site Pro, monthly", card: "biz", doc: { kind: "invoice", number: "9A0F33E1-0012" },
-    },
-    {
-      id: "ferry-1", vendorId: "ferry", date: iso(9), cents: 3000, currency: "USD",
-      item: "Business, monthly", card: "biz", doc: { kind: "invoice", number: "FE77D204-0007" },
-    },
-    {
-      id: "tally-1", vendorId: "tally", date: iso(14), cents: 600, currency: "EUR",
-      item: "Pro, monthly", card: "biz", doc: { kind: "invoice", number: "7A11E5C9-0031" },
-    },
-    {
-      /* A one-off checkout: the vendor never enabled invoices for it, so
-         the only document that exists is the receipt. */
-      id: "meshwork-1", vendorId: "meshwork", date: iso(27), cents: 1999, currency: "EUR",
-      item: "Credit pack", card: "biz", doc: { kind: "receipt", number: "2207-1184" },
-    },
-    {
-      id: "halftone-1", vendorId: "halftone", date: iso(3), cents: 2400, currency: "EUR",
-      item: "Studio, monthly", card: "biz", doc: { kind: "invoice", number: "HT0921-3307" },
-    },
-    {
-      id: "sable-1", vendorId: "sable", date: iso(12), cents: 3500, currency: "EUR",
-      item: "Creator, monthly", card: "biz", doc: { kind: "invoice", number: "SBL-26-09-1142" },
-    },
-    {
-      id: "quarry-1", vendorId: "quarry", date: iso(16), cents: 1900, currency: "USD",
-      item: "API, usage", card: "biz", doc: { kind: "invoice", number: "QS-2026-09-0088" },
-    },
-    {
-      id: "lumen-1", vendorId: "lumen", date: iso(18), cents: 1100, currency: "EUR",
-      item: "Starter, monthly", card: "biz", doc: { kind: "invoice", number: "LV-55120" },
-    },
-    {
-      id: "orbit-1", vendorId: "orbit", date: iso(20), cents: 1000, currency: "EUR",
-      item: "Plus, monthly", card: "biz", doc: { kind: "invoice", number: "ON-2026-0920" },
-    },
-    {
-      id: "relay-1", vendorId: "relay", date: iso(30), cents: 4860, currency: "USD",
-      item: "Agent hosting, usage", card: "biz", doc: { kind: "invoice", number: "RLY-000914" },
-    },
-  );
-
-  return out.sort((a, b) => (a.date === b.date ? 0 : a.date < b.date ? 1 : -1));
+  return out.reverse();
 }
 
 export const charges: Charge[] = buildCharges();
@@ -264,6 +258,8 @@ export const month = {
   signIns: new Set(vendors.filter((v) => charges.some((c) => c.vendorId === v.id)).map((v) => v.portal.signIn)).size,
   charges: charges.length,
   vendors: new Set(charges.map((c) => c.vendorId)).size,
+  /* The vendors whose invoice sits behind a sign-in, not in the inbox. */
+  portals: vendors.filter((v) => v.portal.get !== "email").length,
   invoices: charges.filter((c) => c.doc.kind === "invoice").length,
   receipts: charges.filter((c) => c.doc.kind === "receipt").length,
   totals: totalsLabel(charges),
@@ -281,12 +277,12 @@ export function bankCents(c: Charge): number {
 export const latest = (n: number, list: Charge[] = charges): Charge[] => list.slice(0, n);
 
 /* One charge per vendor, newest first: the rows a mockup shows when it
-   wants every vendor on screen rather than Kestrel's 33 top-ups. */
+   wants every vendor on screen rather than Claude's 32 top-ups. */
 export function onePerVendor(list: Charge[] = charges): Charge[] {
   const seen = new Set<string>();
   return list.filter((c) => (seen.has(c.vendorId) ? false : (seen.add(c.vendorId), true)));
 }
 
-/* The single document the hero puts on the table: the latest Kestrel
-   top-up, as the vendor's own PDF would render it. */
-export const heroDocument = charges.find((c) => c.vendorId === "kestrel" && c.date === iso(26))!;
+/* The single document the hero puts on the table: Figma's September
+   invoice, as the vendor's own PDF would render it. */
+export const heroDocument = charges.find((c) => c.vendorId === "figma")!;

@@ -7,7 +7,7 @@
  * through `fill()`, never from a typed number.
  */
 
-import { month as dataMonth, persona } from "./folio";
+import { month as dataMonth, persona, vendors as tools } from "./folio";
 
 export type SourceId =
   | "sessions"
@@ -99,13 +99,17 @@ const COUNT_WORDS = [
 ];
 const word = (n: number) => COUNT_WORDS[n] ?? String(n);
 
-/* {charges} and {docs} stay numerals; {vendors}, {addresses}, {formats}
-   and {signIns} read as words. */
+/* {charges} and {docs} stay numerals; {vendors}, {tools}, {portals},
+   {addresses}, {formats} and {signIns} read as words. {tools} is every
+   tool on the page, {vendors} the ones that billed this month, {portals}
+   the ones whose invoice sits behind a sign-in. */
 export function fill(text: string): string {
   const out = text
     .replace(/\{charges\}/g, String(dataMonth.charges))
     .replace(/\{docs\}/g, String(dataMonth.invoices + dataMonth.receipts))
     .replace(/\{vendors\}/g, word(dataMonth.vendors))
+    .replace(/\{tools\}/g, word(tools.length))
+    .replace(/\{portals\}/g, word(dataMonth.portals))
     .replace(/\{addresses\}/g, word(dataMonth.addresses))
     .replace(/\{formats\}/g, word(dataMonth.formats))
     .replace(/\{signIns\}/g, word(dataMonth.signIns))
@@ -132,7 +136,7 @@ export const hero = {
   soft: "Folio collects the invoice behind every tool you pay for with Link, through one read-only permission, for your agent and your accountant.",
   primary: "See how it works",
   secondary: "Read the pitch to Stripe",
-  note: "Built for MCP clients such as Claude and ChatGPT. Every name and number on this page is invented.",
+  note: "Built for MCP clients such as Claude and ChatGPT. The tools are real; the screens and the amounts are illustrations.",
   agentLine: "Sent September to {accountant}: {docs} documents, one receipt flagged.",
 };
 
@@ -161,7 +165,7 @@ export const problem = {
       when: "12m ago",
       title: "{accountant}",
       subject: "Re: Re: Re: September invoices",
-      body: "Merel, we really need them today to file your VAT return on time.",
+      body: "Vince, we really need them today to file your VAT return on time.",
       stack: ["Re: Re: September invoices", "September invoices"],
     },
     {
@@ -175,7 +179,7 @@ export const problem = {
     {
       app: "mail",
       when: "2d ago",
-      title: "Lumen Voice",
+      title: "Billing",
       subject: "Your invoice link has expired",
       body: "Sign in to view your billing history.",
       stack: [] as string[],
@@ -185,7 +189,7 @@ export const problem = {
       when: "2w ago",
       title: "Download invoices",
       subject: "",
-      body: "{vendors} billing pages, overdue",
+      body: "{portals} billing pages, overdue",
       stack: [] as string[],
     },
   ],
@@ -246,22 +250,22 @@ export const workflows = {
       channel: "Your agent",
       when: "14 Sep",
       title: "Price change",
-      text: "Tally Tasks charged €6.00, up from €5.00 in August. The invoice lists a new price from 1 September.",
-      actions: ["Looks right", "Ask Tally"],
+      text: "Cursor charged $40.00, up from $20.00 in August. The invoice adds a second seat.",
+      actions: ["Looks right", "Remove a seat"],
     },
     vendor: {
       channel: "#finance",
       when: "3 Sep",
-      title: "New vendor",
-      text: "First charge from Halftone Image: €24.00 on the business card, so it's filed under {company}.",
+      title: "Two workspaces",
+      text: "Webflow billed two workspaces this month, $29.00 and $18.00, both on the business card. File both under {company}?",
       actions: ["Keep", "It's personal"],
     },
     missing: {
       channel: "Your agent",
       when: "27 Sep",
-      title: "No invoice issued",
-      text: "Meshwork 3D sent a receipt but no invoice for the credit pack. Want me to ask for one?",
-      actions: ["Ask Meshwork", "Receipt is fine"],
+      title: "Receipt only",
+      text: "Midjourney's billing page gives a Stripe receipt for the $30.00, not an invoice. Want me to ask for one?",
+      actions: ["Ask Midjourney", "Receipt is fine"],
     },
   },
 };
@@ -347,17 +351,17 @@ export const stripe = {
 
 export const footer = {
   disclaimer:
-    "Folio is a concept by Vince Buyssens. It is not a company and it is not affiliated with Stripe or Link. The screens are illustrations, and every person, company, card, vendor and amount on this page is invented.",
-  trademarks: "Link and Stripe are trademarks of Stripe, Inc.",
+    "Folio is a concept by Vince Buyssens. It is not a company and it is not affiliated with Stripe, Link or any tool on this page. The tools are ones Vince pays for, and where each keeps its invoice comes from his own records. The screens are illustrations, not the vendors' own pages; the amounts are list prices or invented, and the accountant, the cards and every document number are invented.",
+  trademarks: "Link and Stripe are trademarks of Stripe, Inc. Every other product name and mark belongs to its owner and appears only to name the tool.",
   sourcesTitle: "Sources",
 };
 
 export const frames = {
   hunt: "Every vendor hides the invoice somewhere else.",
   endpoint: "The smallest feature Stripe hasn't shipped yet.",
-  approval: "One approval instead of {vendors} billing portals.",
+  approval: "One approval instead of {portals} billing portals.",
   agent: "If an agent can pay, it can fetch the invoice.",
   workflows: "Your agent checks in when something needs you.",
   flow: "On paper it takes a few minutes a month.",
-  footnote: "Folio is a concept. Every name and number is invented.",
+  footnote: "Folio is a concept. Real tools, illustrated screens.",
 };

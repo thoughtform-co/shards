@@ -44,7 +44,7 @@ export function MockAgent() {
           </div>
           <div className="fo-agent__result">
             {first && firstVendor
-              ? `${firstVendor.name} · ${dayMonth(first.date)} · ${money(first.cents, first.currency)} · receipt only, no invoice issued`
+              ? `${firstVendor.name} · ${dayMonth(first.date)} · ${money(first.cents, first.currency)} · Stripe receipt, no invoice`
               : "Nothing missing"}
           </div>
         </div>
@@ -52,7 +52,7 @@ export function MockAgent() {
         <div className="fo-agent__msg">
           All {month.charges} charges have a document.{" "}
           {firstVendor && first
-            ? `${firstVendor.name} issued only a receipt for the ${first.item.toLowerCase()} on ${dayMonth(first.date)}, so I'll send it with a note for your accountant.`
+            ? `${firstVendor.name}'s billing page gives a receipt for the ${dayMonth(first.date)} charge, so I'll send it with a note for your accountant.`
             : ""}
         </div>
 
