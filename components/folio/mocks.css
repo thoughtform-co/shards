@@ -33,6 +33,18 @@
   letter-spacing: -0.02em;
 }
 
+/* A light tile needs an edge to read as a tile on white paper. */
+.fo-tile--ring {
+  box-shadow: inset 0 0 0 1px var(--fo-line);
+}
+
+/* A mark sits inside the tile with room round it, as an app icon does. */
+.fo-tile__mark {
+  width: 60%;
+  height: 60%;
+  display: block;
+}
+
 .fo-pill {
   display: inline-flex;
   align-items: center;

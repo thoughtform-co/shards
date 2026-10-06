@@ -7,18 +7,18 @@ import { Monogram, Pill, type PillTone } from "./primitives";
  * point is the inconsistency, so every column is allowed to disagree.
  */
 
-const TONE: Record<GetKind, PillTone> = {
-  pdf: "muted",
-  "pdf-each": "warn",
-  hosted: "warn",
-  popup: "red",
-  email: "warn",
-  receipt: "red",
-  owner: "warn",
-  "per-project": "muted",
-  image: "red",
-  statement: "warn",
-  zip: "muted",
+/* How bad each route is, as a pill: red loses the invoice, warn costs a
+   detour, muted is merely somewhere else, ok arrives by itself. */
+export const GET_TONE: Record<GetKind, PillTone> = {
+  "console-rows": "muted",
+  zip: "red",
+  "per-account": "warn",
+  "side-panel": "muted",
+  modal: "red",
+  "stripe-view": "warn",
+  workspaces: "warn",
+  "stripe-receipt": "warn",
+  email: "ok",
 };
 
 export function HuntTable({ maxRows }: { maxRows?: number }) {
@@ -43,7 +43,7 @@ export function HuntTable({ maxRows }: { maxRows?: number }) {
             {vendor.portal.path}
           </span>
           <span className="fo-hunt__get" role="cell">
-            <Pill tone={TONE[vendor.portal.get]}>{GET_LABEL[vendor.portal.get]}</Pill>
+            <Pill tone={GET_TONE[vendor.portal.get]}>{GET_LABEL[vendor.portal.get]}</Pill>
           </span>
           <span className="fo-hunt__sign" role="cell">
             {vendor.portal.signIn}

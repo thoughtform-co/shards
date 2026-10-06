@@ -1,0 +1,332 @@
+/*
+ * The launch film's own layout. The screens are the page's mockups, styled
+ * by app/folio/folio.css and components/folio/mocks.css untouched; this file
+ * only places them on a 540 x 675 stage (rendered at 2x) and draws the
+ * film's type. Every value that moves is a CSS variable the scene sets from
+ * the frame, so nothing here runs on the wall clock.
+ */
+
+/* Wall-clock motion would desync from the frame; the film owns all of it. */
+.film *,
+.film *::before,
+.film *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+.film {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* The page's guide lines at the content edges. */
+.film-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  isolation: isolate;
+  background: #fff;
+}
+
+.film-stage::before,
+.film-stage::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--fo-guide);
+  z-index: -1;
+}
+
+.film-stage::before { left: var(--gx, 34px); }
+.film-stage::after { right: var(--gx, 34px); }
+
+.film-camera {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 55%;
+}
+
+.film-head {
+  position: absolute;
+  top: 32px;
+  left: var(--gx, 34px);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── Type ────────────────────────────────────────────────────────────── */
+
+.film-type {
+  position: absolute;
+  left: var(--gx, 34px);
+  right: var(--gx, 34px);
+  margin: 0;
+  font-family: var(--fo-sans);
+  font-weight: 400;
+  color: var(--fo-ink);
+  letter-spacing: -0.032em;
+  line-height: 1.02;
+}
+
+.film-type--xl { font-size: 60px; }
+.film-type--l { font-size: 48px; }
+.film-type--m { font-size: 34px; line-height: 1.1; letter-spacing: -0.026em; }
+
+.film-type .soft { color: var(--fo-soft); }
+
+.film-line { display: block; }
+
+.film-word {
+  display: inline-block;
+  white-space: pre;
+}
+
+/* ── Mock placement ──────────────────────────────────────────────────── */
+
+.film-mock {
+  position: absolute;
+  left: 50%;
+  transform-origin: top center;
+}
+
+/* ── The hunt ────────────────────────────────────────────────────────── */
+
+.film-hunt {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.film-hunt__count {
+  position: absolute;
+  top: 34px;
+  right: var(--gx, 34px);
+  font-family: var(--fo-mono);
+  font-size: 15px;
+  color: var(--fo-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.film-hunt__count b {
+  color: var(--fo-ink);
+  font-weight: 500;
+}
+
+.film-hunt__label {
+  position: absolute;
+  top: 34px;
+  left: var(--gx, 34px);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--fo-ink-3);
+}
+
+.film-hunt__vendor {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 52px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: var(--fo-ink);
+}
+
+.film-hunt__bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 34px;
+  height: 66px;
+  padding: 0 20px;
+  border-radius: 12px;
+  background: var(--fo-paper);
+  border: 1px solid var(--fo-line);
+  font-family: var(--fo-mono);
+  font-size: 22px;
+  color: var(--fo-ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.film-hunt__bar svg { flex: none; color: var(--fo-ink-4); }
+
+.film-hunt__get {
+  margin-top: 30px;
+  transform: scale(2.1);
+  transform-origin: left center;
+}
+
+.film-hunt__sign {
+  margin-top: 40px;
+  font-size: 22px;
+  color: var(--fo-ink-3);
+}
+
+/* ── Twelve ──────────────────────────────────────────────────────────── */
+
+.film-grid {
+  position: absolute;
+  left: var(--gx, 34px);
+  right: var(--gx, 34px);
+  bottom: 70px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: 26px;
+  column-gap: 10px;
+}
+
+.film-grid__cell {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+}
+
+.film-grid__sign {
+  font-size: 11px;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--fo-ink-3);
+  white-space: nowrap;
+}
+
+/* ── The pile-up ─────────────────────────────────────────────────────── */
+
+/* The list slides inside the lock screen; the wall keeps its full height
+   from the first notification, as a phone's does. */
+.film-pile .fo-notif__list {
+  transform: translateY(var(--list-y, 0px));
+}
+
+/* The missed call rings red, twice, around its card. */
+.film-pile .fo-notif__item.is-call .fo-notif__card {
+  box-shadow:
+    0 0 0 calc(var(--ring, 0) * 9px) rgba(223, 27, 65, calc(var(--ring-on, 0) * 0.32 * (1 - var(--ring, 0)))),
+    0 1px 2px rgba(10, 37, 64, 0.06),
+    0 6px 18px -8px rgba(10, 37, 64, 0.18);
+}
+
+.film-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(10, 37, 64, 0.16) 100%);
+}
+
+/* ── Taps: one gesture, three times ──────────────────────────────────── */
+
+.film-tap .fo-pay__btn,
+.film-tap .fo-consent__passkey,
+.film-tap .fo-btn--primary {
+  position: relative;
+  overflow: hidden;
+  transform: scale(var(--press, 1));
+}
+
+/* The ripple, the film's one purple, from the button's centre. */
+.film-tap .fo-pay__btn::after,
+.film-tap .fo-consent__passkey::after,
+.film-tap .fo-btn--primary::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 420px;
+  height: 420px;
+  margin: -210px 0 0 -210px;
+  border-radius: 50%;
+  background: var(--ripple-c, rgba(83, 58, 253, 0.6));
+  transform: scale(var(--ripple, 0));
+  opacity: var(--ripple-o, 0);
+  pointer-events: none;
+}
+
+/* After the tap the button says what happened. */
+.film-tap .fo-consent__passkey,
+.film-tap .fo-btn--primary {
+  background: color-mix(in srgb, var(--done-bg, #1b1f24) calc(var(--done, 0) * 100%), var(--from-bg, #1b1f24));
+}
+
+.film-tap .fo-consent__passkey { --from-bg: #1b1f24; --done-bg: #533afd; }
+.film-tap .fo-btn--primary { --from-bg: #533afd; --done-bg: #0b7a49; --ripple-c: rgba(255, 255, 255, 0.45); }
+
+.film-tap .fo-consent__passkey > *,
+.film-tap .fo-btn--primary > * { opacity: var(--old, 1); }
+
+.film-tap .fo-consent__passkey,
+.film-tap .fo-btn--primary {
+  color: rgba(255, 255, 255, var(--old, 1));
+}
+
+.film-tap .fo-consent__passkey::before,
+.film-tap .fo-btn--primary::before {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  opacity: var(--done, 0);
+}
+
+.film-tap .fo-consent__passkey::before { content: "Approved"; }
+.film-tap .fo-btn--primary::before { content: "Sent"; }
+
+.film-tap .fo-pay__done { opacity: var(--done, 0); }
+
+/* ── The arrivals ────────────────────────────────────────────────────── */
+
+.film-arrive .fo-wallet__dl {
+  opacity: var(--total, 0);
+  transform: scale(calc(0.9 + 0.1 * var(--total, 0)));
+}
+
+/* ── The end card ────────────────────────────────────────────────────── */
+
+.film-end__ribbon {
+  position: absolute;
+  z-index: -1;
+  top: -60px;
+  right: -260px;
+  width: 760px;
+  height: auto;
+  mask-image: linear-gradient(180deg, #000 45%, transparent 82%);
+  -webkit-mask-image: linear-gradient(180deg, #000 45%, transparent 82%);
+}
+
+.film-frame-ribbon {
+  position: absolute;
+  z-index: -1;
+  top: -110px;
+  right: -210px;
+  width: 520px;
+  height: auto;
+  mask-image: linear-gradient(180deg, #000 38%, transparent 70%);
+  -webkit-mask-image: linear-gradient(180deg, #000 38%, transparent 70%);
+}
+
+.film-end__sub {
+  position: absolute;
+  left: var(--gx, 34px);
+  right: 90px;
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.35;
+  letter-spacing: -0.012em;
+  color: var(--fo-soft);
+}
+
+.film-foot {
+  position: absolute;
+  left: var(--gx, 34px);
+  bottom: 24px;
+  margin: 0;
+  font-size: 10.5px;
+  color: var(--fo-ink-4);
+}

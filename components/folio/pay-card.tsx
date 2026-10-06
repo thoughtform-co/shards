@@ -3,10 +3,10 @@ import { Check, Monogram, PasskeyGlyph } from "./primitives";
 
 /*
  * The other side of the contrast: paying for a tool in a wallet, which
- * already takes one approval. Drawn from the month's newest vendor.
+ * already takes one approval. Drawn from one of the month's subscriptions.
  */
 export function PayCard() {
-  const charge = charges.find((c) => c.vendorId === "halftone")!;
+  const charge = charges.find((c) => c.vendorId === "midjourney")!;
   const vendor = vendorById(charge.vendorId);
   const card = cardById(charge.card);
 

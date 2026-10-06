@@ -45,14 +45,25 @@ export function Arrow() {
   );
 }
 
+/* A vendor's tile: its own mark where the dataset carries one, its
+   initial where it does not. */
 export function Monogram({ vendor, size = 28 }: { vendor: Vendor; size?: number }) {
+  const { logo, tile } = vendor;
   return (
     <span
-      className="fo-tile"
-      style={vars({ "--tile-bg": vendor.tile.bg, "--tile-fg": vendor.tile.fg, "--tile": `${size}px` })}
+      className={`fo-tile${tile.ring ? " fo-tile--ring" : ""}`}
+      style={vars({ "--tile-bg": tile.bg, "--tile-fg": tile.fg, "--tile": `${size}px` })}
       aria-hidden="true"
     >
-      {vendor.monogram}
+      {logo ? (
+        <svg className="fo-tile__mark" viewBox={logo.viewBox} preserveAspectRatio="xMidYMid meet">
+          {logo.paths.map((p, i) => (
+            <path key={i} d={p.d} fill={p.fill ?? "currentColor"} fillRule={p.evenOdd ? "evenodd" : undefined} />
+          ))}
+        </svg>
+      ) : (
+        vendor.monogram
+      )}
     </span>
   );
 }
